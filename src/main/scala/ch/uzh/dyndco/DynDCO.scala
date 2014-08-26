@@ -82,6 +82,11 @@ class ColoredVertex(id: Any, numColors: Int, initialColor: Int, isFixed: Boolean
  * not require a custom edge type.
  */
 object DynDCO extends App {
+  
+  // data factory: load data
+  
+  
+  // graph factory: add vertexes & edges to graph
   val graph = GraphBuilder.build
   graph.addVertex(new ColoredVertex(1, 2, 1))
   graph.addVertex(new ColoredVertex(2, 2, 1))
@@ -90,8 +95,20 @@ object DynDCO extends App {
   graph.addEdge(2, new StateForwarderEdge(1))
   graph.addEdge(2, new StateForwarderEdge(3))
   graph.addEdge(3, new StateForwarderEdge(2))
+  
+  // execute
   val stats = graph.execute
+  
+  // insert change
+  
+  
+  // export data
+  
+  
+  // show run info
   println(stats)
   graph.foreachVertex(println(_))
+  
+  // shutdown graph
   graph.shutdown
 }
