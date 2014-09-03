@@ -1,8 +1,11 @@
 package ch.uzh.dyndco
 
 import scala.util.Random
-
 import com.signalcollect._
+import ch.uzh.dyndco.data.Preference
+import ch.uzh.dyndco.data.Preference
+import ch.uzh.dyndco.data.PreferenceFactory
+import com.signalcollect.console.ConsoleServer
 
 /**
  * 	This algorithm attempts to find a vertex coloring.
@@ -18,59 +21,59 @@ import com.signalcollect._
  */
 class ColoredVertex(id: Any, numColors: Int, initialColor: Int, isFixed: Boolean = false) extends DataGraphVertex(id, initialColor) {
 
-  /**
-   * Indicates that every signal this vertex receives is
-   * an instance of Int. This avoids type-checks/-casts.
-   */
-  type Signal = Int
+	/**
+	 * Indicates that every signal this vertex receives is
+	 * an instance of Int. This avoids type-checks/-casts.
+	 */
+	type Signal = Int
 
-  /** The set of available colors */
-  val colors: Set[Int] = (1 to numColors).toSet
+			/** The set of available colors */
+			val colors: Set[Int] = (1 to numColors).toSet
 
-  /** Returns a random color */
-  def getRandomColor: Int = Random.nextInt(numColors) + 1
+			/** Returns a random color */
+			def getRandomColor: Int = Random.nextInt(numColors) + 1
 
-  /**
-   * Variable that indicates if the neighbors of this vertex should be informed
-   * about its color choice. This is the case if the color has changed or if the color is the same but a conflict persists.
-   */
-  var informNeighbors: Boolean = false
+			/**
+			 * Variable that indicates if the neighbors of this vertex should be informed
+			 * about its color choice. This is the case if the color has changed or if the color is the same but a conflict persists.
+			 */
+			var informNeighbors: Boolean = false
 
-  /**
-   * Checks if one of the neighbors shares the same color. If so, the state is
-   * set to a random color and the neighbors are informed about this vertex'
-   * new color. If no neighbor shares the same color, we stay with the old color.
-   */
-  def collect = {
-    if (signals.iterator.contains(state)) {
-      informNeighbors = true
-      if (isFixed) {
-        initialColor
-      } else {
-        val r = Random.nextDouble
-        if (r > 0.8) {
-          val freeColors = colors -- signals
-          val numberOfFreeColors = freeColors.size
-          if (numberOfFreeColors > 0) {
-            freeColors.toSeq(Random.nextInt(numberOfFreeColors))
-          } else {
-            getRandomColor
-          }
-        } else {
-          getRandomColor
-        }
-      }
-    } else {
-      informNeighbors = false || (lastSignalState.isDefined && lastSignalState.get != state)
-      state
-    }
-  }
+			/**
+			 * Checks if one of the neighbors shares the same color. If so, the state is
+			 * set to a random color and the neighbors are informed about this vertex'
+			 * new color. If no neighbor shares the same color, we stay with the old color.
+			 */
+			def collect = {
+				if (signals.iterator.contains(state)) {
+					informNeighbors = true
+							if (isFixed) {
+								initialColor
+							} else {
+								val r = Random.nextDouble
+										if (r > 0.8) {
+											val freeColors = colors -- signals
+													val numberOfFreeColors = freeColors.size
+													if (numberOfFreeColors > 0) {
+														freeColors.toSeq(Random.nextInt(numberOfFreeColors))
+													} else {
+														getRandomColor
+													}
+										} else {
+											getRandomColor
+										}
+							}
+				} else {
+					informNeighbors = false || (lastSignalState.isDefined && lastSignalState.get != state)
+							state
+				}
+			}
 
-  /**
-   * The signal score is 1 if this vertex hasn't signaled before or if it has
-   *  changed its color (kept track of by informNeighbors). Else it's 0.
-   */
-  override def scoreSignal = if (informNeighbors || lastSignalState == None) 1 else 0
+			/**
+			 * The signal score is 1 if this vertex hasn't signaled before or if it has
+			 *  changed its color (kept track of by informNeighbors). Else it's 0.
+			 */
+			override def scoreSignal = if (informNeighbors || lastSignalState == None) 1 else 0
 
 }
 
@@ -83,32 +86,60 @@ class ColoredVertex(id: Any, numColors: Int, initialColor: Int, isFixed: Boolean
  */
 object DynDCO extends App {
   
-  // data factory: load data
-  
-  
-  // graph factory: add vertexes & edges to graph
-  val graph = GraphBuilder.build
-  graph.addVertex(new ColoredVertex(1, 2, 1))
-  graph.addVertex(new ColoredVertex(2, 2, 1))
-  graph.addVertex(new ColoredVertex(3, 2, 1))
-  graph.addEdge(1, new StateForwarderEdge(2))
-  graph.addEdge(2, new StateForwarderEdge(1))
-  graph.addEdge(2, new StateForwarderEdge(3))
-  graph.addEdge(3, new StateForwarderEdge(2))
-  
-  // execute
-  val stats = graph.execute
-  
-  // insert change
-  
-  
-  // export data
-  
-  
-  // show run info
-  println(stats)
-  graph.foreachVertex(println(_))
-  
-  // shutdown graph
-  graph.shutdown
+	// configuration
+	val numberOfAgents : Integer = 30000;
+
+	// initialize graph
+	val graph = GraphBuilder.withConsole(true,8090).build
+	
+	// build vertices
+	for( vertexID <- 1 to numberOfAgents){
+		graph.addVertex(new ColoredVertex(vertexID , 2, 1))
+	}
+	
+	// add edges
+	val switch : Boolean = false
+	for( sender <- 1 to numberOfAgents){
+		for( target <- 1 to numberOfAgents){
+			if(target != sender){
+				if(sender % 2 == 0){
+					if(sender-1 > 0)
+						graph.addEdge(sender, new StateForwarderEdge(sender-1))
+						if(sender+1 <= numberOfAgents)	
+							graph.addEdge(sender, new StateForwarderEdge(sender+1))
+				}
+				else {
+					if(switch){
+						if(sender-1 > 0)
+							graph.addEdge(sender, new StateForwarderEdge(sender-1))
+							switch == false
+					}
+					else {
+						if(sender+1 <= numberOfAgents)
+							graph.addEdge(sender, new StateForwarderEdge(sender+1))
+							switch == true
+					}
+				}
+			}
+		}
+	}
+	
+	// execute
+	val stats = graph.execute
+	
+	// insert change & evaluate resilience
+	
+	
+	// evaluate results
+	
+	
+	// export data
+	
+	
+	// show run info
+	println(stats)
+//	graph.foreachVertex(println(_))
+	
+	// shutdown graph
+	graph.shutdown
 }
