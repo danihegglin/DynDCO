@@ -6,7 +6,8 @@ import ch.uzh.dyndco.data.Preference
 import ch.uzh.dyndco.data.Preference
 import ch.uzh.dyndco.data.PreferenceFactory
 import com.signalcollect.console.ConsoleServer
-import ch.uzh.dyndco.vertices.ColoredVertex
+import ch.uzh.dyndco.vertices.AgentVertex
+import com.signalcollect.configuration.ExecutionMode
 
 ///**
 // * 	This algorithm attempts to find a vertex coloring.
@@ -88,17 +89,23 @@ import ch.uzh.dyndco.vertices.ColoredVertex
 object DynDCO extends App {
   
 	// configuration
-	val numberOfAgents : Integer = 30000;
+	println("configuration");
+	val numberOfAgents : Integer = 5;
+	val numberOfTimeslots : Integer = 24;
 
 	// initialize graph
+	println("initialize graph");
 	val graph = GraphBuilder.withConsole(true,8090).build
 	
 	// build vertices
+	println("starting to create agents");
 	for( vertexID <- 1 to numberOfAgents){
-		graph.addVertex(new ColoredVertex(vertexID , 2, 1))
+		println("creating agent:" + vertexID);
+		graph.addVertex(new AgentVertex(vertexID, Random.nextInt(numberOfTimeslots) + 1, numberOfTimeslots))
 	}
 	
 	// add edges
+	println("adding edges");
 	val switch : Boolean = false
 	for( sender <- 1 to numberOfAgents){
 		for( target <- 1 to numberOfAgents){
@@ -115,7 +122,7 @@ object DynDCO extends App {
 							graph.addEdge(sender, new StateForwarderEdge(sender-1))
 							switch == false
 					}
-					else {
+					else { 	
 						if(sender+1 <= numberOfAgents)
 							graph.addEdge(sender, new StateForwarderEdge(sender+1))
 							switch == true
@@ -126,20 +133,16 @@ object DynDCO extends App {
 	}
 	
 	// execute
-	val stats = graph.execute
+	println("starting the graph");
+	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
+	val stats = graph.execute(execConfig)
 	
 	// insert change & evaluate resilience
 	
 	
-	// evaluate results
-	
-	
-	// export data
-	
-	
 	// show run info
 	println(stats)
-//	graph.foreachVertex(println(_))
+	graph.foreachVertex(println(_))
 	
 	// shutdown graph
 	graph.shutdown
