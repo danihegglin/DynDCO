@@ -4,7 +4,7 @@ import scala.util.Random
 import com.signalcollect.DataGraphVertex
 
 
-class AgentVertex(id: Any, initialSchedule: Int, numTimeslots: Int) extends DataGraphVertex(id, initialSchedule) {
+class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVertex(id, schedule) {
 	//this(id, numColors, initialColor, isFixedfalse)super(id, initialColor)()
 
 	//-------------------------- SYSTEM VARIABLES ----------------------------------------------
@@ -24,7 +24,7 @@ class AgentVertex(id: Any, initialSchedule: Int, numTimeslots: Int) extends Data
 	/**
 	 * Initial fixed state
 	 */
-	var isFixed: Boolean = false
+//	var hasRun: Boolean = false
 	
 	//-------------------------- RELEVANT VARIABLES ----------------------------------------------
 	
@@ -41,25 +41,48 @@ class AgentVertex(id: Any, initialSchedule: Int, numTimeslots: Int) extends Data
 	 */
 	var initialBlocks : Int = getRandomBlocks
 	
+	/**
+	 * Finish boolean
+	 */
+	var finished : Boolean = false
 	
 	//-------------------------- ADDITIONAL FUNCTIONS ----------------------------------------------
 	
 	/** Returns a random schedule */
-	def getRandomSchedule: Int = Random.nextInt(numTimeslots) + 1
+	def getRandomSchedule: Int = {
+	  Random.nextInt(numTimeslots) + 1
+	}
 	
 	/** Returns random blocked timeslots */ //TODO: Make set
-	def getRandomBlocks : Int = Random.nextInt(numTimeslots) + 1
+	def getRandomBlocks : Int = Random.nextInt(numTimeslots)
 	
 	/**
 	 * Receive change notification
 	 */
+	//TODO: Implement
 	
+	
+	// -------------------------- TERMINATION CRITERION -----------------------------------------
 	
 	/**
 	 * The signal score is 1 if this vertex hasn't signaled before or if it has
 	 *  changed its color (kept track of by informNeighbors). Else it's 0.
 	 */
-	override def scoreSignal = if (informNeighbors || lastSignalState == None) 1 else 0
+	//override def scoreSignal = if (informNeighbors || lastSignalState == None) 1 else 0
+	override def scoreSignal: Double = {
+      println(id + ": running scoreSignal: " + lastSignalState)
+//      if(this.finished == true){
+//        0
+//      }
+//      else {
+//        1
+//      }
+	 lastSignalState match {
+      case Some(oldState) if oldState == state => 0
+      case noStateOrStateChanged               => 1
+      case None								   => 1
+    }
+        }
 
 	
 	//-------------------------- COLLECT ----------------------------------------------
@@ -69,31 +92,64 @@ class AgentVertex(id: Any, initialSchedule: Int, numTimeslots: Int) extends Data
 	 * set to a random color and the neighbors are informed about this vertex'
 	 * new color. If no neighbor shares the same color, we stay with the old color.
 	 */
-	def collect ()= {
-		//if (signals.iterator.contains(Int)) {
-			
-			informNeighbors = true
+	def collect() = {
+    
+//			informNeighbors = true
 		
-			if (isFixed) {
-				//isFixed = true
-			//	println("communicating initial choice for meeting")
-				initialSchedule
-			} 
-			else {
-			  var equalityThreshold : Double = 0.6
-			  val equalNeighborsCount = (signals filter (_ equals initialSchedule)).size
-			  val totalNeighborsCount = signals.size
-			  if (equalNeighborsCount.toFloat / totalNeighborsCount.toFloat >= equalityThreshold) {
-			    println("Reached Goal for " + initialSchedule + "->" + equalNeighborsCount)
-				  initialSchedule
-			  } else {
-				  getRandomSchedule
+			// InitialChoice
+//			if (hasRun == false) {
+//				hasRun = true
+//				println(id + ": initial choice: " + schedule)
+//				schedule
+//			} 
+//			else {
+	  
+			//  var matching : Boolean = false
+			  
+			  while(signals.iterator.hasNext){
+			    var proposal : Int = signals.iterator.next
+			    
+			    if(proposal == this.state){
+			      println("match: " + proposal + "/" + this.state)
+			      schedule
+			    }
+			    else {
+			      println("nomatch")
+//			      println(id + ": " + this.schedule + " ->" + proposal)
+			   
+			      
+//			      println("new schedule:" + this.schedule)
+			    }
+//			    proposal match {
+//			      case schedule => this.schedule
+//			      case x if x > this.schedule => this.schedule = getRandomSchedule
+//			      case x if x < this.schedule => this.schedule = getRandomSchedule
+//			    }
+//			    println(id + ": Signal -> " + proposal + " / " + schedule)
+//			    if(proposal == schedule){
+//			    	schedule
+//			    }
+//			   else {
+//			     println("not matching")
+//			    }
 			  }
-			}
-		//} 
-		//else {
-		//	informNeighbors = false || (lastSignalState.isDefined && lastSignalState.get != state)
-		//		state
-		//}
+			  val newSchedule : Int = getRandomSchedule
+			  this.setState(newSchedule)
+			  newSchedule
+			
+//			  println("deciding")
+//			  
+////			  if(matching){
+////			    println("match true")
+////				this.setState(schedule)
+////			    schedule
+////			  }
+////			  else {
+//			    var newSchedule = getRandomSchedule
+//			    println("sending new proposal")
+//			    this.setState(newSchedule)
+//			    newSchedule
+//			  }
+//			}
 	}
 }

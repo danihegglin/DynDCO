@@ -1,13 +1,10 @@
-package ch.uzh.dyndco
+package ch.uzh.dyndco.app
 
-import scala.util.Random
 import com.signalcollect._
-import ch.uzh.dyndco.data.Preference
-import ch.uzh.dyndco.data.Preference
-import ch.uzh.dyndco.data.PreferenceFactory
-import com.signalcollect.console.ConsoleServer
 import ch.uzh.dyndco.vertices.AgentVertex
 import com.signalcollect.configuration.ExecutionMode
+import scala.util.Random
+import akka.event.Logging.LogLevel
 
 ///**
 // * 	This algorithm attempts to find a vertex coloring.
@@ -90,8 +87,8 @@ object DynDCO extends App {
   
 	// configuration
 	println("configuration");
-	val numberOfAgents : Integer = 5;
-	val numberOfTimeslots : Integer = 24;
+	val numberOfAgents : Integer = 2;
+	val numberOfTimeslots : Integer = 2;
 
 	// initialize graph
 	println("initialize graph");
@@ -105,32 +102,35 @@ object DynDCO extends App {
 	}
 	
 	// add edges
-	println("adding edges");
-	val switch : Boolean = false
-	for( sender <- 1 to numberOfAgents){
-		for( target <- 1 to numberOfAgents){
-			if(target != sender){
-				if(sender % 2 == 0){
-					if(sender-1 > 0)
-						graph.addEdge(sender, new StateForwarderEdge(sender-1))
-						if(sender+1 <= numberOfAgents)	
-							graph.addEdge(sender, new StateForwarderEdge(sender+1))
-				}
-				else {
-					if(switch){
-						if(sender-1 > 0)
-							graph.addEdge(sender, new StateForwarderEdge(sender-1))
-							switch == false
-					}
-					else { 	
-						if(sender+1 <= numberOfAgents)
-							graph.addEdge(sender, new StateForwarderEdge(sender+1))
-							switch == true
-					}
-				}
-			}
-		}
-	}
+	graph.addEdge(1, new StateForwarderEdge(2))
+	graph.addEdge(2, new StateForwarderEdge(1))
+	
+//	println("adding edges");
+//	val switch : Boolean = false
+//	for( sender <- 1 to numberOfAgents){
+//		for( target <- 1 to numberOfAgents){
+//			if(target != sender){
+//				if(sender % 2 == 0){
+//					if(sender-1 > 0)
+//						graph.addEdge(sender, new StateForwarderEdge(sender-1))
+//						if(sender+1 <= numberOfAgents)	
+//							graph.addEdge(sender, new StateForwarderEdge(sender+1))
+//				}
+//				else {
+//					if(switch){
+//						if(sender-1 > 0)
+//							graph.addEdge(sender, new StateForwarderEdge(sender-1))
+//							switch == false
+//					}
+//					else { 	
+//						if(sender+1 <= numberOfAgents)
+//							graph.addEdge(sender, new StateForwarderEdge(sender+1))
+//							switch == true
+//					}
+//				}
+//			}
+//		}
+//	}
 	
 	// execute
 	println("starting the graph");
