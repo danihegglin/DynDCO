@@ -87,8 +87,8 @@ object DynDCO extends App {
   
 	// configuration
 	println("configuration");
-	val numberOfAgents : Integer = 2;
-	val numberOfTimeslots : Integer = 2;
+	val numberOfAgents : Integer = 10;
+	val numberOfTimeslots : Integer = 3;
 
 	// initialize graph
 	println("initialize graph");
@@ -96,41 +96,18 @@ object DynDCO extends App {
 	
 	// build vertices
 	println("starting to create agents");
-	for( vertexID <- 1 to numberOfAgents){
+	for(vertexID <- 1 to numberOfAgents){
 		println("creating agent:" + vertexID);
 		graph.addVertex(new AgentVertex(vertexID, Random.nextInt(numberOfTimeslots) + 1, numberOfTimeslots))
 	}
 	
 	// add edges
-	graph.addEdge(1, new StateForwarderEdge(2))
-	graph.addEdge(2, new StateForwarderEdge(1))
-	
-//	println("adding edges");
-//	val switch : Boolean = false
-//	for( sender <- 1 to numberOfAgents){
-//		for( target <- 1 to numberOfAgents){
-//			if(target != sender){
-//				if(sender % 2 == 0){
-//					if(sender-1 > 0)
-//						graph.addEdge(sender, new StateForwarderEdge(sender-1))
-//						if(sender+1 <= numberOfAgents)	
-//							graph.addEdge(sender, new StateForwarderEdge(sender+1))
-//				}
-//				else {
-//					if(switch){
-//						if(sender-1 > 0)
-//							graph.addEdge(sender, new StateForwarderEdge(sender-1))
-//							switch == false
-//					}
-//					else { 	
-//						if(sender+1 <= numberOfAgents)
-//							graph.addEdge(sender, new StateForwarderEdge(sender+1))
-//							switch == true
-//					}
-//				}
-//			}
-//		}
-//	}
+	for(senderID <- 1 to numberOfAgents){
+		for(targetID <- 1 to numberOfAgents)
+			if(senderID != targetID){
+				graph.addEdge(senderID, new StateForwarderEdge(targetID))
+			}
+	}
 	
 	// execute
 	println("starting the graph");

@@ -61,95 +61,93 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 	 */
 	//TODO: Implement
 	
-	
 	// -------------------------- TERMINATION CRITERION -----------------------------------------
 	
-	/**
-	 * The signal score is 1 if this vertex hasn't signaled before or if it has
-	 *  changed its color (kept track of by informNeighbors). Else it's 0.
-	 */
-	//override def scoreSignal = if (informNeighbors || lastSignalState == None) 1 else 0
 	override def scoreSignal: Double = {
-      println(id + ": running scoreSignal: " + lastSignalState)
-//      if(this.finished == true){
-//        0
-//      }
-//      else {
-//        1
-//      }
-	 lastSignalState match {
-      case Some(oldState) if oldState == state => 0
-      case noStateOrStateChanged               => 1
-      case None								   => 1
-    }
-        }
+      
+	  //println(id + ": running scoreSignal: " + lastSignalState + " " + finished)
+	  
+	  if(this.finished) 
+	    0
+	   else
+	     1
+     }
 
 	
 	//-------------------------- COLLECT ----------------------------------------------
 
-	/**
-	 * Checks if one of the neighbors shares the same color. If so, the state is
-	 * set to a random color and the neighbors are informed about this vertex'
-	 * new color. If no neighbor shares the same color, we stay with the old color.
-	 */
 	def collect() = {
-    
-//			informNeighbors = true
-		
-			// InitialChoice
-//			if (hasRun == false) {
-//				hasRun = true
-//				println(id + ": initial choice: " + schedule)
-//				schedule
-//			} 
-//			else {
 	  
-			//  var matching : Boolean = false
-			  
-			  while(signals.iterator.hasNext){
-			    var proposal : Int = signals.iterator.next
-			    
-			    if(proposal == this.state){
-			      println("match: " + proposal + "/" + this.state)
-			      schedule
-			    }
-			    else {
-			      println("nomatch")
-//			      println(id + ": " + this.schedule + " ->" + proposal)
-			   
-			      
-//			      println("new schedule:" + this.schedule)
-			    }
-//			    proposal match {
-//			      case schedule => this.schedule
-//			      case x if x > this.schedule => this.schedule = getRandomSchedule
-//			      case x if x < this.schedule => this.schedule = getRandomSchedule
-//			    }
-//			    println(id + ": Signal -> " + proposal + " / " + schedule)
-//			    if(proposal == schedule){
-//			    	schedule
-//			    }
-//			   else {
-//			     println("not matching")
-//			    }
-			  }
-			  val newSchedule : Int = getRandomSchedule
-			  this.setState(newSchedule)
-			  newSchedule
-			
-//			  println("deciding")
-//			  
-////			  if(matching){
-////			    println("match true")
-////				this.setState(schedule)
-////			    schedule
-////			  }
-////			  else {
-//			    var newSchedule = getRandomSchedule
-//			    println("sending new proposal")
-//			    this.setState(newSchedule)
-//			    newSchedule
-//			  }
-//			}
+		if(!finished){
+			 
+		// Determine number of signals & values
+		val numberOfNeighbors : Int = signals.size
+		val values = collection.mutable.Map[Int, Int]()
+		
+		// Determine if signal matches the chosen schedule
+		var matches : Int = 1
+		for (signal <- signals.iterator) {
+		  var numOfValues : Int = 0
+		  if(values.contains(signal)){
+		    numOfValues = values(signal)
+		  }
+		  values.put(signal, numOfValues + 1)
+		  if(signal == schedule){
+		    println(id + ": value matched")
+		    matches = matches + 1
+		  }
+		}
+		
+		// If own value matches with other agent's value(s)
+		if(matches > 0){
+			println(id + ": have matches for " + state + "/" + matches)
+		  // If own value is in a majority with other agent's values -> finish
+		 // if(matches.toFloat / numberOfNeighbors > 0.5){
+		  if(matches >= 4){
+			  println(id + ": I finish")
+			  finished = true
+			  state
+		  }
+		  // Get other schedule if not
+		  else {
+		    println(id + ": creating new schedule")
+		    val newSchedule : Int = getRandomSchedule
+			 this.setState(newSchedule)
+			 newSchedule
+		  }
+		}
+		else{
+		  
+		  // Find value with most matches
+		  var highestRankedValue : Int = 0
+		  var highestNumberOfMatches : Int = 0
+		  
+		  for(value <- values.keysIterator){
+		    if(values(value) > highestNumberOfMatches){
+		      highestRankedValue = value
+		      highestNumberOfMatches = values(value)
+		    }
+		  }
+		  println(id + ": value:" + highestRankedValue + " / matches: " + highestNumberOfMatches)
+		    
+		  // Converge if level is over threshold
+		 // if(highestNumberOfMatches.toFloat / numberOfNeighbors > 0.5){
+		  if(highestNumberOfMatches > 4){
+		    println(id + ": I converge to " + highestRankedValue + " !")
+		    this.setState(highestRankedValue)
+		    finished = true
+		    highestRankedValue
+		  }
+		  else {
+			 println(id + ": creating new schedule")
+			 val newSchedule : Int = getRandomSchedule
+			 this.setState(newSchedule)
+			 newSchedule
+		  }
+		}
+		}
+		else {
+		  schedule
+		}
 	}
 }
