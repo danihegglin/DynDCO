@@ -1,4 +1,4 @@
-package ch.uzh.dyndco.vertices
+package ch.uzh.dyndco.algorithms.tests.initial
 
 import scala.util.Random
 import com.signalcollect.DataGraphVertex

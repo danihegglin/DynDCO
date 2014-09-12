@@ -1,7 +1,6 @@
-package ch.uzh.dyndco.edges
+package ch.uzh.dyndco.algorithms.tests.pagerank
 
-import com.signalcollect.DefaultEdge
-import ch.uzh.dyndco.vertices.PageRankVertex
+import ch.uzh.dyndco.algorithms.tests.pagerank.PageRankVertex
 
 class PageRankEdge(targetId: Int)
     extends DefaultEdge(targetId) {

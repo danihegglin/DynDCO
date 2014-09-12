@@ -1,10 +1,9 @@
-package ch.uzh.dyndco.app
+package ch.uzh.dyndco.algorithms.tests.initial
 
 import com.signalcollect._
-import ch.uzh.dyndco.vertices.AgentVertex
+import ch.uzh.dyndco.algorithms.tests.initial.AgentVertex
 import com.signalcollect.configuration.ExecutionMode
 import scala.util.Random
-import akka.event.Logging.LogLevel
 
 ///**
 // * 	This algorithm attempts to find a vertex coloring.

@@ -1,4 +1,4 @@
-package ch.uzh.dyndco.vertices
+package ch.uzh.dyndco.algorithms.tests.pagerank
 
 import com.signalcollect.DataGraphVertex
 

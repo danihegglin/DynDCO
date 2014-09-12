@@ -1,8 +1,6 @@
-package ch.uzh.dyndco.app
+package ch.uzh.dyndco.algorithms.tests.pagerank
 
 import com.signalcollect.GraphBuilder
-import ch.uzh.dyndco.vertices.PageRankVertex
-import ch.uzh.dyndco.edges.PageRankEdge
 
 object PageRank extends App {
   val graph = GraphBuilder.build
