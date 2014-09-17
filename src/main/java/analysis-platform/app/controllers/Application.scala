@@ -24,7 +24,7 @@ object Application extends Controller {
   /**
    * The WebSocket
    */
-  def stream(email: String) = WebSocket.acceptWithActor[ClientEvent, ClientEvent] { _ => upstream =>
-    ClientConnection.props(email, upstream, Actors.regionManagerClient)
-  }
+//  def stream(email: String) = WebSocket.acceptWithActor[ClientEvent, ClientEvent] { _ => upstream =>
+//    ClientConnection.props(email, upstream, Actors.regionManagerClient)
+//  }
 }

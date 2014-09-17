@@ -2,6 +2,7 @@ package ch.uzh.dyndco.algorithms.tests.initial
 
 import scala.util.Random
 import com.signalcollect.DataGraphVertex
+import dispatch._, Defaults._
 
 
 class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVertex(id, schedule) {
@@ -46,6 +47,11 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 	 */
 	var finished : Boolean = false
 	
+	/**
+	 * Current Agent Utility
+	 */
+	var utility : Double = 0.0;
+	
 	//-------------------------- ADDITIONAL FUNCTIONS ----------------------------------------------
 	
 	/** Returns a random schedule */
@@ -77,6 +83,10 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 	//-------------------------- COLLECT ----------------------------------------------
 
 	def collect() = {
+	  
+	  // Push current utility
+	 val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + utility)
+	 val result = Http(svc OK as.String)
 	  
 		if(!finished){
 			 

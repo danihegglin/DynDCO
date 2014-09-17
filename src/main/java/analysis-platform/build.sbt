@@ -1,4 +1,4 @@
-name := """reactive-maps"""
+name := """dyndco"""
 
 version := "1.0-SNAPSHOT"
 

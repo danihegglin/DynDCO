@@ -40,7 +40,8 @@ libraryDependencies ++= Seq(
   "org.specs2" %% "specs2" % "2.3.11"  % "test",
   "org.scalacheck" %% "scalacheck" % "1.11.3" % "test",
   "org.scalatest" %% "scalatest" % "2.1.3" % "test",
-  "com.datastax.cassandra" % "cassandra-driver-core" % "2.0.5"
+  "com.datastax.cassandra" % "cassandra-driver-core" % "2.0.5",
+  "net.databinder.dispatch" %% "dispatch-core" % "0.11.2"
 )
 
 resolvers += "Scala-Tools Repository" at "https://oss.sonatype.org/content/groups/scala-tools/"
