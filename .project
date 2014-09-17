@@ -1,5 +1,5 @@
 <projectDescription>
-  <name>DynDCO</name>
+  <name>signal-collect</name>
   <buildSpec>
     <buildCommand>
       <name>org.scala-ide.sdt.core.scalabuilder</name>

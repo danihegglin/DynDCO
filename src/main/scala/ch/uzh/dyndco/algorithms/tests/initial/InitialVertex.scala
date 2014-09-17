@@ -4,7 +4,6 @@ import scala.util.Random
 import com.signalcollect.DataGraphVertex
 import dispatch._, Defaults._
 
-
 class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVertex(id, schedule) {
 	//this(id, numColors, initialColor, isFixedfalse)super(id, initialColor)()
 

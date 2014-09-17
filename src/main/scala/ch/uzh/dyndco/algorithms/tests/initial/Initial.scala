@@ -1,9 +1,8 @@
 package ch.uzh.dyndco.algorithms.tests.initial
 
 import com.signalcollect._
-import ch.uzh.dyndco.algorithms.tests.initial.AgentVertex
-import com.signalcollect.configuration.ExecutionMode
 import scala.util.Random
+import com.signalcollect.configuration.ExecutionMode
 
 ///**
 // * 	This algorithm attempts to find a vertex coloring.
@@ -82,7 +81,7 @@ import scala.util.Random
  * of the source vertex as the signal, which means that this algorithm does
  * not require a custom edge type.
  */
-object DynDCO extends App {
+object Initial extends App {
   
 	// configuration
 	println("configuration");
