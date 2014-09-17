@@ -2,11 +2,12 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
+# Home page # FIXME remove
 GET        /                    controllers.Application.index
 
-# The websocket
-GET        /stream/:email       controllers.Application.stream(email)
+# Monitoring Functionality
+GET        /utility/global      controllers.Application.global()
+GET		   /utility/agent/id	controllers.Monitoring.updateAgent()
 
 # Static assets
 GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)

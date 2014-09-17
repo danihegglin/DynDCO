@@ -13,6 +13,13 @@ object Application extends Controller {
   def index = Action { implicit req =>
     Ok(views.html.index())
   }
+  
+   /**
+   * The monitoring page.
+   */
+  def global = Action { implicit req =>
+    Ok(views.html.monitoring())
+  }
 
   /**
    * The WebSocket
