@@ -2,6 +2,7 @@ package ch.uzh.dyndco.algorithms.tests.initial
 
 import scala.util.Random
 import com.signalcollect.DataGraphVertex
+import dispatch._, Defaults._
 
 class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVertex(id, schedule) {
 	//this(id, numColors, initialColor, isFixedfalse)super(id, initialColor)()
@@ -21,11 +22,11 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 	var informNeighbors: Boolean = false
 	
 	/**
-	 * Initial fixed state
+	 * Initial random
 	 */
-//	var hasRun: Boolean = false
+	var random: Random = new Random
 	
-	//-------------------------- RELEVANT VARIABLES ----------------------------------------------
+	//-------------------------- SCHEDULE & UTILITY VARIABLES ----------------------------------------------
 	
 	/** The set of available colors */
 	val timeslots: Set[Int] = (1 to numTimeslots).toSet
@@ -50,20 +51,27 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 	 */
 	var utility : Double = 0.0;
 	
-	//-------------------------- ADDITIONAL FUNCTIONS ----------------------------------------------
+	//-------------------------- SCHEDULE & UTILITY FUNCTIONS ----------------------------------------------
 	
 	/** Returns a random schedule */
 	def getRandomSchedule: Int = {
-	  Random.nextInt(numTimeslots) + 1
+	  random.nextInt(numTimeslots) + 1
 	}
 	
 	/** Returns random blocked timeslots */ //TODO: Make set
-	def getRandomBlocks : Int = Random.nextInt(numTimeslots)
+	def getRandomBlocks : Int = random.nextInt(numTimeslots)
 	
 	/**
 	 * Receive change notification
 	 */
 	//TODO: Implement
+	
+	/**
+	 * Calculate utility
+	 */
+	def calculateUtility: Double = {
+	   random.nextDouble();
+	}
 	
 	// -------------------------- TERMINATION CRITERION -----------------------------------------
 	
@@ -82,10 +90,12 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 
 	def collect() = {
 	  
-		// Push current utility
-		//val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + utility)
-		//val result = Http(svc OK as.String)
+		// Calculate utility
+		this.utility = calculateUtility;
 	  
+		// Push current utility
+		val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + utility)
+		val result = Http(svc OK as.String)
 	  
 		if(!finished){
 			 
@@ -112,7 +122,7 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 			println(id + ": have matches for " + state + "/" + matches)
 		  // If own value is in a majority with other agent's values -> finish
 		 // if(matches.toFloat / numberOfNeighbors > 0.5){
-		  if(matches >= 4){
+		  if(matches >= 6){
 			  println(id + ": I finish")
 			  finished = true
 			  state

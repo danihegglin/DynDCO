@@ -85,7 +85,7 @@ object Initial extends App {
   
 	// configuration
 	println("configuration");
-	val numberOfAgents : Integer = 10;
+	val numberOfAgents : Integer = 10000;
 	val numberOfTimeslots : Integer = 3;
 
 	// initialize graph
