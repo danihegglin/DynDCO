@@ -4,7 +4,7 @@ import scala.util.Random
 import com.signalcollect.DataGraphVertex
 import dispatch._, Defaults._
 
-class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVertex(id, schedule) {
+class InitialVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVertex(id, schedule) {
 	//this(id, numColors, initialColor, isFixedfalse)super(id, initialColor)()
 
 	//-------------------------- SYSTEM VARIABLES ----------------------------------------------
@@ -28,7 +28,7 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 	
 	//-------------------------- SCHEDULE & UTILITY VARIABLES ----------------------------------------------
 	
-	/** The set of available colors */
+	/** The set of available timeslots */
 	val timeslots: Set[Int] = (1 to numTimeslots).toSet
 	
 	/**
@@ -51,6 +51,12 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 	 */
 	var utility : Double = 0.0;
 	
+	/**
+	 * Preferred Block
+	 */
+	var preferred : Integer = getRandomSchedule
+	// FIXME
+	
 	//-------------------------- SCHEDULE & UTILITY FUNCTIONS ----------------------------------------------
 	
 	/** Returns a random schedule */
@@ -70,7 +76,10 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 	 * Calculate utility
 	 */
 	def calculateUtility: Double = {
-	   random.nextDouble();
+	  if(this.preferred == this.state)
+		  1
+	  else
+	   	Math.abs(this.state - this.preferred)
 	}
 	
 	// -------------------------- TERMINATION CRITERION -----------------------------------------
@@ -90,9 +99,9 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 
 	def collect() = {
 	  
-		// Calculate utility
+		// Utility is as high as percentage of others
 		this.utility = calculateUtility;
-	  
+			  
 		// Push current utility
 		val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + utility)
 		val result = Http(svc OK as.String)
@@ -120,10 +129,10 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 		// If own value matches with other agent's value(s)
 		if(matches > 0){
 			println(id + ": have matches for " + state + "/" + matches)
+			
 		  // If own value is in a majority with other agent's values -> finish
-		 // if(matches.toFloat / numberOfNeighbors > 0.5){
-		  if(matches >= 6){
-			  println(id + ": I finish")
+		  if(matches.toFloat / numberOfNeighbors > 0.5){
+		 // if(matches >= 6){
 			  finished = true
 			  state
 		  }
@@ -131,7 +140,7 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 		  else {
 		    println(id + ": creating new schedule")
 		    val newSchedule : Int = getRandomSchedule
-			 this.setState(newSchedule)
+			this.setState(newSchedule)
 			 newSchedule
 		  }
 		}

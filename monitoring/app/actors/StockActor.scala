@@ -29,7 +29,7 @@ class StockActor(symbol: String) extends Actor {
   }
   
   // Fetch the latest stock value every 75ms
-  val stockTick = context.system.scheduler.schedule(Duration.Zero, 10.millis, self, FetchLatest)
+  val stockTick = context.system.scheduler.schedule(Duration.Zero, 100.millis, self, FetchLatest)
 
   def receive = {
     case FetchLatest =>

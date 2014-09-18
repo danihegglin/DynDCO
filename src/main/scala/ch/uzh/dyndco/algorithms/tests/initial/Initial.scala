@@ -85,7 +85,7 @@ object Initial extends App {
   
 	// configuration
 	println("configuration");
-	val numberOfAgents : Integer = 10000;
+	val numberOfAgents : Integer = 100;
 	val numberOfTimeslots : Integer = 3;
 
 	// initialize graph
@@ -96,7 +96,7 @@ object Initial extends App {
 	println("starting to create agents");
 	for(vertexID <- 1 to numberOfAgents){
 		println("creating agent:" + vertexID);
-		graph.addVertex(new AgentVertex(vertexID, Random.nextInt(numberOfTimeslots) + 1, numberOfTimeslots))
+		graph.addVertex(new InitialVertex(vertexID, Random.nextInt(numberOfTimeslots) + 1, numberOfTimeslots))
 	}
 	
 	// add edges
