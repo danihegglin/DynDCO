@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/scala"/>
-	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" output="target/scala-2.11/classes" path="src/main/scala"/>
+	<classpathentry kind="src" output="target/scala-2.11/classes" path="src/main/resources"/>
+	<classpathentry kind="src" output="target/scala-2.11/test-classes" path="src/test/scala"/>
 	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
 	<classpathentry kind="lib" path="/Users/hegglin/.ivy2/cache/com.typesafe.akka/akka-actor_2.11/jars/akka-actor_2.11-2.3.5.jar" sourcepath="/Users/hegglin/.ivy2/cache/com.typesafe.akka/akka-actor_2.11/srcs/akka-actor_2.11-2.3.5-sources.jar"/>
 	<classpathentry kind="lib" path="/Users/hegglin/.ivy2/cache/com.typesafe/config/bundles/config-1.2.1.jar" sourcepath="/Users/hegglin/.ivy2/cache/com.typesafe/config/srcs/config-1.2.1-sources.jar"/>
@@ -26,6 +27,8 @@
 	<classpathentry kind="lib" path="/Users/hegglin/.ivy2/cache/com.google.guava/guava/bundles/guava-16.0.1.jar" sourcepath="/Users/hegglin/.ivy2/cache/com.google.guava/guava/srcs/guava-16.0.1-sources.jar"/>
 	<classpathentry kind="lib" path="/Users/hegglin/.ivy2/cache/com.codahale.metrics/metrics-core/bundles/metrics-core-3.0.2.jar" sourcepath="/Users/hegglin/.ivy2/cache/com.codahale.metrics/metrics-core/srcs/metrics-core-3.0.2-sources.jar"/>
 	<classpathentry kind="lib" path="/Users/hegglin/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.5.jar" sourcepath="/Users/hegglin/.ivy2/cache/org.slf4j/slf4j-api/srcs/slf4j-api-1.7.5-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/hegglin/.ivy2/cache/net.databinder.dispatch/dispatch-core_2.11/jars/dispatch-core_2.11-0.11.2.jar" sourcepath="/Users/hegglin/.ivy2/cache/net.databinder.dispatch/dispatch-core_2.11/srcs/dispatch-core_2.11-0.11.2-sources.jar"/>
+	<classpathentry kind="lib" path="/Users/hegglin/.ivy2/cache/com.ning/async-http-client/jars/async-http-client-1.8.10.jar" sourcepath="/Users/hegglin/.ivy2/cache/com.ning/async-http-client/srcs/async-http-client-1.8.10-sources.jar"/>
 	<classpathentry kind="lib" path="/Users/hegglin/.ivy2/cache/io.netty/netty/bundles/netty-3.9.2.Final.jar" sourcepath="/Users/hegglin/.ivy2/cache/io.netty/netty/srcs/netty-3.9.2.Final-sources.jar"/>
 	<classpathentry kind="lib" path="/Users/hegglin/.ivy2/cache/org.mockito/mockito-all/jars/mockito-all-1.9.0.jar" sourcepath="/Users/hegglin/.ivy2/cache/org.mockito/mockito-all/srcs/mockito-all-1.9.0-sources.jar"/>
 	<classpathentry kind="lib" path="/Users/hegglin/.ivy2/cache/org.specs2/specs2_2.11/jars/specs2_2.11-2.3.11.jar" sourcepath="/Users/hegglin/.ivy2/cache/org.specs2/specs2_2.11/srcs/specs2_2.11-2.3.11-sources.jar"/>

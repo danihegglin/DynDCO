@@ -82,9 +82,10 @@ class AgentVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVe
 
 	def collect() = {
 	  
-	  // Push current utility
-	// val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + utility)
-	// val result = Http(svc OK as.String)
+		// Push current utility
+		//val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + utility)
+		//val result = Http(svc OK as.String)
+	  
 	  
 		if(!finished){
 			 

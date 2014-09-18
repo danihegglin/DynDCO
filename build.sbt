@@ -3,11 +3,11 @@ import AssemblyKeys._
 assemblySettings
 
 /** Project */
-name := "signal-collect"
+name := "dyndco"
 
 version := "2.1.0-SNAPSHOT"
 
-organization := "com.signalcollect"
+organization := "ch.uzh"
 
 scalaVersion := "2.11.2"
 
