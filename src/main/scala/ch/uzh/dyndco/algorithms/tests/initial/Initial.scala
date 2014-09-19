@@ -96,7 +96,7 @@ object Initial extends App {
 	println("starting to create agents");
 	for(vertexID <- 1 to numberOfAgents){
 		println("creating agent:" + vertexID);
-		graph.addVertex(new InitialVertex(vertexID, Random.nextInt(numberOfTimeslots) + 1, numberOfTimeslots))
+		graph.addVertex(new InitialVertex2(vertexID, Random.nextInt(numberOfTimeslots) + 1, numberOfTimeslots))
 	}
 	
 	// add edges
