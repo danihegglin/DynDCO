@@ -1,0 +1,328 @@
+[0m[[0mdebug[0m] [0m[0m
+[0m[[0mdebug[0m] [0mInitial source changes: [0m
+[0m[[0mdebug[0m] [0m	removed:Set()[0m
+[0m[[0mdebug[0m] [0m	added: Set(/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/MemoryEfficientDataGraphVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/GraphBuilder.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ExecutionInformation.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/StateForwarderEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ProcessingVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/MemoryEfficientDataFlowVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/GraphEditor.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Edge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ResetStateAfterSignaling.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/SumOfOutWeights.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DataFlowVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/OnlySignalOnChangeEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DataGraphVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Graph.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Vertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/OptionalSignalEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ExecutionConfiguration.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/StressTest.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Timeable.scala)[0m
+[0m[[0mdebug[0m] [0m	modified: Set()[0m
+[0m[[0mdebug[0m] [0mRemoved products: Set()[0m
+[0m[[0mdebug[0m] [0mExternal API changes: API Changes: Set()[0m
+[0m[[0mdebug[0m] [0mModified binary dependencies: Set()[0m
+[0m[[0mdebug[0m] [0mInitial directly invalidated sources: Set(/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/MemoryEfficientDataGraphVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/GraphBuilder.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ExecutionInformation.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/StateForwarderEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ProcessingVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/MemoryEfficientDataFlowVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/GraphEditor.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Edge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ResetStateAfterSignaling.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/SumOfOutWeights.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DataFlowVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/OnlySignalOnChangeEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DataGraphVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Graph.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Vertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/OptionalSignalEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ExecutionConfiguration.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/StressTest.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Timeable.scala)[0m
+[0m[[0mdebug[0m] [0m[0m
+[0m[[0mdebug[0m] [0mSources indirectly invalidated by:[0m
+[0m[[0mdebug[0m] [0m	product: Set()[0m
+[0m[[0mdebug[0m] [0m	binary dep: Set()[0m
+[0m[[0mdebug[0m] [0m	external source: Set()[0m
+[0m[[0mdebug[0m] [0mAll initially invalidated sources: Set(/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/MemoryEfficientDataGraphVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/GraphBuilder.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ExecutionInformation.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/StateForwarderEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ProcessingVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/MemoryEfficientDataFlowVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/GraphEditor.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Edge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ResetStateAfterSignaling.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/SumOfOutWeights.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DataFlowVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/OnlySignalOnChangeEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DataGraphVertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Graph.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Vertex.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/OptionalSignalEdge.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/ExecutionConfiguration.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/StressTest.scala, /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Timeable.scala)[0m
+[0m[[0mdebug[0m] [0mRecompiling all 23 sources: invalidated sources (23) exceeded 50.0% of all sources[0m
+[0m[[0minfo[0m] [0mCompiling 23 Scala sources to /Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/target/scala-2.10/classes...[0m
+[0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.10.4[0m
+[0m[[0mdebug[0m] [0mGetting compiler-interface from component compiler for Scala 2.10.4[0m
+[0m[[0mdebug[0m] [0mRunning cached compiler 44addb7a, interfacing (CompilerInterface) with Scala compiler version 2.10.4[0m
+[0m[[0mdebug[0m] [0mCalling Scala compiler with arguments  (CompilerInterface):[0m
+[0m[[0mdebug[0m] [0m	-bootclasspath[0m
+[0m[[0mdebug[0m] [0m	/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/jre/classes:/Users/danielhegglin/.sbt/boot/scala-2.10.4/lib/scala-library.jar[0m
+[0m[[0mdebug[0m] [0m	-classpath[0m
+[0m[[0mdebug[0m] [0m	/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/target/scala-2.10/classes[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala:22: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.event.LoggingAdapter[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala:23: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.event.Logging[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala:24: object configuration is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.configuration.ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala:44: not found: value ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m    val system = ActorSystemRegistry.retrieve("SignalCollect")[0m
+[0m[[31merror[0m] [0m                 ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala:46: not found: value Logging[0m
+[0m[[31merror[0m] [0m      case Some(s) => Logging.getLogger(s, this).debug(message)[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala:58: not found: value ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m    val system = ActorSystemRegistry.retrieve("SignalCollect")[0m
+[0m[[31merror[0m] [0m                 ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala:60: not found: value Logging[0m
+[0m[[31merror[0m] [0m      case Some(s) => Logging.getLogger(s, this).info(message)[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala:72: not found: value ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m    val system = ActorSystemRegistry.retrieve("SignalCollect")[0m
+[0m[[31merror[0m] [0m                 ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AbstractVertex.scala:74: not found: value Logging[0m
+[0m[[31merror[0m] [0m      case Some(s) => Logging.getLogger(s, this).warning(message)[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:26: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.AggregationOperation[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:27: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.ComplexAggregation[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:28: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.ModularAggregationOperation[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:38: not found: type ModularAggregationOperation[0m
+[0m[[31merror[0m] [0m  extends ModularAggregationOperation[(ResultTypeA, ResultTypeB)] {[0m
+[0m[[31merror[0m] [0m          ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:36: not found: type ModularAggregationOperation[0m
+[0m[[31merror[0m] [0m  aggrA: ModularAggregationOperation[ResultTypeA],[0m
+[0m[[31merror[0m] [0m         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:37: not found: type ModularAggregationOperation[0m
+[0m[[31merror[0m] [0m  aggrB: ModularAggregationOperation[ResultTypeB])[0m
+[0m[[31merror[0m] [0m         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:55: not found: type ModularAggregationOperation[0m
+[0m[[31merror[0m] [0mcase class IdStateMapAggregator[IdType, StateType]() extends ModularAggregationOperation[Map[IdType, StateType]] {[0m
+[0m[[31merror[0m] [0m                                                             ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:137: not found: type ModularAggregationOperation[0m
+[0m[[31merror[0m] [0mabstract class StateExtractor[StateType: Manifest] extends ModularAggregationOperation[Option[StateType]] {[0m
+[0m[[31merror[0m] [0m                                                           ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:94: not found: type ModularAggregationOperation[0m
+[0m[[31merror[0m] [0mcase class SampleVertexIds(sampleSize: Int) extends ModularAggregationOperation[List[Any]] {[0m
+[0m[[31merror[0m] [0m                                                    ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:113: not found: type ModularAggregationOperation[0m
+[0m[[31merror[0m] [0mcase class CountVertices[VertexType <: Vertex[_, _, _, _]: ClassTag]() extends ModularAggregationOperation[Long] {[0m
+[0m[[31merror[0m] [0m                                                                               ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:175: not found: type ModularAggregationOperation[0m
+[0m[[31merror[0m] [0mabstract class StateAggregator[StateType] extends ModularAggregationOperation[StateType] {[0m
+[0m[[31merror[0m] [0m                                                  ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:184: not found: value neutralElement[0m
+[0m[[31merror[0m] [0m      case _: Throwable => neutralElement[0m
+[0m[[31merror[0m] [0m                           ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/AggregationOperations.scala:194: not found: type ComplexAggregation[0m
+[0m[[31merror[0m] [0m  extends ComplexAggregation[Iterable[(_, State)], Iterable[(_, State)]] {[0m
+[0m[[31merror[0m] [0m          ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:22: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.EdgeId[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:23: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.event.Logging[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:24: object configuration is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.configuration.ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:27: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.SignalMessageWithSourceId[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:48: not found: value ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m    val system = ActorSystemRegistry.retrieve("SignalCollect")[0m
+[0m[[31merror[0m] [0m                 ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:50: not found: value Logging[0m
+[0m[[31merror[0m] [0m      case Some(s) => Logging.getLogger(s, this).debug(message)[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:62: not found: value ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m    val system = ActorSystemRegistry.retrieve("SignalCollect")[0m
+[0m[[31merror[0m] [0m                 ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:64: not found: value Logging[0m
+[0m[[31merror[0m] [0m      case Some(s) => Logging.getLogger(s, this).info(message)[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:76: not found: value ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m    val system = ActorSystemRegistry.retrieve("SignalCollect")[0m
+[0m[[31merror[0m] [0m                 ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:78: not found: value Logging[0m
+[0m[[31merror[0m] [0m      case Some(s) => Logging.getLogger(s, this).warning(message)[0m
+[0m[[31merror[0m] [0m                      ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Edge.scala:22: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.EdgeId[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Edge.scala:34: not found: type EdgeId[0m
+[0m[[31merror[0m] [0m  def id: EdgeId[_][0m
+[0m[[31merror[0m] [0m          ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:88: not found: value EdgeId[0m
+[0m[[31merror[0m] [0m  def id = EdgeId(sourceId, targetId)[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultEdge.scala:116: not found: value SignalMessageWithSourceId[0m
+[0m[[31merror[0m] [0m    graphEditor.sendToWorkerForVertexIdHash(SignalMessageWithSourceId(targetId, sourceId, signal), cachedTargetIdHashCode)[0m
+[0m[[31merror[0m] [0m                                            ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:31: object configuration is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.configuration.ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:32: object configuration is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.configuration.AkkaConfig[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:33: object configuration is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.configuration.ExecutionMode[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:34: object configuration is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.configuration.GraphConfiguration[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:35: object configuration is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.configuration.TerminationReason[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:36: object console is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.console.BreakCondition[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:37: object console is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.console.BreakConditionsAggregator[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:38: object console is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.console.ConsoleServer[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:39: object console is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.console.Execution[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:40: object coordinator is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.coordinator.DefaultCoordinator[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:41: object coordinator is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.coordinator.IsIdle[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:42: object coordinator is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.coordinator.OnIdle[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:43: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.ComplexAggregation[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:44: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.Coordinator[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:45: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.EdgeId[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:46: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.MapperFactory[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:47: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.MessageBusFactory[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:48: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.MessageRecipientRegistry[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:49: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.NodeActor[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:50: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.SchedulerFactory[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:51: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.StorageFactory[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:52: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.WorkerFactory[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:53: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.WorkerStatistics[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:54: object messaging is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.messaging.AkkaProxy[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:55: object messaging is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.messaging.DefaultVertexToWorkerMapper[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:56: object util is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.util.AkkaUtil.getActorRefFromSelection[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:58: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.actor.ActorRef[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:59: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.actor.ActorSystem[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:60: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.actor.PoisonPill[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:61: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.actor.Props[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:62: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.actor.actorRef2Scala[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:63: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.japi.Creator[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:64: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.pattern.ask[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:65: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.util.Timeout[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:66: object worker is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.worker.AkkaWorker[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:67: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.UndeliverableSignalHandlerFactory[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:68: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.EdgeAddedToNonExistentVertexHandlerFactory[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:69: object interfaces is not a member of package com.signalcollect[0m
+[0m[[31merror[0m] [0mimport com.signalcollect.interfaces.ExistingVertexHandlerFactory[0m
+[0m[[31merror[0m] [0m                         ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:76: not found: type WorkerFactory[0m
+[0m[[31merror[0m] [0m  workerFactory: WorkerFactory[Id, Signal],[0m
+[0m[[31merror[0m] [0m                 ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:79: not found: type MessageBusFactory[0m
+[0m[[31merror[0m] [0m  messageBusFactory: MessageBusFactory[Id, Signal],[0m
+[0m[[31merror[0m] [0m                     ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:80: not found: type MapperFactory[0m
+[0m[[31merror[0m] [0m  mapperFactory: MapperFactory[Id],[0m
+[0m[[31merror[0m] [0m                 ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:81: not found: type StorageFactory[0m
+[0m[[31merror[0m] [0m  storageFactory: StorageFactory[Id, Signal],[0m
+[0m[[31merror[0m] [0m                  ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:82: not found: type SchedulerFactory[0m
+[0m[[31merror[0m] [0m  schedulerFactory: SchedulerFactory[Id, Signal],[0m
+[0m[[31merror[0m] [0m                    ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:83: not found: type ExistingVertexHandlerFactory[0m
+[0m[[31merror[0m] [0m  existingVertexHandlerFactory: ExistingVertexHandlerFactory[Id, Signal],[0m
+[0m[[31merror[0m] [0m                                ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:84: not found: type UndeliverableSignalHandlerFactory[0m
+[0m[[31merror[0m] [0m  undeliverableSignalHandlerFactory: UndeliverableSignalHandlerFactory[Id, Signal],[0m
+[0m[[31merror[0m] [0m                                     ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:85: not found: type EdgeAddedToNonExistentVertexHandlerFactory[0m
+[0m[[31merror[0m] [0m  edgeAddedToNonExistentVertexHandlerFactory: EdgeAddedToNonExistentVertexHandlerFactory[Id, Signal],[0m
+[0m[[31merror[0m] [0m                                              ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:91: not found: type AkkaWorker[0m
+[0m[[31merror[0m] [0m  def create: () => AkkaWorker[Id, Signal] = {[0m
+[0m[[31merror[0m] [0m                    ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:122: not found: type Creator[0m
+[0m[[31merror[0m] [0m  extends Creator[DefaultCoordinator[Id, Signal]] {[0m
+[0m[[31merror[0m] [0m          ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:119: not found: type MessageBusFactory[0m
+[0m[[31merror[0m] [0m  messageBusFactory: MessageBusFactory[Id, Signal],[0m
+[0m[[31merror[0m] [0m                     ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:120: not found: type MapperFactory[0m
+[0m[[31merror[0m] [0m  mapperFactory: MapperFactory[Id],[0m
+[0m[[31merror[0m] [0m                 ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:123: not found: type DefaultCoordinator[0m
+[0m[[31merror[0m] [0m  def create: DefaultCoordinator[Id, Signal] = new DefaultCoordinator[Id, Signal]([0m
+[0m[[31merror[0m] [0m              ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:123: not found: type DefaultCoordinator[0m
+[0m[[31merror[0m] [0m  def create: DefaultCoordinator[Id, Signal] = new DefaultCoordinator[Id, Signal]([0m
+[0m[[31merror[0m] [0m                                                   ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:138: not found: type GraphConfiguration[0m
+[0m[[31merror[0m] [0m  val config: GraphConfiguration[Id, Signal]) extends Graph[Id, Signal] {[0m
+[0m[[31merror[0m] [0m              ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:140: not found: value AkkaConfig[0m
+[0m[[31merror[0m] [0m  val akkaConfig = AkkaConfig.get([0m
+[0m[[31merror[0m] [0m                   ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:147: not found: type ActorSystem[0m
+[0m[[31merror[0m] [0m  val system: ActorSystem = {[0m
+[0m[[31merror[0m] [0m              ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:153: not found: value ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m  if (!ActorSystemRegistry.contains(system)) {[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:154: not found: value ActorSystemRegistry[0m
+[0m[[31merror[0m] [0m    ActorSystemRegistry.register(system)[0m
+[0m[[31merror[0m] [0m    ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Graph.scala:24: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.actor.ActorSystem[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/Graph.scala:169: not found: type ActorSystem[0m
+[0m[[31merror[0m] [0m  private[signalcollect] def system: ActorSystem[0m
+[0m[[31merror[0m] [0m                                     ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:161: not found: type ConsoleServer[0m
+[0m[[31merror[0m] [0m      new ConsoleServer[Id, Signal](config)[0m
+[0m[[31merror[0m] [0m          ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/GraphEditor.scala:24: not found: object akka[0m
+[0m[[31merror[0m] [0mimport akka.event.LoggingAdapter[0m
+[0m[[31merror[0m] [0m       ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/GraphEditor.scala:191: not found: type LoggingAdapter[0m
+[0m[[31merror[0m] [0m  def log: LoggingAdapter[0m
+[0m[[31merror[0m] [0m           ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:183: not found: type DefaultVertexToWorkerMapper[0m
+[0m[[31merror[0m] [0m  val mapper = new DefaultVertexToWorkerMapper(numberOfNodes, numberOfWorkers / numberOfNodes)[0m
+[0m[[31merror[0m] [0m                   ^[0m
+[0m[[31merror[0m] [0m/Users/danielhegglin/git/dyndco/src/main/scala/com/signalcollect/DefaultGraph.scala:185: not found: type ActorRef[0m
+[0m[[31merror[0m] [0m  val workerActors: Array[ActorRef] = {[0m
+[0m[[31merror[0m] [0m                          ^[0m
+[0m[[31merror[0m] [0m215 errors found[0m
+[0m[[0mdebug[0m] [0mCompilation failed (CompilerInterface)[0m
+[0m[[31merror[0m] [0m(compile:[31mcompile[0m) Compilation failed[0m
