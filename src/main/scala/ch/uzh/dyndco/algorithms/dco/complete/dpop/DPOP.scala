@@ -11,9 +11,9 @@ object DPOP extends App {
 	
 	// configuration
 	println("configuration");
-	val numberOfLeafNodes : Int = 1000
-	val numberOfMiddleNodes : Int = 500
-	val numberOfTopNodes : Int = 250
+	val numberOfLeafNodes : Int = 4
+	val numberOfMiddleNodes : Int = 2
+	val numberOfTopNodes : Int = 2500
 	val numberOfTimeslots : Int = 24
 
 	// initialize graph
@@ -21,59 +21,63 @@ object DPOP extends App {
 	val graph = GraphBuilder.withConsole(true,8091).build
 	
 	// build nodes
-	var counter : Int = 0
-	var rootNode = new DPOPVertex(counter, null, numberOfTimeslots)
-	var topNodes : MutableList[DPOPVertex] = MutableList()
-	for(id <- (counter + 1) to (numberOfTopNodes)){
-		var currentVertex = new DPOPVertex(id, null, numberOfTimeslots)
-		currentVertex.addParent(rootNode)
-		rootNode.addChild(currentVertex)
-		topNodes += currentVertex
-		counter + 1
-	}
-	var middleNodes : MutableList[DPOPVertex] = MutableList()
-	var topCount = 0
-	for(id <- (counter + 1) to (counter + numberOfMiddleNodes)){
-		var currentVertex = new DPOPVertex(id, null, numberOfTimeslots)
-		for(parentCount <- 0 to 1){
-			currentVertextopNodes.get(topCount + parentCount)
+	var rootNode = new DPOPVertex(0, null, numberOfTimeslots)
+	graph.addVertex(rootNode)
+	
+	// -------------- TOP -------------------
+	for(topId <- 1 to numberOfTopNodes){
+		
+		// create vertex
+		var topIdStr = "t" + topId
+		var topVertex = new DPOPVertex(topIdStr, null, numberOfTimeslots)
+		
+		// parent, child stuff
+		topVertex.addParent(rootNode)
+		rootNode.addChild(topVertex)
+		
+		// add vertex to graph
+		graph.addVertex(topVertex)
+		
+		// --------------- MIDDLE ----------------
+		for(middleId <- 1 to numberOfMiddleNodes){
+		  
+			// create vertex
+			var middleIdStr = "t" + topId + "m" + middleId
+			var middleVertex = new DPOPVertex(middleIdStr, null, numberOfTimeslots)
+		
+			// parent, child stuff
+			middleVertex.addParent(topVertex)
+			topVertex.addChild(middleVertex)
+			
+			// add vertex to graph
+			graph.addVertex(middleVertex)
+			
+			// -------------- LEAF ---------------
+			for(leafId <- 1 to numberOfLeafNodes){
+			  
+			  // create vertex
+			  var leafIdStr = "t" + topId + "m" + middleId + "l" + leafId
+			  var leafVertex = new DPOPVertex(leafIdStr, null, numberOfTimeslots)
+			  
+			  // parent, child stuff
+			  leafVertex.addParent(middleVertex)
+			  middleVertex.addChild(leafVertex)
+			  
+			  // add vertex to graph
+			  graph.addVertex(leafVertex)
+			  
+			  // add edge
+			  graph.addEdge(leafIdStr, new StateForwarderEdge(middleIdStr))
+			}
+			
+			// add edge
+			graph.addEdge(middleIdStr, new StateForwarderEdge(topIdStr))
 		}
-		topCount + 2
-		middleNodes += currentVertex
-		counter + 1
+		
+		// add edge
+		graph.addEdge(topIdStr, new StateForwarderEdge(0))
 	}
-	var leafNodes : MutableList[DPOPVertex] = MutableList()
-	for(id <- (counter + 1) to (counter + numberOfLeafNodes)){
-		leafNodes += new DPOPVertex(id, null, numberOfTimeslots)
-	}
-	
-	// build child-parent relationships & edges
-	
-	
-	
-//	// build vertices
-//	val parent : DPOPVertex = new DPOPVertex(1, new DPOPMessage(0.0,"Util"), numberOfTimeslots)
-//	val child1 : DPOPVertex = new DPOPVertex(2, null, numberOfTimeslots)
-//	val child2 : DPOPVertex = new DPOPVertex(3, null, numberOfTimeslots)
-//
-//	// FIXME make nicer
-//	val children : List[DPOPVertex] = List(child1,child2)
-//	parent.addChildren(children)
-//	child1.addParent(parent)
-//	child2.addParent(parent)
-//	
-//	graph.addVertex(parent)
-//	graph.addVertex(child1)
-//	graph.addVertex(child2)
-//	
-//	// add edges
-//	graph.addEdge(1, new StateForwarderEdge(2))
-//	graph.addEdge(1, new StateForwarderEdge(3))
-//	graph.addEdge(2, new StateForwarderEdge(1))
-//	graph.addEdge(2, new StateForwarderEdge(3))
-//	graph.addEdge(3, new StateForwarderEdge(1))
-//	graph.addEdge(3, new StateForwarderEdge(2))
-	
+
 	// execute
 	println("starting the graph");
 	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
@@ -84,7 +88,7 @@ object DPOP extends App {
 	
 	// show run info
 	println(stats)
-	graph.foreachVertex(println(_))
+	//graph.foreachVertex(println(_))
 	
 	// shutdown graph
 	graph.shutdown
