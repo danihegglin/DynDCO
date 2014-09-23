@@ -291,160 +291,92 @@ this.utility = calculateUtility;
 val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + utility)
 val result = Http(svc OK as.String)
 
- 
-
 if(!finished){
 
- 
-
 // Determine number of signals & values
-
 val numberOfNeighbors : Int = signals.size
-
 val values = collection.mutable.Map[Int, Int]()
 
 // Determine if signal matches the chosen schedule
-
 var matches : Int = 1
-
 for (signal <- signals.iterator) {
-
   var numOfValues : Int = 0
-
   if(values.contains(signal)){
-
     numOfValues = values(signal)
-
   }
 
   values.put(signal, numOfValues + 1)
 
   if(signal == schedule){
-
     println(id + ": value matched")
-
     matches = matches + 1
-
   }
-
 }
 
   // Find value with most matches
-
   var highestRankedValue : Int = 0
-
   var highestNumberOfMatches : Int = 0
 
- 
-
   for(value <- values.keysIterator){
-
     if(values(value) > highestNumberOfMatches){
-
       highestRankedValue = value
-
       highestNumberOfMatches = values(value)
-
     }
-
   }
 
   println(id + ": value:" + highestRankedValue + " / matches: " + highestNumberOfMatches)
 
 // If own value matches with other agent's value(s)
-
 if(state != highestRankedValue){
-
   if(highestNumberOfMatches > 1){
-
 println(id + ": have matches for " + state + "/" + matches)
-
 this.setState(highestRankedValue)
-
 state
-
   }
-
   else {
-
     println(id + ": creating new schedule")
-
     val newSchedule : Int = getRandomSchedule
-
 this.setState(newSchedule)
-
 newSchedule
-
   }
 
 //   // If own value is in a majority with other agent's values -> finish
-
 //   if(matches.toFloat / numberOfNeighbors > 0.5){
-
 // // if(matches >= 6){
-
 //   finished = true
-
 //   state
-
 //   }
 
 //   // Get other schedule if not
-
 //   else {
-
 //     println(id + ": creating new schedule")
-
 //     val newSchedule : Int = getRandomSchedule
-
 // this.setState(newSchedule)
-
 // newSchedule
-
 //   }
 
 }
 
 else{
 
- 
-
   // Converge if level is over threshold
-
 // if(highestNumberOfMatches.toFloat / numberOfNeighbors > 0.5){
-
   if(highestNumberOfMatches < numberOfNeighbors){
 
 //     println(id + ": I converge to " + highestRankedValue + " !")
-
 //     this.setState(highestRankedValue)
-
 //     finished = true
-
 //     highestRankedValue
-
     state
-
   }
-
   else {
-
 finished = true
-
 state
-
   }
-
 }
-
 }
-
 else {
-
   state
-
 }
-
 }
-
 }
