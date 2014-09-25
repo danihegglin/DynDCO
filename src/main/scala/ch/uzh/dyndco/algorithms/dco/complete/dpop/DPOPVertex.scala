@@ -30,11 +30,20 @@ class DPOPVertex (
 //	var pparent : DPOPVertex = null
 //	var pchildren : List[DPOPVertex] = null
 	
+	/**
+	 * Local value and utility
+	 */
 	var localUtility : Double = 0.0
 	var localValue : Double = Random.nextInt(numTimeslots)
 	
+	/**
+	 * Full map of values and their utility at this node
+	 */
 	var utilValueMap : scala.collection.mutable.Map[Int,Double] = scala.collection.mutable.Map()
 	
+	/**
+	 * Message containers
+	 */
 	var utilMessages : MutableList[DPOPMessage] = MutableList()
 	var valueMessages : MutableList[DPOPMessage] = MutableList()
 
@@ -47,16 +56,38 @@ class DPOPVertex (
 	
 	def computeUtils() : Double = {
 	  
-	  // Calculate usefulness of all values // FIXME völlig falsch
-	  for (value <- 1 to numTimeslots){
-		  if(value == localValue){
-		    utilValueMap += (value -> 1.0)
-		    this.localUtility = 1.0
-		  }
-		  else{
-		    utilValueMap += (value -> 0.0)
+	  // Initialize map
+	  if(utilMessages.size == 0){
+	    for (value <- 1 to numTimeslots){
+			  if(value == localValue){
+				  utilValueMap += (value -> 1.0)
+				  this.localUtility = 1.0
+			  }
+			  else{
+				  utilValueMap += (value -> 0.0)
+			  }
 		  }
 	  }
+	  
+	  // Merge map with util messages
+	  else {
+		  // Process all utilmessages
+		  for(utilMessage <- utilMessages){
+			  // Calculate usefulness of all values // FIXME völlig falsch
+			  for (value <- 1 to numTimeslots){
+			  
+				  var localMapUtility = utilValueMap.get(value)
+				  var messageMapUtility = utilMessage.getUtilValueMap.get(value)
+			  
+				  utilValueMap += (value -> localMapUtility + messageMapUtility)
+			  
+				  if(value == localValue){
+					  this.localUtility = localMapUtility + messageMapUtility
+				  }
+			  }
+	  	  }
+	  }
+	  
 	  this.localUtility
 	}
 	
@@ -85,7 +116,7 @@ class DPOPVertex (
 
 	def collect() = {
 	  
-		// Process messages
+		// Message Type
 		for (signal <- signals.iterator) {
 		  var message : DPOPMessage = signal.asInstanceOf[DPOPMessage]  
 		  if(message != null && message.getMessageType != null){
@@ -104,7 +135,7 @@ class DPOPVertex (
 		if(children == null){
 		  System.out.println(id + ": Leaf Node, computeUtils");
 		  this.localUtility = computeUtils()
-		  new DPOPMessage(this.localUtility, "Util")
+		  new DPOPMessage(this.utilValueMap, "Util")
 		}
 		else {
 			// Check if util message from all children have arrived
@@ -120,7 +151,7 @@ class DPOPVertex (
 				else {
 				  System.out.println(id + ": Parent Node, computeUtils")
 				  localUtility = computeUtils()
-				  new DPOPMessage(localUtility, "Util")
+				  new DPOPMessage(this.utilValueMap, "Util")
 				}
 			}
 		}
