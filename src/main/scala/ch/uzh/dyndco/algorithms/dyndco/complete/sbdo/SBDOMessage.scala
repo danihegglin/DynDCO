@@ -4,8 +4,12 @@ import com.signalcollect._
 import scala.util.Random
 import com.signalcollect.configuration.ExecutionMode
 
-object SBDOMessage {
+class SBDOMessage (_messageType : String, _content : Object){
   
+	val messageType = _messageType
+	val content = _content
 	
+	def getMessageType : String = messageType
+	def getContent : Object = content
   
 }

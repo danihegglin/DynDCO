@@ -2,8 +2,9 @@ package ch.uzh.dyndco.algorithms.dyndco.complete.sbdo
 
 import scala.util.Random
 import com.signalcollect.DataGraphVertex
-import dispatch._ Defaults._
+import dispatch._
 import scala.collection.mutable.MutableList
+import scala.collection.mutable.HashMap
 
 class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVertex(id, schedule) {
 	//this(id, numColors, initialColor, isFixedfalse)super(id, initialColor)()
@@ -79,37 +80,37 @@ class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVer
 	
 	// ------------------------ SBDO VARIABLES ----------------------------
 	
-	// ADD OBJECTIVES
-	var addObjectives : List[Objective] = List()
+	// OBJECTIVES
+	var objectives : MutableList[SBDOObjective] = MutableList()
 	
-	// REMOVE OBJECTIVES
-	var removeObjectives : List[Objective] = List()
-	
-	// ADD CONSTRAINTS
-	var addConstraints : List[Constraint] = List()
-	
-	// REMOVE CONSTRAINTS
-	var removeConstraints : List[Constraint] = List()
+	// CONSTRAINTS
+	var constraints : MutableList[SBDOConstraint] = MutableList()
 	
 	// ISGOODS
-	var isGoods : List[Int] = List()
+	var isGoods : MutableList[SBDOGood] = MutableList()
 	
 	// NOGOODS
-	var noGoods : MutableList[Int] = MutableList()
+	var noGoods : MutableList[SBDOGood] = MutableList()
 	
 	// VIEW	
-	var view : Map[Int, Double] = Map[Int,Double]
+	var view : HashMap[Int, Int] = new HashMap[Int,Int]
 	
 	// RECV
-	var recv : Map[SBDOVertex,List[Int]] = Map[SBDOVertex,List[Int]]
+	var recv : HashMap[SBDOVertex,Map[Int,Int]] = new HashMap[SBDOVertex,Map[Int,Int]]
 	
-	// SUPPORT NEIGHBOR
+	// SENT
+	var sent : HashMap[SBDOVertex,Map[Int,Int]] = new HashMap[SBDOVertex,Map[Int,Int]]
+	
+	// NEIGHBOURS
+	var neighbours : MutableList[SBDOVertex] = MutableList()
+	
+	// SUPPORT
 	var support : SBDOVertex = null
 	
 	// ------------------------ SBDO FUNCTIONS ----------------------------
 	
 	/** receive-isgood */
-	def receiveIsGood(sender: SBDOVertex, isGood : Int) = {
+	def receiveIsGood(isGood : Int) = {
 	  
 	  // Check if received isGood Value is consistent with the
 	  // domain of our variable -> if timeslot is not blocked
@@ -122,12 +123,12 @@ class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVer
 	}
 	
 	/** receive-nogood */
-	def receiveNoGood(sender : SBDOVertex, newNoGood : Int) = {
+	def receiveNoGood(newNoGood : SBDOGood) : Boolean = {
 	  
 	  // Check if already inserted in noGoods
 	  for(previousNoGood <- noGoods){
 	    if(newNoGood == previousNoGood){
-	      return
+	      return false
 	    }
 	  }
 	  
@@ -143,15 +144,17 @@ class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVer
 		  }
 	  }
 	  if(consistent == false){
-	    return
+	    return false
 	  }
 	 
 	  // Run all isGoods and invalidate
 	  for(isGood <- isGoods){
-	    if(isGood = newNoGood){
+	    if(isGood == newNoGood){
 	      sendNoGood(sender)
 	    }
 	  }
+	  
+	  return true
 	  
 	}
 	
@@ -191,19 +194,113 @@ class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVer
 	}
 	
 	/** send-isgood*/
-	def sendIsGood(receiver : SBDOVertex) = {}
+	def sendIsGood(receiver : SBDOVertex) = {
+	  
+	  // Check if recv and sent is consistent with current value
+	  // FIXME implement
+	  
+	  // Lock communication channel with receiver
+	  // FIXME implement
+	  
+	  // Check if no unprocessed isgoods from receiver are available
+	  // then L -> min
+	  // I -> isGood (I = |L|)
+	  // Calculate utility U of this isgood
+	  // Set U as local utility -> send this utility
+	  // Remove reference to receiver from I
+	  // send I to receiver
+	  // set sent to I
+	  
+	}
 	
 	/** receive-add-constraint */
-	def receiveAddConstraint(constraint : Constraint) = {}
+	def receiveAddConstraint(constraint : SBDOConstraint) = {
+	  
+	  // Add constraint to list
+	  constraints += constraint
+	  
+	  // Process all agents in Constraint
+	  for(agent <- constraint.getAgents()){
+	    if(agent != this){
+	      neighbours += agent
+	    }
+	  }
+	  
+	  // Process all isGoods
+	  for(agent <- recv){
+	    // FIXME satisfy function needed
+	    if(recv.get(agent) != constraint){
+	      sendNoGood(agent)
+	    }
+	  }
+	  
+	}
 	
 	/** receive-remove-constraint */
-	def receiveRemoveConstraint(constraint : Constraint) = {}
+	def receiveRemoveConstraint(constraint : SBDOConstraint) = {
+	  
+	  // Send remove constraint to all neighbors
+	  // FIXME implement
+	  
+	  // Check if constraint is in constraints
+	  // Remove from constraints
+	  
+	  // Process all agents
+	  // If no constraints reference agent & no objectives reference a
+		// -> remove a from neighbors
+		// -> delete recv(a)
+		// -> delete sent(a)
+	  
+	  // For all nogoods 
+		// if constraint is in nogood.justification
+			// -> remove constraint from justification
+			// if nogood justification is empty
+				// -> remove n from nogoods
+	  
+	  
+	}
 	
 	/** receive-add-objective */
-	def receiveAddObjective(objective : Objective) = {}
+	def receiveAddObjective(objective : SBDOObjective) = {
+	  
+	  // add objective to objectives
+	  objectives += objective
+	  
+	  // process all agents in objective
+			  // if agent is not this
+			  	// add agent to neighbors
+	  
+	  // update utility of view
+	  // FIXME implement
+	  
+	}
 	
 	/** receive-remove-objective */
-	def receiveRemoveObjective(objective : Objective) = {}
+	def receiveRemoveObjective(objective : SBDOObjective) = {
+	  
+	  // if objective is in objectives
+		// -> remove objective
+	  
+	  // process all agents in objective
+	  
+	  	  // If no constraints reference agent & no objectives reference a
+		// -> remove a from neighbors
+		// -> delete recv(a)
+		// -> delete sent(a)
+	  
+	  // update utility of view
+	  // FIXME implement
+	}
+	
+	// --------------------------- HELPER METHODS -------------------------------------------
+	
+	def checkReferences(agents : List[SBDOVertex]) = {
+	  
+	}
+	
+	def updateUtilityOfView() = {
+	  // FIXME implement
+	}
 	
 	// -------------------------- TERMINATION CRITERION -----------------------------------------
 	
@@ -222,25 +319,69 @@ class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVer
 
 	def collect() = {
 	  
-	  // Categorize Signal Types
+	  // local variables
+	  var noGoods : MutableList[SBDOGood] = MutableList()
+	  var isGoods : MutableList[SBDOGood] = MutableList()
+	  var removeConstraints : MutableList[SBDOConstraint] = MutableList()
+	  var addConstraints : MutableList[SBDOConstraint] = MutableList()
+	  var removeObjectives : MutableList[SBDOObjective] = MutableList()
+	  var addObjectives : MutableList[SBDOObjective] = MutableList()
 	  
+	  // Categorize Signal Types
+		for (signal <- signals.iterator) {
+		  var message : SBDOMessage = signal.asInstanceOf[SBDOMessage]  
+		  if(message != null && message.getMessageType != null){
+			  if(message.getMessageType == "NoGood"){
+			    noGoods += message.getContent.asInstanceOf[SBDOGood]
+			  }
+			  else if (message.getMessageType == "isGood"){
+			    isGoods += message.getContent.asInstanceOf[SBDOGood]
+			  }
+			  else if (message.getMessageType == "removeConstraint"){
+			    removeConstraints += message.getContent.asInstanceOf[SBDOConstraint]
+			  }
+			  else if (message.getMessageType == "addConstraint"){
+			    addConstraints += message.getContent.asInstanceOf[SBDOConstraint]
+			  }
+			  else if (message.getMessageType == "removeObjective"){
+			    removeObjectives += message.getContent.asInstanceOf[SBDOObjective]
+			  }
+			  else if (message.getMessageType == "addObjective"){
+			    addObjectives += message.getContent.asInstanceOf[SBDOObjective]
+			  }
+		  }
+		}
 	  
 	  // Process No-Goods (FIFO Order)
+	  for(noGood <- noGoods)
+	    receiveNoGood(noGood)
 	  
 	  // Process Remove-Constraint (FIFO Order)
-	  
+	  for(removeConstraint <- removeConstraints)
+	    receiveRemoveConstraint(removeConstraint)
+	    
 	  // Process Add-Constraint (FIFO Order)
-	  
+	  for(addConstraint <- addConstraints)
+	    receiveAddConstraint(addConstraint)
+	    
 	  // Process Remove-Objectives (FIFO Order)
+	  for(removeObjective <- removeObjectives)
+	    receiveRemoveObjective(removeObjective)
 	  
 	  // Process Add-Objectives (FIFO Order)
+	  for(addObjective <- addObjectives)
+	    receiveAddObjective(addObjective)
 	  
 	  // Process Is-Goods (FIFO Order)
+	  for(isGood <- isGoods)
+	    receiveIsGood(isGood)
 	  
 	  // Select Support
+	  selectSupport()
 	  
-	  // Send Is-Good
-	  
-	  
+	  // Send Is-Good to all neighbors
+	  for(neighbour <- neighbours)
+	    view = sendIsGood(neighbour)
+
 	}
 }
