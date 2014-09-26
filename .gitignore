@@ -30,3 +30,5 @@ web-split-*
 
 *.class
 /bin
+
+.classpath
