@@ -17,7 +17,7 @@ web-BerkStan.txt
 web-BerkStan.txt.gz
 
 web-split-*
-
+.DS_Store
 .cache
 
 .classpath
