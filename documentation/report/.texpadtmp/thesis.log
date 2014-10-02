@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  2 OCT 2014 00:17
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.11.12)  2 OCT 2014 15:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -296,7 +296,7 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 ))
 \Gin@req@height=\dimen166
 \Gin@req@width=\dimen167
-) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+) (/Users/hegglin/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
@@ -422,7 +422,7 @@ LaTeX Font Warning: Font shape `OT1/pfr/bx/n' in size <32> not available
 
 
 
-] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.toc
+] (/Users/hegglin/git/dyndco/documentation/report/.texpadtmp/thesis.toc
 LaTeX Font Info:    Try loading font information for U+rsfs on input line 3.
  (/usr/local/texlive/2013/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
@@ -494,7 +494,7 @@ Chapter 8.
 
 ]
 Chapter 9.
-) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [17] [18
+) (/Users/hegglin/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [17] [18
 
 
 
@@ -509,7 +509,7 @@ LaTeX Warning: Empty `thebibliography' environment or \BreakBibliography
 
 ]
 Appendix A.
-[21]) [22] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lof)
+[21]) [22] (/Users/hegglin/git/dyndco/documentation/report/.texpadtmp/thesis.lof)
 \tf@lof=\write5
 \openout5 = `thesis.lof'.
 
@@ -525,11 +525,11 @@ Appendix A.
 
 
 
-] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lot)
+] (/Users/hegglin/git/dyndco/documentation/report/.texpadtmp/thesis.lot)
 \tf@lot=\write6
 \openout6 = `thesis.lot'.
 
- [25] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+ [25] (/Users/hegglin/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 47.12pt have occurred.
@@ -539,15 +539,15 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 6160 strings out of 493315
- 89740 string characters out of 6137905
+ 6163 strings out of 493315
+ 89808 string characters out of 6137903
  179050 words of memory out of 5000000
- 9446 multiletter control sequences out of 15000+600000
- 15479 words of font info for 60 fonts, out of 8000000 for 9000
+ 9449 multiletter control sequences out of 15000+600000
+ 15777 words of font info for 61 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 46i,10n,47p,289b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 46i,10n,47p,1185b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb>
-Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (35 pages, 141987 bytes).
+Output written on /Users/hegglin/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (35 pages, 144491 bytes).
 PDF statistics:
  150 PDF objects out of 1000 (max. 8388607)
  102 compressed objects within 2 object streams

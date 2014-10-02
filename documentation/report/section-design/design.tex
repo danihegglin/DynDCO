@@ -1,32 +1,40 @@
 \chapter{Design}
-\section{Scheduling Problem Definition}
 \section{Mapping Algorithms to Signal/Collect}
-\section{Change Definition and Framework Design}
-\section{DCOP for Signal/Collect}
+\section{Scheduling Problem Definition and General Mapping}
+\section{Change Module as Framework Extension}
+
+\section{DCOP Algorithms}
+\subsection{Complete - DCOP}
 
 - Distributed, Not Dynamic, Complete -> Show what is wrong with this approach regarding dynamic
 
-\section{SBDO for Signal/Collect}
+\subsection{Dynamic, Complete - RSDPOP}
+
+\subsection{Not local-iterative - SBDO}
 
 - Distributed, Dynamic, Not-Local-Iterative -> Show what is wrong with this approach regarding dynamic
 
-\section{Best-Respone Algorithm for Signal/Collect}
+\subsection{Best-Respone - Maximum Gain Messaging}
 
 - Distributed, Not Dynamic, Not-Local-Iterative -> Show what is wrong with this approach regarding dynamic
 
-\section{Algorithm Design with Max/Sum Approach}
-\subsection{Why Max/Sum for Dynamic Problems}
+\subsection{Best Response - DSA}
+
+\subsection{Local Iterative - MaxSum}
+
 -> Local Iterative
 -> Good fit for dynamic
 -> Better than the above
-\subsection{Max/Sum for Signal/Collect}
+-> Fewer information disclosure
 
-\section{Algorithm Design with Population-Based Approach}
-\subsection{Why Population-Based for Dynamic Problems}
--> Local Iterative, Best-Response?
--> Good fit for dynamic
+\subsection{Best Response, Local Search - Population-Based Iterated Local Search}
+\subsubsection{Why Population-Based for Dynamic Problems}
+-> Local Iterative
+-> Provides multiple solutions to a problem
+-> Good fit for dynamic -> check which solution is best for changed circumstances
+-> Good fit to stop getting stuck in local optima
 -> Better than the above
-\subsection{Population-based for Signal/Collect}
+\subsubsection{Implementation in Signal/Collect}
 
 \section{Testbed}
 \subsection{Dataset}

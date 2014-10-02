@@ -1,0 +1,7 @@
+[0m[[0mdebug[0m] [0mCopy resource mappings: [0m
+[0m[[0mdebug[0m] [0m	(/Users/hegglin/git/dyndco/monitoring_old/conf/application.conf,/Users/hegglin/git/dyndco/monitoring_old/target/scala-2.11/classes/application.conf)[0m
+[0m[[0mdebug[0m] [0m	(/Users/hegglin/git/dyndco/monitoring_old/conf/bots,/Users/hegglin/git/dyndco/monitoring_old/target/scala-2.11/classes/bots)[0m
+[0m[[0mdebug[0m] [0m	(/Users/hegglin/git/dyndco/monitoring_old/conf/play.plugins,/Users/hegglin/git/dyndco/monitoring_old/target/scala-2.11/classes/play.plugins)[0m
+[0m[[0mdebug[0m] [0m	(/Users/hegglin/git/dyndco/monitoring_old/conf/routes,/Users/hegglin/git/dyndco/monitoring_old/target/scala-2.11/classes/routes)[0m
+[0m[[0mdebug[0m] [0m	(/Users/hegglin/git/dyndco/monitoring_old/conf/bots/1.json,/Users/hegglin/git/dyndco/monitoring_old/target/scala-2.11/classes/bots/1.json)[0m
+[0m[[0mdebug[0m] [0m	(/Users/hegglin/git/dyndco/monitoring_old/conf/bots/2.json,/Users/hegglin/git/dyndco/monitoring_old/target/scala-2.11/classes/bots/2.json)[0m
