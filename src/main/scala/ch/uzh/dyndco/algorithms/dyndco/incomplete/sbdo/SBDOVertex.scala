@@ -378,15 +378,17 @@ class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVer
 	    receiveAddObjective(addObjective)
 	  
 	  // Process Is-Goods (FIFO Order)
-	  for(isGood <- isGoods)
-	    receiveIsGood(isGood)
+//	  for(isGood <- isGoods) FIXME
+//	    receiveIsGood(isGood) FIXME
 	  
 	  // Select Support
-	  selectSupport()
+//	  selectSupport() FIXME
 	  
 	  // Send Is-Good to all neighbors
-	  for(neighbour <- neighbours)
-	    view = sendIsGood(neighbour)
+//	  for(neighbour <- neighbours)
+//	    view = sendIsGood(neighbour) //FIXME
+	    
+	    1 // FIXME
 
 	}
 }

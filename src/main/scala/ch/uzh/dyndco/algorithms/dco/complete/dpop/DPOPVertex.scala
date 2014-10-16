@@ -79,10 +79,10 @@ class DPOPVertex (
 				  var localMapUtility = utilValueMap.get(value)
 				  var messageMapUtility = utilMessage.getUtilValueMap.get(value)
 			  
-				  utilValueMap += (value -> localMapUtility + messageMapUtility)
+//				  utilValueMap += (value -> localMapUtility + messageMapUtility) FIXME
 			  
 				  if(value == localValue){
-					  this.localUtility = localMapUtility + messageMapUtility
+//					  this.localUtility = localMapUtility + messageMapUtility FIXME
 				  }
 			  }
 	  	  }
