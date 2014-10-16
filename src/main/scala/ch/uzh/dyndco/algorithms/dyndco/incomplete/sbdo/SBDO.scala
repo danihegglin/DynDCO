@@ -1,9 +1,13 @@
-package ch.uzh.dyndco.algorithms.dyndco.complete.sbdo
+package ch.uzh.dyndco.algorithms.dyndco.incomplete.sbdo
 
 import com.signalcollect._
 import scala.util.Random
 import com.signalcollect.configuration.ExecutionMode
+import ch.uzh.dyndco.algorithms.dyndco.incomplete.sbdo.SBDOVertex
 
+/**
+ * Siehe paper
+ */
 object SBDO extends App {
   
 	// configuration

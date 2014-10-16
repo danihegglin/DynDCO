@@ -7,6 +7,10 @@ import scala.util.Random
 import com.signalcollect.StateForwarderEdge
 import scala.collection.mutable.MutableList
 
+/**
+ * siehe paper
+ */
+
 object DPOP extends App {
 	
 	// configuration

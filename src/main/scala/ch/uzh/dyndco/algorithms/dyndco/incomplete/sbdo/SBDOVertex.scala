@@ -1,10 +1,14 @@
-package ch.uzh.dyndco.algorithms.dyndco.complete.sbdo
+package ch.uzh.dyndco.algorithms.dyndco.incomplete.sbdo
 
 import scala.util.Random
-import com.signalcollect.DataGraphVertex
 import dispatch._
 import scala.collection.mutable.MutableList
 import scala.collection.mutable.HashMap
+import ch.uzh.dyndco.algorithms.dyndco.incomplete.sbdo.SBDOConstraint
+import ch.uzh.dyndco.algorithms.dyndco.incomplete.sbdo.SBDOMessage
+import ch.uzh.dyndco.algorithms.dyndco.incomplete.sbdo.SBDOGood
+import ch.uzh.dyndco.algorithms.dyndco.incomplete.sbdo.SBDOObjective
+import com.signalcollect.DataGraphVertex
 
 class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVertex(id, schedule) {
 	//this(id, numColors, initialColor, isFixedfalse)super(id, initialColor)()
@@ -116,7 +120,7 @@ class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVer
 	  // domain of our variable -> if timeslot is not blocked
 	  for(block <- blocks){
 		  if(blocks == isGood){
-		    sendNoGood(sender)
+//		    sendNoGood(sender) FIXME
 		  }
 	  }
 	  
@@ -150,7 +154,7 @@ class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVer
 	  // Run all isGoods and invalidate
 	  for(isGood <- isGoods){
 	    if(isGood == newNoGood){
-	      sendNoGood(sender)
+//	      sendNoGood(sender) FIXME
 	    }
 	  }
 	  
@@ -219,20 +223,21 @@ class SBDOVertex(id: Any, schedule: Int, numTimeslots: Int) extends DataGraphVer
 	  // Add constraint to list
 	  constraints += constraint
 	  
+	  // FIXME
 	  // Process all agents in Constraint
-	  for(agent <- constraint.getAgents()){
-	    if(agent != this){
-	      neighbours += agent
-	    }
-	  }
+//	  for(agent <- constraint.getAgents()){
+//	    if(agent != this){
+//	      neighbours += agent
+//	    }
+//	  }
 	  
 	  // Process all isGoods
-	  for(agent <- recv){
-	    // FIXME satisfy function needed
-	    if(recv.get(agent) != constraint){
-	      sendNoGood(agent)
-	    }
-	  }
+//	  for(agent <- recv){
+//	    // FIXME satisfy function needed
+//	    if(recv.get(agent) != constraint){
+//	      sendNoGood(agent)
+//	    }
+//	  }
 	  
 	}
 	
