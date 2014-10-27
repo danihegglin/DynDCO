@@ -35,9 +35,6 @@ object Initial extends App {
 	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
 	val stats = graph.execute(execConfig)
 	
-	// insert change & evaluate resilience
-	
-	
 	// show run info
 	println(stats)
 	graph.foreachVertex(println(_))
