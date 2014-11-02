@@ -27,8 +27,11 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.WebSocket;
 import scala.Option;
-
 import com.fasterxml.jackson.databind.JsonNode;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Monitoring extends Controller {
 	
@@ -38,11 +41,35 @@ public class Monitoring extends Controller {
 	private static double globalUtility = 0;
 	private static Map<String,Double> agentUtilities = new HashMap<>();
 //	private static Thread workerThread = new Thread(new UtilityWorker(globalUtility));
+	private static File file;
+	private static FileWriter fw;
+	private static BufferedWriter bw;
+	private static Boolean isPrepared = false;
+	
+	public static void prepare() throws Exception {
+		
+		file = new File("/tmp/util");
+		 
+		// if file doesnt exists, then create it
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		
+		fw = new FileWriter(file.getAbsoluteFile(),true);
+		bw = new BufferedWriter(fw);
+		
+		isPrepared = true;
+	}
 	
 	/**
 	 * Methods
 	 */
 	public static Result updateAgent(String agent) throws Exception {
+		
+		// Initialize Filereader
+//		if(!isPrepared){
+//			prepare();
+//		}
 		
 		Map<String,String> parameters = new HashMap<String,String>();
 		final Set<Map.Entry<String,String[]>> entries = request().queryString().entrySet();
@@ -75,10 +102,23 @@ public class Monitoring extends Controller {
 //		}
 		
 		// Write to log files
-		private static PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
-		writer.println("The first line");
-		writer.println("The second line");
-		writer.close();
+//		private static PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
+//		writer.println("The first line");
+//		writer.println("The second line");
+//		writer.close();
+		
+		try {
+//			bw.write("" + utility);
+//			bw.close(); // FIXME
+			
+			String command = "echo '" + utility + "' >> /tmp/util";
+			Runtime.getRuntime().exec(command);
+ 
+			System.out.println(command);
+ 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		return ok("Update received: " + agent + " | " + utility);
 	}
