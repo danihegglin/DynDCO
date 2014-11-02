@@ -2,10 +2,11 @@ package ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum;
 
 import com.signalcollect.DataGraphVertex
 import ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum.VariableVertex
+import ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum.Constraints
 
 class FunctionVertex (
       id: Any, 
-      initialState: MeetingProposal
+      initialState: Constraints
     ) extends DataGraphVertex(id, initialState) {
   
   	/**
@@ -17,8 +18,11 @@ class FunctionVertex (
 	 * Indicates that every signal this vertex receives is
 	 * an instance of Int. This avoids type-checks/-casts.
 	 */
-	type Signal = MeetingProposal
+	type Signal = Constraints
 	
+	/**
+	 * Score signal function
+	 */
 		override def scoreSignal: Double = {
       
 	  //println(id + ": running scoreSignal: " + lastSignalState + " " + finished)
@@ -33,36 +37,40 @@ class FunctionVertex (
 	// product of all messages!
   def collect() = {
     
-    var blocks = collection.mutable.Map[Int, Int]()
-    var free = collection.mutable.Map[Int, Int]()
-    var proposed = collection.mutable.Map[Int, Int]()
+    // Add signal sender to senders
+        //var senders = Set[VariableVertex]()
+    targetIds.iterator; // Iterates all targetids of the vertex
     
-    var sender = Set[VariableVertex]()
+    // Process constraints
+    var hardConstraints = collection.mutable.Map[Object, Set[Int]]() // Blocked timeslots (vertex, set of constraints)
+    var softConstraints = collection.mutable.Map[Object, Set[Int]]() // Free timeslots (vertex, set of constraints)
+    var preference = collection.mutable.Map[Object, Set[Int]]() // Proposed timeslots (vertex, set of constraints)
     
-    // Process messages
     for (signal <- signals.iterator) {
       
-      // Add signal sender to senders
-      
-      var meetingProposal : MeetingProposal = signal
+      // Process proposal -> create hard, soft and preference builds for every target
+      var constraints : Constraints = signal
       
       // work the blocked slots
-      for(block <- meetingProposal.blocks){
-        
-      }
+//      for(hard <- constraints.hard){
+        hardConstraints + (constraints.sender -> constraints.hard)
+//      }
       
       // work the free slots
-      for(free <- meetingProposal.free){
-        
-      }
+//      for(soft <- constraints.soft){
+        softConstraints + (constraints.sender -> constraints.soft)
+//      }
       
       // work the proposed slot
-      for(proposed <- meetingProposal.proposed){
+      for(preference <- constraints.preference){
         
       }
     }
     
-    // Calculate costs for each meeting assignment for each sender
+    // Calculate costs for each meeting assignment for each sender (his preference build)
+    
+    
+    // Choose minimal costs assignment -> build packet for variable with all assignments
     
     
     
