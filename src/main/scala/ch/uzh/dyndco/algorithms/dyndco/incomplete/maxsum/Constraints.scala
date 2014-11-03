@@ -14,4 +14,9 @@ class Constraints (
     var hard = hard_
     var soft = soft_
     var preference = preference_
+    var builds : Map[Object, Constraints]
+    
+    def addBuilds(builds_ : Map[Object, Constraints]) = {
+      builds = builds_
+    }
 }

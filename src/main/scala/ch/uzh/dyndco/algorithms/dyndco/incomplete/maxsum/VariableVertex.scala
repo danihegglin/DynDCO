@@ -7,7 +7,7 @@ class VariableVertex (
       initialState: MeetingProposal
     ) extends DataGraphVertex(id, initialState) {
   
-    	/**
+   /**
 	 * Finish boolean
 	 */
 	var finished : Boolean = false
@@ -16,7 +16,7 @@ class VariableVertex (
 	 * Indicates that every signal this vertex receives is
 	 * an instance of Int. This avoids type-checks/-casts.
 	 */
-	type Signal = MeetingProposal
+	type Signal = Constraints
 	
 		override def scoreSignal: Double = {
       
@@ -31,13 +31,21 @@ class VariableVertex (
 		// calculate sum of all costs received, choose the one with lowest costs, send to funtionvertex
   def collect() = {
     
-     // Process messages
+     // unpack messages
     for (signal <- signals.iterator) {
-      
-     var meetingProposal : MeetingProposal = signal  
-    
+     var constraints : Constraints = signal  
     }
     
+    // combine all assignments (different meetings) to a complete one
+    // find the assignment with the minimal sum of costs
+    // constraint: no overlapping of meetings
+    // constraint: no overlapping with blocks
+    // question: does this include the preferences of current user?
+    
+    
+    // Adjust own preferences
+    
+    // Send out new preferences
     meetingProposal
   }
   
