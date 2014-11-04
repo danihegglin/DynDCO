@@ -2,8 +2,15 @@ package ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum;
 
 import com.signalcollect._
 import com.signalcollect.configuration.ExecutionMode
+import org.slf4j.LoggerFactory
+import com.typesafe.scalalogging.Logger
 
 object MaxSum extends App {
+  
+   /**
+   * Logger
+   */
+//   val log = Logger(LoggerFactory.getLogger("name"))
 	
   /**
    * Configuration
@@ -28,21 +35,20 @@ object MaxSum extends App {
   
   // vertices
   graph.addVertex(new VariableVertex(1,constraints1,timeslots))
-  graph.addVertex(new VariableVertex(2,constraints2,timeslots))
+//  graph.addVertex(new VariableVertex(2,constraints2,timeslots))
   graph.addVertex(new FunctionVertex(3,null,timeslots))
   println("Build vertices")
   
   // edges
   graph.addEdge(1, new StateForwarderEdge(3))
-  graph.addEdge(2, new StateForwarderEdge(3))
+//  graph.addEdge(2, new StateForwarderEdge(3))
   graph.addEdge(3, new StateForwarderEdge(1))
-  graph.addEdge(3, new StateForwarderEdge(2))
+//  graph.addEdge(3, new StateForwarderEdge(2))
   println("Build edges")
   
   // start
   println("Start graph")
   val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
-//  val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
 //	val stats = graph.execute(execConfig)
 	
 	// show run info

@@ -9,6 +9,11 @@ class VariableVertex (
     ) extends DataGraphVertex(id, initialState) {
   
   /**
+   * Logger
+   */
+
+  
+  /**
    * This variable constraints
    */
   var hardConstraints = initialState.hard
@@ -26,25 +31,28 @@ class VariableVertex (
 	 */
 	type Signal = Constraints
 	
-		override def scoreSignal: Double = {
-      
-	  //println(id + ": running scoreSignal: " + lastSignalState + " " + finished)
-	  
-	  if(this.finished) 
-	    0
-	   else
-	     1
-     }
+//		override def scoreSignal: Double = {
+//      
+//	  //println(id + ": running scoreSignal: " + lastSignalState + " " + finished)
+//	  
+//	  if(this.finished) 
+//	    0
+//	   else
+//	     1
+//    
+//     }
 	
 		// calculate sum of all costs received, choose the one with lowest costs, send to funtionvertex
   def collect() = {
     
+//    log.info("Variable: received signals");
+    
      // unpack assignment costs
-    var allAssignmentCosts = Map[Any, Map[Int,Double]]()
-    for (signal <- signals.iterator) {
-      var constraints : Constraints = signal  
-      allAssignmentCosts + (constraints.sender -> constraints.allCostAssignments)
-    }
+//    var allAssignmentCosts = Map[Any, Map[Int,Double]]()
+//    for (signal <- signals.iterator) {
+//      var constraints : Constraints = signal  
+//      allAssignmentCosts + (constraints.sender -> constraints.allCostAssignments)
+//    }
 //    
 //    // find assignment combination with min costs
 //    var newPreferences = Set[Int]()

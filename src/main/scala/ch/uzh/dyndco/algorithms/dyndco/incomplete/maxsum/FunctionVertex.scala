@@ -1,8 +1,6 @@
 package ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum;
 
 import com.signalcollect.DataGraphVertex
-import ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum.VariableVertex
-import ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum.Constraints
 import collection.mutable.Map
 
 class FunctionVertex (
@@ -32,39 +30,42 @@ class FunctionVertex (
 	/**
 	 * Score signal function
 	 */
-		override def scoreSignal: Double = {
-      
-	  //println(id + ": running scoreSignal: " + lastSignalState + " " + finished)
-	  
-	  if(this.finished) 
-	    0
-	   else
-	     1
-     }
+//		override def scoreSignal: Double = {
+//      
+//	  //println(id + ": running scoreSignal: " + lastSignalState + " " + finished)
+//	  
+//	  if(this.finished) 
+//	    0
+//	   else
+//	     1
+//    
+//     }
 	
 	// react: variable message -> create message using messages from Neighbours except the receiver node
 	// product of all messages!
   def collect() = {
     
-    // Process constraints
-    var hardConstraints = Map[Any, Set[Int]]() // Blocked timeslots (vertex, set of constraints)
-    var softConstraints = Map[Any, Set[Int]]() // Free timeslots (vertex, set of constraints)
-    var preference = Map[Any, Set[Int]]() // Proposed timeslots (vertex, set of constraints)
+    println("Function: received signals");
     
-    // Unpack constraint pack
-    for (signal <- signals.iterator) {
-     
-      var constraints : Constraints = signal
-      
-      // work the blocked slots
-      hardConstraints + (constraints.sender -> constraints.hard)
-      
-      // work the free slots
-      softConstraints + (constraints.sender -> constraints.soft)
-      
-      // work the proposed slot
-      preference + (constraints.sender -> constraints.preference)
-    }
+    // Process constraints
+//    var hardConstraints = Map[Any, Set[Int]]() // Blocked timeslots (vertex, set of constraints)
+//    var softConstraints = Map[Any, Set[Int]]() // Free timeslots (vertex, set of constraints)
+//    var preference = Map[Any, Set[Int]]() // Proposed timeslots (vertex, set of constraints)
+//    
+//    // Unpack constraint pack
+//    for (signal <- signals.iterator) {
+//     
+//      var constraints : Constraints = signal
+//      
+//      // work the blocked slots
+//      hardConstraints + (constraints.sender -> constraints.hard)
+//      
+//      // work the free slots
+//      softConstraints + (constraints.sender -> constraints.soft)
+//      
+//      // work the proposed slot
+//      preference + (constraints.sender -> constraints.preference)
+//    }
     
     // create hard, soft and preference builds for every target with minimal costs
 //    var allAssignmentCosts = Map[Any, Map[Int,Double]]()

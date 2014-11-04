@@ -32,6 +32,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
 
 public class Monitoring extends Controller {
 	
@@ -45,18 +47,21 @@ public class Monitoring extends Controller {
 	private static FileWriter fw;
 	private static BufferedWriter bw;
 	private static Boolean isPrepared = false;
+	private static Date date = new Date();
+	
+	private static PrintWriter writer;
 	
 	public static void prepare() throws Exception {
 		
-		file = new File("/tmp/util");
+		file = new File("experiments/results.txt");
 		 
 		// if file doesnt exists, then create it
 		if (!file.exists()) {
 			file.createNewFile();
 		}
 		
-		fw = new FileWriter(file.getAbsoluteFile(),true);
-		bw = new BufferedWriter(fw);
+		writer = new PrintWriter("experiments/results.txt", "UTF-8");
+		writer.println("timestamp;agent;utility");
 		
 		isPrepared = true;
 	}
@@ -67,9 +72,9 @@ public class Monitoring extends Controller {
 	public static Result updateAgent(String agent) throws Exception {
 		
 		// Initialize Filereader
-//		if(!isPrepared){
-//			prepare();
-//		}
+		if(!isPrepared){
+			prepare();
+		}
 		
 		Map<String,String> parameters = new HashMap<String,String>();
 		final Set<Map.Entry<String,String[]>> entries = request().queryString().entrySet();
@@ -102,23 +107,22 @@ public class Monitoring extends Controller {
 //		}
 		
 		// Write to log files
-//		private static PrintWriter writer = new PrintWriter("the-file-name.txt", "UTF-8");
-//		writer.println("The first line");
-//		writer.println("The second line");
+		writer.println(date.getTime() + ";" + agent + ";" + utility);
 //		writer.close();
 		
-		try {
+		
+//		try {
 //			bw.write("" + utility);
 //			bw.close(); // FIXME
 			
-			String command = "echo '" + utility + "' >> /tmp/util";
-			Runtime.getRuntime().exec(command);
+//			String command = "echo '" + utility + "' >> /tmp/util";
+//			Runtime.getRuntime().exec(command);
  
-			System.out.println(command);
+//			System.out.println(command);
  
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		} catch (IOException e) {
+//		7	e.printStackTrace();
+//		}
 		
 		return ok("Update received: " + agent + " | " + utility);
 	}
