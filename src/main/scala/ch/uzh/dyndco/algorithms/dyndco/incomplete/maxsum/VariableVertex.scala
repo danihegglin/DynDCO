@@ -45,54 +45,56 @@ class VariableVertex (
       var constraints : Constraints = signal  
       allAssignmentCosts + (constraints.sender -> constraints.allCostAssignments)
     }
+//    
+//    // find assignment combination with min costs
+//    var newPreferences = Set[Int]()
+//    for(target <- targetIds.iterator){
+//      
+//      // process all assignment costs of all targets except current target
+//      var assignmentCostsSet = Set[Map[Int,Double]]()
+//      for(currTarget <- allAssignmentCosts.keys){
+//        if(currTarget != target){
+//          assignmentCostsSet + allAssignmentCosts.apply(currTarget)
+//        }
+//      }
+//      
+//      // Find minimal combination for target (FIXME for all meetings!)
+//      var minCost : Double = Double.MaxValue // FIXME: what is this value?
+//      var minAssignment : Int = -1
+//      
+//      for(assignment : Int <- 1 to timeslots){
+//        
+//        var curCost : Double = 0
+//        for(assignmentCosts <- assignmentCostsSet){
+//          curCost += assignmentCosts.apply(assignment)
+//        }
+//            
+//        if(curCost < minCost){
+//          
+//          // Don't allow hard constraint breaches
+//          if(!hardConstraints.contains(assignment)){
+//            
+//            // FIXME: Don't allow assignments where other preferences have been set
+//            newPreferences += assignment
+//            
+//          }
+//          
+////          minCost = curCost
+////          minAssignment = assignment
+//        }
+//      }
+//    }
+//    
+//    // Adjust own preferences & build hard, soft and preferences
+//   var newHardConstraints = hardConstraints // stays the same
+//   var newSoftConstraints = softConstraints // FIXME adjust this
+//    
+//    var constraints = new Constraints(id, newHardConstraints, newSoftConstraints, newPreferences)
+//    
+//    // Send out new preferences
+//    constraints
     
-    // find assignment combination with min costs
-    var newPreferences = Set[Int]()
-    for(target <- targetIds.iterator){
-      
-      // process all assignment costs of all targets except current target
-      var assignmentCostsSet = Set[Map[Int,Double]]()
-      for(currTarget <- allAssignmentCosts.keys){
-        if(currTarget != target){
-          assignmentCostsSet + allAssignmentCosts.apply(currTarget)
-        }
-      }
-      
-      // Find minimal combination for target (FIXME for all meetings!)
-      var minCost : Double = Double.MaxValue // FIXME: what is this value?
-      var minAssignment : Int = -1
-      
-      for(assignment : Int <- 1 to timeslots){
-        
-        var curCost : Double = 0
-        for(assignmentCosts <- assignmentCostsSet){
-          curCost += assignmentCosts.apply(assignment)
-        }
-            
-        if(curCost < minCost){
-          
-          // Don't allow hard constraint breaches
-          if(!hardConstraints.contains(assignment)){
-            
-            // FIXME: Don't allow assignments where other preferences have been set
-            newPreferences += assignment
-            
-          }
-          
-//          minCost = curCost
-//          minAssignment = assignment
-        }
-      }
-    }
-    
-    // Adjust own preferences & build hard, soft and preferences
-   var newHardConstraints = hardConstraints // stays the same
-   var newSoftConstraints = softConstraints // FIXME adjust this
-    
-    var constraints = new Constraints(id, newHardConstraints, newSoftConstraints, newPreferences)
-    
-    // Send out new preferences
-    constraints
+      initialState
   }
   
 }

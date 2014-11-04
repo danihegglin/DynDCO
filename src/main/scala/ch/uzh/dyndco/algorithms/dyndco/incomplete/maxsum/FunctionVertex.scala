@@ -67,80 +67,82 @@ class FunctionVertex (
     }
     
     // create hard, soft and preference builds for every target with minimal costs
-    var allAssignmentCosts = Map[Any, Map[Int,Double]]()
-    for(target <- targetIds.iterator){
-      
-      // build assignment that excludes target
-      var assignedHard = Map[Int,Int]()
-      var assignedSoft = Map[Int,Int]()
-      var assignedPreferences = Map[Int,Int]()
-      
-      // hc
-      for(curTarget : Any <- hardConstraints.keys){
-        if(curTarget != target){
-          // get hard constraints of target
-          for(targetConstraint : Int <- hardConstraints.apply(curTarget)){
-            if(assignedHard.contains(targetConstraint)){
-              assignedHard + (targetConstraint -> 1) // Initialize this timeslot value
-            }
-            else {
-              assignedHard + (targetConstraint -> (assignedHard.apply(targetConstraint) + 1)) // Add up existing value
-            }
-          }
-        }
-      }
-      
-       // sc
-      for(curTarget : Any <- softConstraints.keys){
-        if(curTarget != target){
-          // get hard constraints of target
-          for(targetConstraint : Int <- softConstraints.apply(curTarget)){
-            if(assignedSoft.contains(targetConstraint)){
-              assignedSoft + (targetConstraint -> 1) // Initialize this timeslot value
-            }
-            else {
-              assignedSoft + (targetConstraint -> (assignedSoft.apply(targetConstraint) + 1)) // Add up existing value
-            }
-          }
-        }
-      }
-      
-       // pref
-      for(curTarget : Any <- preference.keys){
-        if(curTarget != target){
-          // get hard constraints of target
-          for(targetConstraint : Int <- preference.apply(curTarget)){
-            if(assignedPreferences.contains(targetConstraint)){
-              assignedPreferences + (targetConstraint -> 1) // Initialize this timeslot value
-            }
-            else {
-              assignedPreferences + (targetConstraint -> (assignedPreferences.apply(targetConstraint) + 1)) // Add up existing value
-            }
-          }
-        }
-      }
-      
-      // calculate all possible value assignments and their costs for this agent
-      var assignmentCosts  = Map[Int, Double]()
-      for(assignment <- 1 to timeslots){
-        
-        var hardCount = assignedHard.apply(assignment)
-        var softCount = assignedSoft.apply(assignment)
-        var prefCount = assignedPreferences.apply(assignment)
-        
-        var curCost = hardCount * HARD_COST + softCount * SOFT_COST + prefCount * PREF_COST
-        assignmentCosts + (assignment -> curCost)
- 
-      }
-      
-      // build constraints object for the assignments
-      allAssignmentCosts + (target -> assignmentCosts) // Target -> Assignment : Cost
-      
-    }
+//    var allAssignmentCosts = Map[Any, Map[Int,Double]]()
+//    for(target <- targetIds.iterator){
+//      
+//      // build assignment that excludes target
+//      var assignedHard = Map[Int,Int]()
+//      var assignedSoft = Map[Int,Int]()
+//      var assignedPreferences = Map[Int,Int]()
+//      
+//      // hc
+//      for(curTarget : Any <- hardConstraints.keys){
+//        if(curTarget != target){
+//          // get hard constraints of target
+//          for(targetConstraint : Int <- hardConstraints.apply(curTarget)){
+//            if(assignedHard.contains(targetConstraint)){
+//              assignedHard + (targetConstraint -> 1) // Initialize this timeslot value
+//            }
+//            else {
+//              assignedHard + (targetConstraint -> (assignedHard.apply(targetConstraint) + 1)) // Add up existing value
+//            }
+//          }
+//        }
+//      }
+//      
+//       // sc
+//      for(curTarget : Any <- softConstraints.keys){
+//        if(curTarget != target){
+//          // get hard constraints of target
+//          for(targetConstraint : Int <- softConstraints.apply(curTarget)){
+//            if(assignedSoft.contains(targetConstraint)){
+//              assignedSoft + (targetConstraint -> 1) // Initialize this timeslot value
+//            }
+//            else {
+//              assignedSoft + (targetConstraint -> (assignedSoft.apply(targetConstraint) + 1)) // Add up existing value
+//            }
+//          }
+//        }
+//      }
+//      
+//       // pref
+//      for(curTarget : Any <- preference.keys){
+//        if(curTarget != target){
+//          // get hard constraints of target
+//          for(targetConstraint : Int <- preference.apply(curTarget)){
+//            if(assignedPreferences.contains(targetConstraint)){
+//              assignedPreferences + (targetConstraint -> 1) // Initialize this timeslot value
+//            }
+//            else {
+//              assignedPreferences + (targetConstraint -> (assignedPreferences.apply(targetConstraint) + 1)) // Add up existing value
+//            }
+//          }
+//        }
+//      }
+//      
+//      // calculate all possible value assignments and their costs for this agent
+//      var assignmentCosts  = Map[Int, Double]()
+//      for(assignment <- 1 to timeslots){
+//        
+//        var hardCount = assignedHard.apply(assignment)
+//        var softCount = assignedSoft.apply(assignment)
+//        var prefCount = assignedPreferences.apply(assignment)
+//        
+//        var curCost = hardCount * HARD_COST + softCount * SOFT_COST + prefCount * PREF_COST
+//        assignmentCosts + (assignment -> curCost)
+// 
+//      }
+//      
+//      // build constraints object for the assignments
+//      allAssignmentCosts + (target -> assignmentCosts) // Target -> Assignment : Cost
+//      
+//    }
+//    
+//    // Return builds in constraints object
+//    var constraints : Constraints = new Constraints(id, null,null,null)
+//    constraints.addCostAssignments(allAssignmentCosts)
+//    constraints
     
-    // Return builds in constraints object
-    var constraints : Constraints = new Constraints(id, null,null,null)
-    constraints.addCostAssignments(allAssignmentCosts)
-    constraints
+    initialState
   }
 }
