@@ -14,7 +14,7 @@ class Constraints (
     var hard = hard_
     var soft = soft_
     var preference = preference_
-    var allCostAssignments : Map[Any, Map[Int, Double]]
+    var allCostAssignments : Map[Any, Map[Int, Double]] = Map[Any, Map[Int, Double]]()
     
     def addCostAssignments(allCostAssignments_ : Map[Any, Map[Int,Double]]) = {
       allCostAssignments = allCostAssignments_

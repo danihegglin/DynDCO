@@ -83,7 +83,6 @@ class VariableVertex (
 //          minAssignment = assignment
         }
       }
-      
     }
     
     // Adjust own preferences & build hard, soft and preferences
@@ -91,7 +90,6 @@ class VariableVertex (
    var newSoftConstraints = softConstraints // FIXME adjust this
     
     var constraints = new Constraints(id, newHardConstraints, newSoftConstraints, newPreferences)
-    
     
     // Send out new preferences
     constraints

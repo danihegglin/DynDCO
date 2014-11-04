@@ -80,7 +80,7 @@ class FunctionVertex (
         if(curTarget != target){
           // get hard constraints of target
           for(targetConstraint : Int <- hardConstraints.apply(curTarget)){
-            if(assignedHard.apply(targetConstraint) == null){
+            if(assignedHard.contains(targetConstraint)){
               assignedHard + (targetConstraint -> 1) // Initialize this timeslot value
             }
             else {
@@ -95,7 +95,7 @@ class FunctionVertex (
         if(curTarget != target){
           // get hard constraints of target
           for(targetConstraint : Int <- softConstraints.apply(curTarget)){
-            if(assignedSoft.apply(targetConstraint) == null){
+            if(assignedSoft.contains(targetConstraint)){
               assignedSoft + (targetConstraint -> 1) // Initialize this timeslot value
             }
             else {
@@ -110,7 +110,7 @@ class FunctionVertex (
         if(curTarget != target){
           // get hard constraints of target
           for(targetConstraint : Int <- preference.apply(curTarget)){
-            if(assignedPreferences.apply(targetConstraint) == null){
+            if(assignedPreferences.contains(targetConstraint)){
               assignedPreferences + (targetConstraint -> 1) // Initialize this timeslot value
             }
             else {
