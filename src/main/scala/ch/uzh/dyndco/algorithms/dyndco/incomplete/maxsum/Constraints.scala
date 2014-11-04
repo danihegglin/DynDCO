@@ -4,19 +4,19 @@ import collection.mutable.Map
 import com.signalcollect.AbstractVertex
 
 class Constraints (
-    sender_ : AbstractVertex[Any, Any],
+    sender_ : Any,
     hard_ : Set[Int], 
     soft_ : Set[Int], 
     preference_ : Set[Int]
     ) {
   
-    var sender = sender_
+    var sender : Any = sender_
     var hard = hard_
     var soft = soft_
     var preference = preference_
-    var builds : Map[Object, Constraints]
+    var allCostAssignments : Map[Any, Map[Int, Double]]
     
-    def addBuilds(builds_ : Map[Object, Constraints]) = {
-      builds = builds_
+    def addCostAssignments(allCostAssignments_ : Map[Any, Map[Int,Double]]) = {
+      allCostAssignments = allCostAssignments_
     }
 }

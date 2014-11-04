@@ -7,7 +7,8 @@ import collection.mutable.Map
 
 class FunctionVertex (
       id: Any, 
-      initialState: Constraints
+      initialState: Constraints,
+      timeslots: Int
     ) extends DataGraphVertex(id, initialState) {
   
   /**
@@ -56,17 +57,17 @@ class FunctionVertex (
       var constraints : Constraints = signal
       
       // work the blocked slots
-        hardConstraints + (constraints.sender.id -> constraints.hard)
+      hardConstraints + (constraints.sender -> constraints.hard)
       
       // work the free slots
-        softConstraints + (constraints.sender.id -> constraints.soft)
+      softConstraints + (constraints.sender -> constraints.soft)
       
       // work the proposed slot
-        preference + (constraints.sender.id -> constraints.preference)
+      preference + (constraints.sender -> constraints.preference)
     }
     
     // create hard, soft and preference builds for every target with minimal costs
-    var targetBuilds = Map[Object, Constraints]()
+    var allAssignmentCosts = Map[Any, Map[Int,Double]]()
     for(target <- targetIds.iterator){
       
       // build assignment that excludes target
@@ -119,35 +120,27 @@ class FunctionVertex (
         }
       }
       
-      // calculate all possible value assignments and choose the one with the smallest cost (1 date now)
-      var minCost : Double = Double.MaxValue // FIXME does this work?
-      var minAssignment : Int = -1
-      for(assignment <- 1 to 24){
+      // calculate all possible value assignments and their costs for this agent
+      var assignmentCosts  = Map[Int, Double]()
+      for(assignment <- 1 to timeslots){
         
         var hardCount = assignedHard.apply(assignment)
         var softCount = assignedSoft.apply(assignment)
         var prefCount = assignedPreferences.apply(assignment)
         
         var curCost = hardCount * HARD_COST + softCount * SOFT_COST + prefCount * PREF_COST
-        
-        if(curCost < minCost){
-          minCost = curCost
-          minAssignment = assignment
-        }
+        assignmentCosts + (assignment -> curCost)
+ 
       }
       
       // build constraints object for the assignments
-      
-      targetBuilds + (target -> new Constraints(target,hardFinal,softFinal,prefFinal))
+      allAssignmentCosts + (target -> assignmentCosts) // Target -> Assignment : Cost
       
     }
     
     // Return builds in constraints object
-    var constraints : Constraints = new Constraints(null,null,null,null)
-    constraints.addBuilds(targetBuilds)
+    var constraints : Constraints = new Constraints(id, null,null,null)
+    constraints.addCostAssignments(allAssignmentCosts)
     constraints
   }
-	
-	// needs a function that calculates the product of all utilities of all variable assignments
-	// this function represents the constraints of one agent
 }
