@@ -1,6 +1,7 @@
 package ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum;
 
 import collection.mutable.Map
+import collection.mutable.Set
 import com.signalcollect.AbstractVertex
 
 class Proposal (

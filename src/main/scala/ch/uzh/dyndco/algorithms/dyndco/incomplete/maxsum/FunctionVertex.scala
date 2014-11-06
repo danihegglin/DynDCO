@@ -2,12 +2,13 @@ package ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum;
 
 import com.signalcollect.DataGraphVertex
 import collection.mutable.Map
+import collection.mutable.Set
 
 class FunctionVertex (
 		id: Any, 
 		initialState: Proposal,
 		timeslots: Int
-		) extends DataGraphVertex(id, initialState) {
+		) extends DynamicVertex(id, initialState) {
 
 	/**
 	 * Config
@@ -17,9 +18,11 @@ class FunctionVertex (
 	final var PREF_COST : Double = -0.5
 
 	/**
-	 * Finish boolean
+	 * Control parameters
 	 */
 	var finished : Boolean = false
+	var finishedCount : Int = 0
+	var lastAssignmentCosts = Map[Any, Map[Int,Double]]()
 
 	/**
 		* Indicates that every signal this vertex receives is
@@ -30,16 +33,16 @@ class FunctionVertex (
 	/**
 		* Score signal function
 		*/
-			//		override def scoreSignal: Double = {
-			//      
-			//	  //println(id + ": running scoreSignal: " + lastSignalState + " " + finished)
-			//	  
-			//	  if(this.finished) 
-			//	    0
-			//	   else
-			//	     1
-			//    
-			//     }
+	override def scoreSignal: Double = {
+			      
+				  //println(id + ": running scoreSignal: " + lastSignalState + " " + finished)
+				  
+				  if(this.finished) 
+				    0
+				   else
+				     1
+			    
+			     }
 
 	// react: variable message -> create message using messages from Neighbours except the receiver node
 	// product of all messages!
@@ -80,7 +83,7 @@ class FunctionVertex (
 			}
 
 	// create hard, soft and preference builds for every target with minimal costs
-	var allAssignmentCosts = Map[Any, Map[Int,Double]]()
+	val allAssignmentCosts = Map[Any, Map[Int,Double]]()
 			for(target <- targetIds.iterator){
 
 				println("Function: processing target -> " + target)
@@ -178,12 +181,28 @@ class FunctionVertex (
 				}
 				
 				// build constraints object for the assignments
-			  allAssignmentCosts + (target -> assignmentCosts) // Target -> Assignment : Cost
+				println("adding assignment costs: " + target + "->" + assignmentCosts.size)
+			  allAssignmentCosts += (target -> assignmentCosts) // Target -> Assignment : Cost
+			  
 				      
+			}
+	
+			// stop criteria
+			if(allAssignmentCosts == lastAssignmentCosts && finishedCount > 1){
+			  finished = true
+			  println("Costs equal")
+			}
+			else {
+			  if(allAssignmentCosts == lastAssignmentCosts) finishedCount+=1
+			  else{
+			    finished = false
+			    lastAssignmentCosts = allAssignmentCosts
+			    println("Cost not equal")
+			  }
 			}
 	    
 	    // Return builds in constraints object
-	    println("Sending message: " + id)
+	    println("Sending message: " + id + " -> " + allAssignmentCosts.size)
 	    var proposal : Proposal = new Proposal(id, null,null,null)
 	    proposal.addCostAssignments(allAssignmentCosts)
 	    proposal
