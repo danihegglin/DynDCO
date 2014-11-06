@@ -1,10 +1,11 @@
 package ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum;
 
 import com.signalcollect.DataGraphVertex
+import collection.mutable.Map
 
 class VariableVertex (
       id: Any, 
-      initialState: Constraints,
+      initialState: Proposal,
       timeslots: Int
     ) extends DataGraphVertex(id, initialState) {
   
@@ -21,15 +22,16 @@ class VariableVertex (
   var preferences = initialState.preference
   
    /**
-	 * Finish boolean
+	 * Control parameters
 	 */
 	var finished : Boolean = false
+	var initialized : Boolean = false
   
   	/**
 	 * Indicates that every signal this vertex receives is
 	 * an instance of Int. This avoids type-checks/-casts.
 	 */
-	type Signal = Constraints
+	type Signal = Proposal
 	
 //		override def scoreSignal: Double = {
 //      
@@ -45,27 +47,47 @@ class VariableVertex (
 		// calculate sum of all costs received, choose the one with lowest costs, send to funtionvertex
   def collect() = {
     
-//    log.info("Variable: received signals");
+    if(initialized){
+    
+    println("Variable: received signals");
     
      // unpack assignment costs
-//    var allAssignmentCosts = Map[Any, Map[Int,Double]]()
-//    for (signal <- signals.iterator) {
-//      var constraints : Constraints = signal  
-//      allAssignmentCosts + (constraints.sender -> constraints.allCostAssignments)
-//    }
-//    
-//    // find assignment combination with min costs
+    var allAssignmentCosts = Map[Any, Map[Any, Map[Int, Double]]]()
+    for (signal <- signals.iterator) {
+      var proposal : Proposal = signal
+      var sender : Any = proposal.sender
+      var costAssignments = proposal.allCostAssignments
+      allAssignmentCosts += (sender -> costAssignments)
+    }
+    println("unpacked assignment costs: " + allAssignmentCosts.size)
+    
+    // 1. all functions: build for all functions
+    // 2. all variables: take all variables except this one
+    // 3. all assignments: take all available assignments and pick the minimal one
+    
+    // Pick specific packs for this variable
+    println("starting to pick correct costs from all functions: " + id)
+    var filteredCostMaps = Map[Any,[Map[Int,Double]]]()
+    for(targetId <- allAssignmentCosts.keys){
+      if(targetId == id){
+        filteredCostMaps += allAssignmentCosts.apply(targetId)
+      }
+    }
+//    var functionCostMap = allAssignmentCosts.apply(id)
+//    println("functionCostMap: " + functionCostMap.size)
+    
+    // find assignment combination with min costs
 //    var newPreferences = Set[Int]()
-//    for(target <- targetIds.iterator){
-//      
-//      // process all assignment costs of all targets except current target
+//    for(function <- targetIds.iterator){
+      
+      // process all assignment costs of all targets except current target
 //      var assignmentCostsSet = Set[Map[Int,Double]]()
-//      for(currTarget <- allAssignmentCosts.keys){
-//        if(currTarget != target){
-//          assignmentCostsSet + allAssignmentCosts.apply(currTarget)
+//      for(currFunction <- functionCostMap.keys){
+//        if(currFunction != function){
+//          assignmentCostsSet + functionCostMap.apply(currFunction) // FIXME fails
 //        }
 //      }
-//      
+      
 //      // Find minimal combination for target (FIXME for all meetings!)
 //      var minCost : Double = Double.MaxValue // FIXME: what is this value?
 //      var minAssignment : Int = -1
@@ -92,7 +114,7 @@ class VariableVertex (
 //        }
 //      }
 //    }
-//    
+    
 //    // Adjust own preferences & build hard, soft and preferences
 //   var newHardConstraints = hardConstraints // stays the same
 //   var newSoftConstraints = softConstraints // FIXME adjust this
@@ -101,8 +123,12 @@ class VariableVertex (
 //    
 //    // Send out new preferences
 //    constraints
-    
       initialState
+    }
+    else {
+      initialized = true
+      initialState
+    }
   }
   
 }

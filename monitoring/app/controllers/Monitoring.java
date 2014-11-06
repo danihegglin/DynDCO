@@ -53,7 +53,7 @@ public class Monitoring extends Controller {
 	
 	public static void prepare() throws Exception {
 		
-		file = new File("experiments/results.txt");
+		file = new File("experiments/results" + date.getTime() + ".txt");
 		 
 		// if file doesnt exists, then create it
 		if (!file.exists()) {
