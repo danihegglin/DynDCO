@@ -3,7 +3,6 @@ package ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum;
 import com.signalcollect._
 import com.signalcollect.configuration.ExecutionMode
 import org.slf4j.LoggerFactory
-import com.typesafe.scalalogging.Logger
 
 object MaxSum extends App {
   

@@ -52,7 +52,7 @@ class VariableVertex (
     println("Variable: received signals");
     
      // unpack assignment costs
-    var allAssignmentCosts = Map[Any, Map[Any, Map[Int, Double]]]()
+    val allAssignmentCosts = Map[Any, Map[Any, Map[Int, Double]]]()
     for (signal <- signals.iterator) {
       var proposal : Proposal = signal
       var sender : Any = proposal.sender
@@ -62,68 +62,55 @@ class VariableVertex (
     println("unpacked assignment costs: " + allAssignmentCosts.size)
     
     // 1. all functions: build for all functions
-    // 2. all variables: take all variables except this one
-    // 3. all assignments: take all available assignments and pick the minimal one
-    
-    // Pick specific packs for this variable
-    println("starting to pick correct costs from all functions: " + id)
-    var filteredCostMaps = Map[Any,[Map[Int,Double]]]()
-    for(targetId <- allAssignmentCosts.keys){
-      if(targetId == id){
-        filteredCostMaps += allAssignmentCosts.apply(targetId)
+    for(function <- allAssignmentCosts.keys){
+      
+      // build set of other functions
+      var assignmentCostsSet = Set[Map[Any,Map[Int,Double]]]() // holds functions, all variables and their costs
+      for(currFunction : Any <- allAssignmentCosts.keys){
+        if(currFunction != function){
+          assignmentCostsSet += allAssignmentCosts.apply(currFunction) // FIXME fails
+        }
       }
-    }
-//    var functionCostMap = allAssignmentCosts.apply(id)
-//    println("functionCostMap: " + functionCostMap.size)
-    
-    // find assignment combination with min costs
-//    var newPreferences = Set[Int]()
-//    for(function <- targetIds.iterator){
       
-      // process all assignment costs of all targets except current target
-//      var assignmentCostsSet = Set[Map[Int,Double]]()
-//      for(currFunction <- functionCostMap.keys){
-//        if(currFunction != function){
-//          assignmentCostsSet + functionCostMap.apply(currFunction) // FIXME fails
-//        }
-//      }
+      // 2. all variables: take all variables except this one
+      // 3. all assignments: take all available assignments and pick the minimal one 
       
-//      // Find minimal combination for target (FIXME for all meetings!)
-//      var minCost : Double = Double.MaxValue // FIXME: what is this value?
-//      var minAssignment : Int = -1
-//      
-//      for(assignment : Int <- 1 to timeslots){
-//        
-//        var curCost : Double = 0
-//        for(assignmentCosts <- assignmentCostsSet){
-//          curCost += assignmentCosts.apply(assignment)
-//        }
-//            
-//        if(curCost < minCost){
-//          
-//          // Don't allow hard constraint breaches
-//          if(!hardConstraints.contains(assignment)){
-//            
-//            // FIXME: Don't allow assignments where other preferences have been set
-//            newPreferences += assignment
-//            
-//          }
-//          
-////          minCost = curCost
-////          minAssignment = assignment
-//        }
-//      }
-//    }
+      // Find minimal combination for target (FIXME for all meetings!)
+      var minCost : Double = Double.MaxValue // FIXME: what is this value?
+      var minAssignment : Int = -1
+      
+      for(assignment : Int <- 1 to timeslots){
+        
+        val curCost : Double = 0
+        
+        // Run every function
+        for(assignmentCosts <- assignmentCostsSet){
+          for(specificAssignment <- assignmentCosts.keys){
+            if(specificAssignment != id){ // if the assignment is not from this variable            
+            var assignmentMap : Map[Int,Double] = assignmentCosts.apply(assignment)
+            curCost + assignmentMap.apply(assignment)
+            }
+          }
+        }
+            
+        if(curCost < minCost){
+          
+          // Don't allow hard constraint breaches
+          if(!hardConstraints.contains(assignment)){
+            
+            // FIXME: Don't allow assignments where other preferences have been set
+            preferences += assignment
+            
+          }
+        }
+      
+      }
+     }
     
-//    // Adjust own preferences & build hard, soft and preferences
+    // Adjust own preferences & build hard, soft and preferences
 //   var newHardConstraints = hardConstraints // stays the same
 //   var newSoftConstraints = softConstraints // FIXME adjust this
-//    
-//    var constraints = new Constraints(id, newHardConstraints, newSoftConstraints, newPreferences)
-//    
-//    // Send out new preferences
-//    constraints
-      initialState
+     new Proposal(id, hardConstraints, softConstraints, preferences)
     }
     else {
       initialized = true
