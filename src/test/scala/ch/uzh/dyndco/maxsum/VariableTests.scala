@@ -8,14 +8,22 @@ import org.scalatest.BeforeAndAfter
 @RunWith(classOf[JUnitRunner])
 class VariableTests extends FunSuite with BeforeAndAfter {
 
-  var test : Int 
+  var test : Int = 0
   
   before {
     test = 1 + 1
   }
   
-  test("Build prefBuild") {
+  test("Build prefBuild"){
     assert(test == 2)
+  }
+  
+  test("Build prefBuild2"){
+	assert(test != 5)
+  }
+  
+  after {
+    
   }
   
 }
