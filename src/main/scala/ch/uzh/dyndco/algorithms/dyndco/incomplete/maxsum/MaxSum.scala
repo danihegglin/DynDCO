@@ -4,6 +4,7 @@ import com.signalcollect._
 import com.signalcollect.configuration.ExecutionMode
 import org.slf4j.LoggerFactory
 import collection.mutable.Set
+import collection.mutable.Map
 
 object MaxSum extends App {
   
@@ -15,7 +16,7 @@ object MaxSum extends App {
   /**
    * Configuration
    */
-  var timeslots : Int = 5
+  var timeslots : Int = 6
   println("Configuration")
   
 	// initialize bipartite graph
@@ -23,17 +24,17 @@ object MaxSum extends App {
   println("Graph initialized")
   
   // constraints FIXME generate automatically
-  var hard1 : Set[Int] = Set(1,2,3)
-  var soft1 : Set[Int] = Set(5)
-  var preference1 : Set[Int] = Set(4)
+  var hard1 : Set[Int] = Set()
+  var soft1 : Set[Int] = Set()
+  var preference1 : Map[Any,Int] = Map(4 -> 4, 5 -> 6)
   var constraints1 = new Proposal(1,hard1,soft1,preference1)
-  var hard2: Set[Int] = Set(1)
-  var soft2: Set[Int] = Set(2,3,4)
-  var preference2 : Set[Int] = Set(5)
+  var hard2: Set[Int] = Set()
+  var soft2: Set[Int] = Set()
+  var preference2 : Map[Any,Int] = Map(4 -> 5, 5 -> 6)
   var constraints2 = new Proposal(2,hard2,soft2,preference2)
   var hard3: Set[Int] = Set()
-  var soft3: Set[Int] = Set(2,3,5)
-  var preference3 : Set[Int] = Set(4)
+  var soft3: Set[Int] = Set()
+  var preference3 : Map[Any,Int] = Map(4 -> 4, 5-> 6)
   var constraints3 = new Proposal(3,hard3,soft3,preference3)
   println("Build constraints")
   
@@ -45,16 +46,23 @@ object MaxSum extends App {
   graph.addVertex(variable2)
   graph.addVertex(variable3)
   graph.addVertex(new FunctionVertex(4,null,timeslots))
+  graph.addVertex(new FunctionVertex(5,null,timeslots))
   println("Build vertices")
   
   // edges FIXME generate automatically
   graph.addEdge(1, new StateForwarderEdge(4))
   graph.addEdge(2, new StateForwarderEdge(4))
   graph.addEdge(3, new StateForwarderEdge(4))
+  graph.addEdge(1, new StateForwarderEdge(5))
+  graph.addEdge(2, new StateForwarderEdge(5))
+  graph.addEdge(3, new StateForwarderEdge(5))
   
   graph.addEdge(4, new StateForwarderEdge(1))
   graph.addEdge(4, new StateForwarderEdge(2))
   graph.addEdge(4, new StateForwarderEdge(3))
+  graph.addEdge(5, new StateForwarderEdge(1))
+  graph.addEdge(5, new StateForwarderEdge(2))
+  graph.addEdge(5, new StateForwarderEdge(3))
   println("Build edges")
   
   // start

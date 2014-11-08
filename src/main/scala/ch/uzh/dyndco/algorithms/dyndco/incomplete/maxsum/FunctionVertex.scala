@@ -44,49 +44,49 @@ class FunctionVertex (
 			    
 			     }
 
-	// react: variable message -> create message using messages from Neighbours except the receiver node
-	// product of all messages!
 	def collect() = {
 
-	println("Function: received signals");
-
-	// Process constraints
-	val hardConstraints = Map[Any, Set[Int]]() // Blocked timeslots (vertex, set of constraints)
+	    // Process constraints
+	    val hardConstraints = Map[Any, Set[Int]]() // Blocked timeslots (vertex, set of constraints)
 			val softConstraints = Map[Any, Set[Int]]() // Free timeslots (vertex, set of constraints)
-			val preference = Map[Any, Set[Int]]() // Proposed timeslots (vertex, set of constraints)
+			val preference = Map[Any, Int]() // Proposed timeslot of any variable (vertex, set of constraints)
 
 			// Unpack constraint pack
 			for (signal <- signals.iterator) {
-
-				println("Function: processing signal");
-
 				var proposal : Proposal = signal
 
 						// sender
 						var sender = proposal.sender
-						println("sender: " + sender)
 
 						// work the blocked slots
 						var h : Set[Int] = proposal.hard
-						println("hard: " + h)
 						hardConstraints += (sender -> h)
 
 						// work the free slots
 						var s : Set[Int] = proposal.soft
-						println("soft: " + s)
+//						println("soft: " + s)
 						softConstraints += (sender -> s)
 
-						// work the proposed slot
-						var p : Set[Int] = proposal.preference
-						println("preference: " + p)
-						preference += (sender -> p)
+						// work the proposed slot, take the necessary one
+						var p : Map[Any,Int] = proposal.preference
+//						println("preference: " + p)
+						for(function <- p.keys){
+						  var assgn = p.apply(function)
+						  if(function == id){
+						    preference += (sender -> assgn)
+						  }
+						  else {
+						    // add to hardConstraints
+						    var hc : Set[Int] = hardConstraints.apply(sender)
+						    hc + assgn
+						    hardConstraints += (sender -> hc)
+						  }
+						}
 			}
 
 	// create hard, soft and preference builds for every target with minimal costs
 	val allAssignmentCosts = Map[Any, Map[Int,Double]]()
 			for(target <- targetIds.iterator){
-
-				println("Function: processing target -> " + target)
 
 				// build assignment that excludes target
 				val assignedHard = Map[Int,Int]()
@@ -96,16 +96,12 @@ class FunctionVertex (
 				// hc
 				for(curTarget : Any <- hardConstraints.keys){
 					if(curTarget != target){
-						println("Function: processing hc (" + curTarget + ")")
 						// get hard constraints of target
 						for(targetConstraint : Int <- hardConstraints.apply(curTarget)){
-							println("Function: hc -- " + targetConstraint)
 							if(assignedHard.contains(targetConstraint)){
-								println("Function: -> already inserted into map")
 								assignedHard += (targetConstraint -> (assignedHard.apply(targetConstraint) + 1)) // Add up existing value
 							}
 							else {
-								println("Function: -> initialize into map")
 								assignedHard += (targetConstraint -> 1) // Initialize this timeslot value
 							}
 						}
@@ -115,43 +111,41 @@ class FunctionVertex (
 				// sc
 				for(curTarget : Any <- softConstraints.keys){
 					if(curTarget != target){
-						println("Function: processing sc (" + curTarget + ")")
 						// get hard constraints of target
 						for(targetConstraint : Int <- softConstraints.apply(curTarget)){
-							println("Function: sc -- " + targetConstraint)
 							if(assignedSoft.contains(targetConstraint)){
-								println("Function: -> already inserted into map")
 								assignedSoft += (targetConstraint -> (assignedSoft.apply(targetConstraint) + 1)) // Add up existing value
 							}
 							else {
-								println("Function: -> initialize into map")
 								assignedSoft += (targetConstraint -> 1) // Initialize this timeslot value
 							}
 						}
 					}
 				}
 
-				// pref
+				// pref -> take function related
 				for(curTarget : Any <- preference.keys){
 					if(curTarget != target){
-						println("Function: processing preference (" + curTarget + ")")
 						// get hard constraints of target
-						for(targetConstraint : Int <- preference.apply(curTarget)){
-							println("Function: pref -- " + targetConstraint)
+//						for(targetConstraint : Int <- preference.apply(curTarget)){
+//							println("Function: pref -- " + targetConstraint)
+					    var targetConstraint = preference.apply(curTarget)
+					  
 							if(assignedPreferences.contains(targetConstraint)){
-								println("Function: -> already inserted into map")
+//								println("Function: -> already inserted into map")
 							  assignedPreferences += (targetConstraint -> (assignedPreferences.apply(targetConstraint) + 1)) // Add up existing value
 							}
 							else {
-								println("Function: -> initialize into map")
+//								println("Function: -> initialize into map")
 								assignedPreferences += (targetConstraint -> 1) // Initialize this timeslot value
 							}
-						}
+//						}
 					}
 				}
 
 				// calculate all possible value assignments and their costs for this agent
-				val assignmentCosts  = Map[Int, Double]()
+				val assignmentCosts = Map[Int, Double]()
+				println("----------------------------")
 				for(assignment <- 1 to timeslots){
 				  
 				  var hardCount = 0
@@ -177,32 +171,33 @@ class FunctionVertex (
 				      " | hardC: " + hardCount + 
 				      " | softC: " + softCount + 
 				      " | prefC: " + prefCount + 
-				      " | allC: " + curCost)
+				      " | allC: " + curCost) 
 				}
 				
+				println("----------------------------")
+				
 				// build constraints object for the assignments
-				println("adding assignment costs: " + target + "->" + assignmentCosts.size)
+//				println("adding assignment costs: " + target + "->" + assignmentCosts.size)
 			  allAssignmentCosts += (target -> assignmentCosts) // Target -> Assignment : Cost
-			  
 				      
 			}
 	
 			// stop criteria
 			if(allAssignmentCosts == lastAssignmentCosts && finishedCount > 1){
 			  finished = true
-			  println("Costs equal")
+//			  println("Costs equal")
 			}
 			else {
 			  if(allAssignmentCosts == lastAssignmentCosts) finishedCount+=1
 			  else{
 			    finished = false
 			    lastAssignmentCosts = allAssignmentCosts
-			    println("Cost not equal")
+//			    println("Cost not equal")
 			  }
 			}
 	    
 	    // Return builds in constraints object
-	    println("Sending message: " + id + " -> " + allAssignmentCosts.size)
+//	    println("Sending message: " + id + " -> " + allAssignmentCosts.size)
 	    var proposal : Proposal = new Proposal(id, null,null,null)
 	    proposal.addCostAssignments(allAssignmentCosts)
 	    proposal
