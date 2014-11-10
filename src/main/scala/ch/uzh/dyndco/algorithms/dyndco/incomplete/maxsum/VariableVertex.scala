@@ -55,56 +55,65 @@ class VariableVertex (
 		println("--------------")
 	}
 	
-	def buildPrefMap(allAssignmentCosts : Map[Any, Map[Any, Map[Int, Double]]]) : Map[Any,Map[Int, Double]] = {
+	def buildPrefMap(allAssignmentCosts : Map[Any, Map[Any, Map[Int, Double]]], timeslots : Int) : Map[Any,Map[Int, Double]] = {
 	  
 	  val prefMap = Map[Any,Map[Int, Double]]() // Keeps track which meeting has which assignment
 		
 	  for(functionVertex <- allAssignmentCosts.keys){
+	    
+	    println("---------------------------------------")
+	    println("running function " + functionVertex)
+	    println("size of full set: " + allAssignmentCosts.size)
 
-					// build set of other functionVertices for the particular functionVertex target
-					var assignmentCostsSet = Set[Map[Any,Map[Int,Double]]]() // holds functions, all variables and their costs
-					for(currFunctionVertex : Any <- allAssignmentCosts.keys){
-						if(currFunctionVertex != functionVertex || allAssignmentCosts.size < 2){ // FIXME question: what if only one function, how should I create a result when excluding this function
-							var variableCosts = allAssignmentCosts.apply(currFunctionVertex)
-							assignmentCostsSet += variableCosts
-						}
-					}
-
-			    // build assignment -> costs for the particular functionVertex target
-			    for(assignment : Int <- 1 to timeslots){
-
-				    var curCost : Double = 0
-				    
-				    // process every assignment costs map
-						for(assignmentCosts <- assignmentCostsSet){
-						  // process every variable
-						  for(currVariableVertexId <- assignmentCosts.keys){
-						    // ignore if the assignment is from this particular VariableVertex
-							  if(currVariableVertexId != id){
-							    // adjust assignment costs if they are set
-								  if(assignmentCosts.contains(assignment)){
-									  var assignmentMap : Map[Int,Double] = assignmentCosts.apply(assignment)
-									  var cost = assignmentMap.apply(assignment)
-										curCost += cost
-									}
-								}
-							}
-						}
-
-				    // Add assignment costs to map for all functionVertices
-			      var allAssignments : Map[Int, Double] = Map[Int, Double]()
-			      if(prefMap.contains(functionVertex)){
-				      allAssignments = prefMap.apply(functionVertex)
-			      }
-						allAssignments += (assignment -> curCost)
-						prefMap += (functionVertex -> allAssignments)
-			   }
+		  // build set of other functionVertices for the particular functionVertex target
+		var assignmentCostsSet = Set[Map[Any,Map[Int,Double]]]() // holds functions, all variables and their costs
+		for(currFunctionVertex <- allAssignmentCosts.keys){
+			if(currFunctionVertex != functionVertex || allAssignmentCosts.size < 2){ // FIXME question: what if only one function, how should I create a result when excluding this function
+				var variableCosts = allAssignmentCosts.apply(currFunctionVertex)
+				assignmentCostsSet += variableCosts
 			}
-			prefMap
+		}
+	    
+	    println("prepared set: " + assignmentCostsSet)
+	    println("size of prepared set: " + assignmentCostsSet.size)
+
+		// build assignment -> costs for the particular functionVertex target
+		var assignmentMap : Map[Int,Double] = Map[Int,Double]()
+		for(assignment : Int <- 1 to timeslots){
+//		  println("running assignment: " + assignment)
+
+			var fullAssignmentCost : Double = 0
+				    
+			// process every assignment costs map
+			for(assignmentCosts <- assignmentCostsSet){
+//			  println("processing set " + assignmentCosts)
+				// process every variable
+				for(currVariableVertexId <- assignmentCosts.keys){
+					// ignore if the assignment is from this particular VariableVertex
+					if(currVariableVertexId != id){
+					  println("running variable " + currVariableVertexId)
+					  var variableAssignments = assignmentCosts.apply(currVariableVertexId)
+					  // adjust assignment costs if they are set in the set
+					  if(variableAssignments.contains(assignment)){
+//						  println("updating costs: " + assignment)
+						  var costs = variableAssignments.apply(assignment)
+						  fullAssignmentCost += costs
+					  }
+					}
+				}
+			}
+			assignmentMap += (assignment -> fullAssignmentCost)
+		}
+		// Add assignment costs to map for all functionVertices
+		prefMap += (functionVertex -> assignmentMap)
+		println("---------------------------------------")
+	  }
+	  prefMap
 	}
 	
 	def buildFinalMap(prefMap : Map[Any,Map[Int, Double]]) : Map[Any, Int] = {
-	  val finalPrefMap = Map[Any, Int]() // Contains best combination of assignments
+		
+	  val tempPrefMap = Map[Any, Set[Int]]() // Contains best combination of assignments
 
 		  // Find optimal assignment
 			for(function <- prefMap.keys){
@@ -122,16 +131,27 @@ class VariableVertex (
 				  }
 				}
 
-			  var minAss : Int = -1
+			  	var minAss : Set[Int] = Set[Int]()
 				var minCosts = Double.MaxValue
 				for(assignment <- proposedAssignments.keys){
 				  if(proposedAssignments.apply(assignment) < minCosts){
-					  minAss = assignment
+					  minAss = Set(assignment)
 					  minCosts = proposedAssignments.apply(assignment)
-					} 
+				  }
+				  else if (proposedAssignments.apply(assignment) == minCosts){
+					  minAss += assignment
+				  }
 				}
-				finalPrefMap += (function -> minAss)
+				tempPrefMap += (function -> minAss)
 			}
+	  		
+	  		// Process priority queue
+	  		println("tempPrefMap: " + tempPrefMap)
+			val finalPrefMap = Map[Any, Int]() // Contains best combination of assignments
+			for(tempPref <- tempPrefMap.keys){
+			  finalPrefMap + (tempPref -> tempPrefMap.apply(tempPref)) // FIXME
+			}
+			
 			finalPrefMap
 	}
 	
@@ -155,7 +175,7 @@ class VariableVertex (
 
 			// prepare preferences map for rebuild
 			// prefMap: function -> assignment -> cost
-			val prefMap = buildPrefMap(allAssignmentCosts)
+			val prefMap = buildPrefMap(allAssignmentCosts, timeslots)
 			println(id + " -> prebuild: " + prefMap)
 			
 			// find best assignments for all requirements
@@ -179,3 +199,10 @@ class VariableVertex (
 	}
 
 }
+
+/**
+ * FIXME Store the last value chosen on equal solutions, so the other value/values are tried in next run
+ */
+/**
+ * FIXME If variable/function only receives one other signal takes local value into consideration
+ */
