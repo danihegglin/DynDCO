@@ -110,7 +110,11 @@ class VariableTests extends FunSuite with BeforeAndAfter {
    * Best assessment: f2 -> 2
    */
   test("Testing result of buildPrefMap"){
-    // 
+    var conclusion1 : Int = result2.get(1).getOrElse(fail)
+    var conclusion2 : Int = result2.get(2).getOrElse(fail)
+    
+    assert(conclusion1 == 2)
+    assert(conclusion2 == 3)
   }
   
   after {

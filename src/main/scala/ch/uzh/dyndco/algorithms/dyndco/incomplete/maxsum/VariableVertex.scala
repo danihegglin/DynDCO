@@ -3,7 +3,8 @@ package ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum;
 import com.signalcollect.DataGraphVertex
 import collection.mutable.Map
 import collection.mutable.Set
-import dispatch._, Defaults._
+import dispatch._,Defaults._
+import scala.collection.SortedMap
 
 class VariableVertex (
 		id: Any, 
@@ -147,10 +148,30 @@ class VariableVertex (
 	  		
 	  		// Process priority queue
 	  		println("tempPrefMap: " + tempPrefMap)
-			val finalPrefMap = Map[Any, Int]() // Contains best combination of assignments
+			// order
+	  		var orderedPrefMap = SortedMap[Int,Map[Any,Set[Int]]]()
 			for(tempPref <- tempPrefMap.keys){
-			  finalPrefMap + (tempPref -> tempPrefMap.apply(tempPref)) // FIXME
+			  var prefSize = tempPrefMap.apply(tempPref).size
+			  var prefs = tempPrefMap.apply(tempPref)
+			  orderedPrefMap += (prefSize -> Map(tempPref -> prefs)) // FIXME
 			}
+	  		println("orderedPrefMap: " + orderedPrefMap)
+	  		val finalPrefMap = Map[Any, Int]() // Contains best combination of assignments
+	  		// FIXME won't work with similar sizes of solutions
+	  		var blocked = Set[Any]()
+	  		for(ordering <- orderedPrefMap.keys){
+	  			println(ordering)
+	  			var orderedMap = orderedPrefMap.apply(ordering)
+	  			for(ordered <- orderedMap.keys){
+		  			var prefs = orderedMap.apply(ordered) // set of preferences
+		  			for(pref <- prefs){
+		  			  if(!blocked.contains(pref)){
+		  				  finalPrefMap += (ordered -> pref)
+		  			  }
+		  			}
+	  			}
+	  		}
+	  		println("finalMap: " + finalPrefMap)
 			
 			finalPrefMap
 	}
