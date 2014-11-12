@@ -45,7 +45,7 @@ public class Monitoring extends Controller {
 //	private static Thread workerThread = new Thread(new UtilityWorker(globalUtility));
 	private static File file;
 	private static FileWriter fw;
-	private static BufferedWriter bw;
+//	private static BufferedWriter bw;
 	private static Boolean isPrepared = false;
 	private static Date date = new Date();
 	
