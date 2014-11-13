@@ -29,59 +29,73 @@ object MaxSum extends App {
 			var random : Random = new Random
 
 			// build function vertices
-			val functionVertices : Map[Int, FunctionVertex] = Map[Int, FunctionVertex]()
+			var functionVertices : Map[Int, FunctionVertex] = Map[Int, FunctionVertex]()
 			for(meeting <- 1 to meetings){
-				functionVertices + (meeting -> new FunctionVertex("f" + meeting, null, timeslots))
+				functionVertices += (meeting -> new FunctionVertex("f" + meeting, null, timeslots))
 			}
 
 			// build variable vertices
-			val variableVertices : Map[VariableVertex, Set[Int]] = Map[VariableVertex, Set[Int]]()
+			var variableVertices : Map[VariableVertex, Set[Int]] = Map[VariableVertex, Set[Int]]()
 			for(agent <- 1 to agents){
+			  
+			  println("agent " + agent)
 
 						var participationsAmount : Int = random.nextInt(meetings)
 								var participations : Set[Int] = Set[Int]()
 								for(partAmount <- 1 to participationsAmount){
+								  println("participates " + partAmount)
 									participations + random.nextInt(meetings) // Not unique!!!
 								}
 
 						// all timeslots
-						var availableTimeslots = List[Int](timeslots)
+						val availableTimeslots = List[Int](1,2,3,4,5)
+//						for(timeslot <- 1 to timeslots){
+//						  availableTimeslots : + timeslot7
+//						}
 
 								// assign preferences
-								var preference : Set[Int] = Set[Int]()
+								var preference : Set[Int] = Set()
 								for(participation <- participations){
+								  println("preference " + participation)
 									var timeslot = random.nextInt(availableTimeslots.size)
-											preference + availableTimeslots.apply(timeslot)
+											preference += availableTimeslots.apply(timeslot)
 											availableTimeslots.drop(timeslot)
 								}
 
 						// assign hard constraints
 						var available = random.nextInt(availableTimeslots.size)
-								var numOfHardConstraints : Int = available / 5 // FIXME
+								var numOfHardConstraints : Int = available / 3 // FIXME
 								var hard: Set[Int] = Set()
 								for(hardConstraint <- 1 to numOfHardConstraints){
+								  println("hardConstraint " + hardConstraint)
 									var timeslot = random.nextInt(availableTimeslots.size)
-											hard + availableTimeslots.apply(timeslot)
+											hard += availableTimeslots.apply(timeslot)
 											availableTimeslots.drop(timeslot)
 								}
 
 						// assign soft constraints to the rest
 						var soft: Set[Int] = Set()
-						for(softConstraint <- availableTimeslots){
-//						soft + availableTimeslots.apply(softConstraint)
-						}
+//						for(softConstraint <- availableTimeslots){
+//						  if(!softConstraint.isNaN()){
+//						    println("softConstraint " + softConstraint)
+//						    soft + availableTimeslots.apply(softConstraint)
+//						  }
+//						}
 
 					  // build constraints
 				   var constraints = new Proposal(agent,hard,soft,preference)
 
-				   variableVertices + (
+				   variableVertices += (
 				       new VariableVertex(agent,constraints,timeslots) -> preference)
 					
 			  }
 
 				// build edges
 			  for(variableVertex <- variableVertices.keys){
+			    println("Adding vertex")
+			    graph.addVertex(variableVertex) // FIXME move
 				   for(target : Int <- variableVertices.apply(variableVertex)){
+				     println("adding edge variable -> function")
 				            graph.addEdge(variableVertex.id, new StateForwarderEdge(target))
 				          }
 				        }
@@ -89,6 +103,7 @@ object MaxSum extends App {
 				          for(variableVertex <- variableVertices.keys){
 				            var participations : Set[Int] = Set[Int]()
 				            if(participations.contains(variableVertex.id.asInstanceOf[Int])){
+				               println("adding edge variable -> function")
 				              graph.addEdge(functionVertex, new StateForwarderEdge(variableVertex.id))
 				            }
 				          }
