@@ -60,7 +60,7 @@ class VariableVertex (
     
     if(initialized){
     
-    println("Variable: received signals");
+//    println("Variable: received signals");
     
      // unpack assignment costs
     val allAssignmentCosts = Map[Any, Map[Any, Map[Int, Double]]]()
@@ -68,10 +68,10 @@ class VariableVertex (
       var proposal : Proposal = signal
       var sender : Any = proposal.sender
       var costAssignments = proposal.allCostAssignments
-      println("ERROR HERE: " + sender + " -> " + costAssignments.size)
+//      println("ERROR HERE: " + sender + " -> " + costAssignments.size)
       allAssignmentCosts += (sender -> costAssignments)
     }
-    println("unpacked assignment costs: " + allAssignmentCosts.size)
+//    println("unpacked assignment costs: " + allAssignmentCosts.size)
     
     // 1. all functions: build for all functions
     var minCost : Double = Double.MaxValue // FIXME: what is this value?
@@ -82,10 +82,10 @@ class VariableVertex (
       // build set of other functions
       var assignmentCostsSet = Set[Map[Any,Map[Int,Double]]]() // holds functions, all variables and their costs
       for(currFunction : Any <- allAssignmentCosts.keys){
-        println("processing function packets: " + currFunction)
+//        println("processing function packets: " + currFunction)
         if(currFunction != function || allAssignmentCosts.size < 2){ // FIXME question: what if only one function, how should I create a result when excluding this function
           var variableCosts = allAssignmentCosts.apply(currFunction)
-          println("function is allowed to be included: " + variableCosts.size)
+//          println("function is allowed to be included: " + variableCosts.size)
           assignmentCostsSet += variableCosts
         }
       }
@@ -96,38 +96,38 @@ class VariableVertex (
       // Find minimal combination for target (FIXME for all meetings!)
       for(assignment : Int <- 1 to timeslots){
         
-        println("testing assignment: " + assignment)
+//        println("testing assignment: " + assignment)
         
         var curCost : Double = 0
         
         // Run every function
         for(assignmentCosts <- assignmentCostsSet){
-          println("going through set: " + assignmentCosts.size)
+//          println("going through set: " + assignmentCosts.size)
           for(specificAssignment <- assignmentCosts.keys){
-            println("testing variable set: " + specificAssignment + "(id=" + id + ")")
+//            println("testing variable set: " + specificAssignment + "(id=" + id + ")")
             if(specificAssignment != id){ // if the assignment is not from this variable 
               if(assignmentCosts.contains(assignment)){
                 var assignmentMap : Map[Int,Double] = assignmentCosts.apply(assignment)
-                println("assignmentMap of variable: " + assignmentMap.size)
+//                println("assignmentMap of variable: " + assignmentMap.size)
                 var cost = assignmentMap.apply(assignment)
-                println("cost: " + cost)
+//                println("cost: " + cost)
                 curCost = curCost + cost
               }
             }
           }
         }
         
-        println("assignment: " + assignment + " -> cost: " + curCost)
+//        println("assignment: " + assignment + " -> cost: " + curCost)
         
         if(curCost < minCost){
           
-          println("considering assignment")
+//          println("considering assignment")
           
           // Don't allow hard constraint breaches
 //          if(!hardConstraints.contains(assignment)){
             
             // FIXME: Don't allow assignments where other preferences have been set
-            println("adding assignment");
+//            println("adding assignment");
             preferences = Set(assignment)
             
             minCost = curCost
@@ -143,10 +143,8 @@ class VariableVertex (
     val result = Http(svc OK as.String)
     
     // Adjust own preferences & build hard, soft and preferences
-//   var newHardConstraints = hardConstraints // stays the same
+//   var newHardConstraints = hardConstraints // FIXME does it stay the same
 //   var newSoftConstraints = softConstraints // FIXME adjust this
-    
-            
     
      new Proposal(id, hardConstraints, softConstraints, preferences)
     }

@@ -48,7 +48,7 @@ class FunctionVertex (
 	// product of all messages!
 	def collect() = {
 
-	println("Function: received signals");
+//	println("Function: received signals");
 
 	// Process constraints
 	val hardConstraints = Map[Any, Set[Int]]() // Blocked timeslots (vertex, set of constraints)
@@ -58,27 +58,27 @@ class FunctionVertex (
 			// Unpack constraint pack
 			for (signal <- signals.iterator) {
 
-				println("Function: processing signal");
+//				println("Function: processing signal");
 
 				var proposal : Proposal = signal
 
 						// sender
 						var sender = proposal.sender
-						println("sender: " + sender)
+//						println("sender: " + sender)
 
 						// work the blocked slots
 						var h : Set[Int] = proposal.hard
-						println("hard: " + h)
+//						println("hard: " + h)
 						hardConstraints += (sender -> h)
 
 						// work the free slots
 						var s : Set[Int] = proposal.soft
-						println("soft: " + s)
+//						println("soft: " + s)
 						softConstraints += (sender -> s)
 
 						// work the proposed slot
 						var p : Set[Int] = proposal.preference
-						println("preference: " + p)
+//						println("preference: " + p)
 						preference += (sender -> p)
 			}
 
@@ -86,7 +86,7 @@ class FunctionVertex (
 	val allAssignmentCosts = Map[Any, Map[Int,Double]]()
 			for(target <- targetIds.iterator){
 
-				println("Function: processing target -> " + target)
+//				println("Function: processing target -> " + target)
 
 				// build assignment that excludes target
 				val assignedHard = Map[Int,Int]()
@@ -96,16 +96,16 @@ class FunctionVertex (
 				// hc
 				for(curTarget : Any <- hardConstraints.keys){
 					if(curTarget != target){
-						println("Function: processing hc (" + curTarget + ")")
+//						println("Function: processing hc (" + curTarget + ")")
 						// get hard constraints of target
 						for(targetConstraint : Int <- hardConstraints.apply(curTarget)){
-							println("Function: hc -- " + targetConstraint)
+//							println("Function: hc -- " + targetConstraint)
 							if(assignedHard.contains(targetConstraint)){
-								println("Function: -> already inserted into map")
+//								println("Function: -> already inserted into map")
 								assignedHard += (targetConstraint -> (assignedHard.apply(targetConstraint) + 1)) // Add up existing value
 							}
 							else {
-								println("Function: -> initialize into map")
+//								println("Function: -> initialize into map")
 								assignedHard += (targetConstraint -> 1) // Initialize this timeslot value
 							}
 						}

@@ -16,9 +16,9 @@ object MaxSum extends App {
 	/**
 	 * Configuration
 	 */
-	var timeslots : Int = 5
-			var agents : Int = 5
-			var meetings : Int = 3
+	var timeslots : Int = 28
+			var agents : Int = 100
+			var meetings : Int = 30
 			var hardConstraintProb : Double = 0.2
 
 			/**
@@ -31,29 +31,43 @@ object MaxSum extends App {
 			// build function vertices
 			var functionVertices : Map[Int, FunctionVertex] = Map[Int, FunctionVertex]()
 			for(meeting <- 1 to meetings){
-				functionVertices += (meeting -> new FunctionVertex("f" + meeting, null, timeslots))
+			  var functVertex = new FunctionVertex("f" + meeting, null, timeslots)
+			  println("function vertex: " + functVertex.id)
+				functionVertices += (meeting -> functVertex)
+				graph.addVertex(functVertex)
 			}
 
 			// build variable vertices
-			var variableVertices : Map[VariableVertex, Set[Int]] = Map[VariableVertex, Set[Int]]()
+			var variableVertices : Set[VariableVertex] = Set[VariableVertex]()
 			for(agent <- 1 to agents){
 			  
-			  println("agent " + agent)
+			  println("----------------" + agent + "-----------------------")
 
-						var participationsAmount : Int = random.nextInt(meetings)
+			      println("building participations")
+						var participationsAmount : Int = random.nextInt(meetings) + 1
+						println("possible participations: " + participationsAmount)
 								var participations : Set[Int] = Set[Int]()
 								for(partAmount <- 1 to participationsAmount){
-								  println("participates " + partAmount)
-									participations + random.nextInt(meetings) // Not unique!!!
+								    var done : Boolean = false
+								    while(done == false){						  
+								      var participation = random.nextInt(meetings) + 1
+								      println("participation: " + participation)
+								      if(!participations.contains(participation)){
+									      participations += participation
+									      done = true
+								      }
+								   }
 								}
 
+			  		println("building available timeslots")
 						// all timeslots
 						val availableTimeslots = List[Int](1,2,3,4,5)
 //						for(timeslot <- 1 to timeslots){
-//						  availableTimeslots : + timeslot7
+//						  availableTimeslots + timeslot
 //						}
 
-								// assign preferences
+						println("preferences")
+						// assign preferences
 								var preference : Set[Int] = Set()
 								for(participation <- participations){
 								  println("preference " + participation)
@@ -62,53 +76,54 @@ object MaxSum extends App {
 											availableTimeslots.drop(timeslot)
 								}
 
+			  	  println("building hard constraints")
 						// assign hard constraints
-						var available = random.nextInt(availableTimeslots.size)
+						var available = random.nextInt(availableTimeslots.size) + 1
 								var numOfHardConstraints : Int = available / 3 // FIXME
 								var hard: Set[Int] = Set()
 								for(hardConstraint <- 1 to numOfHardConstraints){
-								  println("hardConstraint " + hardConstraint)
-									var timeslot = random.nextInt(availableTimeslots.size)
-											hard += availableTimeslots.apply(timeslot)
+									var timeslot = random.nextInt(availableTimeslots.size) + 1
+											hard += availableTimeslots.apply(timeslot -1)
 											availableTimeslots.drop(timeslot)
 								}
 
+			  	  println("building softConstraint")
 						// assign soft constraints to the rest
 						var soft: Set[Int] = Set()
-//						for(softConstraint <- availableTimeslots){
-//						  if(!softConstraint.isNaN()){
-//						    println("softConstraint " + softConstraint)
-//						    soft + availableTimeslots.apply(softConstraint)
-//						  }
-//						}
+						for(softConstraint <- availableTimeslots){
+						  if(!softConstraint.isNaN()){
+						    soft + availableTimeslots.apply(softConstraint -1)
+						  }
+						}
 
+						println("building proposal")
 					  // build constraints
 				   var constraints = new Proposal(agent,hard,soft,preference)
 
-				   variableVertices += (
-				       new VariableVertex(agent,constraints,timeslots) -> preference)
-					
-			  }
-
-				// build edges
-			  for(variableVertex <- variableVertices.keys){
-			    println("Adding vertex")
-			    graph.addVertex(variableVertex) // FIXME move
-				   for(target : Int <- variableVertices.apply(variableVertex)){
+					  println("adding variablevertex")
+					  var varVertex = new VariableVertex(agent,constraints,timeslots)
+						graph.addVertex(varVertex)
+						
+								      println("participations count: " + participations.size)
+						for(target : Int <- participations){
+						  println("-----------------------------------------")
 				     println("adding edge variable -> function")
-				            graph.addEdge(variableVertex.id, new StateForwarderEdge(target))
+				     
+				     var functionId = "f" + target
+				     var stateforwarder = new StateForwarderEdge(functionId);
+						 var variableId = varVertex.id
+						 
+						 println("functionId:" + functionId)
+						 println("variableId:" + variableId)
+						 
+				     graph.addEdge(variableId, stateforwarder)
+				     var functVertex = functionVertices.apply(target)
+				     graph.addEdge(functionId, new StateForwarderEdge(agent))
 				          }
+						
+						variableVertices += varVertex
 				        }
-				        for(functionVertex <- functionVertices.keys){
-				          for(variableVertex <- variableVertices.keys){
-				            var participations : Set[Int] = Set[Int]()
-				            if(participations.contains(variableVertex.id.asInstanceOf[Int])){
-				               println("adding edge variable -> function")
-				              graph.addEdge(functionVertex, new StateForwarderEdge(variableVertex.id))
-				            }
-				          }
-				        }
-				  
+						
 				  // start
 				  println("Start graph")
 				  val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
@@ -118,7 +133,10 @@ object MaxSum extends App {
 					println(stats)
 					graph.foreachVertex(println(_))
 					
-					for(variableVertex <- variableVertices.keys){
+					// show results
+					println("variables: " + variableVertices.size)
+					for(variableVertex <- variableVertices){
+					  println("----------" + variableVertex.id + "---------------")
 					  variableVertex.show()
 					}
 
