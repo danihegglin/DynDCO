@@ -4,6 +4,7 @@ import com.signalcollect._
 import com.signalcollect.configuration.ExecutionMode
 import org.slf4j.LoggerFactory
 import collection.mutable.Set
+import collection.mutable.Map
 import scala.util.Random
 
 object MaxSum extends App {
@@ -68,11 +69,11 @@ object MaxSum extends App {
 
 						println("preferences")
 						// assign preferences
-								var preference : Set[Int] = Set()
+								var preference : Map[Any,Int] = Map[Any,Int]()
 								for(participation <- participations){
 								  println("preference " + participation)
 									var timeslot = random.nextInt(availableTimeslots.size)
-											preference += availableTimeslots.apply(timeslot)
+											preference += (participation -> availableTimeslots.apply(timeslot))
 											availableTimeslots.drop(timeslot)
 								}
 
