@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory
 import collection.mutable.Set
 import collection.mutable.Map
 import scala.util.Random
+import ch.uzh.dyndco.algorithms.dyndco.incomplete.maxsum.Meeting
 
 object MaxSum extends App {
 
@@ -13,25 +14,50 @@ object MaxSum extends App {
 	 * Logger
 	 */
 	//   val log = Logger(LoggerFactory.getLogger("name"))
+  
+  /**
+   * Tools
+   */
+  var random : Random = new Random
 
 	/**
 	 * Configuration
 	 */
 	var timeslots : Int = 28
 	var agents : Int = 3
-	var meetings : Int = 2
+	var meetingsNum : Int = 2
 	var hardConstraintProb : Double = 0.2
 	
 	/**
 	 * Functions
 	 */
 	
-	def buildMeetings() = {
-	  
+	def buildMeetings(meetingsNum : Int) : Array[Meeting] = {
+	  var meetings : Array[Meeting] = Array()
+	  for(meeting <- 1 to meetingsNum){
+	    meetings :+ (new Meeting(meeting))
+	  }
+	  meetings
 	}
 	
-	def buildParticipations() = {
+	def buildParticipations() : Set[Int] = {
 	  
+	   println("building participations")
+	   var participationsAmount : Int = random.nextInt(meetingsNum) + 1
+	   println("possible participations: " + participationsAmount)
+	   var participations : Set[Int] = Set[Int]()
+	   for(partAmount <- 1 to participationsAmount){
+		   var done : Boolean = false
+				   while(done == false){						  
+					   var participation = random.nextInt(meetingsNum) + 1
+							   println("participation: " + participation)
+							   if(!participations.contains(participation)){
+								   participations += participation
+										   done = true
+							   }
+				   }
+	   }
+	  participations
 	}
 	
 	def buildTimeslots() = {
@@ -54,45 +80,20 @@ object MaxSum extends App {
 	  
 	}
 
-			/**
-			 * Produce the graph
-			 */
-			val graph = GraphBuilder.withConsole(true,8091).build
 
-			var random : Random = new Random
-
-			// build function vertices
-//			var functionVertices : Map[Int, FunctionVertex] = Map[Int, FunctionVertex]()
-//			for(agent <- 1 to agents){
-//			  var functVertex = new FunctionVertex("f" + agent, null, timeslots)
-//			  println("function vertex: " + functVertex.id)
-//				functionVertices += (agent -> functVertex)
-//				graph.addVertex(functVertex)
-//			}
+       println("=================== Preparing Meetings ===================")
+			 var meetings : Array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 [Meeting] = buildMeetings(meetingsNum)
+			
+			 println("=================== Preparing Agents ===================")
 
 			// build variable vertices
 			var variableVertices : Set[VariableVertex] = Set[VariableVertex]()
 			for(agent <- 1 to agents){
 			  
-			  println("----------------" + agent + "-----------------------")
+			  println("++++++++++++++++++++++++ " + agent + " ++++++++++++++++++++++++")
 			  
 			  println("------------------- Meeting Participations -------------")
-
-			      println("building participations")
-						var participationsAmount : Int = random.nextInt(meetings) + 1
-						println("possible participations: " + participationsAmount)
-								var participations : Set[Int] = Set[Int]()
-								for(partAmount <- 1 to participationsAmount){
-								    var done : Boolean = false
-								    while(done == false){						  
-								      var participation = random.nextInt(meetings) + 1
-								      println("participation: " + participation)
-								      if(!participations.contains(participation)){
-									      participations += participation
-									      done = true
-								      }
-								   }
-								}
+        var participations : Set[Int] = buildParticipations()
 			  
 			  println("------------------- Constraints -------------")
 
@@ -158,12 +159,18 @@ object MaxSum extends App {
 						 println("variableId:" + variableId)
 						 
 				     graph.addEdge(variableId, stateforwarder)
-				     var functVertex = functionVertices.apply(target)
+//				     var functVertex = functionVertices.apply(target)
 				     graph.addEdge(functionId, new StateForwarderEdge(agent))
 				          }
 						
 						variableVertices += varVertex
 				        }
+       
+       
+       			/**
+			 * Produce the graph
+			 */
+			val graph = GraphBuilder.withConsole(true,8091).build
 						
 				  // start
 				  println("Start graph")
