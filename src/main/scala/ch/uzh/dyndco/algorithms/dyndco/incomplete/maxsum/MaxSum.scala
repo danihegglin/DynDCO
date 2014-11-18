@@ -18,9 +18,41 @@ object MaxSum extends App {
 	 * Configuration
 	 */
 	var timeslots : Int = 28
-			var agents : Int = 100
-			var meetings : Int = 30
-			var hardConstraintProb : Double = 0.2
+	var agents : Int = 3
+	var meetings : Int = 2
+	var hardConstraintProb : Double = 0.2
+	
+	/**
+	 * Functions
+	 */
+	
+	def buildMeetings() = {
+	  
+	}
+	
+	def buildParticipations() = {
+	  
+	}
+	
+	def buildTimeslots() = {
+	  
+	}
+	
+	def buildPreferences() = {
+	  
+	}
+	
+	def buildHardConstraints() = {
+	  
+	}
+	
+	def buildSoftConstraints() = {
+	  
+	}
+	
+	def buildEdges() = {
+	  
+	}
 
 			/**
 			 * Produce the graph
@@ -30,19 +62,21 @@ object MaxSum extends App {
 			var random : Random = new Random
 
 			// build function vertices
-			var functionVertices : Map[Int, FunctionVertex] = Map[Int, FunctionVertex]()
-			for(meeting <- 1 to meetings){
-			  var functVertex = new FunctionVertex("f" + meeting, null, timeslots)
-			  println("function vertex: " + functVertex.id)
-				functionVertices += (meeting -> functVertex)
-				graph.addVertex(functVertex)
-			}
+//			var functionVertices : Map[Int, FunctionVertex] = Map[Int, FunctionVertex]()
+//			for(agent <- 1 to agents){
+//			  var functVertex = new FunctionVertex("f" + agent, null, timeslots)
+//			  println("function vertex: " + functVertex.id)
+//				functionVertices += (agent -> functVertex)
+//				graph.addVertex(functVertex)
+//			}
 
 			// build variable vertices
 			var variableVertices : Set[VariableVertex] = Set[VariableVertex]()
 			for(agent <- 1 to agents){
 			  
 			  println("----------------" + agent + "-----------------------")
+			  
+			  println("------------------- Meeting Participations -------------")
 
 			      println("building participations")
 						var participationsAmount : Int = random.nextInt(meetings) + 1
@@ -59,6 +93,8 @@ object MaxSum extends App {
 								      }
 								   }
 								}
+			  
+			  println("------------------- Constraints -------------")
 
 			  		println("building available timeslots")
 						// all timeslots
@@ -100,15 +136,19 @@ object MaxSum extends App {
 						println("building proposal")
 					  // build constraints
 				   var constraints = new Proposal(agent,hard,soft,preference)
+						
+						println("------------------- Building Graph -------------")
 
 					  println("adding variablevertex")
 					  var varVertex = new VariableVertex(agent,constraints,timeslots)
 						graph.addVertex(varVertex)
 						
-								      println("participations count: " + participations.size)
+						// process participations
+						println("participations count: " + participations.size)
 						for(target : Int <- participations){
+						   
 						  println("-----------------------------------------")
-				     println("adding edge variable -> function")
+				       println("adding edge variable -> function")
 				     
 				     var functionId = "f" + target
 				     var stateforwarder = new StateForwarderEdge(functionId);
