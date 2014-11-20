@@ -60,135 +60,163 @@ object MaxSum extends App {
 	  participations
 	}
 	
-	def buildTimeslots() = {
+	def buildTimeslots() : List[Int] = {					
 	  
+						val availableTimeslots = List[Int](1,2,3,4,5) // FIXME
+//						for(timeslot <- 1 to timeslots){
+//						  availableTimeslots + timeslot
+//						}	
+						availableTimeslots
 	}
 	
-	def buildPreferences() = {
-	  
+	def buildPreferences(participations : Set[Int], availableTimeslots : List[Int]) : Map[Any,Int] = {
+	  var preference : Map[Any,Int] = Map[Any,Int]()
+		for(participation <- participations){
+		  println("preference " + participation)
+			var timeslot = random.nextInt(availableTimeslots.size)
+			preference += (participation -> availableTimeslots.apply(timeslot))
+			availableTimeslots.drop(timeslot)
+		}
+	  preference
 	}
 	
-	def buildHardConstraints() = {
-	  
+	def buildHardConstraints(availableTimeslots : List[Int]) : Set[Int] = {
+			var available = random.nextInt(availableTimeslots.size) + 1
+			var numOfHardConstraints : Int = available / 3 // FIXME
+			var hard: Set[Int] = Set()
+			for(hardConstraint <- 1 to numOfHardConstraints){
+				var timeslot = random.nextInt(availableTimeslots.size) + 1
+				hard += availableTimeslots.apply(timeslot -1)
+				availableTimeslots.drop(timeslot)
+			}
+			hard
 	}
 	
-	def buildSoftConstraints() = {
-	  
+	def buildSoftConstraints(availableTimeslots : List[Int]) : Set[Int] = {
+			var soft: Set[Int] = Set()
+			for(softConstraint <- availableTimeslots){
+			  if(!softConstraint.isNaN()){
+				  soft + availableTimeslots.apply(softConstraint -1)
+				}
+			}
+			soft
 	}
 	
-	def buildEdges() = {
-	  
+	def addParticipationsToMeetings(variableVertex : VariableVertex, participations : Set[Int]){
+	  for(participation <- participations){
+	    var meeting : Meeting = meetings(participation)
+	    meeting.addParticipant(variableVertex)
+	  }
 	}
 
-
+	     /**
+	      * Build meetings
+	      */
        println("=================== Preparing Meetings ===================")
-			 var meetings : Array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 [Meeting] = buildMeetings(meetingsNum)
+			 var meetings : Array[Meeting] = buildMeetings(meetingsNum)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               [Meeting] = buildMeetings(meetingsNum)
 			
 			 println("=================== Preparing Agents ===================")
 
-			// build variable vertices
-			var variableVertices : Set[VariableVertex] = Set[VariableVertex]()
+			/**
+			 * Build agents and their participations, constraints
+			 */
+			val allParticipations : Map[VariableVertex, Set[Int]] = Map[VariableVertex, Set[Int]]() // vertex to participations
 			for(agent <- 1 to agents){
 			  
 			  println("++++++++++++++++++++++++ " + agent + " ++++++++++++++++++++++++")
 			  
+			  // Build participations
 			  println("------------------- Meeting Participations -------------")
         var participations : Set[Int] = buildParticipations()
 			  
+        // Build constraints
 			  println("------------------- Constraints -------------")
 
-			  		println("building available timeslots")
-						// all timeslots
-						val availableTimeslots = List[Int](1,2,3,4,5)
-//						for(timeslot <- 1 to timeslots){
-//						  availableTimeslots + timeslot
-//						}
+			  // timeslots
+			  println("building available timeslots")
+			  val availableTimeslots : List[Int] = buildTimeslots();
 
-						println("preferences")
-						// assign preferences
-								var preference : Map[Any,Int] = Map[Any,Int]()
-								for(participation <- participations){
-								  println("preference " + participation)
-									var timeslot = random.nextInt(availableTimeslots.size)
-											preference += (participation -> availableTimeslots.apply(timeslot))
-											availableTimeslots.drop(timeslot)
-								}
+			  // preferences
+				println("preferences")
+				var preference : Map[Any,Int] = buildPreferences(participations,availableTimeslots)
 
-			  	  println("building hard constraints")
-						// assign hard constraints
-						var available = random.nextInt(availableTimeslots.size) + 1
-								var numOfHardConstraints : Int = available / 3 // FIXME
-								var hard: Set[Int] = Set()
-								for(hardConstraint <- 1 to numOfHardConstraints){
-									var timeslot = random.nextInt(availableTimeslots.size) + 1
-											hard += availableTimeslots.apply(timeslot -1)
-											availableTimeslots.drop(timeslot)
-								}
+				// hard constraints
+			  println("building hard constraints")
+			  var hard : Set[Int] = buildHardConstraints(availableTimeslots)
 
-			  	  println("building softConstraint")
-						// assign soft constraints to the rest
-						var soft: Set[Int] = Set()
-						for(softConstraint <- availableTimeslots){
-						  if(!softConstraint.isNaN()){
-						    soft + availableTimeslots.apply(softConstraint -1)
-						  }
-						}
+			  // soft constraints
+			  println("building softConstraint")
+				var soft : Set[Int] = buildSoftConstraints(availableTimeslots)	
 
-						println("building proposal")
-					  // build constraints
-				   var constraints = new Proposal(agent,hard,soft,preference)
+				// proposal
+				println("building proposal")
+				var constraints = new Proposal(agent,hard,soft,preference)
+
+				// vertex
+			  println("creating variablevertex")
+				var varVertex = new VariableVertex(agent,constraints,timeslots)
+				graph.addVertex(varVertex)
+				
+				// add participation to meeting objects
+				addParticipationsToMeetings(varVertex, participations)
+				
+				// add to participations collection
+				allParticipations += (varVertex -> participations)
+			}
 						
-						println("------------------- Building Graph -------------")
-
-					  println("adding variablevertex")
-					  var varVertex = new VariableVertex(agent,constraints,timeslots)
-						graph.addVertex(varVertex)
-						
-						// process participations
-						println("participations count: " + participations.size)
-						for(target : Int <- participations){
-						   
-						  println("-----------------------------------------")
-				       println("adding edge variable -> function")
+		  /**
+			 *  process participations
+			 */
+       
+      // Establish FunctionVertex for every participation and every participant and build edges
+			for(variableVertex : VariableVertex <- allParticipations.keys){
+			   var meeting : Meeting = allParticipations.get(variableVertex)
+			   var participants : Int = meeting.participantsCount - 1 
+			   
+			   var functions : Set[FunctionVertex] = Set()
+			   for(function <- 1 to participants){
+			     var variableId : Any = variableVertex.id;
+			     var functionId : Any = "v" + variableVertex.id + "f" + function
+			     var functionVertex : FunctionVertex = new FunctionVertex(functionID)
+			     functions + (functionVertex);
+			     graph.addEdge(variableId, new StateForwarderEdge(functionId))
+			     graph.addEdge(functionId, new StateForwarderEdge(functionId))
+			   }
+			   
+			   meeting.addParticipantFunctions(variableVertex, functions)
+			} 
+			
+			// Find function vertices which are aimed at oneself, build edges
+			for(variableVertex : VariableVertex <- allParticipations.keys){
+			   var meeting : Meeting = allParticipations.apply(variableVertex)
+			   var targetFunctions : Set[FunctionVertex] = meeting.getOtherFunctions(variableVertex)
+			   for(targetFunction <- targetFunctions){
+			     graph.addEdge(variableVertex.id, new StateForwarderEdge(targetFunction.id))
+			     graph.addEdge(targetFunction.id, new StateForwarderEdge(variableVertex.id))
+			   }
+			} 
 				     
-				     var functionId = "f" + target
-				     var stateforwarder = new StateForwarderEdge(functionId);
-						 var variableId = varVertex.id
-						 
-						 println("functionId:" + functionId)
-						 println("variableId:" + variableId)
-						 
-				     graph.addEdge(variableId, stateforwarder)
-//				     var functVertex = functionVertices.apply(target)
-				     graph.addEdge(functionId, new StateForwarderEdge(agent))
-				          }
-						
-						variableVertices += varVertex
-				        }
-       
-       
-       			/**
+      /**
 			 * Produce the graph
 			 */
 			val graph = GraphBuilder.withConsole(true,8091).build
 						
-				  // start
-				  println("Start graph")
-				  val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
-				  val stats = graph.execute(execConfig)
+			// start
+			println("Start graph")
+			val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
+			val stats = graph.execute(execConfig)
 					
-					// show run info
-					println(stats)
-					graph.foreachVertex(println(_))
+			// show run info
+			println(stats)
+			graph.foreachVertex(println(_))
 					
-					// show results
-					println("variables: " + variableVertices.size)
-					for(variableVertex <- variableVertices){
-					  println("----------" + variableVertex.id + "---------------")
-					  variableVertex.show()
-					}
+			// show results
+			for(variableVertex <- allParticipations.keys){
+			  println("----------" + variableVertex.id + "---------------")
+				variableVertex.show()
+			}
 
-				 // shutdown graph
-				 graph.shutdown
+			// shutdown graph
+			graph.shutdown
 
 }
