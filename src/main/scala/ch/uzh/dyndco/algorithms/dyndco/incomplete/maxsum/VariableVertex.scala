@@ -176,107 +176,6 @@ class VariableVertex (
 			finalPrefMap
 	}
 	
-//<<<<<<< HEAD
-//		// calculate sum of all costs received, choose the one with lowest costs, send to funtionvertex
-//  def collect() = {
-//    
-//    if(initialized){
-//    
-////    println("Variable: received signals");
-//    
-//     // unpack assignment costs
-//    val allAssignmentCosts = Map[Any, Map[Any, Map[Int, Double]]]()
-//    for (signal <- signals.iterator) {
-//      var proposal : Proposal = signal
-//      var sender : Any = proposal.sender
-//      var costAssignments = proposal.allCostAssignments
-////      println("ERROR HERE: " + sender + " -> " + costAssignments.size)
-//      allAssignmentCosts += (sender -> costAssignments)
-//    }
-////    println("unpacked assignment costs: " + allAssignmentCosts.size)
-//    
-//    // 1. all functions: build for all functions
-//    var minCost : Double = Double.MaxValue // FIXME: what is this value?
-//    var minAssignment : Int = -1
-//    
-//    for(function <- allAssignmentCosts.keys){
-//      
-//      // build set of other functions
-//      var assignmentCostsSet = Set[Map[Any,Map[Int,Double]]]() // holds functions, all variables and their costs
-//      for(currFunction : Any <- allAssignmentCosts.keys){
-////        println("processing function packets: " + currFunction)
-//        if(currFunction != function || allAssignmentCosts.size < 2){ // FIXME question: what if only one function, how should I create a result when excluding this function
-//          var variableCosts = allAssignmentCosts.apply(currFunction)
-////          println("function is allowed to be included: " + variableCosts.size)
-//          assignmentCostsSet += variableCosts
-//        }
-//      }
-//      
-//      // 2. all variables: take all variables except this one
-//      // 3. all assignments: take all available assignments and pick the minimal one 
-//      
-//      // Find minimal combination for target (FIXME for all meetings!)
-//      for(assignment : Int <- 1 to timeslots){
-//        
-////        println("testing assignment: " + assignment)
-//        
-//        var curCost : Double = 0
-//        
-//        // Run every function
-//        for(assignmentCosts <- assignmentCostsSet){
-////          println("going through set: " + assignmentCosts.size)
-//          for(specificAssignment <- assignmentCosts.keys){
-////            println("testing variable set: " + specificAssignment + "(id=" + id + ")")
-//            if(specificAssignment != id){ // if the assignment is not from this variable 
-//              if(assignmentCosts.contains(assignment)){
-//                var assignmentMap : Map[Int,Double] = assignmentCosts.apply(assignment)
-////                println("assignmentMap of variable: " + assignmentMap.size)
-//                var cost = assignmentMap.apply(assignment)
-////                println("cost: " + cost)
-//                curCost = curCost + cost
-//              }
-//            }
-//          }
-//        }
-//        
-////        println("assignment: " + assignment + " -> cost: " + curCost)
-//        
-//        if(curCost < minCost){
-//          
-////          println("considering assignment")
-//          
-//          // Don't allow hard constraint breaches
-////          if(!hardConstraints.contains(assignment)){
-//            
-//            // FIXME: Don't allow assignments where other preferences have been set
-////            println("adding assignment");
-//            preferences = Set(assignment)
-//            
-//            minCost = curCost
-//            
-////          }
-//        }
-//      }
-//     }
-//    
-//    // Push current utility
-//    println("Sending mincost (" + minCost + ") to monitoring")
-//    val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + minCost)
-//    val result = Http(svc OK as.String)
-//    
-//    // Adjust own preferences & build hard, soft and preferences
-////   var newHardConstraints = hardConstraints // FIXME does it stay the same
-////   var newSoftConstraints = softConstraints // FIXME adjust this
-//    
-//     new Proposal(id, hardConstraints, softConstraints, preferences)
-//    }
-//    else {
-//      initialized = true
-//      initialState
-//    }
-//  }
-//  
-//=======
 	def findCurrentCost(finalPrefMap: Map[Any,Int]) : Double = {
 		  0.0 // FIXME
 	}
@@ -284,43 +183,43 @@ class VariableVertex (
 	// calculate sum of all costs received, choose the one with lowest costs, send to funtionvertex
 	def collect() = {
 
-		if(initialized){
+//		if(initialized){
 		  
-		  // unpack assignment costs
 		  // allAssignmentCosts: function -> variable -> assignment -> cost
 			val allAssignmentCosts = Map[Any, Map[Any, Map[Int, Double]]]()
 			for (signal <- signals.iterator) {
+			  println("Variable: Signal Received")
 				var proposal : Proposal = signal
 				var costAssignments = proposal.allCostAssignments
 				allAssignmentCosts += (proposal.sender -> costAssignments)
 			}
 
-			// prepare preferences map for rebuild
-			// prefMap: function -> assignment -> cost
-			val prefMap = buildPrefMap(allAssignmentCosts, timeslots)
-			println(id + " -> prebuild: " + prefMap)
-			
-			// find best assignments for all requirements
-			// finalPrefMap: function -> chosen assignment
-			val finalPrefMap = buildFinalMap(prefMap)
-			println(id + " -> final: " + finalPrefMap)
-			
-			// find costs of the assignments
-			val currentCosts = findCurrentCost(finalPrefMap)
-			    
-			// Push current utility
-			val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + currentCosts)
-			val result = Http(svc OK as.String)
-
-			new Proposal(id, hardConstraints, softConstraints, finalPrefMap)
-		}
-		else {
-			initialized = true
-			initialState
-		}
+//			// prepare preferences map for rebuild
+//			// prefMap: function -> assignment -> cost
+//			val prefMap = buildPrefMap(allAssignmentCosts, timeslots)
+//			println(id + " -> prebuild: " + prefMap)
+//			
+//			// find best assignments for all requirements
+//			// finalPrefMap: function -> chosen assignment
+//			val finalPrefMap = buildFinalMap(prefMap)
+//			println(id + " -> final: " + finalPrefMap)
+//			
+//			// find costs of the assignments
+//			val currentCosts = findCurrentCost(finalPrefMap)
+//			    
+//			// Push current utility
+//			val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + currentCosts)
+//			val result = Http(svc OK as.String)
+//
+//			new Proposal(id, hardConstraints, softConstraints, finalPrefMap)
+//		}
+//		else {
+//			initialized = true
+//			initialState
+//		}
+	  initialState
 	}
 
-//>>>>>>> e57d4a9612d00e4fa12f28c05091a4a743a2f692
 }
 
 /**

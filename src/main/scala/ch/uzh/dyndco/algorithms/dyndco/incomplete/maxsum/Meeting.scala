@@ -6,22 +6,24 @@ import collection.mutable.Map
 class Meeting(meetingId : Int) {
 
   var participants : Map[VariableVertex,Set[FunctionVertex]] = Map[VariableVertex,Set[FunctionVertex]]()
-  var participantsCount = 0
   
   def addParticipant(variableVertex : VariableVertex){
-    participantsCount+1
-    participants + (variableVertex -> null)
+    participants += (variableVertex -> Set())
+    println("added participants: " + participants.size)
   }
   
   def addParticipantFunctions(variableVertex : VariableVertex, functions : Set[FunctionVertex]){
-    participants + (variableVertex -> functions)
+    participants += (variableVertex -> functions)
   }
   
   def getOtherFunctions(variableVertex : VariableVertex) : Set[FunctionVertex] = {
     var otherFunctions : Set[FunctionVertex] = Set()
     for(otherVariableVertex : VariableVertex <- participants.keys){
       if(otherVariableVertex != variableVertex){
-        otherFunctions + participants.apply(otherVariableVertex)
+        var functions : Set[FunctionVertex] = participants.apply(otherVariableVertex)
+        for(function <- functions){
+          otherFunctions + function
+        }
       }
     }
     otherFunctions
