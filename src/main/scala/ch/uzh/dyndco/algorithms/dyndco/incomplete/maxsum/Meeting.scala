@@ -5,27 +5,31 @@ import collection.mutable.Map
 
 class Meeting(meetingId : Int) {
 
-  var participants : Map[VariableVertex,Set[FunctionVertex]] = Map[VariableVertex,Set[FunctionVertex]]()
+  var participants : Map[Int,Set[FunctionVertex]] = Map[Int,Set[FunctionVertex]]()
   
-  def addParticipant(variableVertex : VariableVertex){
-    participants += (variableVertex -> Set())
+  def addParticipant(agent : Int){
+    participants += (agent -> Set())
     println("added participants: " + participants.size)
   }
   
-  def addParticipantFunctions(variableVertex : VariableVertex, functions : Set[FunctionVertex]){
-    participants += (variableVertex -> functions)
-  }
+//  def getParticipants() : Map[Int,Set[FunctionVertex]] = {
+//    participants
+//  }
   
-  def getOtherFunctions(variableVertex : VariableVertex) : Set[FunctionVertex] = {
-    var otherFunctions : Set[FunctionVertex] = Set()
-    for(otherVariableVertex : VariableVertex <- participants.keys){
-      if(otherVariableVertex != variableVertex){
-        var functions : Set[FunctionVertex] = participants.apply(otherVariableVertex)
-        for(function <- functions){
-          otherFunctions + function
-        }
-      }
-    }
-    otherFunctions
-  }
+//  def addParticipantFunctions(agent : Int, functions : Set[FunctionVertex]){
+//    participants += (agent -> functions)
+//  }
+//  
+//  def getOtherFunctions(agent : VariableVertex) : Set[FunctionVertex] = {
+//    var otherFunctions : Set[FunctionVertex] = Set()
+//    for(otherVariableVertex : VariableVertex <- participants.keys){
+//      if(otherVariableVertex != variableVertex){
+//        var functions : Set[FunctionVertex] = participants.apply(otherVariableVertex)
+//        for(function <- functions){
+//          otherFunctions + function
+//        }
+//      }
+//    }
+//    otherFunctions
+//  }
 }

@@ -48,40 +48,40 @@ class FunctionVertex (
 
 	    // Process constraints
 	    val hardConstraints = Map[Any, Set[Int]]() // Blocked timeslots (vertex, set of constraints)
-			val softConstraints = Map[Any, Set[Int]]() // Free timeslots (vertex, set of constraints)
-			val preference = Map[Any, Int]() // Proposed timeslot of any variable (vertex, set of constraints)
+		val softConstraints = Map[Any, Set[Int]]() // Free timeslots (vertex, set of constraints)
+		val preference = Map[Any, Int]() // Proposed timeslot of any variable (vertex, set of constraints)
 
-			// Unpack constraint pack
-			for (signal <- signals.iterator) {
-			  println("Function: Received Signal")
-//				var proposal : Proposal = signal
-//
-//						// sender
-//						var sender = proposal.sender
-//
-//						// work the blocked slots
-//						var h : Set[Int] = proposal.hard
-//						hardConstraints += (sender -> h)
-//
-//						// work the free slots
-//						var s : Set[Int] = proposal.soft
-//						softConstraints += (sender -> s)
-//
-//						// work the proposed slot, take the necessary one
-//						var p : Map[Any,Int] = proposal.preference
-//						println("preference: " + p)
-//						for(function <- p.keys){
-//						  var assgn = p.apply(function)
-//						  if(function == id){
-//						    preference += (sender -> assgn)
-//						  }
-//						  else {
-//						    // add to hardConstraints
-//						    var hc : Set[Int] = hardConstraints.apply(sender)
-//						    hc + assgn
-//						    hardConstraints += (sender -> hc)
-//						  }
-//						}
+		// Unpack constraint pack
+		for (signal <- signals.iterator) {
+			println("Function: Received Signal")
+			var proposal : Proposal = signal
+
+			// sender
+			var sender = proposal.sender
+
+			// work the blocked slots
+			var h : Set[Int] = proposal.hard
+			hardConstraints += (sender -> h)
+
+						// work the free slots
+						var s : Set[Int] = proposal.soft
+						softConstraints += (sender -> s)
+
+						// work the proposed slot, take the necessary one
+						var p : Map[Any,Int] = proposal.preference
+						println("preference: " + p)
+						for(function <- p.keys){
+						  var assgn = p.apply(function)
+						  if(function == id){
+						    preference += (sender -> assgn)
+						  }
+						  else {
+						    // add to hardConstraints
+						    var hc : Set[Int] = hardConstraints.apply(sender)
+						    hc + assgn
+						    hardConstraints += (sender -> hc)
+						  }
+						}
 			}
 
 //	// create hard, soft and preference builds for every target with minimal costs

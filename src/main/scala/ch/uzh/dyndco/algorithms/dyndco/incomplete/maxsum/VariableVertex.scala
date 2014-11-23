@@ -183,7 +183,7 @@ class VariableVertex (
 	// calculate sum of all costs received, choose the one with lowest costs, send to funtionvertex
 	def collect() = {
 
-//		if(initialized){
+		if(initialized){
 		  
 		  // allAssignmentCosts: function -> variable -> assignment -> cost
 			val allAssignmentCosts = Map[Any, Map[Any, Map[Int, Double]]]()
@@ -194,29 +194,29 @@ class VariableVertex (
 				allAssignmentCosts += (proposal.sender -> costAssignments)
 			}
 
-//			// prepare preferences map for rebuild
-//			// prefMap: function -> assignment -> cost
-//			val prefMap = buildPrefMap(allAssignmentCosts, timeslots)
-//			println(id + " -> prebuild: " + prefMap)
-//			
-//			// find best assignments for all requirements
-//			// finalPrefMap: function -> chosen assignment
-//			val finalPrefMap = buildFinalMap(prefMap)
-//			println(id + " -> final: " + finalPrefMap)
-//			
-//			// find costs of the assignments
-//			val currentCosts = findCurrentCost(finalPrefMap)
-//			    
-//			// Push current utility
-//			val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + currentCosts)
-//			val result = Http(svc OK as.String)
-//
-//			new Proposal(id, hardConstraints, softConstraints, finalPrefMap)
-//		}
-//		else {
-//			initialized = true
-//			initialState
-//		}
+			// prepare preferences map for rebuild
+			// prefMap: function -> assignment -> cost
+			val prefMap = buildPrefMap(allAssignmentCosts, timeslots)
+			println(id + " -> prebuild: " + prefMap)
+			
+			// find best assignments for all requirements
+			// finalPrefMap: function -> chosen assignment
+			val finalPrefMap = buildFinalMap(prefMap)
+			println(id + " -> final: " + finalPrefMap)
+			
+			// find costs of the assignments
+			val currentCosts = findCurrentCost(finalPrefMap)
+			    
+			// Push current utility
+			val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + currentCosts)
+			val result = Http(svc OK as.String)
+
+			new Proposal(id, hardConstraints, softConstraints, finalPrefMap)
+		}
+		else {
+			initialized = true
+			initialState
+		}
 	  initialState
 	}
 
