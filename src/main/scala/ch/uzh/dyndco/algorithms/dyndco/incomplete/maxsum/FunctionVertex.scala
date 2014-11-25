@@ -53,7 +53,7 @@ class FunctionVertex (
 
 		// Unpack constraint pack
 		for (signal <- signals.iterator) {
-			println("Function: Received Signal")
+//			println("Function: Received Signal")
 			var proposal : Proposal = signal
 
 			// sender
@@ -84,122 +84,122 @@ class FunctionVertex (
 						}
 			}
 
-//	// create hard, soft and preference builds for every target with minimal costs
-//	val allAssignmentCosts = Map[Any, Map[Int,Double]]()
-//			for(target <- targetIds.iterator){
-//
-//				// build assignment that excludes target
-//				val assignedHard = Map[Int,Int]()
-//				val assignedSoft = Map[Int,Int]()
-//				val assignedPreferences = Map[Int,Int]()
-//
-//				// hc
-//				for(curTarget : Any <- hardConstraints.keys){
-//					if(curTarget != target){
-//
-//					  // get hard constraints of target
-//						for(targetConstraint : Int <- hardConstraints.apply(curTarget)){
-//							if(assignedHard.contains(targetConstraint)){
-//								assignedHard += (targetConstraint -> (assignedHard.apply(targetConstraint) + 1)) // Add up existing value
-//							}
-//							else {
-//								assignedHard += (targetConstraint -> 1) // Initialize this timeslot value
-//							}
-//						}
-//					}
-//				}
-//
-//				// sc
-//				for(curTarget : Any <- softConstraints.keys){
-//					if(curTarget != target){
-//						// get hard constraints of target
-//						for(targetConstraint : Int <- softConstraints.apply(curTarget)){
-//							if(assignedSoft.contains(targetConstraint)){
-//								assignedSoft += (targetConstraint -> (assignedSoft.apply(targetConstraint) + 1)) // Add up existing value
-//							}
-//							else {
-//								assignedSoft += (targetConstraint -> 1) // Initialize this timeslot value
-//							}
-//						}
-//					}
-//				}
-//
-//				// pref -> take function related
-//				for(curTarget : Any <- preference.keys){
-//					if(curTarget != target){
-//						// get hard constraints of target
-//					    var targetConstraint = preference.apply(curTarget)
-//					  
-//							if(assignedPreferences.contains(targetConstraint)){
+	// create hard, soft and preference builds for every target with minimal costs
+	val allAssignmentCosts = Map[Any, Map[Int,Double]]()
+			for(target <- targetIds.iterator){
+
+				// build assignment that excludes target
+				val assignedHard = Map[Int,Int]()
+				val assignedSoft = Map[Int,Int]()
+				val assignedPreferences = Map[Int,Int]()
+
+				// hc
+				for(curTarget : Any <- hardConstraints.keys){
+					if(curTarget != target){
+
+					  // get hard constraints of target
+						for(targetConstraint : Int <- hardConstraints.apply(curTarget)){
+							if(assignedHard.contains(targetConstraint)){
+								assignedHard += (targetConstraint -> (assignedHard.apply(targetConstraint) + 1)) // Add up existing value
+							}
+							else {
+								assignedHard += (targetConstraint -> 1) // Initialize this timeslot value
+							}
+						}
+					}
+				}
+
+				// sc
+				for(curTarget : Any <- softConstraints.keys){
+					if(curTarget != target){
+						// get hard constraints of target
+						for(targetConstraint : Int <- softConstraints.apply(curTarget)){
+							if(assignedSoft.contains(targetConstraint)){
+								assignedSoft += (targetConstraint -> (assignedSoft.apply(targetConstraint) + 1)) // Add up existing value
+							}
+							else {
+								assignedSoft += (targetConstraint -> 1) // Initialize this timeslot value
+							}
+						}
+					}
+				}
+
+				// pref -> take function related
+				for(curTarget : Any <- preference.keys){
+					if(curTarget != target){
+						// get hard constraints of target
+					    var targetConstraint = preference.apply(curTarget)
+					  
+							if(assignedPreferences.contains(targetConstraint)){
 //								println("Function: -> already inserted into map")
-//							  assignedPreferences += (targetConstraint -> (assignedPreferences.apply(targetConstraint) + 1)) // Add up existing value
-//							}
-//							else {
+							  assignedPreferences += (targetConstraint -> (assignedPreferences.apply(targetConstraint) + 1)) // Add up existing value
+							}
+							else {
 //								println("Function: -> initialize into map")
-//								assignedPreferences += (targetConstraint -> 1) // Initialize this timeslot value
-//							}
-//					}
-//				}
-//
-//				// calculate all possible value assignments and their costs for this agent
-//				val assignmentCosts = Map[Int, Double]()
+								assignedPreferences += (targetConstraint -> 1) // Initialize this timeslot value
+							}
+					}
+				}
+
+				// calculate all possible value assignments and their costs for this agent
+				val assignmentCosts = Map[Int, Double]()
 //				println("----------------------------")
-//				for(assignment <- 1 to timeslots){
-//				  
-//				  var hardCount = 0
-//				  var softCount = 0
-//				  var prefCount = 0
-//				  
-//				  if(assignedHard.contains(assignment)){
-//				    hardCount += assignedHard.apply(assignment)
-//				  }
-//				  if(assignedSoft.contains(assignment)){
-//				    softCount += assignedSoft.apply(assignment)
-//				  }
-//				  if(assignedPreferences.contains(assignment)){
-//				    prefCount += assignedPreferences.apply(assignment)
-//				  }
-//				        
-//				  var curCost = hardCount * HARD_COST + softCount * SOFT_COST + prefCount * PREF_COST
-//				  
-//				  assignmentCosts += (assignment -> curCost)
-//				 
-//				  println(
-//				      "assignment: " + assignment + 
-//				      " | hardC: " + hardCount + 
-//				      " | softC: " + softCount + 
-//				      " | prefC: " + prefCount + 
-//				      " | allC: " + curCost) 
-//				}
-//				
+				for(assignment <- 1 to timeslots){
+				  
+				  var hardCount = 0
+				  var softCount = 0
+				  var prefCount = 0
+				  
+				  if(assignedHard.contains(assignment)){
+				    hardCount += assignedHard.apply(assignment)
+				  }
+				  if(assignedSoft.contains(assignment)){
+				    softCount += assignedSoft.apply(assignment)
+				  }
+				  if(assignedPreferences.contains(assignment)){
+				    prefCount += assignedPreferences.apply(assignment)
+				  }
+				        
+				  var curCost = hardCount * HARD_COST + softCount * SOFT_COST + prefCount * PREF_COST
+				  
+				  assignmentCosts += (assignment -> curCost)
+				 
+				  println(
+				      "assignment: " + assignment + 
+				      " | hardC: " + hardCount + 
+				      " | softC: " + softCount + 
+				      " | prefC: " + prefCount + 
+				      " | allC: " + curCost) 
+				}
+				
 //				println("----------------------------")
-//				
-//				// build constraints object for the assignments
-//			  allAssignmentCosts += (target -> assignmentCosts) // Target -> Assignment : Cost
-//				      
-//			}
-//	
-//			// stop criteria
-//			if(allAssignmentCosts == lastAssignmentCosts && finishedCount > 1){
-//			  finished = true
+				
+				// build constraints object for the assignments
+			  allAssignmentCosts += (target -> assignmentCosts) // Target -> Assignment : Cost
+				      
+			}
+	
+			// stop criteria
+			if(allAssignmentCosts == lastAssignmentCosts && finishedCount > 1){
+			  finished = true
 //			  println("Costs equal")
-//			}
-//			else {
-//			  if(allAssignmentCosts == lastAssignmentCosts) finishedCount+=1
-//			  else{
-//			    finished = false
-//			    lastAssignmentCosts = allAssignmentCosts
+			}
+			else {
+			  if(allAssignmentCosts == lastAssignmentCosts) finishedCount+=1
+			  else{
+			    finished = false
+			    lastAssignmentCosts = allAssignmentCosts
 //			    println("Cost not equal")
-//			  }
-//			}
-//	    
-//	    // Return builds in constraints object
+			  }
+			}
+	    
+	    // Return builds in constraints object
 //	    println("Sending message: " + id + " -> " + allAssignmentCosts.size)
-//	    var proposal : Proposal = new Proposal(id, null,null,null)
-//	    proposal.addCostAssignments(allAssignmentCosts)
-//	    proposal
+	    var proposal : Proposal = new Proposal(id, null,null,null)
+	    proposal.addCostAssignments(allAssignmentCosts)
+	    proposal
 			
-				  initialState
+//				  initialState
 	  
   }
 }

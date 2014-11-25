@@ -13,7 +13,7 @@ import collection.mutable.Set
 class VariableTests extends FunSuite with BeforeAndAfter {
   
   /**
-   * Test Case: 3 Variables, 2 Functions, 3 Timeslots -> 3 Agents, 2 Meetings, 3 Timeslots
+   * Test Case: 3 Variables, 3 Functions, 3 Timeslots -> 3 Agents, 2 Meetings, 3 Timeslots
    */
   
   /**
@@ -41,18 +41,25 @@ class VariableTests extends FunSuite with BeforeAndAfter {
    * Cost Assignment
    * ----------------------------------------------- 
    * Function 1: 	Variable 1:		Timeslot 1:	2
-   * 								Timeslot 2:	2
-   *         						Timeslot 3:	0
-   * 				Variable 2:		Timeslot 1:	2
-   *     							Timeslot 2:	0
-   *            					Timeslot 3:	1
+   * 														Timeslot 2:	2
+   *         										Timeslot 3:	0
+   * 							Variable 2:		Timeslot 1:	2
+   *     												Timeslot 2:	0
+   *            								Timeslot 3:	1
    * -----------------------------------------------
    * Function 2:	Variable 2:		Timeslot 1:	1
-   * 								Timeslot 2:	2
-   *         						Timeslot 3:	0
-   * 				Variable 3:		Timeslot 1:	2
-   *     							Timeslot 2:	0
-   *            					Timeslot 3:	2
+   * 														Timeslot 2:	2
+   *         										Timeslot 3:	0
+   * 							Variable 3:		Timeslot 1:	2
+   *     												Timeslot 2:	0
+   *            								Timeslot 3:	2
+   * -----------------------------------------------
+   * Function 3:	Variable 2:		Timeslot 1:	1
+   * 														Timeslot 2:	2
+   *         										Timeslot 3:	0
+   * 							Variable 3:		Timeslot 1:	2
+   *     												Timeslot 2:	0
+   *            								Timeslot 3:	2
    * -----------------------------------------------
    */
   
@@ -60,11 +67,13 @@ class VariableTests extends FunSuite with BeforeAndAfter {
   var allAssignmentCosts : Map[Any, Map[Any, Map[Int, Double]]] = Map[Any, Map[Any, Map[Int, Double]]]()
   var f1v1 : Map[Int,Double] = Map(1 -> 2.0, 2 -> 2.0, 3 -> 0.0)
   var f1v2 : Map[Int,Double] = Map(1 -> 2.0, 2 -> 0.0, 3 -> 1.0)
+  var f2v1 : Map[Int,Double] = Map(1 -> 2.0, 2 -> 2.0, 3 -> 2.0)
   var f2v2 : Map[Int,Double] = Map(1 -> 1.0, 2 -> 2.0, 3 -> 0.0)
   var f2v3 : Map[Int,Double] = Map(1 -> 2.0, 2 -> 0.0, 3 -> 2.0)
   var f1 : Map[Any, Map[Int, Double]] = Map(1 -> f1v1, 2 -> f1v2)
-  var f2 : Map[Any, Map[Int, Double]] = Map(2 -> f2v2, 3 -> f2v3)
-  allAssignmentCosts += (1 -> f1, 2 -> f2)
+  var f2 : Map[Any, Map[Int, Double]] = Map(1 -> f2v1, 2 -> f2v2, 3 -> f2v3)
+  var f3 : Map[Any, Map[Int, Double]] = Map(2 -> f2v2, 3 -> f2v3)
+  allAssignmentCosts += (1 -> f1, 2 -> f2, 3 -> f3)
   
   /**
    * Run Tests
@@ -118,8 +127,8 @@ class VariableTests extends FunSuite with BeforeAndAfter {
   }
   
   after {
-    println(result)
-    println(result2)
+    println("meeting 1: " + result2.get(1).getOrElse(fail))
+    println("meeting 2: " + result2.get(2).getOrElse(fail))
   }
   
 }

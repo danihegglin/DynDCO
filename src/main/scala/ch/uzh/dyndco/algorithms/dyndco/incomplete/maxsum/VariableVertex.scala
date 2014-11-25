@@ -62,21 +62,21 @@ class VariableVertex (
 		
 	  for(functionVertex <- allAssignmentCosts.keys){
 	    
-	    println("---------------------------------------")
-	    println("running function " + functionVertex)
-	    println("size of full set: " + allAssignmentCosts.size)
+//	    println("---------------------------------------")
+//	    println("running function " + functionVertex)
+//	    println("size of full set: " + allAssignmentCosts.size)
 
 		  // build set of other functionVertices for the particular functionVertex target
 		var assignmentCostsSet = Set[Map[Any,Map[Int,Double]]]() // holds functions, all variables and their costs
 		for(currFunctionVertex <- allAssignmentCosts.keys){
-			if(currFunctionVertex != functionVertex || allAssignmentCosts.size < 2){ // FIXME question: what if only one function, how should I create a result when excluding this function
+			if(currFunctionVertex != functionVertex){ 
 				var variableCosts = allAssignmentCosts.apply(currFunctionVertex)
 				assignmentCostsSet += variableCosts
 			}
 		}
 	    
-	    println("prepared set: " + assignmentCostsSet)
-	    println("size of prepared set: " + assignmentCostsSet.size)
+//	    println("prepared set: " + assignmentCostsSet)
+//	    println("size of prepared set: " + assignmentCostsSet.size)
 
 		// build assignment -> costs for the particular functionVertex target
 		var assignmentMap : Map[Int,Double] = Map[Int,Double]()
@@ -92,7 +92,7 @@ class VariableVertex (
 				for(currVariableVertexId <- assignmentCosts.keys){
 					// ignore if the assignment is from this particular VariableVertex
 					if(currVariableVertexId != id){
-					  println("running variable " + currVariableVertexId)
+//					  println("running variable " + currVariableVertexId)
 					  var variableAssignments = assignmentCosts.apply(currVariableVertexId)
 					  // adjust assignment costs if they are set in the set
 					  if(variableAssignments.contains(assignment)){
@@ -107,7 +107,7 @@ class VariableVertex (
 		}
 		// Add assignment costs to map for all functionVertices
 		prefMap += (functionVertex -> assignmentMap)
-		println("---------------------------------------")
+//		println("---------------------------------------")
 	  }
 	  prefMap
 	}
@@ -155,23 +155,24 @@ class VariableVertex (
 			  var prefs = tempPrefMap.apply(tempPref)
 			  orderedPrefMap += (prefSize -> Map(tempPref -> prefs)) // FIXME
 			}
-	  		println("orderedPrefMap: " + orderedPrefMap)
+//	  		println("orderedPrefMap: " + orderedPrefMap)
 	  		val finalPrefMap = Map[Any, Int]() // Contains best combination of assignments
 	  		// FIXME won't work with similar sizes of solutions
 	  		var blocked = Set[Any]()
 	  		for(ordering <- orderedPrefMap.keys){
-	  			println(ordering)
+//	  			println(ordering)
 	  			var orderedMap = orderedPrefMap.apply(ordering)
 	  			for(ordered <- orderedMap.keys){
 		  			var prefs = orderedMap.apply(ordered) // set of preferences
 		  			for(pref <- prefs){
 		  			  if(!blocked.contains(pref)){
 		  				  finalPrefMap += (ordered -> pref)
+		  				  blocked += pref
 		  			  }
 		  			}
 	  			}
 	  		}
-	  		println("finalMap: " + finalPrefMap)
+//	  		println("finalMap: " + finalPrefMap)
 			
 			finalPrefMap
 	}
@@ -188,7 +189,7 @@ class VariableVertex (
 		  // allAssignmentCosts: function -> variable -> assignment -> cost
 			val allAssignmentCosts = Map[Any, Map[Any, Map[Int, Double]]]()
 			for (signal <- signals.iterator) {
-			  println("Variable: Signal Received")
+//			  println("Variable: Signal Received")
 				var proposal : Proposal = signal
 				var costAssignments = proposal.allCostAssignments
 				allAssignmentCosts += (proposal.sender -> costAssignments)
@@ -197,12 +198,12 @@ class VariableVertex (
 			// prepare preferences map for rebuild
 			// prefMap: function -> assignment -> cost
 			val prefMap = buildPrefMap(allAssignmentCosts, timeslots)
-			println(id + " -> prebuild: " + prefMap)
+//			println(id + " -> prebuild: " + prefMap)
 			
 			// find best assignments for all requirements
 			// finalPrefMap: function -> chosen assignment
 			val finalPrefMap = buildFinalMap(prefMap)
-			println(id + " -> final: " + finalPrefMap)
+//			println(id + " -> final: " + finalPrefMap)
 			
 			// find costs of the assignments
 			val currentCosts = findCurrentCost(finalPrefMap)
@@ -217,7 +218,7 @@ class VariableVertex (
 			initialized = true
 			initialState
 		}
-	  initialState
+//	  initialState
 	}
 
 }
