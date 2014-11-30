@@ -23,9 +23,9 @@ object MaxSum extends App {
 	/**
 	 * Configuration
 	 */
-	var TIMESLOTS : Int = 5 // args(0)
+	var TIMESLOTS : Int = 10 // args(0)
 	var AGENTS : Int = 3 // args(1)
-	var MEETINGS_NUM : Int = 1 // args(2)
+	var MEETINGS_NUM : Int = 2 // args(2)
 	var HARD_CONSTRAINT_PROB : Double = 0.2 // args(3)
 	
 	/**

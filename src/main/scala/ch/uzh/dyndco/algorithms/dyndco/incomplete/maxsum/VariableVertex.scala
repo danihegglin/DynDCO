@@ -5,17 +5,13 @@ import collection.mutable.Map
 import collection.mutable.Set
 import dispatch._,Defaults._
 import scala.collection.SortedMap
+import scala.util.Random
 
 class VariableVertex (
 		id: Any, 
 		initialState: Proposal, 
 		valueSpace: Int
 		) extends DynamicVertex(id, initialState) {
-
-	/**
-	 * Logger
-	 */
-
 
 	/**
 	 * This variable constraints
@@ -126,30 +122,23 @@ class VariableVertex (
 		  }
 	  }
 	  
-	  // FIXME need an order, and random choosing
-	  var argMax : Set[Int] = Set[Int]();
-	  var argMaxValue : Double = 0;
-	  for(assignment <- combinedUtilities.keys){
-	    var argValue = combinedUtilities.apply(assignment)
-	    if(argValue > argMaxValue){
-	      argMax.clear
-	      argMax += assignment
-	      argMaxValue = argValue
-	    }
-	    else if (argValue == argMaxValue){
-	      argMax += assignment
-	    }
-	  }
+	  var orderedUtilities = combinedUtilities.toList sortBy {_._2}
 	  
 	  var meetings : Map[Int, Int] = initialState.preference
 	  
-	  var timeslots = argMax.toArray // FIXME
+	  var random : Random = new Random
+	  var blocked = Set()
+	  var counter = 0
 	  for(meeting <- meetings.keys){
-	    var assignment = timeslots(0)
-	    	bestValueAssignment += (meeting -> assignment)
+	    var randPick = random.nextInt(meetings.size)
+//	    println("randPick" + randPick)
+	    var assignment = orderedUtilities(randPick)
+	    println("assignment" + assignment)
+	    bestValueAssignment += (meeting -> assignment._1)
+	    counter += 1
 	  }
-	  
-	  agentUtility = argMaxValue
+	  var argMax = orderedUtilities(0)
+	  agentUtility = argMax._2 // how?
 	  
 	  bestValueAssignment
 	}
@@ -179,20 +168,31 @@ class VariableVertex (
 
 			// prepare utilities
 			val marginalUtilities = buildMarginalUtilities(allMarginalUtilities, valueSpace)
-			println(id + " -> utilities: " + marginalUtilities)
+//			println(id + " -> utilities: " + marginalUtilities)
 			
 			// find best assignments for all requirements
 			val bestValueAssignment = findBestValueAssignment(marginalUtilities)
 			preferences = bestValueAssignment
-			println(id + " -> best: " + bestValueAssignment)
+//			println(id + " -> best: " + bestValueAssignment)
+			
+			// adjust softConstraints // FIXME also hardconstraints
+			var newSoftConstraints = Set[Int]()
+			for(assignment <- 1 to valueSpace){
+				if(bestValueAssignment.contains(assignment)){}
+				else if(hardConstraints.contains(assignment)){}
+				else {
+				  newSoftConstraints += assignment
+				}
+			}
 			
 			// Push current utility
 			val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + agentUtility)
 			val result = Http(svc OK as.String)
 			
 			println(id + ": " + agentUtility)
+			
 			if(agentUtility == lastUtility){
-			  if(lastCount > 1){
+			  if(lastCount > 100){
 			    finished = true;
 			  }
 			  else {
@@ -201,7 +201,7 @@ class VariableVertex (
 			}
 			lastUtility = agentUtility
 
-			new Proposal(id, hardConstraints, softConstraints, bestValueAssignment)
+			new Proposal(id, hardConstraints, newSoftConstraints, bestValueAssignment)
 			initialState
 		}
 		else {

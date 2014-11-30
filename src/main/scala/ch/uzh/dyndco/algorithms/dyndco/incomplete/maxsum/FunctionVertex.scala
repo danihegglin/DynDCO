@@ -154,14 +154,14 @@ class FunctionVertex (
 				  
 				  marginalUtility += (valueAssignment -> utility)
 				 
-				  println(
-				      "id: " + id + 
-				      " | target: " + messageReceiver +
-				      " | assignment: " + valueAssignment +
-				       " | hardcount: " + hardCount +
-				        " | softcount: " + softCount +
-				         " | prefcount: " + prefCount +
-				      " | utility: " + utility) 
+//				  println(
+//				      "id: " + id + 
+//				      " | target: " + messageReceiver +
+//				      " | assignment: " + valueAssignment +
+//				       " | hardcount: " + hardCount +
+//				        " | softcount: " + softCount +
+//				         " | prefcount: " + prefCount +
+//				      " | utility: " + utility) 
 				}
 				
 				// build constraints object for the assignments
