@@ -23,8 +23,8 @@ object MaxSum extends App {
 	/**
 	 * Configuration
 	 */
-	var TIMESLOTS : Int = 2 // args(0)
-	var AGENTS : Int = 2 // args(1)
+	var TIMESLOTS : Int = 5 // args(0)
+	var AGENTS : Int = 3 // args(1)
 	var MEETINGS_NUM : Int = 1 // args(2)
 	var HARD_CONSTRAINT_PROB : Double = 0.2 // args(3)
 	
@@ -42,15 +42,15 @@ object MaxSum extends App {
 	
 	def buildParticipations() : Set[Int] = {
 	  
-	   println("building participations")
+//	   println("building participations")
 	   var participationsAmount : Int = random.nextInt(MEETINGS_NUM) + 1
-	   println("possible participations: " + participationsAmount)
+//	   println("possible participations: " + participationsAmount)
 	   var participations : Set[Int] = Set[Int]()
 	   for(partAmount <- 1 to participationsAmount){
 		   var done : Boolean = false
 				   while(done == false){						  
 					   var participation = random.nextInt(MEETINGS_NUM)
-							   println("participation: " + participation)
+//							   println("participation: " + participation)
 							   if(!participations.contains(participation)){
 								   participations += participation
 										   done = true
@@ -68,10 +68,10 @@ object MaxSum extends App {
 		availableTimeslots
 	}
 	
-	def buildPreferences(participations : Set[Int], availableTimeslots : MutableList[Int]) : Map[Any,Int] = {
-	  var preference : Map[Any,Int] = Map[Any,Int]()
+	def buildPreferences(participations : Set[Int], availableTimeslots : MutableList[Int]) : Map[Int,Int] = {
+	  var preference : Map[Int,Int] = Map[Int,Int]()
 		for(participation <- participations){
-		  println("preference " + participation)
+//		  println("preference " + participation)
 			var timeslot = random.nextInt(availableTimeslots.size)
 			preference += (participation -> availableTimeslots.apply(timeslot))
 		}
@@ -108,14 +108,14 @@ object MaxSum extends App {
 	def buildVerticesAndEdges(agent : Int, constraints : Proposal) = {
 	  
 		// variable vertex
-		println("creating variable vertex")
+//		println("creating variable vertex")
 		var variableId : Any = "v" + agent
 		var varVertex = new VariableVertex(variableId,constraints,TIMESLOTS)
 		variableVertices += (agent -> varVertex)
 		graph.addVertex(varVertex)
 				
 		// function vertex
-		println("creating function vertex")
+//		println("creating function vertex")
 		var functionId : Any = "f" + agent
 		var funcVertex = new FunctionVertex(functionId, constraints, TIMESLOTS)
 		functionVertices += (agent -> funcVertex)
@@ -127,13 +127,13 @@ object MaxSum extends App {
 	}
 	
 	def addParticipationsToMeetings(agent : Int, participations : Set[Int]){
-	  println("meetings pre: " + participations.size)
+//	  println("meetings pre: " + participations.size)
 	  for(participation <- participations){
 	    var meeting : Meeting = meetings(participation)
 	    meeting.addParticipant(agent)
 	    meetings += meeting
 	  }
-	  println("meetings post: " + participations.size)
+//	  println("meetings post: " + participations.size)
 	}
 	
 		/**
@@ -161,24 +161,24 @@ object MaxSum extends App {
 			
 			for(agent <- 1 to AGENTS){
 			  
-			  println("++++++++++++++++++++++++ " + agent + " ++++++++++++++++++++++++")
+			  println("--- " + agent + " ---")
 			  
 			  // Build participations
-			  println("------------------- Meeting Participations -------------")
+//			  println("------------------- Meeting Participations -------------")
         var participations : Set[Int] = buildParticipations()
-        println("participations: " + participations)
+//        println("participations: " + participations)
 			  
         // Build constraints
-			  println("------------------- Constraints -------------")
+//			  println("------------------- Constraints -------------")
 
 			  // timeslots
-			  println("building available timeslots")
+//			  println("building available timeslots")
 			  val availableTimeslots : MutableList[Int] = buildTimeslots();
-			  println("availableTimeslots: " + availableTimeslots.size)
+//			  println("availableTimeslots: " + availableTimeslots.size)
 
 			  // preferences
-			 println("preferences")
-			 var preferences : Map[Any,Int] = buildPreferences(participations,availableTimeslots)
+//			 println("preferences")
+			 var preferences : Map[Int,Int] = buildPreferences(participations,availableTimeslots)
 			 println("preferences: " + preferences)
 			 
 			 // initialized used set
@@ -188,7 +188,7 @@ object MaxSum extends App {
 			 }
 
 				// hard constraints
-			  println("building hard constraints")
+//			  println("building hard constraints")
 			  var hardConstraints : Set[Int] = buildHardConstraints(availableTimeslots, used)
 			  println("hardconstraints: " + hardConstraints)
 			  
@@ -198,12 +198,12 @@ object MaxSum extends App {
 			  }
 
 			  // soft constraints
-			  println("building softConstraint")
+//			  println("building softConstraint")
 				var softConstraints : Set[Int] = buildSoftConstraints(availableTimeslots, used)
 				println("softconstraint: " + softConstraints)
 
 				// proposal
-				println("building proposal")
+//				println("building proposal")
 				var constraints = new Proposal(agent,hardConstraints,softConstraints,preferences)
 
 			  	// vertices & edges
@@ -223,30 +223,30 @@ object MaxSum extends App {
       // Establish FunctionVertex for every participation and every participant and build edges
 			for(agent : Int <- participationsIndex.keys){
 			  
-			  println("processing agent: " + agent)
+//			  println("processing agent: " + agent)
 			  val connectedAgents = Set[Int]()
 			  
-			  	println("processing meetings")
+//			  	println("processing meetings")
 			   var meetingIds : Set[Int] = participationsIndex.apply(agent)
 			   for(meetingId <- meetingIds){
 			     
-			     println("building meeting edges " + meetingIds.size)
+//			     println("building meeting edges " + meetingIds.size)
 			     
 			     // Get Meeting Information
 			     var meeting : Meeting = meetings.apply(meetingId)
   			   var participants : Int = meeting.participants.size
   			   
-  			   println("number of participants" + participants)
+//  			   println("number of participants" + participants)
   			   
   			   // Process Functions
 //  			   var functions : Set[FunctionVertex] = Set()
   			   for(participant <- 1 to participants){
   			     
   			     if(connectedAgents.contains(participant)){
-  			       println("participant already added")
+//  			       println("participant already added")
   			     }
   			     else {
-	  			     println("participant: " + participant)
+//	  			     println("participant: " + participant)
 	  			     var agentVariableId : Any = "v" + agent
 	  			     var particpantFunctionId : Any = "f" + participant
 	  			     graph.addEdge(agentVariableId, new StateForwarderEdge(particpantFunctionId))
@@ -261,7 +261,9 @@ object MaxSum extends App {
 			 */
 						
 			// start
+			println("--------------------------------")
 			println("Start graph")
+			println("--------------------------------")
 			val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
 			val stats = graph.execute(execConfig)
 					
@@ -273,10 +275,6 @@ object MaxSum extends App {
 			for(variableVertex <- variableVertices.values){
 			  println("----------" + variableVertex.id + "---------------")
 				variableVertex.show()
-			}
-			for(functionVertex <- functionVertices.values){
-			  println("----------" + functionVertex.id + "---------------")
-//				functionVertex.show()
 			}
 
 			// shutdown graph

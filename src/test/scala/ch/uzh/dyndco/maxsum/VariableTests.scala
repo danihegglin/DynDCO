@@ -34,37 +34,37 @@ class VariableTests extends FunSuite with BeforeAndAfter {
   /**
    * Build variable2 vertex to test
    */
-  var initialState = new Proposal(1,Set(1),Set(),Map[Any,Int](1 -> 3, 2 -> 2))
+  var initialState = new Proposal(1,Set(1),Set(),Map[Int,Int](1 -> 3, 2 -> 2))
   var variable2 = new VariableVertex(2,initialState,1)
    
   /**
    * Cost Assignment
    * ----------------------------------------------- 
    * Function 1: 	Variable 1:		Timeslot 1:	2
-   * 														Timeslot 2:	2
-   *         										Timeslot 3:	0
-   * 							Variable 2:		Timeslot 1:	2
-   *     												Timeslot 2:	0
-   *            								Timeslot 3:	1
+   * 								Timeslot 2:	2
+   *         						Timeslot 3:	0
+   * 				Variable 2:		Timeslot 1:	2
+   *     							Timeslot 2:	0
+   *      							Timeslot 3:	1
    * -----------------------------------------------
    * Function 2:	Variable 2:		Timeslot 1:	1
-   * 														Timeslot 2:	2
-   *         										Timeslot 3:	0
-   * 							Variable 3:		Timeslot 1:	2
-   *     												Timeslot 2:	0
-   *            								Timeslot 3:	2
+   * 								Timeslot 2:	2
+   *     							Timeslot 3:	0
+   * 				Variable 3:		Timeslot 1:	2
+   *     							Timeslot 2:	0
+   *            					Timeslot 3:	2
    * -----------------------------------------------
    * Function 3:	Variable 2:		Timeslot 1:	1
-   * 														Timeslot 2:	2
-   *         										Timeslot 3:	0
-   * 							Variable 3:		Timeslot 1:	2
-   *     												Timeslot 2:	0
-   *            								Timeslot 3:	2
+   * 								Timeslot 2:	2
+   *         						Timeslot 3:	0
+   * 				Variable 3:		Timeslot 1:	2
+   *     							Timeslot 2:	0
+   *            					Timeslot 3:	2
    * -----------------------------------------------
    */
   
   // allAssignmentCosts: function -> variable -> assignment -> cost
-  var allAssignmentCosts : Map[Any, Map[Any, Map[Int, Double]]] = Map[Any, Map[Any, Map[Int, Double]]]()
+  var allMarginalUtilities : Map[Any, Map[Any, Map[Int, Double]]] = Map[Any, Map[Any, Map[Int, Double]]]()
   var f1v1 : Map[Int,Double] = Map(1 -> 2.0, 2 -> 2.0, 3 -> 0.0)
   var f1v2 : Map[Int,Double] = Map(1 -> 2.0, 2 -> 0.0, 3 -> 1.0)
   var f2v1 : Map[Int,Double] = Map(1 -> 2.0, 2 -> 2.0, 3 -> 2.0)
@@ -73,18 +73,18 @@ class VariableTests extends FunSuite with BeforeAndAfter {
   var f1 : Map[Any, Map[Int, Double]] = Map(1 -> f1v1, 2 -> f1v2)
   var f2 : Map[Any, Map[Int, Double]] = Map(1 -> f2v1, 2 -> f2v2, 3 -> f2v3)
   var f3 : Map[Any, Map[Int, Double]] = Map(2 -> f2v2, 3 -> f2v3)
-  allAssignmentCosts += (1 -> f1, 2 -> f2, 3 -> f3)
+  allMarginalUtilities += (1 -> f1, 2 -> f2, 3 -> f3)
   
   /**
    * Run Tests
    */
   var result = Map[Any,Map[Int, Double]]()
-  var result2 = Map[Any,Int]()
+  var result2 = Map[Int,Int]()
   
   before {
-    println(allAssignmentCosts)
-    result = variable2.buildPrefMap(allAssignmentCosts, timeslots)
-    result2 = variable2.buildFinalMap(result)
+    println(allMarginalUtilities)
+    result = variable2.buildMarginalUtilities(allMarginalUtilities, timeslots)
+    result2 = variable2.findBestValueAssignment(result)
   }
   
   /**
@@ -118,7 +118,7 @@ class VariableTests extends FunSuite with BeforeAndAfter {
    * ---------------------------------
    * Best assessment: f2 -> 2
    */
-  test("Testing result of buildPrefMap"){
+  test("Testing result of buildMarginalUtilities"){
     var conclusion1 : Int = result2.get(1).getOrElse(fail)
     var conclusion2 : Int = result2.get(2).getOrElse(fail)
     

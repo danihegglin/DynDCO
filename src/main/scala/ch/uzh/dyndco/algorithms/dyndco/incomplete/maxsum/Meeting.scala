@@ -9,7 +9,7 @@ class Meeting(meetingId : Int) {
   
   def addParticipant(agent : Int){
     participants += (agent -> Set())
-    println("added participants: " + participants.size)
+//    println("added participants: " + participants.size)
   }
   
 //  def getParticipants() : Map[Int,Set[FunctionVertex]] = {
@@ -32,4 +32,5 @@ class Meeting(meetingId : Int) {
 //    }
 //    otherFunctions
 //  }
+  
 }
