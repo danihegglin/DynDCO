@@ -11,7 +11,8 @@ import ch.uzh.dyndco.dynamic.DynamicVertex
 class VariableVertex (
 		id: Any, 
 		initialState: MaxSumMessage, 
-		valueSpace: Int
+		valueSpace: Int,
+    index : Map[Int, Int]
 		) extends DynamicVertex(id, initialState) {
 
 	/**
@@ -112,46 +113,34 @@ class VariableVertex (
 	    var orderedUtilities = unorderedUtilities.toList sortBy {_._2}
 	    orderedUtilities = orderedUtilities.reverse
 	    println(this.id + " / " + meeting + " :" + orderedUtilities)
-	    var assignment = orderedUtilities(0)
-	    bestValueAssignment += (meeting -> assignment._1)
+
+      var accepted : Boolean = false
+      var position : Int = 0 // FIXME test 0
+     
+      while(!accepted){
+  	    
+        var assignment = orderedUtilities(position)
+        var conflict : Boolean = false
+        
+        for(indexedMeeting <- index.keys){
+          if(indexedMeeting != meeting){
+             if(index.apply(indexedMeeting) == assignment._1){
+               conflict = true
+             }
+           }
+        }
+        
+        if(!conflict){
+            println(id + " position: " + position + " | assignment: " + assignment._1)
+            bestValueAssignment += (meeting -> assignment._1)
+            index += meeting -> assignment._1
+            accepted = true
+        }
+        else {
+            position = Random.nextInt(orderedUtilities.size) // FIXME test 1
+        }
+      }
 	  }
-	  
-	  // Find optimal assignement
-//	  var combinedUtilities = Map[Int, Double]()
-//	  for(function <- marginalUtilities.keys){
-//		  var utilities = marginalUtilities.apply(function)
-//		  for(assignment <- utilities.keys){
-//		    var utility = utilities.apply(assignment)
-//		    var combinedUtility : Double = 0
-//		    if(combinedUtilities.contains(assignment)){
-//		      combinedUtility += combinedUtilities.apply(assignment)
-//		    }
-//		    combinedUtility += utility
-//		    combinedUtilities += (assignment -> combinedUtility)
-//		  }
-//	  }
-//	  
-//	  var orderedUtilities = combinedUtilities.toList sortBy {_._2}
-//	  orderedUtilities = orderedUtilities.reverse
-//	  
-//	  var meetings : Map[Int, Int] = initialState.preference
-//	  
-//	  var blocked = Set[Int]()
-//	  for(meeting <- meetings.keys){
-//	    var slotFound = false
-//	    var i = 0
-//	    while(slotFound == false){
-//  	    var assignment = orderedUtilities(i)
-//  	    if(!blocked.contains(assignment._1)){
-//  	      bestValueAssignment += (meeting -> assignment._1)
-//  	      blocked += assignment._1
-//  	      slotFound = true
-//  	    }
-//  	    else {
-//  	      i+=1
-//  	    }
-//	    }
-//	  }
 	  
 	  bestValueAssignment
 	}
@@ -213,18 +202,11 @@ class VariableVertex (
 			val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + agentUtility)
 			val result = Http(svc OK as.String)
 			
-			if(agentUtility == lastUtility){
-			  if(lastCount > 100){
-			    finished = true;
-			  }
-			  else {
-			    lastCount += 1
-			  }
-			}
 			lastUtility = agentUtility
+      
+      println(id + ": " + bestValueAssignment)
 
 			new MaxSumMessage(id, hardConstraints, newSoftConstraints, bestValueAssignment)
-			initialState
 		}
 		else {
 			initialized = true

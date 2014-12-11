@@ -13,21 +13,20 @@ class DPOPVertex (
     id: Any, 
     agentView: DPOPMessage,
     timeslots: Int,
-    constraints : Constraints
+    constraints : Constraints,
+    index : Map[Int, Map[Any, Int]]
     ) extends DynamicVertex(id, agentView){
   
   // -------------------------- TERMINATION CRITERION -----------------------------------------
   /**
    * Finish boolean
    */
-	var finished : Boolean = false
-
-	override def scoreSignal: Double = {
-		if(this.finished) 
-			0
-		else
-			1
-     }
+//	var finished : Boolean = false
+//
+//	override def scoreSignal: Double = {
+//		if(this.finished){ 0}
+//		else {1}
+//	}
 	
 	/**
 	 * Parent / Child relationships
@@ -65,40 +64,39 @@ class DPOPVertex (
 	def addChild(_child : DPOPVertex) = {children += _child}
 	
 	def computeUtils() = {
+    
+    utilValueMap.clear()
 	  
 	  // Initialize map
-	  if(utilMessages.size == 0){
-	    for (value <- 1 to timeslots){
-			  if(constraints.hard.contains(value)){
-				  utilValueMap += (value -> HARD_UTILITY)
-			  }
-			  else if (constraints.soft.contains(value)){
-			    utilValueMap += (value -> SOFT_UTILITY)
-			  }
-			  else if (constraints.preference.keys.toList.contains(value)){
-			    utilValueMap += (value -> PREF_UTILITY)
-			  }
-		  }
-	  }
-	  
-	  // Merge map with util messages
-	  else {
-		  // Process all utilmessages
-		  for(utilMessage <- utilMessages){
-			  // Calculate usefulness of all values
-			  for (value <- 1 to timeslots){
-			  
-				  var localValueUtility : Double = utilValueMap.get(value).get
-				  var messageValueUtility : Double = utilMessage.getUtilValueMap.get(value).get
-			  
-				  utilValueMap += (value -> (localValueUtility + messageValueUtility)) 
-			  
-//				  if(value == localValue){
-//					  this.localUtility = localMapUtility + messageMapUtility FIXME
-//				  }
-			 }
-	   }
+    if(constraints != null){
+    	for (value <- 1 to timeslots){
+    		if(constraints.hard.contains(value)){
+    			utilValueMap += (value -> HARD_UTILITY)
+    		}
+    		else if (constraints.soft.contains(value)){
+    			utilValueMap += (value -> SOFT_UTILITY)
+    		}
+    		else if (constraints.preference.keys.toList.contains(value)){
+    			utilValueMap += (value -> PREF_UTILITY)
+    		}
+    	}
+    }
+
+    // Merge map with util messages
+    for(utilMessage <- utilMessages){
+    	for (value <- 1 to timeslots){
+    		var localValueUtility : Double = 0
+    		if(utilValueMap.contains(value)){
+    			localValueUtility = utilValueMap.get(value).get
+    		}
+    	  var messageValueUtility : Double = 0
+    		if(utilMessage.getUtilValueMap.contains(value)){
+    			messageValueUtility = utilMessage.getUtilValueMap.get(value).get
+    		}
+    		utilValueMap += (value -> (localValueUtility + messageValueUtility)) 
+    	}
 	 }
+//	  println(utilValueMap)
 	}
 	
 	def chooseOptimal() = {
@@ -109,10 +107,11 @@ class DPOPVertex (
 	    keyVal =>
 	    if(keyVal._2 > highestUtility){
 	      optimalChoice = keyVal._1
-//	      this.localUtility = keyVal._2
 	      highestUtility = keyVal._2
 	    }
 	  }
+	  
+	  println("optimal choice: " + optimalChoice + " / " + highestUtility)
 	  
 	  // Push current utility to monitoring
 //	  System.out.println(id + ": utility - " + localUtility)
@@ -132,64 +131,71 @@ class DPOPVertex (
 	
 	def collect() = {
 	  
+	  var finalMessage : DPOPMessage = null
+	  
 		// Message Type
 		for (signal <- signals.iterator) {
-		  var message : DPOPMessage = signal.asInstanceOf[DPOPMessage]  
-		  if(message != null && message.getMessageType != null){
-			  if(message.getMessageType == "Util"){
-			    if(message.sender != parent.id){ // FIXME
-			      utilMessages += message
-			      System.out.println(id + ": Util message received");
-			    }
-			  }
-			  else if (message.getMessageType == "Value"){
-			    if(!children.contains(message.sender)){ // FIXME
-			      valueMessages += message
-			      System.out.println(id + ": Value message received");
-			    }
-			  }
-		  }
+			try {
+				var message : DPOPMessage = signal.asInstanceOf[DPOPMessage]
+						if(message.getMessageType == "Util"){
+							if(message.sender != parent.id){
+								utilMessages += message
+//										System.out.println(id + ": Util message received");
+							}
+						}
+						else if (message.getMessageType == "Value"){
+							if(message.sender == parent.id){ // FIXME
+								valueMessages += message
+//										System.out.println(id + ": Value message received");
+							}
+						}
+			}
+			catch {
+			  case e : Exception => 
+//          println(id + ": signal was null")
+			}
 		}
 		
 		// Leaf Node: Create Util
-		if(children == null){
-		  System.out.println(id + ": Leaf Node, computeUtils");
+		if(children.size == 0){
 		  computeUtils()
-		  new DPOPMessage(id, 0, utilValueMap, "Util")
+		  finalMessage = new DPOPMessage(id, 0, utilValueMap, "Util")
 		}
 		else {
-			// Check if util message from all children have arrived
+      
+//      println("utilMessage: " + utilMessages.size)
+//      println("children: " + children.size)
+		  
+		  // Check if util message from all children have arrived
 			if(utilMessages.size == children.size){
-			  
+        
+//        println("boom")
+        
 				// Node is root -> Value Message to all children
 				if(parent == null){
-				  System.out.println(id + ": Parent Node, Root, choosingOptimal")
+//				  System.out.println(id + ": Parent Node, Root, choosingOptimal")
 				  chooseOptimal()
-				  new DPOPMessage(id, 0, utilValueMap, "Value") // FIXME correct?
+				  finalMessage = new DPOPMessage(id, 0, utilValueMap, "Value")
 				}
-				// Node is not root -> Util Message to parent
+				// Node is not root -> Meeting Node, Util Message to parent
 				else {
-				  System.out.println(id + ": Parent Node, computeUtils")
 				  computeUtils()
-				  new DPOPMessage(id, 0, utilValueMap, "Util")
+				  finalMessage = new DPOPMessage(id, 0, utilValueMap, "Util")
 				}
+        
+        utilMessages.clear()
 			}
+
+			// Check if value messages have arrived
+			if(valueMessages.size > 0){
+//		    System.out.println(id + ": Process Value Messages, chooseOptimal")
+				chooseOptimal()
+		    finalMessage = new DPOPMessage(id, 0, utilValueMap, "Value")
+        valueMessages.clear()
+		  }
 		}
-			
-		// Check if value messages have arrived FIXME not completely correct
-		if(valueMessages.size > 0){
-//		  System.out.println(id + ": Process Value Messages, chooseOptimal")
-//		  var newValue : Int = 
-		    chooseOptimal()
-//		  if(newValue == optimalChoice){
-//		    finished = true
-//		  }
-		  new DPOPMessage(id, 0, utilValueMap, "Value") // FIXME correct?
-		}
-//		else {
-//		   System.out.println(id + ": Send Value to children")
-//		  // FIXME not in the algorithm
-//		   new DPOPMessage(localValue, "Value")
-//		}
+		
+    // Send final message
+    finalMessage
 	}
 }

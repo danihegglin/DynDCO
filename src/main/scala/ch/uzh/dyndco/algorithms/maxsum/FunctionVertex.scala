@@ -3,11 +3,14 @@ package ch.uzh.dyndco.algorithms.maxsum
 import collection.mutable.Map
 import collection.mutable.Set
 import ch.uzh.dyndco.dynamic.DynamicVertex
+import dispatch._
+import dispatch.Defaults._
 
 class FunctionVertex (
 		id : Any, 
 		initialState: MaxSumMessage,
-		valueSpace: Int
+		valueSpace: Int,
+    index : Map[Any, Int]
 		) extends DynamicVertex(id, initialState) {
   
 	/**
@@ -34,7 +37,7 @@ class FunctionVertex (
 	 * Score signal function
 	 */
 	override def scoreSignal: Double = {
-		if(this.finished) 0
+		if(this.finished)0
 		else 1
 	}
 	
@@ -70,6 +73,35 @@ class FunctionVertex (
 			preferences += (sender -> p)
 
 		}
+      
+      // check finish constraint
+      var meetingId : Int = id.toString().substring(1).toInt
+      var theSame : Boolean = true
+      var refValue : Int = -1
+      for(agent <- preferences.keys){
+        var pref = preferences.apply(agent)
+        var meetingPref = pref.apply(meetingId)
+        
+        println(agent + ": " + meetingPref)
+        
+        if(refValue < 0){
+          refValue = meetingPref
+        }
+        else {
+          if(meetingPref != refValue){
+            theSame = false
+            println(id + ": conflict")
+          }
+        }
+      }
+      if(theSame){
+        println("finished")
+        finished = true
+        
+        // communicate to monitoring
+        val svc = url("http://localhost:9000/stop")
+        val result = Http(svc OK as.String)
+      }
 
 	    // create hard, soft and preference builds for every target with minimal costs
 	    val allMarginalUtilities = Map[Any, Map[Int,Double]]()
