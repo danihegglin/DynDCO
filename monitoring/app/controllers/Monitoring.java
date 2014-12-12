@@ -152,7 +152,12 @@ public class Monitoring extends Controller {
 		    p.waitFor();
 		
 		// Update UI
-		Application.sendUpdate(globalUtility);
+		double utility = 0.0;
+		for(agentUtility : agentUtilities.keySet()){
+			utility += agentUtilies.get(agentUtility);
+		}
+		
+		Application.sendUpdate(utility);
 		
 		//Application.sendUpdate(globalUtility);
 //		if(!workerThread.isAlive()){
