@@ -36,7 +36,7 @@ object MaxSum extends App {
 	val allConstraints = factory.buildAllConstraints(allParticipations)
 	
 		/**
-		 * Initializae Graph
+		 * Initialize Graph
 		 */
 		val graph = GraphBuilder.withConsole(true,8091).build
 		

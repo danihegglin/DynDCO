@@ -1,41 +1,53 @@
-\chapter{Design 10}
-\section{Mapping Algorithms to Signal/Collect}
-\section{Scheduling Problem Definition and General Mapping}
-\section{Change Module as Framework Extension}
+\chapter{Design}
+\section{Meeting Scheduling Problem Definition}
 
-\section{DCOP Algorithms}
-\subsection{Complete - DCOP}
+- General problem and definitions
+- General constraints Different, Same (sources for that)
+- Considerations for all algorithms
 
-- Distributed, Not Dynamic, Complete -> Show what is wrong with this approach regarding dynamic
+%\section{DCOP Algorithms}
 
-\subsection{Dynamic, Complete - RSDPOP}
+\section{Complete - DPOP}
+\subsection{Design Considerations}
+\subsection{Graph}
+\subsection{Vertices}
 
-\subsection{Not local-iterative - SBDO}
 
-- Distributed, Dynamic, Not-Local-Iterative -> Show what is wrong with this approach regarding dynamic
+\section{Local Iterative Best-Respone - Maximum Gain Messaging}
+\subsection{Design Considerations}
+\subsection{Graph}
+\subsection{Vertices}
 
-\subsection{Best-Respone - Maximum Gain Messaging}
 
-- Distributed, Not Dynamic, Not-Local-Iterative -> Show what is wrong with this approach regarding dynamic
-
-\subsection{Best Response - DSA}
-
-\subsection{Local Iterative - MaxSum}
+\section{Local Iterative Message Passing - MaxSum}
+\subsection{Design Considerations}
+\subsection{Graph}
+\subsection{Vertices}
 
 -> Local Iterative
 -> Good fit for dynamic
 -> Better than the above
 -> Fewer information disclosure
 
-\subsection{Best Response, Local Search - Population-Based Iterated Local Search}
-\subsubsection{Why Population-Based for Dynamic Problems}
--> Local Iterative
--> Provides multiple solutions to a problem
--> Good fit for dynamic -> check which solution is best for changed circumstances
--> Good fit to stop getting stuck in local optima
--> Better than the above
-\subsubsection{Implementation in Signal/Collect}
+\section{Dynamic Environment Extension}
 
-\section{Testbed}
-\subsection{Dataset}
+%\subsection{Best Response, Local Search - Population-Based Iterated Local Search}
+%\subsubsection{Why Population-Based for Dynamic Problems}
+%-> Local Iterative
+%-> Provides multiple solutions to a problem
+%-> Good fit for dynamic -> check which solution is best for changed circumstances
+%-> Good fit to stop getting stuck in local optima
+%-> Better than the above
+%
+%
+%\subsection{Dynamic, Complete - RSDPOP}
+%\subsection{Not local-iterative - SBDO}
+%\subsection{Best Response - DSA}
+%
+%- Distributed, Dynamic, Not-Local-Iterative -> Show what is wrong with this approach regarding dynamic
+%
+%\subsubsection{Implementation in Signal/Collect}
+
+\section{Testbed, Monitoring}
+%\subsection{Dataset}
 \subsection{Evaluation}

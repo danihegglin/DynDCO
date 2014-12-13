@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  1 NOV 2014 23:51
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  12 DEC 2014 17:22
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -6,25 +6,25 @@ entering extended mode
 **thesis.tex
 (./thesis.tex
 LaTeX2e <2011/06/27>
-Babel <3.9f> and hyphenation patterns for 78 languages loaded.
+Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, german-x-2012-05-30, ngerman-x-2012-05-30, afrikaans, ancientgreek, ibycus, arabic, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danish, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnish, french, friulan, galician, german, ngerman, swissgerman, monogreek, greek, hungarian, icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, marathi, oriya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, kurmanji, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk, polish, portuguese, romanian, romansh, russian, sanskrit, serbian, serbianc, slovak, slovenian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, welsh, loaded.
 (./ddis-thesis.cls
 Document Class: ddis-thesis 2006/06/06 v1.0e ddis LaTeX thesis class
-(/usr/local/texlive/2013/texmf-dist/tex/latex/koma-script/scrbook.cls
-Document Class: scrbook 2012/07/29 v3.11b KOMA-Script document class (book)
-(/usr/local/texlive/2013/texmf-dist/tex/latex/koma-script/scrkbase.sty
-Package: scrkbase 2012/07/29 v3.11b KOMA-Script package (KOMA-Script-dependent basics and keyval usage)
- (/usr/local/texlive/2013/texmf-dist/tex/latex/koma-script/scrbase.sty
-Package: scrbase 2012/07/29 v3.11b KOMA-Script package (KOMA-Script-independent basics and keyval usage)
- (/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/keyval.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/koma-script/scrbook.cls
+Document Class: scrbook 2012/05/15 v3.11 KOMA-Script document class (book)
+(/usr/local/texlive/2012/texmf-dist/tex/latex/koma-script/scrkbase.sty
+Package: scrkbase 2012/05/15 v3.11 KOMA-Script package (KOMA-Script-dependent basics and keyval usage)
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/koma-script/scrbase.sty
+Package: scrbase 2012/05/15 v3.11 KOMA-Script package (KOMA-Script-independent basics and keyval usage)
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks14
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/koma-script/scrlfile.sty
-Package: scrlfile 2012/06/15 v3.12 KOMA-Script package (loading files)
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/koma-script/scrlfile.sty
+Package: scrlfile 2011/03/09 v3.09 KOMA-Script package (loading files)
 
-Package scrlfile, 2012/06/15 v3.12 KOMA-Script package (loading files)
+Package scrlfile, 2011/03/09 v3.09 KOMA-Script package (loading files)
                   Copyright (C) Markus Kohm
 
-))) (/usr/local/texlive/2013/texmf-dist/tex/latex/koma-script/tocbasic.sty
+))) (/usr/local/texlive/2012/texmf-dist/tex/latex/koma-script/tocbasic.sty
 Package: tocbasic 2012/04/04 v3.10b KOMA-Script package (handling toc-files)
 )
 Package tocbasic Info: omitting babel extension for `toc'
@@ -37,13 +37,13 @@ Package tocbasic Info: omitting babel extension for `lot'
 (tocbasic)             because of feature `nobabel' available
 (tocbasic)             for `lot' on input line 119.
 Class scrbook Info: File `scrsize11pt.clo' used instead of
-(scrbook)           file `scrsize11.clo' to setup font sizes on input line 1368.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/koma-script/scrsize11pt.clo
-File: scrsize11pt.clo 2012/07/29 v3.11b KOMA-Script font size class option (11pt)
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/koma-script/typearea.sty
-Package: typearea 2012/07/29 v3.11b KOMA-Script package (type area)
+(scrbook)           file `scrsize11.clo' to setup font sizes on input line 1366.
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/koma-script/scrsize11pt.clo
+File: scrsize11pt.clo 2012/05/15 v3.11 KOMA-Script font size class option (11pt)
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/koma-script/typearea.sty
+Package: typearea 2012/05/15 v3.11 KOMA-Script package (type area)
 
-Package typearea, 2012/07/29 v3.11b KOMA-Script package (type area)
+Package typearea, 2012/05/15 v3.11 KOMA-Script package (type area)
                   Copyright (C) Frank Neukam, 1992-1994
                   Copyright (C) Markus Kohm, 1994-
 
@@ -68,7 +68,7 @@ Package typearea Info: These are the values describing the layout:
 (typearea)              \topskip        = 11.0pt
 (typearea)              \footskip       = 47.60002pt
 (typearea)              \baselineskip   = 13.6pt
-(typearea)              on input line 1213.
+(typearea)              on input line 1211.
 )
 \c@part=\count80
 \c@chapter=\count81
@@ -83,7 +83,7 @@ Package typearea Info: These are the values describing the layout:
 \c@figure=\count87
 \c@table=\count88
 \bibindent=\dimen102
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/listings.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/listings/listings.sty
 \lst@mode=\count89
 \lst@gtempboxa=\box27
 \lst@token=\toks15
@@ -96,50 +96,50 @@ Package typearea Info: These are the values describing the layout:
 \lst@newlines=\count93
 \lst@lineno=\count94
 \lst@maxwidth=\dimen106
- (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/lstmisc.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
 \c@lstnumber=\count95
 \lst@skipnumbers=\count96
 \lst@framebox=\box28
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/listings/listings.cfg
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/listings/listings.cfg
 File: listings.cfg 2007/02/22 1.4 listings configuration
 ))
 Package: listings 2007/02/22 1.4 (Carsten Heinz)
- (/usr/local/texlive/2013/texmf-dist/tex/latex/url/url.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip10
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
-)) (/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2013/01/14 v2.14 AMS math features
+)) (/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
 \@mathmargin=\skip47
 
 For additional information on amsmath, use the `?' option.
-(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amstext.sty
 Package: amstext 2000/06/29 v2.01
- (/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsgen.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0
 \@emptytoks=\toks16
 \ex@=\dimen107
-)) (/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsbsy.sty
+)) (/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d
 \pmbraise@=\dimen108
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsopn.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 1999/12/14 v2.01 operator names
 )
 \inf@bad=\count97
-LaTeX Info: Redefining \frac on input line 210.
+LaTeX Info: Redefining \frac on input line 211.
 \uproot@=\count98
 \leftroot@=\count99
-LaTeX Info: Redefining \overline on input line 306.
+LaTeX Info: Redefining \overline on input line 307.
 \classnum@=\count100
 \DOTSCASE@=\count101
-LaTeX Info: Redefining \ldots on input line 378.
-LaTeX Info: Redefining \dots on input line 381.
-LaTeX Info: Redefining \cdots on input line 466.
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
 \Mathstrutbox@=\box29
 \strutbox@=\box30
 \big@size=\dimen109
-LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
 \macc@depth=\count102
 \c@MaxMatrixCols=\count103
 \dotsspace@=\muskip11
@@ -160,10 +160,10 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
 \multlinegap=\skip48
 \multlinetaggap=\skip49
 \mathdisplay@stack=\toks20
-LaTeX Info: Redefining \[ on input line 2665.
-LaTeX Info: Redefining \] on input line 2666.
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/amscls/amsthm.sty
-Package: amsthm 2004/08/06 v2.20
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/amscls/amsthm.sty
+Package: amsthm 2009/07/02 v2.20.1
 \thm@style=\toks21
 \thm@bodyfont=\toks22
 \thm@headfont=\toks23
@@ -173,21 +173,21 @@ Package: amsthm 2004/08/06 v2.20
 \thm@postskip=\skip51
 \thm@headsep=\skip52
 \dth@everypar=\toks26
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/amssymb.sty
-Package: amssymb 2013/01/14 v3.01 AMS font symbols
- (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/amsfonts.sty
-Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2009/06/22 v3.00
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
 \symAMSa=\mathgroup4
 \symAMSb=\mathgroup5
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
-(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)) (/usr/local/texlive/2013/texmf-dist/tex/latex/base/inputenc.sty
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
+)) (/usr/local/texlive/2012/texmf-dist/tex/latex/base/inputenc.sty
 Package: inputenc 2008/03/30 v1.1d Input encoding file
 \inpenc@prehook=\toks27
 \inpenc@posthook=\toks28
- (/usr/local/texlive/2013/texmf-dist/tex/latex/base/latin1.def
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/base/latin1.def
 File: latin1.def 2008/03/30 v1.1d Input encoding file
-)) (/usr/local/texlive/2013/texmf-dist/tex/latex/program/program.sty
+)) (/usr/local/texlive/2012/texmf-dist/tex/latex/program/program.sty
 \@gtempa=\dimen116
 \@gtempa=\dimen117
 \@gtempa=\dimen118
@@ -243,20 +243,20 @@ File: latin1.def 2008/03/30 v1.1d Input encoding file
 \symeulerletters=\mathgroup6
 \powersetbox=\box31
 LaTeX Font Info:    Try loading font information for U+msa on input line 839.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 839.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 )
 LaTeX Font Info:    Try loading font information for U+eur on input line 839.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/ueur.fd
-File: ueur.fd 2013/01/14 v3.01 Euler Roman
-)) (/usr/local/texlive/2013/texmf-dist/tex/latex/jknapltx/mathrsfs.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/ueur.fd
+File: ueur.fd 2009/06/22 v3.00 Euler Roman
+)) (/usr/local/texlive/2012/texmf-dist/tex/latex/jknapltx/mathrsfs.sty
 Package: mathrsfs 1996/01/01 Math RSFS package v1.0 (jk)
 \symrsfs=\mathgroup7
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2008/02/07
  Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix <2008/02/07> (tvz)
 \FV@CodeLineNo=\count111
@@ -265,7 +265,7 @@ Package: fancyvrb 2008/02/07
 \c@FancyVerbLine=\count112
 \FV@StepNumber=\count113
 \FV@OutFile=\write3
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 \fancy@headwidth=\skip53
 \f@ncyO@elh=\skip54
 \f@ncyO@erh=\skip55
@@ -275,28 +275,28 @@ Package: fancyvrb 2008/02/07
 \f@ncyO@erf=\skip59
 \f@ncyO@olf=\skip60
 \f@ncyO@orf=\skip61
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphicx.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
- (/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphics.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
- (/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/trig.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/graphics.cfg
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/graphics.cfg
 File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/pdftex-def/pdftex.def
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/pdftex-def/pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
- (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/infwarerr.sty
 Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
-) (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
 \Gread@gobject=\count114
 ))
 \Gin@req@height=\dimen166
 \Gin@req@width=\dimen167
-) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+) (/Users/danielhegglin/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
@@ -312,7 +312,7 @@ LaTeX Font Info:    ... okay on input line 24.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
 LaTeX Font Info:    ... okay on input line 24.
 \c@lstlisting=\count115
- (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
+ (/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count116
 \scratchdimen=\dimen168
@@ -325,12 +325,12 @@ LaTeX Font Info:    ... okay on input line 24.
 \MPnumerator=\count120
 \makeMPintoPDFobject=\count121
 \everyMPtoPDFconversion=\toks30
-) (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO)
- (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ifluatex.sty
 Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
-) (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
 Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
@@ -338,17 +338,17 @@ Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+) (/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
- (/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/grfext.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/grfext.sty
 Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
- (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
 Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
-)) (/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+)) (/usr/local/texlive/2012/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
- (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
 Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
- (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+ (/usr/local/texlive/2012/texmf-dist/tex/generic/oberdiek/etexcmds.sty
 Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
 Package etexcmds Info: Could not find \expanded.
 (etexcmds)             That can mean that you are not using pdfTeX 1.50 or
@@ -358,7 +358,7 @@ Package etexcmds Info: Could not find \expanded.
 Package grfext Info: Graphics extension search list:
 (grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 452.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 )) (./section-title/title.tex
 Underfull \hbox (badness 10000) in paragraph at lines 37--37
@@ -381,7 +381,7 @@ Overfull \hbox (47.93617pt too wide) in paragraph at lines 59--60
 
 
 
-{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./section-title/figures/uzh_logo_e_pos.pdf>]) (./section-acknowledgements/acknowledgements.tex [2
+{/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./section-title/figures/uzh_logo_e_pos.pdf>]) (./section-acknowledgements/acknowledgements.tex [2
 
 
 
@@ -422,9 +422,9 @@ LaTeX Font Warning: Font shape `OT1/pfr/bx/n' in size <32> not available
 
 
 
-] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.toc
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 3.
- (/usr/local/texlive/2013/texmf-dist/tex/latex/jknapltx/ursfs.fd
+] (/Users/danielhegglin/git/dyndco/documentation/report/.texpadtmp/thesis.toc
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 2.
+ (/usr/local/texlive/2012/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 ) [9])
 \tf@toc=\write4
@@ -440,17 +440,17 @@ LaTeX Font Warning: Font shape `OT1/pfr/m/n' in size <72> not available
 LaTeX Font Warning: Font shape `OT1/pfr/bx/n' in size <72> not available
 (Font)              size <24.88> substituted on input line 1.
 
-) (./section-relatedwork/relatedwork.tex
-Underfull \hbox (badness 10000) in paragraph at lines 3--1
+
+Underfull \hbox (badness 10000) in paragraph at lines 4--5
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 3--1
+Underfull \hbox (badness 10000) in paragraph at lines 7--8
 
  []
 
-[1
+) (./section-relatedwork/relatedwork.tex [1
 
 
 
@@ -462,49 +462,43 @@ Underfull \hbox (badness 10000) in paragraph at lines 3--1
 
 ]
 Chapter 2.
-[3] [4
+) (./section-design/design.tex [3] [4
 
 
 
 ]
 Chapter 3.
-) (./section-design/design.tex [5] [6
-
-
-
-]
+) (./section-implentation/implementation.tex [5] [6]
 Chapter 4.
-[7]) (./section-implentation/implementation.tex [8]
-Chapter 5.
-) (./section-results/results.tex [9
+) (./section-results/results.tex [7
 
 
 
-] [10
+] [8
 
 
 
 ]
+Chapter 5.
+) (./section-limitations/limitations.tex [9] [10]
 Chapter 6.
-) (./section-limitations/limitations.tex [11] [12
+) (./section-futurework/futurework.tex [11
+
+
+
+] [12
 
 
 
 ]
 Chapter 7.
-) (./section-futurework/futurework.tex [13] [14
+) (./section-conclusions/conclusions.tex [13] [14
 
 
 
 ]
 Chapter 8.
-) (./section-conclusions/conclusions.tex [15] [16
-
-
-
-]
-Chapter 9.
-) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [17] [18
+) (/Users/danielhegglin/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [15] [16
 
 
 
@@ -513,33 +507,33 @@ Chapter 9.
 LaTeX Warning: Empty `thebibliography' environment or \BreakBibliography
                before end of `thebibliography' environment on input line 3.
 
-) (./section-appendix/appendix.tex [19] [20
+) (./section-appendix/appendix.tex [17] [18
 
 
 
 ]
 Appendix A.
-[21]) [22] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lof)
+[19]) [20] (/Users/danielhegglin/git/dyndco/documentation/report/.texpadtmp/thesis.lof)
 \tf@lof=\write5
 \openout5 = `thesis.lof'.
 
- [23
+ [21
 
 
 
 
 
 
-] [24
+] [22
 
 
 
 
-] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lot)
+] (/Users/danielhegglin/git/dyndco/documentation/report/.texpadtmp/thesis.lot)
 \tf@lot=\write6
 \openout6 = `thesis.lot'.
 
- [25] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+ [23] (/Users/danielhegglin/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 47.12pt have occurred.
@@ -549,18 +543,18 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 6156 strings out of 493315
- 89623 string characters out of 6137905
- 179050 words of memory out of 5000000
- 9446 multiletter control sequences out of 15000+600000
- 15777 words of font info for 61 fonts, out of 8000000 for 9000
+ 6148 strings out of 493488
+ 89577 string characters out of 3141326
+ 175318 words of memory out of 3000000
+ 9293 multiletter control sequences out of 15000+200000
+ 15777 words of font info for 61 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 46i,10n,47p,1185b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb>
-Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (35 pages, 132182 bytes).
+ 46i,10n,47p,1185b,246s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb>
+Output written on /Users/danielhegglin/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (33 pages, 130542 bytes).
 PDF statistics:
- 141 PDF objects out of 1000 (max. 8388607)
- 96 compressed objects within 1 object stream
+ 135 PDF objects out of 1000 (max. 8388607)
+ 92 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
