@@ -50,6 +50,7 @@ object MGM extends App {
 		// build variable vertices
 		var neighbourhoods : Map[Int, Set[MGMVertex]] = Map[Int, Set[MGMVertex]]()
     for(meeting <- meetings){
+      println(meeting.meetingID)
        neighbourhoods += meeting.meetingID -> Set[MGMVertex]()
     }
 						
@@ -57,6 +58,8 @@ object MGM extends App {
     var agentIndices : Map[Any, Map[Int,Int]] = Map[Any, Map[Int,Int]]()
 		for(agent : Int <- allParticipations.keys){
         
+      println(agent)
+      
       var agentIndex : Map[Int,Int] = Map[Int,Int]()
       agentIndices += agent -> agentIndex
 			  
@@ -89,7 +92,6 @@ object MGM extends App {
 		    }
 		  }
 		}
-		
 
 		/**
 		 * Run the graph
@@ -101,7 +103,6 @@ object MGM extends App {
 					
 		// show run info
 		println(stats)
-//		graph.foreachVertex(println(_))
 					
 		// show results
     for(agent <- agentIndices.keys){

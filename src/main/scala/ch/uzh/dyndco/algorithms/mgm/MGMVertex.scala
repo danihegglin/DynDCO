@@ -71,13 +71,19 @@ import collection.mutable.Map
 	def collect() = {
 	  
 	  if(!initialized){
+      
+      initialized = true
 	    
 	    // send current preference for meeting
 	    var preferences = constraints.preference
-	    var meetingPref : Int = preferences.apply(id.toString().substring(3).toInt)
-	    initialized = true
+      var meetingID : Int = id.toString().substring(3).toInt
+	    var meetingPref : Int = preferences.apply(meetingID)
 	    
 	    // build ordered list of best timeslots // FIXME too extensive
+      println(constraints.hard)
+      println(constraints.soft)
+      println(constraints.preference)
+      
       var utilValueMap : Map[Int,Double] = Map[Int, Double]()
       for (value <- 1 to timeslots){
     		if(constraints.hard.contains(value)){
@@ -89,45 +95,51 @@ import collection.mutable.Map
     		else if (constraints.preference.keys.toList.contains(value)){
     			utilValueMap += (value -> PREF_UTILITY)
     		}
+//        else {
+//          utilValueMap += (value -> 0) // FIXME should not be necessary
+//        }
     	}
-	    
-	    lastGain = utilValueMap.apply(meetingPref)
+      
+      println(utilValueMap)
+      	    
+//	    lastGain = utilValueMap.apply(meetingPref)
 	    
 	    new MGMMessage(id, meetingPref)
 	    
 	  }
 	  else{
 	    
-		  var messages : Set[MGMMessage] = Set[MGMMessage]()
-		  for (signal <- signals.iterator) {
-			  messages += signal.asInstanceOf[MGMMessage]
-		  }
-		  
-		  var message : MGMMessage = messages.toVector(0)
-		  var messageType : String = message.getType()
-	    
-	    if(messageType == "value"){
-	      println("received values")
-	      for(message <- messages){
-	        values += (message.sender -> message.value)
-	      }
-	    }
-	    else if(messageType == "gain"){
-	      println("received gain")
-	      var hasBestGain = true
-	      for(message <- messages){
-	        if(message.gain > lastGain){
-	          hasBestGain = false
-	        }
-	      }
-	      if(hasBestGain == true){
-	        new MGMMessage(id, lastValue)
-	      }
-  	      
-  	    // choose assignment with maximal local gain, send gain, store gain
-	      chooseMaximalGain()
-	      new MGMMessage(id, lastGain)
-	    }
+//		  var messages : Set[MGMMessage] = Set[MGMMessage]()
+//		  for (signal <- signals.iterator) {
+//			  messages += signal.asInstanceOf[MGMMessage]
+//		  }
+//		  
+//		  var message : MGMMessage = messages.toVector(0)
+//		  var messageType : String = message.getType()
+//	    
+//	    if(messageType == "value"){
+//	      println("received values")
+//	      for(message <- messages){
+//	        values += (message.sender -> message.value)
+//	      }
+//	    }
+//	    else if(messageType == "gain"){
+//	      println("received gain")
+//	      var hasBestGain = true
+//	      for(message <- messages){
+//	        if(message.gain > lastGain){
+//	          hasBestGain = false
+//	        }
+//	      }
+//	      if(hasBestGain == true){
+//	        new MGMMessage(id, lastValue)
+//	      }
+//  	      
+//  	    // choose assignment with maximal local gain, send gain, store gain
+//	      chooseMaximalGain()
+//	      new MGMMessage(id, lastGain)
+//	    }
+       new MGMMessage(id, 1) // FIXME remove
 	  }
 	}
     

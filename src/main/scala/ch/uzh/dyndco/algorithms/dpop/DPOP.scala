@@ -9,11 +9,14 @@ import scala.collection.mutable.MutableList
 import ch.uzh.dyndco.algorithms.maxsum.Meeting
 import collection.mutable.Map
 import collection.mutable.Set
+import dispatch._
+import dispatch.Defaults._
 
 ///**
 // * based on: A Scalable Method for Multiagent Constraint Optimization
 // */
 //
+
 object DPOP extends App {
 	
 	/**
@@ -22,6 +25,12 @@ object DPOP extends App {
   val TIMESLOTS : Int = 5
 	val AGENTS : Int = 2
 	val MEETINGS : Int = 1
+  
+  /**
+   * Monitoring
+   */
+  val svc = url("http://localhost:9000/start")
+  val result = Http(svc OK as.String)
 	
 	/**
 	 * Build meetings, participations, constraints

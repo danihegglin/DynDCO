@@ -11,6 +11,10 @@ import ch.uzh.dyndco.problems.Constraints
 import dispatch._
 import dispatch.Defaults._
 
+/**
+ * Based on: FIXME
+ */
+
 object MaxSum extends App {
 
 	/**
@@ -23,7 +27,6 @@ object MaxSum extends App {
   /**
    * Monitoring
    */
-  // communicate to monitoring
   val svc = url("http://localhost:9000/start")
   val result = Http(svc OK as.String)
 	
@@ -43,7 +46,7 @@ object MaxSum extends App {
 		  // build variable vertices
 		  var variableVertices : Set[VariableVertex] = Set[VariableVertex]()
 						
-		   // build function vertices
+		   // build function vertices FIXME change
 			for(meeting <- meetings){
         var meetingIndex : Map[Any, Int] = Map[Any, Int]()
 			  var functionId : Any = "f" + meeting.meetingID
