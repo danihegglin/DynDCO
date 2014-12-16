@@ -7,25 +7,34 @@ import dispatch.Defaults._
 import scala.collection.SortedMap
 import scala.util.Random
 import ch.uzh.dyndco.dynamic.DynamicVertex
+import ch.uzh.dyndco.problems.Constraints
 
 class VariableVertex (
 		id: Any, 
 		initialState: MaxSumMessage, 
 		valueSpace: Int,
+    constraints : Constraints,
     index : Map[Int, Int]
 		) extends DynamicVertex(id, initialState) {
+  
+  /**
+   * Config
+   */
+  final var HARD_UTILITY : Double = -10
+  final var SOFT_UTILITY : Double = 0
+  final var PREF_UTILITY : Double = 10
 
-	/**
-	 * This variable constraints
-	 */
-	var hardConstraints = initialState.hard
-	var softConstraints = initialState.soft
-	var preferences = initialState.preference
+//	/**
+//	 * This variable constraints
+//	 */
+//	var hardConstraints = initialState.hard
+//	var softConstraints = initialState.soft
+//	var preferences = initialState.preference
 	
 	/**
 	 * The Utility
 	 */
-	final var originalState = initialState
+	final var originalConstraints = constraints
 	var agentUtility : Double = 0
 	var lastUtility : Double = 0
 	var lastCount : Int = 0
@@ -53,14 +62,14 @@ class VariableVertex (
 			    
 			     }
 
-			def show() = {
-		println("variable " + id)
-		println("--------------")
-		println("hc:" + hardConstraints.toString())
-		println("sc:" + softConstraints.toString())
-		println("pf:" + preferences.toString())
-		println("--------------")
-	}
+//			def show() = {
+//		println("variable " + id)
+//		println("--------------")
+//		println("hc:" + hardConstraints.toString())
+//		println("sc:" + softConstraints.toString())
+//		println("pf:" + preferences.toString())
+//		println("--------------")
+//	}
 	
 	def buildMarginalUtilities(allMarginalUtilities : Map[Any, Map[Any, Map[Int, Double]]], timeslots : Int) : Map[Any,Map[Int, Double]] = {
 	  
@@ -148,69 +157,89 @@ class VariableVertex (
 	def calculateUtility(bestValueAssignments : Map[Int,Int]) : Double = {
 	  var utility : Double = 10 * bestValueAssignments.size
 	  for(chosenTimeslot <- bestValueAssignments.values){
-		  if(originalState.hard.contains(chosenTimeslot)){
+		  if(originalConstraints.hard.contains(chosenTimeslot)){
 		    utility -= 10
 		  }
-		  else if(originalState.soft.contains(chosenTimeslot)){
+		  else if(originalConstraints.soft.contains(chosenTimeslot)){
 		    utility -= 5
 		  }
 	  }
 	  utility
 	}
+  
+  def calculateOriginUtilities() : Map[Any, Map[Int, Double]] = {
+     var utilValueMap = Map[Int, Double]()
+      for (value <- 1 to valueSpace){
+        if(constraints.hard.contains(value)){
+          utilValueMap += (value -> HARD_UTILITY)
+        }
+        else if (constraints.soft.contains(value)){
+          utilValueMap += (value -> SOFT_UTILITY)
+        }
+        else if (constraints.preference.values.toList.contains(value)){
+          utilValueMap += (value -> PREF_UTILITY)
+        }
+      }
+     
+     var finalUtilities = Map[Any, Map[Int, Double]]()
+     finalUtilities += (id -> utilValueMap)
+     finalUtilities
+  }
 
 	// calculate sum of all costs received, choose the one with lowest costs, send to funtionvertex
 	def collect() = {
 
 		if(initialized){
 		  
-		  // allMarginalUtilities: function -> variable -> assignment -> utility
-			val allMarginalUtilities = Map[Any, Map[Any, Map[Int, Double]]]()
+//		   allUtilities: function -> variable -> timeslot -> utility
+			val receivedUtilities = Map[Any, Map[Any, Map[Int, Double]]]()
 			for (signal <- signals.iterator) {
 			  
 				try {
-					var proposal : MaxSumMessage = signal
-					var costAssignments = proposal.allCostAssignments
-					var sender : Any = proposal.sender
-					allMarginalUtilities += (sender -> costAssignments)
+					var message : MaxSumMessage = signal
+//					var costAssignments = message.allUtilities
+//					var sender : Any = message.sender
+					receivedUtilities += (message.sender -> message.utilities)
 				}
 				catch {
 				  case e : Exception => println("signal was null")
 				}
 			}
 
-			// prepare utilities
-			val marginalUtilities = buildMarginalUtilities(allMarginalUtilities, valueSpace)
-			
-			// find best assignments for all requirements
-			val bestValueAssignment = findBestValueAssignment(marginalUtilities)
-			preferences = bestValueAssignment
-			
-			// adjust softConstraints // FIXME also hardconstraints
-			var newSoftConstraints = Set[Int]()
-			for(assignment <- 1 to valueSpace){
-				if(bestValueAssignment.contains(assignment)){}
-				else if(hardConstraints.contains(assignment)){}
-				else {
-				  newSoftConstraints += assignment
-				}
-			}
+//			// prepare utilities
+			val allUtilities = buildMarginalUtilities(receivedUtilities, valueSpace)
+//			
+//			// find best assignments for all requirements
+			val bestValueAssignment = findBestValueAssignment(allUtilities)
+//			constraints.preference = bestValueAssignment
+//			
+//			// adjust softConstraints // FIXME also hardconstraints
+//			var newSoftConstraints = Set[Int]()
+//			for(assignment <- 1 to valueSpace){
+//				if(bestValueAssignment.contains(assignment)){}
+//				else if(constraints.hard.contains(assignment)){}
+//				else {
+//				  newSoftConstraints += assignment
+//				}
+//			}
 //			softConstraints = newSoftConstraints
 			
 			agentUtility = calculateUtility(bestValueAssignment)
-			
-			// Push current utility
-			val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + agentUtility)
-			val result = Http(svc OK as.String)
-			
-			lastUtility = agentUtility
-      
-      println(id + ": " + bestValueAssignment)
+//			
+//			// Push current utility
+//			val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + agentUtility)
+//			val result = Http(svc OK as.String)
+//			
+//			lastUtility = agentUtility
+//      
+//      println(id + ": " + bestValueAssignment)
 
-			new MaxSumMessage(id, hardConstraints, newSoftConstraints, bestValueAssignment)
+			new MaxSumMessage(id, allUtilities) //id, hardConstraints, newSoftConstraints, bestValueAssignment
 		}
 		else {
 			initialized = true
-			initialState
+      new MaxSumMessage(id, calculateOriginUtilities())
+//			initialState
 		}
 	}
 }

@@ -36,8 +36,8 @@ object MaxSumGraph {
           // build variable vertex
           var variableId : Any = "v" + agent + "m" + meetingId
           var constraints = problem.allConstraints.apply(agent)
-          var maxSumMessage = new MaxSumMessage(constraints.sender,constraints.hard,constraints.soft, constraints.preference) // FIXME
-          var varVertex = new VariableVertex(variableId,maxSumMessage,problem.TIMESLOTS, agentIndex)
+//          var maxSumMessage = new MaxSumMessage(constraints.sender,constraints.hard,constraints.soft, constraints.preference) // FIXME
+          var varVertex = new VariableVertex(variableId,null,problem.TIMESLOTS, constraints, agentIndex)
           graph.addVertex(varVertex)
           
           // build function vertex

@@ -48,157 +48,174 @@ class FunctionVertex (
 	def collect() = {
 
 	    // Process constraints
-	    val hardConstraints = Map[Any, Set[Int]]() // Blocked timeslots (vertex, set of constraints)
-		  val softConstraints = Map[Any, Set[Int]]() // Free timeslots (vertex, set of constraints)
-		  val preferences = Map[Any, Map[Int,Int]]() // Proposed timeslot of any variable (vertex, set of constraints)
+//	    val hardConstraints = Map[Any, Set[Int]]() // Blocked timeslots (vertex, set of constraints)
+//		  val softConstraints = Map[Any, Set[Int]]() // Free timeslots (vertex, set of constraints)
+//		  val preferences = Map[Any, Map[Int,Int]]() // Proposed timeslot of any variable (vertex, set of constraints)
 
   		// Unpack constraint pack
+      var receivedUtilities = Map[Any, Map[Int,Double]]()
   		for (signal <- signals.iterator) {
   
-  		  var proposal : MaxSumMessage = signal
+  		  var message : MaxSumMessage = signal
+        for(sender <- message.utilities.keys){
+          receivedUtilities += (sender -> message.utilities.apply(sender))
+        }
   
-  			// sender
-  			var sender = proposal.sender
-  
-  			// work the blocked slots
-  			var h : Set[Int] = proposal.hard
-  			hardConstraints += (sender -> h)
-  
-  			// work the free slots
-  			var s : Set[Int] = proposal.soft
-  			softConstraints += (sender -> s)
-  
-  			// work the proposed slot, take the necessary one
-  			var p : Map[Int,Int] = proposal.preference
-  			preferences += (sender -> p)
+//  			// sender
+//  			var sender = proposal.sender
+//  
+//  			// work the blocked slots
+//  			var h : Set[Int] = proposal.hard
+//  			hardConstraints += (sender -> h)
+//  
+//  			// work the free slots
+//  			var s : Set[Int] = proposal.soft
+//  			softConstraints += (sender -> s)
+//  
+//  			// work the proposed slot, take the necessary one
+//  			var p : Map[Int,Int] = proposal.preference
+//  			preferences += (sender -> p)
   
   		}
       
       // check finish constraint
-      var meetingId : Int = id.toString().substring(1).toInt
-      var theSame : Boolean = true
-      var refValue : Int = -1
-      for(agent <- preferences.keys){
-        var pref = preferences.apply(agent)
-        var meetingPref = pref.apply(meetingId)
-        
-        println(agent + ": " + meetingPref)
-        
-        if(refValue < 0){
-          refValue = meetingPref
-        }
-        else {
-          if(meetingPref != refValue){
-            theSame = false
-            println(id + ": conflict")
-          }
-        }
-      }
-      if(theSame){
-        println("finished")
-        finished = true
-      }
+//      var meetingId : Int = id.toString().substring(1).toInt
+//      var theSame : Boolean = true
+//      var refValue : Int = -1
+//      for(agent <- preferences.keys){
+//        var pref = preferences.apply(agent)
+//        var meetingPref = pref.apply(meetingId)
+//        
+//        println(agent + ": " + meetingPref)
+//        
+//        if(refValue < 0){
+//          refValue = meetingPref
+//        }
+//        else {
+//          if(meetingPref != refValue){
+//            theSame = false
+//            println(id + ": conflict")
+//          }
+//        }
+//      }
+//      if(theSame){
+//        println("finished")
+//        finished = true
+//      }
 
 	    // create hard, soft and preference builds for every target with minimal costs
-	    val allMarginalUtilities = Map[Any, Map[Int,Double]]()
+	    val allUtilities = Map[Any, Map[Int,Double]]()
 			for(messageReceiver <- targetIds.iterator){
+        var utilities = Map[Int, Double]()
+        for(messageSender <- receivedUtilities.keys){
+          if(messageReceiver != messageSender){
+            var sentUtilities = receivedUtilities.apply(messageSender)
+            for(timeslot <- sentUtilities.keys){
+              var utility = 0.0
+              if(utilities.contains(timeslot)){
+                utility += utilities.apply(timeslot)
+              }
+              utilities += (timeslot -> utility)
+            }
+          }
+        }
 
-				// build an assignment that excludes the target
-				val assignedHard = Map[Int,Int]()
-				val assignedSoft = Map[Int,Int]()
-				val assignedPreferences = Map[Int,Int]()
-
-				// hc
-				for(variable : Any <- hardConstraints.keys){
-					if(variable != messageReceiver){
-
-					  // get hard constraints of target
-						for(targetConstraint : Int <- hardConstraints.apply(variable)){
-							if(assignedHard.contains(targetConstraint)){
-								assignedHard += (targetConstraint -> (assignedHard.apply(targetConstraint) + 1)) // Add up existing value
-							}
-							else {
-								assignedHard += (targetConstraint -> 1) // Initialize this timeslot value
-							}
-						}
-					}
-				}
-
-				// sc
-				for(variable : Any <- softConstraints.keys){
-					if(variable != messageReceiver){
-						// get hard constraints of target
-						for(variableConstraint : Int <- softConstraints.apply(variable)){
-							if(assignedSoft.contains(variableConstraint)){
-								assignedSoft += (variableConstraint -> (assignedSoft.apply(variableConstraint) + 1)) // Add up existing value
-							}
-							else {
-								assignedSoft += (variableConstraint -> 1) // Initialize this timeslot value
-							}
-						}
-					}
-				}
-
-				// pref
-				for(variable <- preferences.keys){
-					if(variable != messageReceiver){
-						
-					  // get hard constraints of target
-					    var meetings = preferences.apply(variable)
-					    
-					    for(meeting <- meetings.keys){
-					    	
-					      var timeslot = meetings.apply(meeting)
-					      
-							if(assignedPreferences.contains(timeslot)){
-							  assignedPreferences += (timeslot -> (assignedPreferences.apply(timeslot) + 1)) // Add up existing value
-							}
-							else {
-								assignedPreferences += (timeslot -> 1) // Initialize this timeslot value
-							}
-						}
-					}
-				}
+//				// build an assignment that excludes the target
+//				val assignedHard = Map[Int,Int]()
+//				val assignedSoft = Map[Int,Int]()
+//				val assignedPreferences = Map[Int,Int]()
+//
+//				// hc
+//				for(variable : Any <- hardConstraints.keys){
+//					if(variable != messageReceiver){
+//
+//					  // get hard constraints of target
+//						for(targetConstraint : Int <- hardConstraints.apply(variable)){
+//							if(assignedHard.contains(targetConstraint)){
+//								assignedHard += (targetConstraint -> (assignedHard.apply(targetConstraint) + 1)) // Add up existing value
+//							}
+//							else {
+//								assignedHard += (targetConstraint -> 1) // Initialize this timeslot value
+//							}
+//						}
+//					}
+//				}
+//
+//				// sc
+//				for(variable : Any <- softConstraints.keys){
+//					if(variable != messageReceiver){
+//						// get hard constraints of target
+//						for(variableConstraint : Int <- softConstraints.apply(variable)){
+//							if(assignedSoft.contains(variableConstraint)){
+//								assignedSoft += (variableConstraint -> (assignedSoft.apply(variableConstraint) + 1)) // Add up existing value
+//							}
+//							else {
+//								assignedSoft += (variableConstraint -> 1) // Initialize this timeslot value
+//							}
+//						}
+//					}
+//				}
+//
+//				// pref
+//				for(variable <- preferences.keys){
+//					if(variable != messageReceiver){
+//						
+//					  // get hard constraints of target
+//					    var meetings = preferences.apply(variable)
+//					    
+//					    for(meeting <- meetings.keys){
+//					    	
+//					      var timeslot = meetings.apply(meeting)
+//					      
+//							if(assignedPreferences.contains(timeslot)){
+//							  assignedPreferences += (timeslot -> (assignedPreferences.apply(timeslot) + 1)) // Add up existing value
+//							}
+//							else {
+//								assignedPreferences += (timeslot -> 1) // Initialize this timeslot value
+//							}
+//						}
+//					}
+//				}
 
 				// calculate all possible value assignments and their utility for the message receiving agent
-				val marginalUtility = Map[Int, Double]()
-				for(valueAssignment <- 1 to valueSpace){
+//				val marginalUtility = Map[Int, Double]()
+//				for(valueAssignment <- 1 to valueSpace){
+//				  
+//				  var hardCount = 0
+//				  var softCount = 0
+//				  var prefCount = 0
+//				  
+//				  if(assignedHard.contains(valueAssignment)){
+//				    hardCount += assignedHard.apply(valueAssignment)
+//				  }
+//				  if(assignedSoft.contains(valueAssignment)){
+//				    softCount += assignedSoft.apply(valueAssignment)
+//				  }
+//				  if(assignedPreferences.contains(valueAssignment)){
+//				    prefCount += assignedPreferences.apply(valueAssignment)
+//				  }
+//				        
+//				  var utility = hardCount * HARD_UTILITY + softCount * SOFT_UTILITY + prefCount * PREF_UTILITY
 				  
-				  var hardCount = 0
-				  var softCount = 0
-				  var prefCount = 0
-				  
-				  if(assignedHard.contains(valueAssignment)){
-				    hardCount += assignedHard.apply(valueAssignment)
-				  }
-				  if(assignedSoft.contains(valueAssignment)){
-				    softCount += assignedSoft.apply(valueAssignment)
-				  }
-				  if(assignedPreferences.contains(valueAssignment)){
-				    prefCount += assignedPreferences.apply(valueAssignment)
-				  }
-				        
-				  var utility = hardCount * HARD_UTILITY + softCount * SOFT_UTILITY + prefCount * PREF_UTILITY
-				  
-				  marginalUtility += (valueAssignment -> utility)
+//				  marginalUtility += (valueAssignment -> utility)
 				 
 //				  println(
 //				      "id: " + id + 
 //				      " | target: " + messageReceiver +
 //				      " | assignment: " + valueAssignment +
 //				      " | utility: " + utility) 
-				}
+//				}
 				
 				// build constraints object for the assignments
-			  allMarginalUtilities += (messageReceiver -> marginalUtility) // Target -> Assignment : Cost
+			  allUtilities += (messageReceiver -> utilities) // Target -> Assignment : Cost
 				      
 			}
 	
 	    // Return builds in constraints object
-	    var proposal : MaxSumMessage = new MaxSumMessage(id, null,null,null)
-	    proposal.addCostAssignments(allMarginalUtilities)
-	    proposal.addParticipationIndex(preferences)
-	    proposal
+	    new MaxSumMessage(id, allUtilities)
+//	    proposal.addAllUtilities(allUtilities)
+//	    proposal.addParticipationIndex(preferences)
+//	    proposal
 			
   }
 }
