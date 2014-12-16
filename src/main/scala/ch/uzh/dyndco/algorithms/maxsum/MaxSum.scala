@@ -23,7 +23,7 @@ object MaxSum extends App {
 	 */
 	var TIMESLOTS : Int = 10 // args(0)
 	var AGENTS : Int = 5 // args(1)
-	var MEETINGS : Int = 3 // args(2)
+	var MEETINGS : Int = 1 // args(2)
   
   /**
    * Build problem
@@ -48,7 +48,7 @@ object MaxSum extends App {
    * Results
    */
     // show run info
-  println(stats)
+//  println(stats)
   
   //    // show run info
 //    println(stats)

@@ -15,55 +15,58 @@ object MaxSumGraph {
   def build(problem : MeetingSchedulingProblem) : Graph[Any, Any] = {
     
      /**
-      * Initialize Graph
+      * Initialize graph
       */
       val graph = GraphBuilder.withConsole(true,8091).build
-    
-    // build variable vertices
-      var variableVertices : Set[VariableVertex] = Set[VariableVertex]()
-            
-       // build function vertices FIXME change
-      for(meeting <- problem.meetings){
-        var meetingIndex : Map[Any, Int] = Map[Any, Int]()
-        var functionId : Any = "f" + meeting.meetingID
-        println("functionID: " + functionId)
-        var funcVertex = new FunctionVertex(functionId, null, problem.TIMESLOTS, meetingIndex)
-        graph.addVertex(funcVertex)
-      }
-       
-       // establish edges to all meeting functions
-       var agentIndices : Map[Any, Map[Int,Int]] = Map[Any, Map[Int,Int]]()
+      
+      /**
+       * Build neighbourhoods
+       */
+      var neighbourhoods : Map[Int, Map[Any, Any]] = Map[Int, Map[Any,Any]]() // meetingId => variableId -> functionId
+      
       for(agent : Int <- problem.allParticipations.keys){
         
         var agentIndex : Map[Int,Int] = Map[Int,Int]()
-        agentIndices += agent -> agentIndex
-        
-        val connectedAgents = Set[Int]()
+
         var meetingIds : Set[Int] = problem.allParticipations.apply(agent)
         println("meeting set agent: " + meetingIds)
-//        var agentVariableId : Any = "v" + agent
         
         for(meetingId <- meetingIds){
           
-          // build agent vertex
-          var agentVariableId : Any = "v" + agent + "m" + meetingId
+          // build variable vertex
+          var variableId : Any = "v" + agent + "m" + meetingId
           var constraints = problem.allConstraints.apply(agent)
-          var maxSumMessage = new MaxSumMessage(
-            constraints.sender,
-            constraints.hard,
-            constraints.soft,
-            constraints.preference) // FIXME
-          var varVertex = new VariableVertex(agentVariableId,maxSumMessage,problem.TIMESLOTS, agentIndex)
+          var maxSumMessage = new MaxSumMessage(constraints.sender,constraints.hard,constraints.soft, constraints.preference) // FIXME
+          var varVertex = new VariableVertex(variableId,maxSumMessage,problem.TIMESLOTS, agentIndex)
           graph.addVertex(varVertex)
-          variableVertices += varVertex
           
-          // build edges
-          var functionId : Any = "f" + meetingId
-          graph.addEdge(agentVariableId, new StateForwarderEdge(functionId))
-          graph.addEdge(functionId, new StateForwarderEdge(agentVariableId))
+          // build function vertex
+          var functionId : Any = "f" + agent + "m" + meetingId
+          var funcVertex = new FunctionVertex(functionId,null,problem.TIMESLOTS,null)
+          graph.addVertex(funcVertex)
+          
+          // add to neighbourhood
+          var neighbourhood : Map[Any,Any] = Map[Any, Any]()
+          if(neighbourhoods.contains(meetingId)){
+            neighbourhood = neighbourhoods.apply(meetingId)
+          }
+          neighbourhood += (varVertex.id -> funcVertex.id)
+          neighbourhoods += (meetingId -> neighbourhood)
         }
       } 
-       
+      
+      graph.foreachVertex(println(_))
+      
+      // build edges
+      for(neighbourhood <- neighbourhoods.values){
+        for(variableVertexId <- neighbourhood.keys){
+          for(functionVertexId <- neighbourhood.values){
+            graph.addEdge(variableVertexId, new StateForwarderEdge(functionVertexId))
+            graph.addEdge(functionVertexId, new StateForwarderEdge(variableVertexId))
+          }
+        }
+      }
+      
       // return graph
       graph
     }

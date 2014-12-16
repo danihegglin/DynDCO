@@ -44,7 +44,7 @@ class FunctionVertex (
 	def buildMarginalUtilities(){
 	  // FIXME move code here
 	}
-
+  
 	def collect() = {
 
 	    // Process constraints
@@ -52,27 +52,27 @@ class FunctionVertex (
 		  val softConstraints = Map[Any, Set[Int]]() // Free timeslots (vertex, set of constraints)
 		  val preferences = Map[Any, Map[Int,Int]]() // Proposed timeslot of any variable (vertex, set of constraints)
 
-		// Unpack constraint pack
-		for (signal <- signals.iterator) {
-
-		  var proposal : MaxSumMessage = signal
-
-			// sender
-			var sender = proposal.sender
-
-			// work the blocked slots
-			var h : Set[Int] = proposal.hard
-			hardConstraints += (sender -> h)
-
-			// work the free slots
-			var s : Set[Int] = proposal.soft
-			softConstraints += (sender -> s)
-
-			// work the proposed slot, take the necessary one
-			var p : Map[Int,Int] = proposal.preference
-			preferences += (sender -> p)
-
-		}
+  		// Unpack constraint pack
+  		for (signal <- signals.iterator) {
+  
+  		  var proposal : MaxSumMessage = signal
+  
+  			// sender
+  			var sender = proposal.sender
+  
+  			// work the blocked slots
+  			var h : Set[Int] = proposal.hard
+  			hardConstraints += (sender -> h)
+  
+  			// work the free slots
+  			var s : Set[Int] = proposal.soft
+  			softConstraints += (sender -> s)
+  
+  			// work the proposed slot, take the necessary one
+  			var p : Map[Int,Int] = proposal.preference
+  			preferences += (sender -> p)
+  
+  		}
       
       // check finish constraint
       var meetingId : Int = id.toString().substring(1).toInt
@@ -97,10 +97,6 @@ class FunctionVertex (
       if(theSame){
         println("finished")
         finished = true
-        
-        // communicate to monitoring
-        val svc = url("http://localhost:9000/stop")
-        val result = Http(svc OK as.String)
       }
 
 	    // create hard, soft and preference builds for every target with minimal costs
