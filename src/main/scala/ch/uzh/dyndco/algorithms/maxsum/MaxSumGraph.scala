@@ -7,37 +7,39 @@ import ch.uzh.dyndco.problems.Constraints
 import scala.collection.mutable.MutableList
 import com.signalcollect.Graph
 import com.signalcollect.StateForwarderEdge
+import ch.uzh.dyndco.problems.MeetingSchedulingProblem
+import com.signalcollect.GraphBuilder
 
-class MaxSumGraph (
- graph : Graph[Any,Any],
- meetings : MutableList[Meeting],
- allParticipations : Map[Int, Set[Int]],
- allConstraints : Map[Int, Constraints],
- TIMESLOTS : Int
-    ) {
+object MaxSumGraph {
   
-  
-  // build variable vertices
+  def build(problem : MeetingSchedulingProblem) : Graph[Any, Any] = {
+    
+     /**
+      * Initialize Graph
+      */
+      val graph = GraphBuilder.withConsole(true,8091).build
+    
+    // build variable vertices
       var variableVertices : Set[VariableVertex] = Set[VariableVertex]()
             
        // build function vertices FIXME change
-      for(meeting <- meetings){
+      for(meeting <- problem.meetings){
         var meetingIndex : Map[Any, Int] = Map[Any, Int]()
         var functionId : Any = "f" + meeting.meetingID
         println("functionID: " + functionId)
-        var funcVertex = new FunctionVertex(functionId, null, TIMESLOTS, meetingIndex)
+        var funcVertex = new FunctionVertex(functionId, null, problem.TIMESLOTS, meetingIndex)
         graph.addVertex(funcVertex)
       }
        
        // establish edges to all meeting functions
        var agentIndices : Map[Any, Map[Int,Int]] = Map[Any, Map[Int,Int]]()
-      for(agent : Int <- allParticipations.keys){
+      for(agent : Int <- problem.allParticipations.keys){
         
         var agentIndex : Map[Int,Int] = Map[Int,Int]()
         agentIndices += agent -> agentIndex
         
         val connectedAgents = Set[Int]()
-        var meetingIds : Set[Int] = allParticipations.apply(agent)
+        var meetingIds : Set[Int] = problem.allParticipations.apply(agent)
         println("meeting set agent: " + meetingIds)
 //        var agentVariableId : Any = "v" + agent
         
@@ -45,13 +47,13 @@ class MaxSumGraph (
           
           // build agent vertex
           var agentVariableId : Any = "v" + agent + "m" + meetingId
-          var constraints = allConstraints.apply(agent)
+          var constraints = problem.allConstraints.apply(agent)
           var maxSumMessage = new MaxSumMessage(
             constraints.sender,
             constraints.hard,
             constraints.soft,
             constraints.preference) // FIXME
-          var varVertex = new VariableVertex(agentVariableId,maxSumMessage,TIMESLOTS, agentIndex)
+          var varVertex = new VariableVertex(agentVariableId,maxSumMessage,problem.TIMESLOTS, agentIndex)
           graph.addVertex(varVertex)
           variableVertices += varVertex
           
@@ -61,4 +63,8 @@ class MaxSumGraph (
           graph.addEdge(functionId, new StateForwarderEdge(agentVariableId))
         }
       } 
+       
+      // return graph
+      graph
+    }
 }

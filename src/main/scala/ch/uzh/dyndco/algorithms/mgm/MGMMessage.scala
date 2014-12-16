@@ -1,10 +1,10 @@
 package ch.uzh.dyndco.algorithms.mgm
 
-class MGMMessage(sender : Any, value : Int, gain : Double) {
+class MGMMessage(sender_ : Any, value_ : Int, gain_ : Double) {
   
-  var sender : Any = null
-  var value : Int = -1
-  var gain : Double = 0
+  var sender : Any = sender_
+  var value : Int = value_
+  var gain : Double = gain_
   var messageType : String = ""
   
   def this(sender : Any, value : Int) = {

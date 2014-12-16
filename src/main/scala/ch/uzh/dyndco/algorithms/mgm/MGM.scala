@@ -17,98 +17,47 @@ import com.signalcollect.ExecutionConfiguration
 import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.algorithms.maxsum.Meeting
 import com.signalcollect.StateForwarderEdge
+import ch.uzh.dyndco.util.Monitoring
 
 object MGM extends App {
   
 	/**
 	 * Configuration
 	 */
-	var TIMESLOTS : Int = 10 // args(0)
-	var AGENTS : Int = 5 // args(1)
-	var MEETINGS : Int = 3 // args(2)
+	var TIMESLOTS : Int = 20 // args(0)
+  var MEETINGS : Int = 1 // args(2)
+	var AGENTS : Int = 3 // args(1)
   
   /**
-   * Monitoring
+   * Build problem
    */
-  // communicate to monitoring
-  val svc = url("http://localhost:9000/start")
-  val result = Http(svc OK as.String)
-	
+  val problem = MeetingSchedulingFactory.build(TIMESLOTS,MEETINGS,AGENTS)
+    
+  /**
+   * Build graph
+   */
+  val graph = MGMGraph.build(problem)
+  
 	/**
-	 * Build meetings, participations, constraints
-	 */
-	val factory = new MeetingSchedulingFactory(TIMESLOTS,MEETINGS,AGENTS)
-	var meetings : MutableList[Meeting] = factory.buildMeetings()
-	val allParticipations = factory.buildAllParticipations()
-	val allConstraints = factory.buildAllConstraints(allParticipations)
-	
-		/**
-		 * Initialize Graph
-		 */
-		val graph = GraphBuilder.withConsole(true,8091).build
-		
-		// build variable vertices
-		var neighbourhoods : Map[Int, Set[MGMVertex]] = Map[Int, Set[MGMVertex]]()
-    for(meeting <- meetings){
-      println(meeting.meetingID)
-       neighbourhoods += meeting.meetingID -> Set[MGMVertex]()
-    }
-						
-    // establish edges to all meeting functions
-    var agentIndices : Map[Any, Map[Int,Int]] = Map[Any, Map[Int,Int]]()
-		for(agent : Int <- allParticipations.keys){
-        
-      println(agent)
-      
-      var agentIndex : Map[Int,Int] = Map[Int,Int]()
-      agentIndices += agent -> agentIndex
-			  
-			var meetingIds : Set[Int] = allParticipations.apply(agent)
-			println("meeting set agent: " + meetingIds)
-				
-			for(meetingId <- meetingIds){
+	 * Run the graph
+	 */	
+  Monitoring.start()
+	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
+	val stats = graph.execute(execConfig)
+  graph.shutdown
+  Monitoring.stop()
+  
+  /**
+   * Results
+   */
+    // show run info
+  println(stats)
           
-         // build agent vertex
-         var agentVariableId : Any = "v" + agent + "m" + meetingId
-         var constraints = allConstraints.apply(agent)
-         var varVertex = new MGMVertex(agentVariableId,new MGMMessage(null,0,0),TIMESLOTS, constraints, agentIndex)
-         graph.addVertex(varVertex)
-         
-         var neighbourhood : Set[MGMVertex] = neighbourhoods.apply(meetingId)
-         neighbourhood += varVertex
-         neighbourhoods += meetingId -> neighbourhood 
-        
-		  }
-		} 
-	
-		// build edges
-		for(neighbourhoodId <- neighbourhoods.keys){
-		  var neighbourhood = neighbourhoods.apply(neighbourhoodId)
-		  for(agent <- neighbourhood){
-		    for(neighbour <- neighbourhood){
-		      if(agent != neighbour){
-		         graph.addEdge(agent.id, new StateForwarderEdge(neighbour.id))
-		      }
-		    }
-		  }
-		}
-
-		/**
-		 * Run the graph
-		 */
-						
-		// start
-		val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
-		val stats = graph.execute(execConfig)
-					
-		// show run info
-		println(stats)
-					
-		// show results
-    for(agent <- agentIndices.keys){
-      println(agent + " -> " + agentIndices.apply(agent))
+  // show results
+//  for(agent <- agentIndices.keys){
+//    println(agent + " -> " + agentIndices.apply(agent))
+//  }
+    for(vertex <- MGMGraph.vertices){
+    println(vertex.id + " -> " + vertex.values)
     }
-
-		// shutdown graph
-		graph.shutdown
 }
