@@ -47,12 +47,9 @@ public class Monitoring extends Controller {
 	 */
 	private static double globalUtility = 0;
 	private static Map<String,Double> agentUtilities = new HashMap<>();
-//	private static Thread workerThread = new Thread(new UtilityWorker(globalUtility));
+
 	private static File file;
-//	private static FileWriter fw;
-//	private static BufferedWriter bw;
-//	private static Boolean isPrepared = false;
-//	private static Date date = new Date();
+	private static FileWriter fw;
 	
 	private static PrintWriter writer;
 	
@@ -69,21 +66,27 @@ public class Monitoring extends Controller {
 			file.createNewFile();
 		}
 		
-		String message = "timestamp;agent;utility";
-		String command = "echo '"+ message + "' >> " + file.getAbsolutePath();
+		fw = new FileWriter(file.getAbsolutePath());
+		fw.write("timestamp;agent;utility\n");
+
+//		String command = "echo '"+ message + "' >> " + file.getAbsolutePath();
+//		 Process p = Runtime.getRuntime().exec(
+//				 new String[]{"sh","-c",command},
+//			        null, null);
+//		    p.waitFor();
 		
-		 Process p = Runtime.getRuntime().exec(
-				 new String[]{"sh","-c",command},
-			        null, null);
-		    p.waitFor();
-		
-//		isPrepared = true;
 		return ok("Started");
 	}
 	
 	public static Result stop() {
 		
 		System.out.println("Stop signal received");
+		try{
+			fw.close();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		
 		
 		return ok("Stopped");
 	}
@@ -119,14 +122,15 @@ public class Monitoring extends Controller {
 		agentUtilities.put(agent, utility);
 		
 		// Write to file
-		String message = (new Date().getTime() / 100) + ";" + agent + ";" + utility;
-		String command = "echo '"+ message + "' >> " + file.getAbsolutePath();
+		String message = (new Date().getTime() / 100) + ";" + agent + ";" + utility + "\n";
 		
-		System.out.println("command: " + command);
-		
-		 Process p = Runtime.getRuntime().exec(
-				 new String[]{"sh","-c",command},
-			        null, null);
+		fw.write(message);
+
+		//		String command = "echo '"+ message + "' >> " + file.getAbsolutePath();
+//		System.out.println("command: " + command);
+//		 Process p = Runtime.getRuntime().exec(
+//				 new String[]{"sh","-c",command},
+//			        null, null);
 //		    p.waitFor();
 		
 		// Update UI

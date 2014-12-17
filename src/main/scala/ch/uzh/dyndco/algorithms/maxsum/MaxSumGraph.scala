@@ -12,6 +12,9 @@ import com.signalcollect.GraphBuilder
 
 object MaxSumGraph {
   
+  var varVertices = Set[VariableVertex]()
+  var funcVertices = Set[FunctionVertex]()
+  
   def build(problem : MeetingSchedulingProblem) : Graph[Any, Any] = {
     
      /**
@@ -20,30 +23,41 @@ object MaxSumGraph {
       val graph = GraphBuilder.withConsole(true,8091).build
       
       /**
+       * Build index for each meeting
+       */
+      var meetingIndices = Map[Int, Map[Any,Int]]()
+      for(meeting <- problem.meetings){
+        meetingIndices += (meeting.meetingID -> Map[Any,Int]())
+      }
+      
+      /**
        * Build neighbourhoods
        */
       var neighbourhoods : Map[Int, Map[Any, Any]] = Map[Int, Map[Any,Any]]() // meetingId => variableId -> functionId
-      
       for(agent : Int <- problem.allParticipations.keys){
         
-        var agentIndex : Map[Int,Int] = Map[Int,Int]()
+        var agentIndex = Map[Any,Int]()
 
         var meetingIds : Set[Int] = problem.allParticipations.apply(agent)
         println("meeting set agent: " + meetingIds)
         
         for(meetingId <- meetingIds){
           
+          // get index
+          var meetingIndex = meetingIndices.apply(meetingId)
+          
           // build variable vertex
           var variableId : Any = "v" + agent + "m" + meetingId
           var constraints = problem.allConstraints.apply(agent)
-//          var maxSumMessage = new MaxSumMessage(constraints.sender,constraints.hard,constraints.soft, constraints.preference) // FIXME
-          var varVertex = new VariableVertex(variableId,null,problem.TIMESLOTS, constraints, agentIndex)
+          var varVertex = new VariableVertex(variableId,null,problem.TIMESLOTS, constraints, agentIndex, meetingIndex, meetingId)
           graph.addVertex(varVertex)
+          varVertices += varVertex
           
           // build function vertex
           var functionId : Any = "f" + agent + "m" + meetingId
-          var funcVertex = new FunctionVertex(functionId,null,problem.TIMESLOTS,null)
+          var funcVertex = new FunctionVertex(functionId,null,problem.TIMESLOTS)
           graph.addVertex(funcVertex)
+          funcVertices += funcVertex
           
           // add to neighbourhood
           var neighbourhood : Map[Any,Any] = Map[Any, Any]()

@@ -50,14 +50,11 @@ object MGM extends App {
   /**
    * Results
    */
-    // show run info
+  // show run info
   println(stats)
           
-  // show results
-//  for(agent <- agentIndices.keys){
-//    println(agent + " -> " + agentIndices.apply(agent))
-//  }
-    for(vertex <- MGMGraph.vertices){
+  // agents
+  for(vertex <- MGMGraph.vertices){
     println(vertex.id + " -> " + vertex.values)
-    }
+  }
 }
