@@ -18,6 +18,7 @@ import java.util.Set;
 //import scala.Option;
 
 
+
 //import actors.*;
 import akka.actor.*;
 
@@ -68,18 +69,8 @@ public class Monitoring extends Controller {
 			file.createNewFile();
 		}
 		
-//		  bw = new BufferedWriter(new FileWriter(file));
-//		
-////		writer = new PrintWriter("experiments/results" + timestamp + ".txt", "UTF-8");
-////		writer.println("timestamp;agent;utility");
-//		  
-//		  bw.write("timestamp;agent;utility");
-		
 		String message = "timestamp;agent;utility";
 		String command = "echo '"+ message + "' >> " + file.getAbsolutePath();
-//		System.out.println("command: " + command);
-		
-		System.out.println("command: " + command);
 		
 		 Process p = Runtime.getRuntime().exec(
 				 new String[]{"sh","-c",command},
@@ -94,13 +85,6 @@ public class Monitoring extends Controller {
 		
 		System.out.println("Stop signal received");
 		
-		try {
-//			bw.close();
-		} catch (Exception e){
-			// Do something
-		}
-		
-		
 		return ok("Stopped");
 	}
 	
@@ -109,10 +93,7 @@ public class Monitoring extends Controller {
 	 */
 	public static Result updateAgent(String agent) throws Exception {
 		
-		// Initialize Filereader
-//		if(!isPrepared){
-//			prepare();
-//		}
+		System.out.println("UpdateAgent received");
 		
 		Map<String,String> parameters = new HashMap<String,String>();
 		final Set<Map.Entry<String,String[]>> entries = request().queryString().entrySet();
@@ -137,72 +118,25 @@ public class Monitoring extends Controller {
 		// Add new values to agent map
 		agentUtilities.put(agent, utility);
 		
-//		bw.write(date.getTime() + ";" + agent + ";" + utility);
-		
 		// Write to file
 		String message = (new Date().getTime() / 100) + ";" + agent + ";" + utility;
 		String command = "echo '"+ message + "' >> " + file.getAbsolutePath();
-//		System.out.println("command: " + command);
 		
 		System.out.println("command: " + command);
 		
 		 Process p = Runtime.getRuntime().exec(
 				 new String[]{"sh","-c",command},
 			        null, null);
-		    p.waitFor();
+//		    p.waitFor();
 		
 		// Update UI
-		double utility = 0.0;
-		for(agentUtility : agentUtilities.keySet()){
-			utility += agentUtilies.get(agentUtility);
+		double utilityUpdate = 0.0;
+		for(String agentUtility : agentUtilities.keySet()){
+			utilityUpdate += agentUtilities.get(agentUtility);
 		}
 		
-		Application.sendUpdate(utility);
-		
-		//Application.sendUpdate(globalUtility);
-//		if(!workerThread.isAlive()){
-//			workerThread.start();
-//		}
-		
-		// Write to log files
-//		writer.println
-//		writer.close();
-		
-		
-//		try {
-//			bw.write("" + utility);
-//			bw.close(); // FIXME
-			
-//			String command = "echo '" + utility + "' >> /tmp/util";
-//			Runtime.getRuntime().exec(command);
- 
-//			System.out.println(command);
- 
-//		} catch (IOException e) {
-//		7	e.printStackTrace();
-//		}
+		Application.sendUpdate(utilityUpdate);
 		
 		return ok("Update received: " + agent + " | " + utility);
 	}
-	
-//	public static class UtilityWorker implements Runnable {
-//		
-//		private double utility = 0.0;
-//		
-//		public UtilityWorker(double utility){
-//			this.utility = utility;
-//		}
-//		
-//		public void setUtility(double utility){
-//			this.utility = utility;
-//		}
-//		
-//		public void run(){
-//			Application.sendUpdate(this.utility);
-//			try {
-//			Thread.sleep(750);
-//			}
-//			catch (Exception e){}
-//		}
-//	}
 }

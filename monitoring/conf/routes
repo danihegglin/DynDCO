@@ -4,7 +4,7 @@
 
 GET     /                           controllers.Application.index
 GET     /ws                         controllers.Application.ws
-GET     /sentiment/:symbol          controllers.StockSentiment.get(symbol)
+#ET     /sentiment/:symbol          controllers.StockSentiment.get(symbol)
 GET		/utility/agent/:id			controllers.Monitoring.updateAgent(id:String)
 GET		/start						controllers.Monitoring.start()
 GET		/stop						controllers.Monitoring.stop()
