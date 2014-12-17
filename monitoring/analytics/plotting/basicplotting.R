@@ -1,0 +1,5 @@
+plot.new()
+experiment <- read.csv("~/git/dyndco/monitoring/analytics/results/combined.txt", sep=";")
+plot(experiment$timestamp, experiment$utility)
+mean <- mean(experiment$utility)
+abline(h = mean, col = "black", lwd = 2)
