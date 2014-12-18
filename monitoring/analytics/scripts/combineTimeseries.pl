@@ -1,56 +1,77 @@
 #!/usr/bin/perl
 
 # configuration
-my $dir = "/Users/daniel/git/dyndco/monitoring/";
+my $dir = "/Users/daniel/git/dyndco/monitoring/analytics";
 
-# define file
-my $file = $dir . "experiments/" . $ARGV[0];
+# define files
+my $filecounter = 0;
+my $finishSum = 0;
+foreach my $file (glob("$dir/experiments/*.txt")) {
 
-# controlling parameter
-my $lastTimestamp = 0;
-my $utility = 0;
-my $counter = 1;
+	#print $file . "\n";
 
-# result file
-open(my $fw, '>>', $dir . 'analytics/results/combined.txt') or die "Could not open file: $!";
-$header = "timestamp;utility\n";
-print $fw $header;
+	$filecounter += 1;
 
-# experiment file
-open my $fh, '<', $file or die "Cannot open $file: $!";
-while ( my $line = <$fh> ) {
+	# controlling parameter
+	my $lastTimestamp = 0;
+	my $utility = 0;
+	my $counter = 0;
 
-	# split line
-	@split = split(";", $line);
+	# result file
+	open(my $fw, '>>', $dir . '/results/combined_'.$filecounter.'.txt') or die "Could not open file: $!";
+	$header = "timestamp;utility\n";
+	print $fw $header;
 
-	# check timestamp of line
-	$timestamp = $split[0];
-	$value = $split[2];
+	# experiment file
+	open my $fh, '<', $file or die "Cannot open $file: $!";
+	$linecount = 0;
+	while ( my $line = <$fh> ) {
 
-	# create new time point
-	if($timestamp > $lastTimestamp){
+		$linecount++;
 
-		# write out old utility
-		$entry = $counter . ";" . $utility . "\n";
-		print $entry;
+		# split line
+		@split = split(";", $line);
 
-		if($lastTimestamp > 0){
-			print $fw $entry;
+		if($split[1] =~ /finished/){
+			#print "finished on: " . $linecount . "\n";
+			$finishSum += $linecount;
 		}
+		else {
 
-		# renew utility
-		$utility = 0;
+			# check timestamp of line
+			$timestamp = $split[0];
+			$value = $split[2];
 
-		# update lastTimestamp
-		$lastTimestamp = $timestamp;
+			# create new time point
+			if($timestamp > $lastTimestamp){
 
-		# update counter
-		$counter++;
+				# write out old utility
+				$entry = $counter . ";" . $utility . "\n";
+				#print $entry;
+
+				if($lastTimestamp > 0){
+					print $fw $entry;
+				}
+
+				# renew utility
+				$utility = 0;
+
+				# update lastTimestamp
+				$lastTimestamp = $timestamp;
+
+				# update counter
+				$counter++;
+			}
+
+			# push value to utility
+			$utility += $value
+
+		}
 	}
 
-	# push value to utility
-	$utility += $value
+	close($fh);
+	close($fw);
 }
 
-close($fh);
-close($fw);
+# Write mean end point
+print $finishSum / $filecounter . "\n";

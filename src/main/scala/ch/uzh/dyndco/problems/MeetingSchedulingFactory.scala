@@ -35,7 +35,7 @@ object MeetingSchedulingFactory {
     var meetings : MutableList[Meeting] = buildMeetings()
     var allParticipations : Map[Int, Set[Int]] = buildAllParticipations()
     var allConstraints : Map[Int, Constraints] = buildAllConstraints(allParticipations)
-
+    
     new MeetingSchedulingProblem(
         meetings,allParticipations,allConstraints,
         TIMESLOTS, MEETINGS, AGENTS) 
@@ -57,13 +57,26 @@ object MeetingSchedulingFactory {
     allParticipations
   }
   
-  private def buildAllConstraints(allParticipations : Map[Int, Set[Int]]) : Map[Int, Constraints] = {
+  def buildAllConstraints(allParticipations : Map[Int, Set[Int]]) : Map[Int, Constraints] = {
     val allConstraints : Map[Int, Constraints] = Map[Int, Constraints]()
     for(agent <- 1 to AGENTS){
       
-      // Build participations
+        // Build participations
         var participations : Set[Int] = allParticipations.apply(agent)
         
+        // Constraint pack
+        var constraints = buildSingleConstraints(agent, participations)
+        
+        // add to constraint & participations collections
+        allConstraints += (agent -> constraints)
+        
+        constraints.show()
+    }
+    allConstraints
+  }
+  
+  def buildSingleConstraints(agent : Any, participations : Set[Int]) : Constraints = {
+    
         // Build constraints
         val availableTimeslots : MutableList[Int] = buildTimeslots();
 
@@ -88,12 +101,8 @@ object MeetingSchedulingFactory {
         var softConstraints : Set[Int] = buildSoftConstraints(availableTimeslots, used)
         
         // Constraint pack
-        var constraints = new Constraints(agent,hardConstraints,softConstraints,preferences)
-        
-        // add to constraint & participations collections
-        allConstraints += (agent -> constraints)
-    }
-    allConstraints
+        new Constraints(agent,hardConstraints,softConstraints,preferences)
+    
   }
 
   /**

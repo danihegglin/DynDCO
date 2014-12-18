@@ -59,7 +59,7 @@ public class Monitoring extends Controller {
 		
 		long timestamp = new Date().getTime();
 		
-		file = new File("experiments/results" + timestamp + ".txt");
+		file = new File("analytics/experiments/results" + timestamp + ".txt");
 		 
 		// if file doesnt exists, then create it
 		if (!file.exists()) {
@@ -69,12 +69,6 @@ public class Monitoring extends Controller {
 		fw = new FileWriter(file.getAbsolutePath());
 		fw.write("timestamp;agent;utility\n");
 
-//		String command = "echo '"+ message + "' >> " + file.getAbsolutePath();
-//		 Process p = Runtime.getRuntime().exec(
-//				 new String[]{"sh","-c",command},
-//			        null, null);
-//		    p.waitFor();
-		
 		return ok("Started");
 	}
 	
@@ -83,6 +77,7 @@ public class Monitoring extends Controller {
 		System.out.println("Stop signal received");
 		try{
 			fw.close();
+			Application.sendUpdate(0);
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -91,13 +86,27 @@ public class Monitoring extends Controller {
 		return ok("Stopped");
 	}
 	
+	public static Result success() {
+		
+		System.out.println("Success");
+	
+		String message = (new Date().getTime() / 100) + ";finished\n";
+		try{
+			fw.write(message);
+			stop();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		
+		return ok("Success");
+	}
+	
 	/**
 	 * Methods
 	 */
 	public static Result updateAgent(String agent) throws Exception {
 		
-		System.out.println("UpdateAgent received");
-		
+		// Receive parameter
 		Map<String,String> parameters = new HashMap<String,String>();
 		final Set<Map.Entry<String,String[]>> entries = request().queryString().entrySet();
 		for (Map.Entry<String,String[]> entry : entries) {
@@ -105,41 +114,23 @@ public class Monitoring extends Controller {
 			final String value = Arrays.toString(entry.getValue());
 			parameters.put(key, value.substring(1, value.length()-1));
 		}
-		
 		double utility = Double.parseDouble(parameters.get("utility"));
-		
-		//System.out.println("Agent: " + agent + " -> " + utility);
-		
-		// Remove old utility from global utility
-		if(agentUtilities.containsKey(agent)){
-			globalUtility -= agentUtilities.get(agent);
-		}
-		
-		// Add new utility to global utility
-		globalUtility += utility;
 				
 		// Add new values to agent map
 		agentUtilities.put(agent, utility);
 		
 		// Write to file
 		String message = (new Date().getTime() / 100) + ";" + agent + ";" + utility + "\n";
-		
 		fw.write(message);
 
-		//		String command = "echo '"+ message + "' >> " + file.getAbsolutePath();
-//		System.out.println("command: " + command);
-//		 Process p = Runtime.getRuntime().exec(
-//				 new String[]{"sh","-c",command},
-//			        null, null);
-//		    p.waitFor();
-		
 		// Update UI
 		double utilityUpdate = 0.0;
 		for(String agentUtility : agentUtilities.keySet()){
 			utilityUpdate += agentUtilities.get(agentUtility);
 		}
-		
 		Application.sendUpdate(utilityUpdate);
+		
+		System.out.println(utilityUpdate);
 		
 		return ok("Update received: " + agent + " | " + utility);
 	}

@@ -7,12 +7,14 @@ import scala.util.Random
 import ch.uzh.dyndco.dynamic.DynamicVertex
 import ch.uzh.dyndco.problems.Constraints
 import ch.uzh.dyndco.util.Monitoring
+import scala.collection.mutable.MutableList
+import ch.uzh.dyndco.problems.MeetingSchedulingFactory
 
 class VariableVertex (
 		id: Any, 
 		initialState: MaxSumMessage, 
 		valueSpace: Int,
-    constraints : Constraints,
+    constraints_ : Constraints,
     agentIndex : Map[Any, Int],
     meetingIndex : Map[Any, Int],
     meetingID : Int
@@ -21,9 +23,15 @@ class VariableVertex (
   /**
    * Config
    */
-  final var HARD_UTILITY : Double = -10
-  final var SOFT_UTILITY : Double = 0
+  final var HARD_UTILITY : Double = -20
+  final var SOFT_UTILITY : Double = 5
   final var PREF_UTILITY : Double = 10
+  
+  /**
+   * Extended Config
+   */
+  final var CHANGE_ROUND : Int = Random.nextInt(20)
+  var roundCount = 0
 
   /**
    * Meeting Value
@@ -33,6 +41,7 @@ class VariableVertex (
 	/**
 	 * The Utility
 	 */
+  var constraints = constraints_
 	final var originalConstraints = constraints
 	var agentUtility : Double = 0
 	var lastUtility : Double = 0
@@ -102,42 +111,106 @@ class VariableVertex (
    * Find Best Value
    */
 	def findBestValueAssignment(marginalUtilities : Map[Any,Map[Int, Double]]) : Int = {
+    
+    if(finished == false){
+    
+      var allUtilities = Map[Int,Double]()
+      for(utilities <- marginalUtilities.values){
+        for(timeslot <- utilities.keys){
+          var utility = utilities.apply(timeslot)
+          if(allUtilities.contains(timeslot)){
+            utility += allUtilities.apply(timeslot)
+          }
+          allUtilities += (timeslot -> utility)
+        }
+      }
 
-	  for(function <- marginalUtilities.keys){
-	    var unorderedUtilities = marginalUtilities.apply(function)
-	    var orderedUtilities = unorderedUtilities.toList sortBy {_._2}
+	    var orderedUtilities = allUtilities.toList sortBy {_._2}
 	    orderedUtilities = orderedUtilities.reverse
-//
+
+      // build buckets
+      var lastValue : Double = -1
+      var bucketCount : Int = 0
+      var buckets : Map[Int, MutableList[Int]] = Map[Int,MutableList[Int]]()
+      var list : MutableList[Int] = MutableList[Int]()
+      var count : Int = 0
+      for(utility <- orderedUtilities){
+        
+        count += 1
+        
+        if(lastValue < 0){
+          lastValue = utility._2
+        }
+        if(utility._2 != lastValue || count == orderedUtilities.size){
+          val finalSet = list.sortWith(_ < _) // smallest timeslot first
+          buckets += (bucketCount -> finalSet)
+          bucketCount += 1
+          list = MutableList[Int]()
+          lastValue = utility._2
+        }
+        list += utility._1
+      }
+      
+      // check
       var accepted : Boolean = false
-      var position : Int = 0 // FIXME test 0
+      var position_top : Int = 0 // FIXME test 0
+      var position_sub : Int = 0
      
       while(!accepted){
+        
+        // Retrieve List
+        var curList : MutableList[Int] = MutableList[Int]()
+        var assignment : Int = -1
   	    
-        var assignment = orderedUtilities(position)
+        try {
+          curList = buckets.apply(position_top)
+          assignment = curList.apply(position_sub)
+        } catch {
+           case e : Exception => println("BUCKET ERROR: " + position_top + " | " + position_sub + " | " + buckets + " | " + curList.length)
+        }
+        
         var conflict : Boolean = false
         
         for(meeting <- agentIndex.keys){
           if(meeting != meetingID){
-             if(agentIndex.apply(meeting) == assignment._1){
+             if(agentIndex.apply(meeting) == assignment){
                conflict = true
              }
            }
         }
       
         if(!conflict){
-            bestValueAssignment = assignment._1
-            agentIndex += (meetingID -> assignment._1)
+            bestValueAssignment = assignment
+            agentIndex += (meetingID -> assignment)
             accepted = true
         }
         else {
-//            position = Random.nextInt(orderedUtilities.size) // FIXME test 1
-              position += 1 // FIXME test 2
+          
+           if(curList.length > (position_sub + 1)){
+//             var random = Random.nextInt(10)
+//             if(random > 5){
+               position_sub += 1          
+//             }
+//             else {
+//               if(buckets.size > (position_top + 1)){
+//                 position_top += Random.nextInt(buckets.size)
+//               }
+//             }
+           }
+           else {
+              if(buckets.size > (position_top + 1)){
+                position_top += 1
+              }
+              else {
+                position_top = 0
+              }
+              position_sub = 0
+           }
         }
       }
-	  }
-    
+    }
+
     meetingIndex += (id -> bestValueAssignment)
-    println(id + ": " + bestValueAssignment + " | " + agentIndex)
 	  
 	  bestValueAssignment
 	}
@@ -146,12 +219,12 @@ class VariableVertex (
    * Calculate Utilities for current Best Value Assignment
    */
 	def calculateLocalUtility(bestValueAssignment : Int): Double = {
-	  var utility : Double = 10
+	  var utility : Double = PREF_UTILITY
 		if(originalConstraints.hard.contains(bestValueAssignment)){
-		  utility -= 20
+		  utility -= HARD_UTILITY
 		}
 		else if(originalConstraints.soft.contains(bestValueAssignment)){
-		  utility -= 10
+		  utility -= SOFT_UTILITY
 		}
 	  utility
 	}
@@ -197,37 +270,71 @@ class VariableVertex (
    * Collect Signals
    */
 	def collect() = {
+    
+    roundCount += 1
+    if(roundCount >= 1000){
+      finished = true
+    }
+    
+    
+//    if(roundCount >= CHANGE_ROUND){
+//      
+////      println(id + " - CHANGE!!!!!!!!!!!!!!!!!!!!: " + roundCount)
+//      
+//      var participations : Set[Int] = Set[Int](meetingID)
+//      constraints = MeetingSchedulingFactory.buildSingleConstraints(id, participations)
+//      roundCount = 0
+//      
+////      println(id + " - " + roundCount)
+//      
+//      initialized = false
+//      
+//    }
 
 		if(initialized){
       
-      // check if finished
-      finishedCheck()
-		  
-		  // build all Utilities: function -> variable -> timeslot -> utility
-			val receivedUtilities = Map[Any, Map[Any, Map[Int, Double]]]()
-			for (signal <- signals.iterator) {
-				try {
-					var message : MaxSumMessage = signal
-					receivedUtilities += (message.sender -> message.utilities)
-				}
-				catch {
-				  case e : Exception => println("signal was null")
-				}
-			}
+  		  // build all Utilities: function -> variable -> timeslot -> utility
+        var isNull : Boolean = true
+  			val receivedUtilities = Map[Any, Map[Any, Map[Int, Double]]]()
+  			for (signal <- signals.iterator) {
+  				try {
+  					var message : MaxSumMessage = signal
+            for(utilities <- message.utilities.values){
+              for(utility <- utilities.values){
+                if(utility < 0 || utility > 0){
+                  isNull = false
+                }
+              }
+            }
+  					receivedUtilities += (message.sender -> message.utilities)
+  				}
+  				catch {
+  				  case e : Exception => 
+              //println("signal was null")
+  				}
+  			}
+        
+    		// prepare utilities
+    		val allUtilities = buildUtilities(receivedUtilities, valueSpace)
+    			
+        if(!isNull){
+    			
+          // find best assignments for all requirements
+      		val bestValueAssignment = findBestValueAssignment(allUtilities)
       
-			// prepare utilities
-			val allUtilities = buildUtilities(receivedUtilities, valueSpace)
-			
-			// find best assignments for all requirements
-			val bestValueAssignment = findBestValueAssignment(allUtilities)
-
-      // calculate local utility
-			agentUtility = calculateLocalUtility(bestValueAssignment)
-			
-			// Push current utility to monitoring
-      Monitoring.update(id, agentUtility)
-			
-			new MaxSumMessage(id, allUtilities)
+          // calculate local utility
+      		agentUtility = calculateLocalUtility(bestValueAssignment)
+      			
+      	  // Push current utility to monitoring
+          Monitoring.update(id, agentUtility)
+          println(id + ": " + agentUtility + " -> " + bestValueAssignment)
+          
+       }
+          
+       // check if finished
+       finishedCheck()
+       
+    	 new MaxSumMessage(id, allUtilities)
     }
 		else {
       

@@ -21,9 +21,9 @@ object MaxSum extends App {
 	/**
 	 * Configuration
 	 */
-	var TIMESLOTS : Int = 30 // args(0)
-	var AGENTS : Int = 10 // args(1)
-	var MEETINGS : Int = 3 // args(2)
+	var TIMESLOTS : Int = 20 // args(0)
+	var AGENTS : Int = 20 // args(1)
+	var MEETINGS : Int = 2 // args(2)
   
   /**
    * Build problem
@@ -39,10 +39,10 @@ object MaxSum extends App {
    * Run the graph
    */ 
   Monitoring.start()
-  val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
+  val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
   val stats = graph.execute(execConfig)
   graph.shutdown
-  Monitoring.stop()
+  Monitoring.sucess()
   
   /**
    * Results

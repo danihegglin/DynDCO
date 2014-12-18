@@ -19,5 +19,10 @@ object Monitoring {
     val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + agentUtility)
     val result = Http(svc OK as.String)
   }
+  
+  def sucess() = {
+    val svc = url("http://localhost:9000/success")
+    val result = Http(svc OK as.String)
+  }
 
 }
