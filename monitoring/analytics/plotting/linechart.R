@@ -7,3 +7,4 @@ plot(experiment2$number, experiment2$time, xlab= "number", ylab= "time", type='l
 
 experiment3 <- read.csv("~/Desktop/scalability_a.txt", sep=";")
 plot(experiment3$number, experiment3$time, xlab= "number", ylab= "time", type='l', col='red')
+
