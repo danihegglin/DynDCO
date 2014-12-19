@@ -26,6 +26,9 @@ class VariableVertex (
   final var HARD_UTILITY : Double = -20
   final var SOFT_UTILITY : Double = 5
   final var PREF_UTILITY : Double = 10
+  final var NEIGHBOURS : Int = 2
+  final var MIN_VALUE : Double = HARD_UTILITY * NEIGHBOURS
+  final var MAX_VALUE : Double = PREF_UTILITY * NEIGHBOURS
   
   /**
    * Extended Config
@@ -86,7 +89,7 @@ class VariableVertex (
   		var assignmentMap : Map[Int,Double] = Map[Int,Double]()
   		for(assignment : Int <- 1 to timeslots){
   
-  			var fullAssignmentCost : Double = 0
+  			var utility : Double = 0
   				    
   			// process every utility map
   			for(functions <- allUtilities){
@@ -94,18 +97,40 @@ class VariableVertex (
   			  for(currVariableVertexId <- functions.keys){
   					  var variableAssignments = functions.apply(currVariableVertexId)
   					  if(variableAssignments.contains(assignment)){
-  						  var costs = variableAssignments.apply(assignment)
-  						  fullAssignmentCost += costs
+  						  utility += variableAssignments.apply(assignment)
   					  }
   				}
   			}
-  			assignmentMap += (assignment -> fullAssignmentCost)
+        
+        // normalize utility
+        utility = normalize(utility)
+        
+  			assignmentMap += (assignment -> utility)
   		}
   		// Add assignment costs to map for all functionVertices
   		marginalUtilities += (functionVertex -> assignmentMap)
 	  }
 	  marginalUtilities
 	}
+  
+  /**
+   * Normalize
+   */
+  def normalize(utility : Double) : Double = {
+    var normalized : Double = 0.0
+    println(NEIGHBOURS)
+    println(MIN_VALUE)
+    println(MAX_VALUE)
+    try {
+      println("u:" + utility)
+      normalized = (utility - MIN_VALUE) / (MAX_VALUE - MIN_VALUE)
+      println("n:" + normalized)
+    } 
+    catch {
+      case e : Exception => println("normalization error")
+    }
+    normalized
+  } 
 	
   /**
    * Find Best Value
@@ -187,15 +212,7 @@ class VariableVertex (
         else {
           
            if(curList.length > (position_sub + 1)){
-//             var random = Random.nextInt(10)
-//             if(random > 5){
                position_sub += 1          
-//             }
-//             else {
-//               if(buckets.size > (position_top + 1)){
-//                 position_top += Random.nextInt(buckets.size)
-//               }
-//             }
            }
            else {
               if(buckets.size > (position_top + 1)){

@@ -1,0 +1,25 @@
+zi = xi - min(x)/(max(x) - min(x))
+
+
+25 - 0 / 100 - 0
+0.25
+
+25 -infinite / infinite - infinite
+
+
+
+max : 10 * numOfAgents -1 | min : - 20 * numOfAgents -1 
+value: 5
+agents: 3
+
+5 - (-40) / 20 - (-40)
+45 / 60
+0.75
+
+value: 20
+20 + 40 / 20 + 40
+60 / 60
+1
+
+-40 + 40 / 60
+0
