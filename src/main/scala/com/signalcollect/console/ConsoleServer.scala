@@ -51,6 +51,7 @@ import java.io.File
 import java.io.InputStream
 import akka.event.Logging
 import java.io.OutputStream
+import scala.reflect.runtime.universe._
 
 /** Abstract class that defines the interface for our InteractiveExecution */
 abstract class Execution {
@@ -100,7 +101,7 @@ import BreakConditionName._
  * @param workerApi a workerApi
  */
 class BreakCondition(val graphConfiguration: GraphConfiguration[_, _],
-  val executionConfiguration: ExecutionConfiguration,
+  val executionConfiguration: ExecutionConfiguration[_, _],
   val name: BreakConditionName,
   val propsMap: Map[String, String],
   val workerApi: WorkerApi[_, _]) {
@@ -172,7 +173,7 @@ class BreakCondition(val graphConfiguration: GraphConfiguration[_, _],
  * @constructor create a new ConsoleServer
  * @param graphConfiguration the current graph configuration
  */
-class ConsoleServer[Id, Signal](graphConfiguration: GraphConfiguration[Id, Signal]) {
+class ConsoleServer[Id: TypeTag, Signal: TypeTag](graphConfiguration: GraphConfiguration[Id, Signal]) {
 
   // Start the HTTP and WebSocket servers on the configured port or the
   // highest available default port if none was configured by the user.
@@ -258,7 +259,7 @@ class ConsoleServer[Id, Signal](graphConfiguration: GraphConfiguration[Id, Signa
   }
 
   /** Set the ExecutionConfiguration */
-  def setExecutionConfiguration(e: ExecutionConfiguration) {
+  def setExecutionConfiguration(e: ExecutionConfiguration[_, _]) {
     sockets.setExecutionConfiguration(e)
   }
 
@@ -326,10 +327,13 @@ class FileServer() extends HttpHandler {
       val root = "./src/main/resources/" + folderName
       var inputStream: InputStream = null
       // If the file exists, use it (when using a cloned repository)
-      if ((new File(root)).exists()) {
+      if (!target.startsWith("webjars") && (new File(root)).exists) {
         val targetPath = {
-          if (target.endsWith(logFileName)) { target }
-          else { root + "/" + target }
+          if (target.endsWith(logFileName)) {
+            target
+          } else {
+            root + "/" + target
+          }
         }
         try {
           inputStream = new FileInputStream(targetPath)
@@ -341,11 +345,16 @@ class FileServer() extends HttpHandler {
         }
       } // If the file doesn't exist, use the resource from the jar file
       else {
-        inputStream = getClass().getClassLoader()
-          .getResourceAsStream(folderName + "/" + target)
+        val pathIntoJar = if (target.startsWith("webjars")) {
+          "META-INF/resources/" + target
+        } else {
+          folderName + "/" + target
+        }
+        inputStream = getClass.getClassLoader
+          .getResourceAsStream(pathIntoJar)
         if (inputStream == null) {
           t.sendResponseHeaders(404, 0)
-          inputStream = getClass().getClassLoader()
+          inputStream = getClass.getClassLoader
             .getResourceAsStream(folderName + "/html/404.html")
           t.getResponseHeaders.set("Content-Type", "text/html")
         }
@@ -378,7 +387,7 @@ class FileServer() extends HttpHandler {
  * @param port the port to start the server on
  * @param config the current graph configuration
  */
-class WebSocketConsoleServer[Id, Signal](port: InetSocketAddress, config: GraphConfiguration[Id, Signal])
+class WebSocketConsoleServer[Id: TypeTag, Signal: TypeTag](port: InetSocketAddress, config: GraphConfiguration[Id, Signal])
   extends WebSocketServer(port) {
 
   // the coordinator, execution and executionConfiguration will be set at a
@@ -387,7 +396,7 @@ class WebSocketConsoleServer[Id, Signal](port: InetSocketAddress, config: GraphC
   var coordinator: Option[Coordinator[Id, Signal]] = None
   var execution: Option[Execution] = None
   var executionStatistics: Option[ExecutionStatistics] = None
-  var executionConfiguration: Option[ExecutionConfiguration] = None
+  var executionConfiguration: Option[ExecutionConfiguration[_, _]] = None
   var breakConditions = List()
   val graphConfiguration = config
   implicit val formats = DefaultFormats
@@ -405,7 +414,7 @@ class WebSocketConsoleServer[Id, Signal](port: InetSocketAddress, config: GraphC
     executionStatistics = Some(e)
   }
 
-  def setExecutionConfiguration(e: ExecutionConfiguration) {
+  def setExecutionConfiguration(e: ExecutionConfiguration[_, _]) {
     executionConfiguration = Some(e)
   }
 
@@ -552,8 +561,7 @@ object Toolkit {
         case x: BreakConditionName.Value => JString(x.toString)
         case other => JString(other.toString)
       }
-    }
-    catch { case e: Exception => { JString(o.toString) } }
+    } catch { case e: Exception => { JString(o.toString) } }
   }
 }
 

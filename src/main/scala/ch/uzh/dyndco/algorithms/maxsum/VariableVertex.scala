@@ -23,12 +23,16 @@ class VariableVertex (
   /**
    * Config
    */
-  final var HARD_UTILITY : Double = -20
-  final var SOFT_UTILITY : Double = 5
-  final var PREF_UTILITY : Double = 10
-  final var NEIGHBOURS : Int = 2
-  final var MIN_VALUE : Double = HARD_UTILITY * NEIGHBOURS
-  final var MAX_VALUE : Double = PREF_UTILITY * NEIGHBOURS
+//  final var HARD_UTILITY : Double = -20
+//  final var SOFT_UTILITY : Double = 5
+//  final var PREF_UTILITY : Double = 10
+  
+  final var HARD_UTILITY_N : Double = 0
+  final var SOFT_UTILITY_N : Double = 0.75
+  final var PREF_UTILITY_N : Double = 1
+  
+  var MIN_VALUE : Double = 0
+  var MAX_VALUE : Double = (meetingIndex.size - 1) * (meetingIndex.size)
   
   /**
    * Extended Config
@@ -118,16 +122,15 @@ class VariableVertex (
    */
   def normalize(utility : Double) : Double = {
     var normalized : Double = 0.0
-    println(NEIGHBOURS)
-    println(MIN_VALUE)
-    println(MAX_VALUE)
-    try {
-      println("u:" + utility)
-      normalized = (utility - MIN_VALUE) / (MAX_VALUE - MIN_VALUE)
-      println("n:" + normalized)
-    } 
-    catch {
-      case e : Exception => println("normalization error")
+    
+    if(utility > 0){
+      
+      try {
+        normalized = (utility - MIN_VALUE) / (MAX_VALUE - MIN_VALUE)
+      } 
+      catch {
+        case e : Exception => println("normalization error")
+      }
     }
     normalized
   } 
@@ -236,12 +239,12 @@ class VariableVertex (
    * Calculate Utilities for current Best Value Assignment
    */
 	def calculateLocalUtility(bestValueAssignment : Int): Double = {
-	  var utility : Double = PREF_UTILITY
+	  var utility : Double = PREF_UTILITY_N
 		if(originalConstraints.hard.contains(bestValueAssignment)){
-		  utility -= HARD_UTILITY
+		  utility = HARD_UTILITY_N
 		}
 		else if(originalConstraints.soft.contains(bestValueAssignment)){
-		  utility -= SOFT_UTILITY
+		  utility = SOFT_UTILITY_N
 		}
 	  utility
 	}
@@ -253,13 +256,13 @@ class VariableVertex (
      var utilValueMap = Map[Int, Double]()
       for (value <- 1 to valueSpace){
         if(constraints.hard.contains(value)){
-          utilValueMap += (value -> HARD_UTILITY)
+          utilValueMap += (value -> HARD_UTILITY_N)
         }
         else if (constraints.soft.contains(value)){
-          utilValueMap += (value -> SOFT_UTILITY)
+          utilValueMap += (value -> SOFT_UTILITY_N)
         }
         else if (constraints.preference.values.toList.contains(value)){
-          utilValueMap += (value -> PREF_UTILITY)
+          utilValueMap += (value -> PREF_UTILITY_N)
         }
       }
      
@@ -288,10 +291,10 @@ class VariableVertex (
    */
 	def collect() = {
     
-    roundCount += 1
-    if(roundCount >= 1000){
-      finished = true
-    }
+//    roundCount += 1
+//    if(roundCount >= 2){
+//      finished = true
+//    }
     
     
 //    if(roundCount >= CHANGE_ROUND){
@@ -359,7 +362,9 @@ class VariableVertex (
 			initialized = true
       
       // add pref to index
-      meetingIndex += (id -> constraints.preference.apply(meetingID)) // add value to index
+			var pref = constraints.preference.apply(meetingID)
+      meetingIndex += (id -> pref) // add value to index FIXME could already be too late
+      bestValueAssignment = pref // assign best value
       
       new MaxSumMessage(id, calculateOriginUtilities())
 		}

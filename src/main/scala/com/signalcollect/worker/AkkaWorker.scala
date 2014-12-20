@@ -37,7 +37,6 @@ import com.signalcollect.interfaces.BulkSignal
 import com.signalcollect.interfaces.BulkSignalNoSourceIds
 import com.signalcollect.interfaces.EdgeAddedToNonExistentVertexHandlerFactory
 import com.signalcollect.interfaces.ExistingVertexHandlerFactory
-import com.signalcollect.interfaces.Heartbeat
 import com.signalcollect.interfaces.MapperFactory
 import com.signalcollect.interfaces.MessageBus
 import com.signalcollect.interfaces.MessageBusFactory
@@ -88,7 +87,7 @@ class AkkaWorker[@specialized(Int, Long) Id: ClassTag, Signal: ClassTag](
   val existingVertexHandlerFactory: ExistingVertexHandlerFactory[Id, Signal],
   val undeliverableSignalHandlerFactory: UndeliverableSignalHandlerFactory[Id, Signal],
   val edgeAddedToNonExistentVertexHandlerFactory: EdgeAddedToNonExistentVertexHandlerFactory[Id, Signal],
-  val heartbeatIntervalInMilliseconds: Int,
+  val statsReportingIntervalInMilliseconds: Int,
   val eagerIdleDetection: Boolean,
   val throttlingEnabled: Boolean,
   val throttlingDuringLoadingEnabled: Boolean,
@@ -99,21 +98,23 @@ class AkkaWorker[@specialized(Int, Long) Id: ClassTag, Signal: ClassTag](
 
   context.setReceiveTimeout(Duration.Undefined)
 
-  val heartbeatInterval = heartbeatIntervalInMilliseconds * 1000000 // milliseconds to nanoseconds
-  var lastHeartbeatTimestamp = System.nanoTime
   var schedulingTimestamp = System.nanoTime
 
-  val akkaScheduler: Scheduler = context.system.scheduler: akka.actor.Scheduler
+  val akkaScheduler: Scheduler = context.system.scheduler
   implicit val executor = context.system.dispatcher
 
   override def postStop {
-    statsReportScheduling.cancel
+    statsReportScheduling.foreach(_.cancel)
     scheduledPingPongExchange.foreach(_.cancel)
     log.debug(s"Worker $workerId has stopped.")
   }
 
-  val statsReportScheduling = akkaScheduler.
-    schedule(0.milliseconds, heartbeatIntervalInMilliseconds.milliseconds, self, StatsDue)
+  val statsReportScheduling: Option[Cancellable] = if (statsReportingIntervalInMilliseconds > 0) {
+    Some(akkaScheduler.
+      schedule(0.milliseconds, statsReportingIntervalInMilliseconds.milliseconds, self, StatsDue))
+  } else {
+    None
+  }
 
   var scheduledPingPongExchange: Option[Cancellable] = None
 
@@ -136,7 +137,8 @@ class AkkaWorker[@specialized(Int, Long) Id: ClassTag, Signal: ClassTag](
     workerId = workerId,
     numberOfWorkers = numberOfWorkers,
     numberOfNodes = numberOfNodes,
-    eagerIdleDetection = eagerIdleDetection,
+    isEagerIdleDetectionEnabled = eagerIdleDetection,
+    isThrottlingEnabled = throttlingEnabled || throttlingDuringLoadingEnabled,
     supportBlockingGraphModificationsInVertex = supportBlockingGraphModificationsInVertex,
     messageBus = messageBus,
     log = log,
@@ -146,7 +148,7 @@ class AkkaWorker[@specialized(Int, Long) Id: ClassTag, Signal: ClassTag](
     undeliverableSignalHandlerFactory = undeliverableSignalHandlerFactory,
     edgeAddedToNonExistentVertexHandlerFactory = edgeAddedToNonExistentVertexHandlerFactory,
     signalThreshold = 0.01,
-    collectThreshold = 0.0)
+    collectThreshold = 0.0) //with WorkerInterceptor[Id, Signal]
 
   /**
    * How many graph modifications this worker will execute in one batch.
@@ -156,9 +158,12 @@ class AkkaWorker[@specialized(Int, Long) Id: ClassTag, Signal: ClassTag](
   def isInitialized = messageBus.isInitialized
 
   def setIdle(newIdleState: Boolean) {
+    val oldIdleState = worker.isIdle
     worker.isIdle = newIdleState
-    if (newIdleState == true && eagerIdleDetection && worker.isIdleDetectionEnabled) {
-      messageBus.sendToNodeUncounted(worker.nodeId, worker.getWorkerStatusForNode)
+    if (eagerIdleDetection && worker.isIdleDetectionEnabled) {
+      if (newIdleState == true || (oldIdleState == true && newIdleState == false)) {
+        messageBus.sendToNodeUncounted(worker.nodeId, worker.getWorkerStatusForNode)
+      }
     }
     if (numberOfNodes > 1 && !worker.pingPongScheduled && worker.isIdleDetectionEnabled && newIdleState == false) {
       worker.sendPing(worker.getRandomPingPongPartner)
@@ -173,7 +178,7 @@ class AkkaWorker[@specialized(Int, Long) Id: ClassTag, Signal: ClassTag](
         }
       } catch {
         case t: Throwable =>
-          println(s"Worker $workerId had a problem during graph loading: $t}")
+          println(s"Worker $workerId had a problem during graph loading: $t")
           t.printStackTrace
       }
       worker.messageBusFlushed = false
@@ -342,9 +347,6 @@ class AkkaWorker[@specialized(Int, Long) Id: ClassTag, Signal: ClassTag](
       if (!worker.operationsScheduled) {
         scheduleOperations
       }
-
-    case Heartbeat(unusedFlag) =>
-      lastHeartbeatTimestamp = System.nanoTime
 
     case StatsDue =>
       worker.sendStatusToCoordinator

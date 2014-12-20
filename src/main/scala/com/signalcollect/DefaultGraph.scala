@@ -67,6 +67,7 @@ import com.signalcollect.worker.AkkaWorker
 import com.signalcollect.interfaces.UndeliverableSignalHandlerFactory
 import com.signalcollect.interfaces.EdgeAddedToNonExistentVertexHandlerFactory
 import com.signalcollect.interfaces.ExistingVertexHandlerFactory
+import scala.reflect.runtime.universe._
 
 /**
  * Creator in separate class to prevent excessive closure-capture of the DefaultGraph class (Error[java.io.NotSerializableException DefaultGraph])
@@ -83,7 +84,7 @@ case class WorkerCreator[Id: ClassTag, Signal: ClassTag](
   existingVertexHandlerFactory: ExistingVertexHandlerFactory[Id, Signal],
   undeliverableSignalHandlerFactory: UndeliverableSignalHandlerFactory[Id, Signal],
   edgeAddedToNonExistentVertexHandlerFactory: EdgeAddedToNonExistentVertexHandlerFactory[Id, Signal],
-  heartbeatIntervalInMilliseconds: Int,
+  statsReportingIntervalInMilliseconds: Int,
   eagerIdleDetection: Boolean,
   throttlingEnabled: Boolean,
   throttlingDuringLoadingEnabled: Boolean,
@@ -101,7 +102,7 @@ case class WorkerCreator[Id: ClassTag, Signal: ClassTag](
         existingVertexHandlerFactory,
         undeliverableSignalHandlerFactory,
         edgeAddedToNonExistentVertexHandlerFactory,
-        heartbeatIntervalInMilliseconds,
+        statsReportingIntervalInMilliseconds,
         eagerIdleDetection,
         throttlingEnabled,
         throttlingDuringLoadingEnabled,
@@ -117,16 +118,14 @@ case class CoordinatorCreator[Id: ClassTag, Signal: ClassTag](
   numberOfNodes: Int,
   throttlingEnabled: Boolean,
   messageBusFactory: MessageBusFactory[Id, Signal],
-  mapperFactory: MapperFactory[Id],
-  heartbeatIntervalInMilliseconds: Long)
+  mapperFactory: MapperFactory[Id])
   extends Creator[DefaultCoordinator[Id, Signal]] {
   def create: DefaultCoordinator[Id, Signal] = new DefaultCoordinator[Id, Signal](
     numberOfWorkers,
     numberOfNodes,
     throttlingEnabled,
     messageBusFactory,
-    mapperFactory,
-    heartbeatIntervalInMilliseconds)
+    mapperFactory)
 }
 
 /**
@@ -134,7 +133,7 @@ case class CoordinatorCreator[Id: ClassTag, Signal: ClassTag](
  *
  * Provisions the resources and initializes the workers and the coordinator.
  */
-class DefaultGraph[Id: ClassTag, Signal: ClassTag](
+class DefaultGraph[Id: ClassTag: TypeTag, Signal: ClassTag: TypeTag](
   val config: GraphConfiguration[Id, Signal]) extends Graph[Id, Signal] {
 
   val akkaConfig = AkkaConfig.get(
@@ -199,7 +198,7 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
           config.existingVertexHandlerFactory,
           config.undeliverableSignalHandlerFactory,
           config.edgeAddedToNonExistentVertexHandlerFactory,
-          config.heartbeatIntervalInMilliseconds,
+          config.statsReportingIntervalInMilliseconds,
           config.eagerIdleDetection,
           config.throttlingEnabled,
           config.throttlingDuringLoadingEnabled,
@@ -218,8 +217,7 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
       numberOfNodes,
       config.throttlingEnabled: Boolean,
       config.messageBusFactory,
-      config.mapperFactory,
-      config.heartbeatIntervalInMilliseconds)
+      config.mapperFactory)
     system.actorOf(Props(coordinatorCreator.create).withDispatcher("akka.io.pinned-dispatcher"), name = config.actorNamePrefix + "Coordinator")
   }
 
@@ -256,7 +254,7 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
 
   /** GraphApi */
 
-  def execute: ExecutionInformation[Id, Signal] = execute(ExecutionConfiguration)
+  def execute: ExecutionInformation[Id, Signal] = execute(ExecutionConfiguration[Id, Signal]())
 
   /**
    * Returns the time it took to execute `operation`
@@ -274,7 +272,7 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
     workerApi.getIndividualWorkerStatistics
   }
 
-  def execute(parameters: ExecutionConfiguration): ExecutionInformation[Id, Signal] = {
+  def execute(parameters: ExecutionConfiguration[Id, Signal]): ExecutionInformation[Id, Signal] = {
     if (console != null) { console.setExecutionConfiguration(parameters) }
     val executionStartTime = System.nanoTime
     val stats = ExecutionStatistics()
@@ -284,11 +282,11 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
     val jvmCpuStartTime = getJVMCpuTime
     parameters.executionMode match {
       case ExecutionMode.Synchronous =>
-        stats.computationTime = measureTime(() => synchronousExecution(stats, parameters.timeLimit, parameters.stepsLimit, parameters.globalTerminationCondition))
+        stats.computationTime = measureTime(() => synchronousExecution(stats, parameters.timeLimit, parameters.stepsLimit, parameters.globalTerminationDetection))
       case ExecutionMode.OptimizedAsynchronous =>
-        stats.computationTime = measureTime(() => optimizedAsynchronousExecution(stats, parameters.timeLimit, parameters.globalTerminationCondition))
+        stats.computationTime = measureTime(() => optimizedAsynchronousExecution(stats, parameters.timeLimit, parameters.globalTerminationDetection))
       case ExecutionMode.PureAsynchronous =>
-        stats.computationTime = measureTime(() => pureAsynchronousExecution(stats, parameters.timeLimit, parameters.globalTerminationCondition))
+        stats.computationTime = measureTime(() => pureAsynchronousExecution(stats, parameters.timeLimit, parameters.globalTerminationDetection))
       case ExecutionMode.ContinuousAsynchronous =>
         workerApi.startComputation
         stats.terminationReason = TerminationReason.Ongoing
@@ -307,12 +305,12 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
     stats: ExecutionStatistics,
     timeLimit: Option[Long],
     stepsLimit: Option[Long],
-    globalTerminationCondition: Option[GlobalTerminationCondition]) {
+    GlobalTerminationDetection: Option[GlobalTerminationDetection[Id, Signal]]) {
     var converged = false
     var globalTermination = false
     var interval = 0l
-    if (globalTerminationCondition.isDefined) {
-      interval = globalTerminationCondition.get.aggregationInterval
+    if (GlobalTerminationDetection.isDefined) {
+      interval = GlobalTerminationDetection.get.aggregationInterval
     }
     val startTime = System.nanoTime
     val nanosecondLimit = timeLimit.getOrElse(0l) * 1000000l
@@ -329,7 +327,7 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
       log.debug(s"Collect step #${stats.collectSteps} completed.")
       if (shouldCheckGlobalCondition) {
         log.debug(s"Checking global termination condition.")
-        globalTermination = isGlobalTerminationConditionMet(globalTerminationCondition.get)
+        globalTermination = isGlobalTerminationDetectionMet(GlobalTerminationDetection.get)
         log.debug(s"Global termination condition met: $globalTermination.")
       }
     }
@@ -343,9 +341,8 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
       stats.terminationReason = TerminationReason.TimeLimitReached
     }
     def shouldCheckGlobalCondition = interval > 0 && stats.collectSteps % interval == 0
-    def isGlobalTerminationConditionMet[ResultType](gtc: GlobalTerminationCondition): Boolean = {
-      val globalAggregateValue = workerApi.aggregateAll(gtc.aggregationOperation)
-      gtc.shouldTerminate(globalAggregateValue)
+    def isGlobalTerminationDetectionMet[ResultType](gtd: GlobalTerminationDetection[Id, Signal]): Boolean = {
+      gtd.shouldTerminate(this)
     }
     def remainingTimeLimit = nanosecondLimit - (System.nanoTime - startTime)
     def isTimeLimitReached = timeLimit.isDefined && remainingTimeLimit <= 0
@@ -366,7 +363,7 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
    *  - Pausing the computation if it is continuously running
    *  - Terminating the computation and Signal/Collect
    *  - Setting and getting multiple break conditions
-   *  - GlobalTerminationCondition checking at intervals
+   *  - GlobalTerminationDetection checking at intervals
    *
    * @constructor create a new InteractiveExecution
    * @param graph the Graph instance
@@ -378,7 +375,7 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
     graph: Graph[Id, Signal],
     console: ConsoleServer[Id, Signal],
     stats: ExecutionStatistics,
-    parameters: ExecutionConfiguration) extends Execution {
+    parameters: ExecutionConfiguration[Id, Signal]) extends Execution {
 
     var state = "initExecution"
     var iteration = 0
@@ -403,20 +400,19 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
 
     // Set the interval at which to perform global termination condition checks.
     var globalCheckInterval = 0l
-    if (parameters.globalTerminationCondition.isDefined) {
+    if (parameters.globalTerminationDetection.isDefined) {
       globalCheckInterval =
-        parameters.globalTerminationCondition.get.aggregationInterval
+        parameters.globalTerminationDetection.get.aggregationInterval
     }
 
     /**
      * Return true if the global condition is met.
      *
-     * @param gtc the GlobalTerminationCondition to check
+     * @param gtc the GlobalTerminationDetection to check
      */
-    private def isGlobalTerminationConditionMet[ResultType](
-      gtc: GlobalTerminationCondition): Boolean = {
-      val globalAggregateValue = workerApi.aggregateAll(gtc.aggregationOperation)
-      gtc.shouldTerminate(globalAggregateValue)
+    private def isGlobalTerminationDetectionMet[ResultType](
+      gtd: GlobalTerminationDetection[Id, Signal]): Boolean = {
+      gtd.shouldTerminate(graph)
     }
 
     /** Returns true if a global condition check should be performed */
@@ -604,8 +600,8 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
           if (shouldCheckGlobalCondition) {
             waitAs("pausedBeforeGlobalChecks")
             performStep("globalChecks", () => {
-              globalTermination = isGlobalTerminationConditionMet(
-                parameters.globalTerminationCondition.get)
+              globalTermination = isGlobalTerminationDetectionMet(
+                parameters.globalTerminationDetection.get)
               if (globalTermination) {
                 stepTokens = 0
                 waitAs("globalConditionReached")
@@ -631,7 +627,7 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
   protected def optimizedAsynchronousExecution(
     stats: ExecutionStatistics,
     timeLimit: Option[Long],
-    globalTerminationCondition: Option[GlobalTerminationCondition]) = {
+    globalTerminationDetection: Option[GlobalTerminationDetection[Id, Signal]]) = {
     val startTime = System.nanoTime
     workerApi.signalStep
     stats.signalSteps += 1
@@ -640,15 +636,15 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
     if (timeLimit.isDefined) {
       adjustedTimeLimit = Some(timeLimit.get - millisecondsSpentAlready)
     }
-    pureAsynchronousExecution(stats, adjustedTimeLimit, globalTerminationCondition)
+    pureAsynchronousExecution(stats, adjustedTimeLimit, globalTerminationDetection)
   }
 
   protected def pureAsynchronousExecution(
     stats: ExecutionStatistics,
     timeLimit: Option[Long],
-    globalTerminationCondition: Option[GlobalTerminationCondition]) {
+    globalTerminationDetection: Option[GlobalTerminationDetection[Id, Signal]]) {
     workerApi.startComputation
-    (timeLimit, globalTerminationCondition) match {
+    (timeLimit, globalTerminationDetection) match {
       case (None, None) =>
         awaitIdle
       case (Some(limit), None) =>
@@ -658,16 +654,15 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
         } else {
           stats.terminationReason = TerminationReason.TimeLimitReached
         }
-      case (None, Some(globalCondition)) =>
-        val aggregationOperation = globalCondition.aggregationOperation
-        val interval = globalCondition.aggregationInterval * 1000000l
+      case (None, Some(globalDetection)) =>
+        val interval = globalDetection.aggregationInterval * 1000000l
         var lastAggregationOperationTime = System.nanoTime - interval
         var converged = false
         var globalTermination = false
-        while (!converged && !isGlobalTerminationConditionMet(globalCondition)) {
+        while (!converged && !globalTermination) {
           if (intervalHasPassed) {
             lastAggregationOperationTime = System.nanoTime
-            globalTermination = isGlobalTerminationConditionMet(globalCondition)
+            globalTermination = isGlobalTerminationDetectionMet(globalDetection)
           }
           // waits for whichever remaining time interval/limit is shorter
           converged = awaitIdle(remainingIntervalTime)
@@ -679,16 +674,15 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
         }
         def intervalHasPassed = remainingIntervalTime <= 0
         def remainingIntervalTime = interval - (System.nanoTime - lastAggregationOperationTime)
-        def isGlobalTerminationConditionMet[ValueType](gtc: GlobalTerminationCondition): Boolean = {
+        def isGlobalTerminationDetectionMet[ValueType](gtd: GlobalTerminationDetection[Id, Signal]): Boolean = {
           workerApi.pauseComputation
-          val globalAggregateValue = workerApi.aggregateAll(gtc.aggregationOperation)
+          val shouldTerminate = gtd.shouldTerminate(this)
           workerApi.startComputation
-          gtc.shouldTerminate(globalAggregateValue)
+          shouldTerminate
         }
-      case (Some(limit), Some(globalCondition)) =>
-        val aggregationOperation = globalCondition.aggregationOperation
+      case (Some(limit), Some(globalDetection)) =>
         val timeLimitNanoseconds = limit * 1000000l
-        val interval = globalCondition.aggregationInterval * 1000000l
+        val interval = globalDetection.aggregationInterval * 1000000l
         val startTime = System.nanoTime
         var lastAggregationOperationTime = System.nanoTime - interval
         var converged = false
@@ -696,7 +690,7 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
         while (!converged && !globalTermination && !isTimeLimitReached) {
           if (intervalHasPassed) {
             lastAggregationOperationTime = System.nanoTime
-            globalTermination = isGlobalTerminationConditionMet(globalCondition)
+            globalTermination = isGlobalTerminationDetectionMet(globalDetection)
           }
           // waits for whichever remaining time interval/limit is shorter
           converged = awaitIdle(math.min(remainingIntervalTime, remainingTimeLimit))
@@ -709,11 +703,11 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
           stats.terminationReason = TerminationReason.TimeLimitReached
         }
         def intervalHasPassed = remainingIntervalTime <= 0
-        def isGlobalTerminationConditionMet[ResultType](gtc: GlobalTerminationCondition): Boolean = {
+        def isGlobalTerminationDetectionMet[ValueType](gtd: GlobalTerminationDetection[Id, Signal]): Boolean = {
           workerApi.pauseComputation
-          val globalAggregateValue = workerApi.aggregateAll(gtc.aggregationOperation)
+          val shouldTerminate = gtd.shouldTerminate(this)
           workerApi.startComputation
-          gtc.shouldTerminate(globalAggregateValue)
+          shouldTerminate
         }
         def remainingIntervalTime = interval - (System.nanoTime - lastAggregationOperationTime)
         def elapsedTimeNanoseconds = System.nanoTime - startTime
@@ -760,17 +754,27 @@ class DefaultGraph[Id: ClassTag, Signal: ClassTag](
     workerApi.recalculateScoresForVertexWithId(vertexId)
   }
 
-  def isIdle = coordinatorProxy.isIdle
-
   def shutdown {
     if (console != null) { console.shutdown }
     // Only shut down the actor system if we created it.
     if (config.actorSystem.isEmpty) {
-      // The node proxies also shutdown their respective actor systems.
-      parallelBootstrapNodeProxies.foreach(_.shutdown)
-      system.shutdown
-      system.awaitTermination
-      ActorSystemRegistry.remove(system)
+      try {
+        // The node proxies also shutdown their respective actor systems.
+        parallelBootstrapNodeProxies.foreach(_.shutdown)
+      } catch {
+        case t: Throwable =>
+      }
+      try {
+        Thread.sleep(20)
+        if (!system.isTerminated) {
+          system.shutdown
+          system.awaitTermination
+        }
+      } catch {
+        case t: Throwable =>
+      } finally {
+        ActorSystemRegistry.remove(system)
+      }
     } else {
       // If the system is preserved, just cleanup the actors.
       workerActors.foreach(_ ! PoisonPill)

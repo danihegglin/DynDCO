@@ -33,8 +33,6 @@ case class Request[ProxiedClass](
   incrementorForReply: MessageBus[_, _] => Unit // Answers go to temporary actor. This allows to assign the send count to the real recipient.
   )
 
-case class Heartbeat(maySignal: Boolean)
-
 // Some edge ids that get sent around will be incomplete, by having one or both ids set to 'null'.
 case class EdgeId[@specialized(Int, Long) Id](val sourceId: Id, val targetId: Id) {
   def withTargetId(t: Id): EdgeId[Id] = EdgeId(sourceId, t)
@@ -65,8 +63,8 @@ case class SignalMessageWithSourceId[@specialized(Int, Long) Id, Signal](
 
 case class SignalMessageWithoutSourceId[@specialized(Int, Long) Id, Signal](
   val targetId: Id,
-  val signal: Signal)  
-  
+  val signal: Signal)
+
 // Convergence/pause detection
 case class WorkerStatus(
   workerId: Int,
@@ -81,6 +79,10 @@ case class NodeStatus(
   nodeId: Int,
   messagesSent: SentMessagesStats,
   messagesReceived: Long)
+
+case class BulkStatus(senderNodeId: Int, fromWorkers: Array[WorkerStatus]) {
+  override def toString = s"BulkStatus($senderNodeId, [${fromWorkers.mkString(", ")}])"
+}
 
 case class SentMessagesStats(
   workers: Array[Int],
@@ -103,7 +105,6 @@ case class WorkerStatistics(
   outgoingEdgesAdded: Long = 0L,
   outgoingEdgesRemoved: Long = 0L,
   receiveTimeoutMessagesReceived: Long = 0L,
-  heartbeatMessagesReceived: Long = 0L,
   signalMessagesReceived: Long = 0L,
   bulkSignalMessagesReceived: Long = 0L,
   continueMessagesReceived: Long = 0L,
@@ -127,7 +128,6 @@ case class WorkerStatistics(
       outgoingEdgesAdded + other.outgoingEdgesAdded,
       outgoingEdgesRemoved + other.outgoingEdgesRemoved,
       receiveTimeoutMessagesReceived + other.receiveTimeoutMessagesReceived,
-      heartbeatMessagesReceived + other.heartbeatMessagesReceived,
       signalMessagesReceived + other.signalMessagesReceived,
       bulkSignalMessagesReceived + other.bulkSignalMessagesReceived,
       continueMessagesReceived + other.continueMessagesReceived,
