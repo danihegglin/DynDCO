@@ -13,9 +13,9 @@ class FunctionVertex (
 	/**
 	 * Config
 	 */
-	final var HARD_UTILITY : Double = -20
-	final var SOFT_UTILITY : Double = 5
-	final var PREF_UTILITY : Double = 10
+//	final var HARD_UTILITY : Double = -20
+//	final var SOFT_UTILITY : Double = 5
+//	final var PREF_UTILITY : Double = 10
 
 	/**
 	 * Control parameters

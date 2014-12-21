@@ -20,6 +20,7 @@
 package com.signalcollect
 
 import scala.reflect.ClassTag
+import scala.reflect.runtime.universe._
 
 import com.signalcollect.configuration.GraphConfiguration
 import com.signalcollect.factory.handler.DefaultEdgeAddedToNonExistentVertexHandlerFactory
@@ -58,7 +59,7 @@ object GraphBuilder extends GraphBuilder[Any, Any](None)
  *
  *  @author Philip Stutz
  */
-class GraphBuilder[@specialized(Int, Long) Id: ClassTag, Signal: ClassTag](
+class GraphBuilder[@specialized(Int, Long) Id: ClassTag: TypeTag, Signal: ClassTag: TypeTag](
   configOption: Option[GraphConfiguration[Id, Signal]] = None) extends Serializable {
 
   val config = configOption.getOrElse(
@@ -77,7 +78,7 @@ class GraphBuilder[@specialized(Int, Long) Id: ClassTag, Signal: ClassTag](
       schedulerFactory = new Throughput[Id, Signal],
       preallocatedNodes = None,
       nodeProvisioner = new LocalNodeProvisioner[Id, Signal](),
-      heartbeatIntervalInMilliseconds = 100,
+      statsReportingIntervalInMilliseconds = 0,
       kryoRegistrations = List(),
       kryoInitializer = "com.signalcollect.configuration.KryoInit",
       serializeMessages = false,
@@ -265,12 +266,21 @@ class GraphBuilder[@specialized(Int, Long) Id: ClassTag, Signal: ClassTag](
     builder(config.copy(nodeProvisioner = newNodeProvisioner))
 
   /**
+   *  Configures the interval with which the convergence related statistics are reported to the coordinator.
+   *  A smaller interval increases the overhead, but can speed up convergence detection.
+   *
+   *  @param newStatsReportingIntervalInMilliseconds The interval with which the workers send stats to the coordinator.
+   */
+  def withStatsReportingInterval(newStatsReportingIntervalInMilliseconds: Int) =
+    builder(config.copy(statsReportingIntervalInMilliseconds = newStatsReportingIntervalInMilliseconds))
+
+  /**
    *  Configures the interval with which the coordinator sends a heartbeat to the workers.
    *
    *  @param newHeartbeatIntervalInMilliseconds The interval with which the coordinator sends a heartbeat to the workers.
    */
-  def withHeartbeatInterval(newHeartbeatIntervalInMilliseconds: Int) =
-    builder(config.copy(heartbeatIntervalInMilliseconds = newHeartbeatIntervalInMilliseconds))
+  @deprecated("Now determines the interval with which workers report stats and has been renamed to 'withStatsReportingInterval'", "2.2.0-SNAPSHOT")
+  def withHeartbeatInterval(newHeartbeatIntervalInMilliseconds: Int) = withStatsReportingInterval(newHeartbeatIntervalInMilliseconds)
 
   /**
    *  Specifies additional Kryo serialization registrations.

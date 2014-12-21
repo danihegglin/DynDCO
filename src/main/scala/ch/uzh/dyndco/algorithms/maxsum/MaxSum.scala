@@ -11,48 +11,42 @@ import ch.uzh.dyndco.problems.Constraints
 import dispatch._
 import dispatch.Defaults._
 import ch.uzh.dyndco.util.Monitoring
+import com.signalcollect.configuration.ExecutionMode
+import ch.uzh.dyndco.problems.Problem
+import com.signalcollect.configuration.ExecutionMode
+import ch.uzh.dyndco.problems.MeetingSchedulingProblem
+import com.signalcollect.deployment.DeployableAlgorithm
 
 /**
  * Based on: FIXME
  */
 
-object MaxSum extends App {
+object MaxSum {
 
-	/**
-	 * Configuration
-	 */
-	var TIMESLOTS : Int = 20 // args(0)
-	var AGENTS : Int = 40 // args(1)
-	var MEETINGS : Int = 2 // args(2)
-  
-  /**
-   * Build problem
-   */
-  val problem = MeetingSchedulingFactory.build(TIMESLOTS,MEETINGS,AGENTS)
-  
-  /**
-   * Build graph
-   */
-  val graph = MaxSumGraph.build(problem)
-  
-  /**
-   * Run the graph
-   */ 
-  Monitoring.start()
-  val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
-  val stats = graph.execute(execConfig)
-  graph.shutdown
-  Monitoring.sucess()
-  
-  /**
-   * Results
-   */
-  // show run info
-  println(stats)
-          
-  // agents
-  for(vertex <- MaxSumGraph.varVertices){
-    println(vertex.id + " -> " + vertex.bestValueAssignment)
+  def run(problem : MeetingSchedulingProblem) = {
+
+    /**
+     * Build graph
+     */
+    val graph = MaxSumGraph.build(problem)
+    
+    /**
+     * Run the graph
+     */ 
+    Monitoring.start()
+    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
+    val stats = graph.execute(execConfig)
+    graph.shutdown
+    Monitoring.sucess()
+    
+    /**
+     * Results
+     */
+    println(stats)
+            
+    for(vertex <- MaxSumGraph.varVertices){
+      println(vertex.id + " -> " + vertex.bestValueAssignment)
+    }
+    
   }
-          
 }

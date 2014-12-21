@@ -37,6 +37,11 @@ akka {
   # Event handlers to register at boot time (Logging$DefaultLogger logs to STDOUT)
   loggers = ["akka.event.Logging$DefaultLogger", "com.signalcollect.console.ConsoleLogger"]
 
+  # Possibility to turn off logging of dead letters while the actor system
+  # is shutting down. Logging is only done when enabled by 'log-dead-letters'
+  # setting.
+  log-dead-letters-during-shutdown = off
+
     """ +
     {
       val level = loggingLevel match {
@@ -130,9 +135,9 @@ akka {
       "com.signalcollect.interfaces.SignalMessageWithoutSourceId" = kryo
       "com.signalcollect.interfaces.BulkSignal" = kryo
       "com.signalcollect.interfaces.BulkSignalNoSourceIds" = kryo
+      "com.signalcollect.interfaces.BulkStatus" = kryo
       "com.signalcollect.interfaces.WorkerStatus" = kryo
       "com.signalcollect.interfaces.NodeStatus" = kryo
-      "com.signalcollect.interfaces.Heartbeat" = kryo
       "com.signalcollect.interfaces.WorkerStatistics" = kryo
       "com.signalcollect.interfaces.NodeStatistics" = kryo
       "com.signalcollect.interfaces.SentMessagesStats" = kryo
@@ -140,7 +145,7 @@ akka {
       "com.signalcollect.interfaces.AddEdge" = kryo
       "com.signalcollect.interfaces.Request" = kryo
       "com.signalcollect.coordinator.OnIdle" = kryo
-      "com.signalcollect.coordinator.HeartbeatDue$" = kryo
+      "com.signalcollect.node.IdleReportRequested" = kryo
       "com.signalcollect.worker.StatsDue$" = kryo
       "com.signalcollect.worker.ScheduleOperations$" = kryo
       "com.signalcollect.worker.Ping" = kryo
@@ -148,6 +153,7 @@ akka {
       "com.signalcollect.worker.StartPingPongExchange" = kryo
       "akka.actor.Terminated" = kryo
       "akka.actor.SystemGuardian$TerminationHookDone$" = kryo
+      "akka.actor.StopChild" = kryo
       "akka.remote.RemoteWatcher$HeartbeatTick$" = java
       "akka.remote.RemoteWatcher$ReapUnreachableTick$" = java
       "akka.dispatch.sysmsg.Terminate" = java
@@ -202,7 +208,7 @@ akka {
         # Try to define the size to be at least as big as the max possible number
         # of threads that may be used for serialization, i.e. max number
         # of threads allowed for the scheduler
-        serializer-pool-size = """ + numberOfCores + """
+        serializer-pool-size = """ + {2 * numberOfCores} + """
 
         # Define a default size for byte buffers used during serialization
         buffer-size = 65536
@@ -269,7 +275,9 @@ akka {
   }
 
   remote {
-        
+    
+    log-remote-lifecycle-events = """ + { if (loggingLevel.asInt > 2) "on" else "off" } + """
+
     ### Failure detection and recovery
  
     # Settings for the Phi accrual failure detector (http://ddg.jaist.ac.jp/pub/HDY+04.pdf
@@ -415,7 +423,7 @@ akka {
 
     # Log warning if the number of messages in the backoff buffer in the endpoint
     # writer exceeds this limit. It can be disabled by setting the value to off.
-    log-buffer-size-exceeding = 100000
+    log-buffer-size-exceeding = """ + { if (loggingLevel.asInt > 2) "100000" else "2000000" } + """
     
     netty.tcp {
         
@@ -440,7 +448,7 @@ akka {
       # so this setting has to be chosen carefully when using UDP.
       # Both send-buffer-size and receive-buffer-size settings has to
       # be adjusted to be able to buffer messages of maximum size.
-      maximum-frame-size = 524288b
+      maximum-frame-size = 2097152b
 
       # (I) Sets the size of the connection backlog
       backlog = 8192
