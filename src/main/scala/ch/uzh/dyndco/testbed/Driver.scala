@@ -10,5 +10,6 @@ import akka.actor.ActorRef
 object Driver extends App {
     
   Testrunner.execute(null,null)
+  System.exit(0)
 	
 }

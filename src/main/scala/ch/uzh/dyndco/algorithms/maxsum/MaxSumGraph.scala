@@ -52,7 +52,7 @@ object MaxSumGraph {
           var varVertex = new VariableVertex(variableId,null,problem.TIMESLOTS, constraints, agentIndex, meetingIndex, meetingId)
           graph.addVertex(varVertex)
           varVertices += varVertex
-          meetingIndex += (variableId -> -10)
+          meetingIndex += (variableId -> constraints.preference.apply(meetingId))
           
           // build function vertex
           var functionId : Any = "f" + agent + "m" + meetingId

@@ -1,7 +1,7 @@
 /*
- *  @author Philip Stutz
+ *  @author Mihaela Verman
  *
- *  Copyright 2011 University of Zurich
+ *  Copyright 2014 University of Zurich
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,14 +14,20 @@
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *
  */
 
-package com.signalcollect.nodeprovisioning
+package com.signalcollect.deployment
 
-import com.signalcollect.util.RandomString
+import org.scalatest.FlatSpec
+import org.scalatest.ShouldMatchers
 
-case class Job(
-  execute: () => Unit,
-  jobId: String = RandomString.generate(6),
-  numberOfNodes: Int = 1)
+class NodeNameExtractionSpec extends FlatSpec with ShouldMatchers{
+
+  "NodeNameExtractor" should "correctly build the names in a simple example" in {
+    val nodeNames = "minion[01,02-03,08-10,13]"
+    val correctOutput = List("minion01", "minion02", "minion03",
+      "minion08", "minion09", "minion10", "minion13")
+    SlurmNodeBootstrap.buildNodeNameList(nodeNames) === correctOutput
+  }
+
+}

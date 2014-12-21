@@ -8,8 +8,8 @@ object Monitoring {
   /**
    * Configuration
    */
-//  final var address = "178.62.200.138"
-  final var address = "localhost"
+  final var address = "178.62.200.138"
+//  final var address = "localhost"
   
   def start() = {
     var svc = url("http://" + address + ":9000/start")

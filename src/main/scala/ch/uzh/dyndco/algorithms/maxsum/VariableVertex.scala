@@ -183,6 +183,7 @@ class VariableVertex (
       var accepted : Boolean = false
       var position_top : Int = 0 // FIXME test 0
       var position_sub : Int = 0
+      var bucketHistory : Set[Int] = Set[Int]()
      
       while(!accepted){
         
@@ -199,6 +200,7 @@ class VariableVertex (
         
         var conflict : Boolean = false
         
+        // index check
         for(meeting <- agentIndex.keys){
           if(meeting != meetingID){
              if(agentIndex.apply(meeting) == assignment){
@@ -206,10 +208,18 @@ class VariableVertex (
              }
            }
         }
+        
+        // historic check FIXME test
+        if(bucketHistory.contains(assignment)){
+          println("Historic Conflict")
+          conflict = true
+        }
+        
       
         if(!conflict){
             bestValueAssignment = assignment
             agentIndex += (meetingID -> assignment)
+            bucketHistory += assignment
             accepted = true
         }
         else {
@@ -225,6 +235,7 @@ class VariableVertex (
                 position_top = 0
               }
               position_sub = 0
+              bucketHistory.clear()
            }
         }
       }
@@ -358,12 +369,14 @@ class VariableVertex (
     }
 		else {
       
+      // already added at initialization of vertex
+//      meetingIndex += (id -> pref) // add value to index FIXME could already be too late
+      
       // initialize
 			initialized = true
       
       // add pref to index
 			var pref = constraints.preference.apply(meetingID)
-      meetingIndex += (id -> pref) // add value to index FIXME could already be too late
       bestValueAssignment = pref // assign best value
       
       new MaxSumMessage(id, calculateOriginUtilities())
