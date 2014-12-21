@@ -22,7 +22,7 @@ object MaxSum extends App {
 	 * Configuration
 	 */
 	var TIMESLOTS : Int = 20 // args(0)
-	var AGENTS : Int = 20 // args(1)
+	var AGENTS : Int = 40 // args(1)
 	var MEETINGS : Int = 2 // args(2)
   
   /**
