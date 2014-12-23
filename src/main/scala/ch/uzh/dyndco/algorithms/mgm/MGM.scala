@@ -41,11 +41,11 @@ object MGM extends App {
 	/**
 	 * Run the graph
 	 */	
-  Monitoring.start()
+//  Monitoring.start()
 	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
 	val stats = graph.execute(execConfig)
   graph.shutdown
-  Monitoring.stop()
+//  Monitoring.stop()
   
   /**
    * Results

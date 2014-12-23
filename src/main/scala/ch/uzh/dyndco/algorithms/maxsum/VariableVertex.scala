@@ -17,7 +17,8 @@ class VariableVertex (
     constraints_ : Constraints,
     agentIndex : Map[Any, Int],
     meetingIndex : Map[Any, Int],
-    meetingID : Int
+    meetingID : Int,
+    runID : String
 		) extends DynamicVertex(id, initialState) {
   
   /**
@@ -32,19 +33,20 @@ class VariableVertex (
   final var PREF_UTILITY_N : Double = 1
   
   var MIN_VALUE : Double = 0
-  var MAX_VALUE : Double = (meetingIndex.size - 1) * (meetingIndex.size)
+  var MAX_VALUE : Double = 0
   
   /**
    * Extended Config
    */
-  final var CHANGE_ROUND : Int = Random.nextInt(20)
+  final var CHANGE_ROUND : Int = 10
   var roundCount = 0
 
   /**
    * Meeting Value
    */
   var bestValueAssignment : Int = -1 // Contains best combination of assignments for the greater good
-	
+	var bucketHistory : Set[Int] = Set[Int]()
+  
 	/**
 	 * The Utility
 	 */
@@ -74,7 +76,7 @@ class VariableVertex (
   /**
    * Build Utilities
    */
-	def buildUtilities(allMarginalUtilities : Map[Any, Map[Any, Map[Int, Double]]], timeslots : Int): Map[Any,Map[Int, Double]] = {
+	def buildUtilities(allMarginalUtilities : Map[Any, Map[Any, Map[Int, Double]]]): Map[Any,Map[Int, Double]] = {
 	  
 	  val marginalUtilities = Map[Any,Map[Int, Double]]() // Keeps track which meeting has which assignment
 		
@@ -91,7 +93,7 @@ class VariableVertex (
   		
   		// build assignment -> costs for the particular functionVertex target
   		var assignmentMap : Map[Int,Double] = Map[Int,Double]()
-  		for(assignment : Int <- 1 to timeslots){
+  		for(assignment : Int <- 1 to valueSpace){
   
   			var utility : Double = 0
   				    
@@ -107,7 +109,9 @@ class VariableVertex (
   			}
         
         // normalize utility
+//        println(utility)
         utility = normalize(utility)
+//        println(utility)
         
   			assignmentMap += (assignment -> utility)
   		}
@@ -122,6 +126,11 @@ class VariableVertex (
    */
   def normalize(utility : Double) : Double = {
     var normalized : Double = 0.0
+    
+    MAX_VALUE = (meetingIndex.size - 1) * (meetingIndex.size)
+    
+//    println("MAX VALUE: " + MAX_VALUE)
+//    println("INDEX SIZE: " + meetingIndex.size)
     
     if(utility > 0){
       
@@ -139,8 +148,6 @@ class VariableVertex (
    * Find Best Value
    */
 	def findBestValueAssignment(marginalUtilities : Map[Any,Map[Int, Double]]) : Int = {
-    
-    if(finished == false){
     
       var allUtilities = Map[Int,Double]()
       for(utilities <- marginalUtilities.values){
@@ -183,7 +190,6 @@ class VariableVertex (
       var accepted : Boolean = false
       var position_top : Int = 0 // FIXME test 0
       var position_sub : Int = 0
-      var bucketHistory : Set[Int] = Set[Int]()
      
       while(!accepted){
         
@@ -209,17 +215,15 @@ class VariableVertex (
            }
         }
         
-        // historic check FIXME test
+        // history check FIXME test
         if(bucketHistory.contains(assignment)){
-          println("Historic Conflict")
           conflict = true
         }
-        
       
         if(!conflict){
             bestValueAssignment = assignment
             agentIndex += (meetingID -> assignment)
-            bucketHistory += assignment
+            bucketHistory.add(assignment)
             accepted = true
         }
         else {
@@ -239,7 +243,6 @@ class VariableVertex (
            }
         }
       }
-    }
 
     meetingIndex += (id -> bestValueAssignment)
 	  
@@ -294,7 +297,11 @@ class VariableVertex (
       }
       if(same){
         finished = true
+//        println(meetingID + " finished -> " + refValue)
       }
+//      else {
+//        println(meetingID + " not finished: " + meetingIndex.values)
+//      }
   }
 
   /**
@@ -302,27 +309,31 @@ class VariableVertex (
    */
 	def collect() = {
     
-//    roundCount += 1
-//    if(roundCount >= 2){
+    roundCount += 1
+////    println("roundCount: " + roundCount)
+//    if(roundCount >= 1000){
 //      finished = true
 //    }
+//    
     
-    
-//    if(roundCount >= CHANGE_ROUND){
-//      
-////      println(id + " - CHANGE!!!!!!!!!!!!!!!!!!!!: " + roundCount)
-//      
+    if(roundCount >= CHANGE_ROUND){
+      
+//      println(id + " - CHANGE!!!!!!!!!!!!!!!!!!!!: " + roundCount)
+      
 //      var participations : Set[Int] = Set[Int](meetingID)
 //      constraints = MeetingSchedulingFactory.buildSingleConstraints(id, participations)
-//      roundCount = 0
-//      
-////      println(id + " - " + roundCount)
-//      
+      roundCount = 0
+      
+//      println(id + " - " + roundCount)
+      
 //      initialized = false
-//      
-//    }
+      
+    }
 
 		if(initialized){
+      
+       // check if finished
+       finishedCheck()
       
   		  // build all Utilities: function -> variable -> timeslot -> utility
         var isNull : Boolean = true
@@ -344,28 +355,30 @@ class VariableVertex (
               //println("signal was null")
   				}
   			}
+//        println("v" + roundCount + "_1: " + receivedUtilities)
         
     		// prepare utilities
-    		val allUtilities = buildUtilities(receivedUtilities, valueSpace)
+    		val allUtilities = buildUtilities(receivedUtilities)
     			
         if(!isNull){
     			
           // find best assignments for all requirements
-      		val bestValueAssignment = findBestValueAssignment(allUtilities)
+          if(!finished){
+      		  val bestValueAssignment = findBestValueAssignment(allUtilities)
+          }
       
           // calculate local utility
       		agentUtility = calculateLocalUtility(bestValueAssignment)
       			
       	  // Push current utility to monitoring
-          Monitoring.update(id, agentUtility)
-          println(id + ": " + agentUtility + " -> " + bestValueAssignment)
+          Monitoring.update(id, agentUtility, runID)
+//          println(id + ": " + agentUtility + " -> " + bestValueAssignment)
           
-       }
-          
-       // check if finished
-       finishedCheck()
        
+//       println("v" + roundCount + "_2: " + allUtilities)
+        } 
     	 new MaxSumMessage(id, allUtilities)
+      
     }
 		else {
       

@@ -15,7 +15,6 @@ import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.problems.Problem
 import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
-import com.signalcollect.deployment.DeployableAlgorithm
 
 /**
  * Based on: FIXME
@@ -23,29 +22,47 @@ import com.signalcollect.deployment.DeployableAlgorithm
 
 object MaxSum {
 
-  def run(problem : MeetingSchedulingProblem) = {
+  def run(problem : MeetingSchedulingProblem, runID : String) = {
 
     /**
      * Build graph
      */
-    val graph = MaxSumGraph.build(problem)
+    val maxSumGraph = MaxSumGraphFactory.build(problem, runID)
     
     /**
      * Run the graph
      */ 
-    Monitoring.start()
-    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
-    val stats = graph.execute(execConfig)
-    graph.shutdown
-    Monitoring.sucess()
+    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
+    val stats = maxSumGraph.graph.execute(execConfig)
+    maxSumGraph.graph.shutdown
     
     /**
      * Results
      */
     println(stats)
-            
-    for(vertex <- MaxSumGraph.varVertices){
-      println(vertex.id + " -> " + vertex.bestValueAssignment)
+    
+    for(meeting <- maxSumGraph.neighbourhoods.keys.toList.sorted){
+      var correct = true
+      var value = -1
+      var wrong = Set[Int]()
+      for(neighbour <- maxSumGraph.neighbourhoods.apply(meeting).keys){
+        if(value < 0){
+          value = neighbour.bestValueAssignment
+        }
+        else {
+          if(value != neighbour.bestValueAssignment){
+            correct = false
+            wrong += neighbour.bestValueAssignment
+          }
+        }
+      }
+      
+      if(correct){
+        println("meeting " + meeting + " -> " + value)
+      }
+      else {
+         println("meeting " + meeting + " -> " + value + ", " + wrong)
+      }
     }
     
   }

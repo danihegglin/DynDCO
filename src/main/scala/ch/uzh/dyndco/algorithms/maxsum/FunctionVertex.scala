@@ -23,6 +23,7 @@ class FunctionVertex (
 	var finished : Boolean = false
 	var finishedCount : Int = 0
 	var marginalUtilityHistory = Map[Any, Map[Int,Double]]()
+  var roundCount = 0
 
 	/**
 	 * Indicates that every signal this vertex receives is
@@ -42,6 +43,11 @@ class FunctionVertex (
    * Collect Signals
    */
 	def collect() = {
+    
+    roundCount += 1
+    if(roundCount >= 100000){
+      finished = true
+    }
     
   		// Unpack messages
       var isNull : Boolean = false
@@ -81,6 +87,8 @@ class FunctionVertex (
   		 // build constraints object for the assignments
   		 allUtilities += (messageReceiver -> utilities) // Target -> Assignment : Cost
   		}
+      
+//      println("f" + roundCount + ": " + allUtilities)
       
   	  new MaxSumMessage(id, allUtilities)
   }
