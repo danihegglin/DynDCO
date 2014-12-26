@@ -22,12 +22,12 @@ import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 
 object MaxSum {
 
-  def run(problem : MeetingSchedulingProblem, runID : String) = {
+  def run(problem : MeetingSchedulingProblem) = {
 
     /**
      * Build graph
      */
-    val maxSumGraph = MaxSumGraphFactory.build(problem, runID)
+    val maxSumGraph = MaxSumGraphFactory.build(problem)
     
     /**
      * Run the graph

@@ -12,7 +12,7 @@ import com.signalcollect.GraphBuilder
 
 object MaxSumGraphFactory {
   
-  def build(problem : MeetingSchedulingProblem, runID : String) : MaxSumGraph = {
+  def build(problem : MeetingSchedulingProblem) : MaxSumGraph = {
     
     var varVertices = Set[VariableVertex]()
     var funcVertices = Set[FunctionVertex]()
@@ -48,7 +48,7 @@ object MaxSumGraphFactory {
           // build variable vertex
           var variableId : Any = "v" + agent + "m" + meetingId
           var constraints = problem.allConstraints.apply(agent)
-          var varVertex = new VariableVertex(variableId,null,problem.TIMESLOTS, constraints, agentIndex, meetingIndex, meetingId, runID)
+          var varVertex = new VariableVertex(variableId,null,problem.TIMESLOTS, constraints, agentIndex, meetingIndex, meetingId)
           graph.addVertex(varVertex)
           varVertices += varVertex
           meetingIndex += (variableId -> constraints.preference.apply(meetingId))

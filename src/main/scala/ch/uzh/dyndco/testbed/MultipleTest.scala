@@ -9,7 +9,7 @@ import akka.actor.ActorRef
 import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.util.IdFactory
 
-object Testrunner extends DeployableAlgorithm {
+object MultipleTest extends DeployableAlgorithm {
   
   def execute(parameters: Map[String, String], nodeActors: Array[ActorRef]){
 	
@@ -47,7 +47,7 @@ object Testrunner extends DeployableAlgorithm {
           val runID = IdFactory.build(timeslots, meetings, agents, run)
           val problem = MeetingSchedulingFactory.build(timeslots,meetings,agents)
           Monitoring.start(runID)
-          MaxSum.run(problem,runID)
+          MaxSum.run(problem)
           Monitoring.sucess(runID)
         }
         meetings *= FACTOR

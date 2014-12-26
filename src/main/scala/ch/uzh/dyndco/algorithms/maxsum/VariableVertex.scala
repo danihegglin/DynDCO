@@ -9,6 +9,8 @@ import ch.uzh.dyndco.problems.Constraints
 import ch.uzh.dyndco.util.Monitoring
 import scala.collection.mutable.MutableList
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
+//import spray.json._
+//import DefaultJsonProtocol._
 
 class VariableVertex (
 		id: Any, 
@@ -17,16 +19,8 @@ class VariableVertex (
     constraints_ : Constraints,
     agentIndex : Map[Any, Int],
     meetingIndex : Map[Any, Int],
-    meetingID : Int,
-    runID : String
+    meetingID : Int
 		) extends DynamicVertex(id, initialState) {
-  
-  /**
-   * Config
-   */
-//  final var HARD_UTILITY : Double = -20
-//  final var SOFT_UTILITY : Double = 5
-//  final var PREF_UTILITY : Double = 10
   
   final var HARD_UTILITY_N : Double = 0
   final var SOFT_UTILITY_N : Double = 0.75
@@ -40,6 +34,9 @@ class VariableVertex (
    */
   final var CHANGE_ROUND : Int = 10
   var roundCount = 0
+  var messages : Map[String, Double] = Map[String, Double]()
+  var MESSAGES_MAX = 250
+  var PUSH_ROUND = 250 // FIXME make distributed
 
   /**
    * Meeting Value
@@ -109,9 +106,7 @@ class VariableVertex (
   			}
         
         // normalize utility
-//        println(utility)
         utility = normalize(utility)
-//        println(utility)
         
   			assignmentMap += (assignment -> utility)
   		}
@@ -128,9 +123,6 @@ class VariableVertex (
     var normalized : Double = 0.0
     
     MAX_VALUE = (meetingIndex.size - 1) * (meetingIndex.size)
-    
-//    println("MAX VALUE: " + MAX_VALUE)
-//    println("INDEX SIZE: " + meetingIndex.size)
     
     if(utility > 0){
       
@@ -370,8 +362,15 @@ class VariableVertex (
           // calculate local utility
       		agentUtility = calculateLocalUtility(bestValueAssignment)
       			
-      	  // Push current utility to monitoring
-          Monitoring.update(id, agentUtility, runID)
+      	  // add current utility to messages
+            val timestamp: Long = System.currentTimeMillis / 1000
+            messages += timestamp.toString() -> agentUtility
+            
+            // Send if reached max
+            if(messages.size >= MESSAGES_MAX){
+              Monitoring.update(id, messages)
+              messages.clear()
+            }
 //          println(id + ": " + agentUtility + " -> " + bestValueAssignment)
           
        

@@ -63,12 +63,15 @@ libraryDependencies ++= Seq(
   "org.webjars" % "d3js" % "3.4.13",
   "org.webjars" % "jquery" % "2.1.1",
   "org.webjars" % "reconnecting-websocket" % "23d2fbc",
-  "org.webjars" % "intro.js" % "1.0.0"
+  "org.webjars" % "intro.js" % "1.0.0",
+  "io.spray" % "spray-json_2.11" % "1.3.1"
 )
 
 resolvers += "Scala-Tools Repository" at "https://oss.sonatype.org/content/groups/scala-tools/"
 
 resolvers += "Sonatype Snapshots Repository" at "https://oss.sonatype.org/content/repositories/snapshots/"
+
+resolvers += "spray" at "http://repo.spray.io/"
 
 resolvers += "Ifi Public" at "https://maven.ifi.uzh.ch/maven2/content/groups/public/"
 

@@ -1,4 +1,4 @@
-name := """reactive-stocks"""
+name := """dyndco-monitoring"""
 
 version := "1.0-SNAPSHOT"
 
@@ -13,5 +13,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "2.3.1",
   "org.webjars" % "flot" % "0.8.0",
   "com.typesafe.akka" %% "akka-testkit" % "2.3.4" % "test",
-  "com.github.scala-incubator.io" % "scala-io-file_2.11" % "0.4.3-1"
+  "com.github.scala-incubator.io" % "scala-io-file_2.11" % "0.4.3-1",
+  "io.spray" %%  "spray-json" % "1.3.1",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.4.4"
 )
