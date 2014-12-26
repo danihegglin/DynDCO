@@ -16,6 +16,7 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.WebSocket;
+import play.mvc.Http.RequestBody;
 import scala.Option;
 
 import java.io.BufferedWriter;
@@ -131,7 +132,7 @@ public class Monitoring extends Controller {
 	 * Utility message processing
 	 */
 	public static Result updateAgent(String agent) throws Exception {
-
+		
 		try {
 
 			// Receive get parameters
@@ -140,8 +141,10 @@ public class Monitoring extends Controller {
 			String id = parameters.get("id");
 
 			// Get json body
-			JsonNode json = request().body().asJson();
+			RequestBody body = request().body();
+			JsonNode json = Json.parse(body.asText());
 			if(json == null) {
+				System.out.println("JSON is NULL");
 				return badRequest("Expecting Json data");
 			}
 
@@ -149,12 +152,17 @@ public class Monitoring extends Controller {
 			ActorRef collector = collectors.get(id);
 			
 			// Process messages
-			Iterator it = json.iterator();
+			Iterator<String> it = json.fieldNames();
 			while(it.hasNext()){
-				System.out.println(it.next());
-//				Double utility = json.getJSONObject(it.next());
-//				String update = (new Date().getTime() / 100) + ";" + agent + ";" + utility + "\n";
-//				collector.tell(update, ActorRef.noSender());
+				
+				String key = it.next();
+				JsonNode value = json.get(key);
+//				Double utility = value.getDoubleValue();
+				
+				System.out.println(key + " | " + value);
+				
+				String update = (key + ";" + agent + ";" + value + "\n");
+				collector.tell(update, ActorRef.noSender());
 			}
 
 			//			// Add to Utilities

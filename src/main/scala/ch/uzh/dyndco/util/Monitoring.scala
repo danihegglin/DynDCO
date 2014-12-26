@@ -11,20 +11,26 @@ object Monitoring {
   /**
    * Configuration
    */
-  final var address = "178.62.200.138"
-//  final var address = "localhost"
+  //final var address = "178.62.200.138"
+  final var address = "localhost"
   var runID : String = "" 
   
   /**
    * Main
    */
   def start(runID : String) = {
+    
+    println("start")
+    
     this.runID = runID
     var svc = url("http://" + address + ":9000/start?id=" + runID)
     var result = Http(svc OK as.String)    
   }
   
   def stop(runID : String) = {
+    
+    println("stop")
+    
     val hello = new Thread(new Runnable {
       def run() {
          Thread sleep 60000
@@ -36,12 +42,21 @@ object Monitoring {
 
   def update(vertexId : Any, messages : Map[String, Double]) = {
     
+    println("updating")
+    
     val immutable : scala.collection.immutable.Map[String,Double] = messages.toMap 
     val json = immutable.toJson
     
-    Http(url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + runID).setBody(
-     "tracker={" + json.toString() + "}").setHeader(
-     "Content-Type", "application/json") OK as.String)
+//    println(json.toString())
+    
+    var svc = url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + runID)
+       .setBody(json.toString())
+       val postFields: Map[String, String] = Map[String,String]()
+     var result = Http(svc << postFields OK as.String)
+    
+//    Http(url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + runID).setBody(
+//     "tracker={" + json.toString() + "}").setHeader(
+//     "Content-Type", "application/json") OK as.String)
     
     //    val svc = url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + id)
 //    val result = Http(svc OK as.String)

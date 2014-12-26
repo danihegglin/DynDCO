@@ -14,6 +14,5 @@ libraryDependencies ++= Seq(
   "org.webjars" % "flot" % "0.8.0",
   "com.typesafe.akka" %% "akka-testkit" % "2.3.4" % "test",
   "com.github.scala-incubator.io" % "scala-io-file_2.11" % "0.4.3-1",
-  "io.spray" %%  "spray-json" % "1.3.1",
-  "com.fasterxml.jackson.core" % "jackson-databind" % "2.4.4"
+  "io.spray" %%  "spray-json" % "1.3.1"
 )

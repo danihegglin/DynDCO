@@ -8,15 +8,15 @@ class FunctionVertex (
 		id : Any, 
 		initialState: MaxSumMessage,
 		valueSpace: Int
-		) extends DynamicVertex(id, initialState) {
+		) extends DynamicVertex(id, initialState, valueSpace, null, null) { // FIXME
   
 	/**
 	 * Control parameters
 	 */
-	var finished : Boolean = false
+//	var finished : Boolean = false
 	var finishedCount : Int = 0
 	var marginalUtilityHistory = Map[Any, Map[Int,Double]]()
-  var roundCount = 0
+//  var roundCount = 0
 
 	/**
 	 * Indicates that every signal this vertex receives is
@@ -24,13 +24,13 @@ class FunctionVertex (
 	 */
 	type Signal = MaxSumMessage
 
-	/**
-	 * Score signal function
-	 */
-	override def scoreSignal: Double = {
-		if(this.finished) 0
-		else 1
-	}
+//	/**
+//	 * Score signal function
+//	 */
+//	override def scoreSignal: Double = {
+//		if(this.finished) 0
+//		else 1
+//	}
   
   /**
    * Collect Signals
@@ -40,7 +40,7 @@ class FunctionVertex (
     roundCount += 1
     if(roundCount >= 100000){
       finished = true
-    }
+    } // FIXME
     
   		// Unpack messages
       var isNull : Boolean = false

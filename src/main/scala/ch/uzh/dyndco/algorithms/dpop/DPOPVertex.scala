@@ -15,7 +15,7 @@ class DPOPVertex (
     timeslots: Int,
     constraints : Constraints,
     index : Map[Int, Map[Any, Int]]
-    ) extends DynamicVertex(id, agentView){
+    ) extends DynamicVertex(id, agentView, timeslots, constraints, null){ // FIXME
   
   // -------------------------- TERMINATION CRITERION -----------------------------------------
   /**

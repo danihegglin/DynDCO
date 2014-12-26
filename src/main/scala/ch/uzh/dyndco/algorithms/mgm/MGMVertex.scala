@@ -11,7 +11,7 @@ import collection.mutable.Map
     timeslots: Int,
     constraints : Constraints,
     index : Map[Int, Int]
-    ) extends DynamicVertex(id, agentView){
+    ) extends DynamicVertex(id, agentView, timeslots, constraints, null){ // FIXME
   
   /**
 	 * Config
@@ -24,7 +24,7 @@ import collection.mutable.Map
      * Control parameters
      */
     var initialized : Boolean = false
-    var finished : Boolean = false
+//    var finished : Boolean = false
     
     /**
      * Values
@@ -33,13 +33,13 @@ import collection.mutable.Map
     var lastGain : Double = 0.0
     var lastValue : Int = -1
     
-  /**
-   * Score signal function
-   */
-  override def scoreSignal: Double = {
-    if(this.finished) 0
-    else 1
-  }
+//  /**
+//   * Score signal function
+//   */
+//  override def scoreSignal: Double = {
+//    if(this.finished) 0
+//    else 1
+//  }
 
 	def collect() = {
     

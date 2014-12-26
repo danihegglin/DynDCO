@@ -16,19 +16,37 @@ object MonitoringTesting extends App {
     
     var messages = Map[String,Double]()
     messages += (""+123 -> 5.0)
+    messages += (""+124 -> 8.0)
     
     val immutable : scala.collection.immutable.Map[String,Double] = messages.toMap 
     val json = immutable.toJson
    
    var svc = url("http://" + address + ":9000/start?id=" + id)
    var result = Http(svc OK as.String)    
-   for(i : Int <- 1 to 100000){
+   for(i : Int <- 1 to 250){
      Thread sleep 50
      println(i)
-         Http(url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + id).setBody(
-     "tracker={" + json.toString() + "}").setHeader(
-     "Content-Type", "application/json") OK as.String)
+     println(json.toString())
+     
+     var svc = url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + id)
+//       .POST
+       .setBody(json.toString())
+//       .addHeader("Content-Type", "application/json")
+//       .setBodyEncoding("UTF-8")
+       val postFields: Map[String, String] = Map[String,String]()
+     var result = Http(svc << postFields OK as.String)
+//     
+//        println(result)
+     
+//     val SERVICES_URL = "http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + id
+//    val postFields: Map[String, String] = Map[String,String]()
+////    postFields += "Content-Type" -> "application/json"
+//    val request = url(SERVICES_URL) << postFields OK as.String
+//    val post = Http(request)
+     
    }
    svc = url("http://" + address + ":9000/stop?id=" + id)
-   result = Http(svc OK as.String)    
+   result = Http(svc OK as.String)
+   
+   System.exit(0)
 }

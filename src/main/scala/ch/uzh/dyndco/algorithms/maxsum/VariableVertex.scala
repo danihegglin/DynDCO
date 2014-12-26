@@ -20,23 +20,29 @@ class VariableVertex (
     agentIndex : Map[Any, Int],
     meetingIndex : Map[Any, Int],
     meetingID : Int
-		) extends DynamicVertex(id, initialState) {
+		) extends DynamicVertex(
+        id, 
+        initialState,
+        valueSpace,
+        constraints_,
+        meetingIndex) {
   
-  final var HARD_UTILITY_N : Double = 0
-  final var SOFT_UTILITY_N : Double = 0.75
-  final var PREF_UTILITY_N : Double = 1
+//  final var HARD_UTILITY_N : Double = 0
+//  final var SOFT_UTILITY_N : Double = 0.75
+//  final var PREF_UTILITY_N : Double = 1
   
   var MIN_VALUE : Double = 0
   var MAX_VALUE : Double = 0
   
-  /**
-   * Extended Config
-   */
-  final var CHANGE_ROUND : Int = 10
-  var roundCount = 0
-  var messages : Map[String, Double] = Map[String, Double]()
-  var MESSAGES_MAX = 250
-  var PUSH_ROUND = 250 // FIXME make distributed
+//  /**
+//   * Extended Config
+//   */
+//  final var CHANGE_ROUND : Int = 10
+//  final var MAX_ROUND : Int = 10000
+//  var roundCount = 0
+//  var messages : Map[String, Double] = Map[String, Double]()
+//  var MESSAGES_MAX = 10
+//  var PUSH_ROUND = 10 // FIXME make distributed
 
   /**
    * Meeting Value
@@ -47,28 +53,24 @@ class VariableVertex (
 	/**
 	 * The Utility
 	 */
-  var constraints = constraints_
-	final var originalConstraints = constraints
-	var agentUtility : Double = 0
+//  var constraints = constraints_
+//	final var originalConstraints = constraints
+//	var agentUtility : Double = 0
 	var lastUtility : Double = 0
 	var lastCount : Int = 0
 
 	/**
 	 * Control parameters
 	 */
-	var finished : Boolean = false
+//	var finished : Boolean = false
 	var initialized : Boolean = false
 
 	/**
 	 * Indicates that every signal this vertex receives is
-	 * an instance of Int. This avoids type-checks/-casts.
+	 * an instance of MaxSumMessage. This avoids type-checks/-casts.
 	 */
 	type Signal = MaxSumMessage
 
-	override def scoreSignal: Double = {
-	  if(this.finished) 0
-		else 1
-  }
 	
   /**
    * Build Utilities
@@ -241,86 +243,90 @@ class VariableVertex (
 	  bestValueAssignment
 	}
 	
-  /**
-   * Calculate Utilities for current Best Value Assignment
-   */
-	def calculateLocalUtility(bestValueAssignment : Int): Double = {
-	  var utility : Double = PREF_UTILITY_N
-		if(originalConstraints.hard.contains(bestValueAssignment)){
-		  utility = HARD_UTILITY_N
-		}
-		else if(originalConstraints.soft.contains(bestValueAssignment)){
-		  utility = SOFT_UTILITY_N
-		}
-	  utility
-	}
-  
-  /**
-   * Calculate Utilities from Constraints
-   */
-  def calculateOriginUtilities() : Map[Any, Map[Int, Double]] = {
-     var utilValueMap = Map[Int, Double]()
-      for (value <- 1 to valueSpace){
-        if(constraints.hard.contains(value)){
-          utilValueMap += (value -> HARD_UTILITY_N)
-        }
-        else if (constraints.soft.contains(value)){
-          utilValueMap += (value -> SOFT_UTILITY_N)
-        }
-        else if (constraints.preference.values.toList.contains(value)){
-          utilValueMap += (value -> PREF_UTILITY_N)
-        }
-      }
-     
-     var finalUtilities = Map[Any, Map[Int, Double]]()
-     finalUtilities += (id -> utilValueMap)
-     finalUtilities
-  }
-  
-  /**
-   * Check if Meeting Scheduling is finished
-   */
-  def finishedCheck() = {
-      var same : Boolean = true
-      var refValue : Int  = meetingIndex.values.toList(0)
-      for(value <- meetingIndex.values){
-        if(value != refValue)
-          same = false
-      }
-      if(same){
-        finished = true
-//        println(meetingID + " finished -> " + refValue)
-      }
-//      else {
-//        println(meetingID + " not finished: " + meetingIndex.values)
+//  /**
+//   * Calculate Utilities for current Best Value Assignment
+//   */
+//	def calculateLocalUtility(bestValueAssignment : Int): Double = {
+//	  var utility : Double = PREF_UTILITY_N
+//		if(originalConstraints.hard.contains(bestValueAssignment)){
+//		  utility = HARD_UTILITY_N
+//		}
+//		else if(originalConstraints.soft.contains(bestValueAssignment)){
+//		  utility = SOFT_UTILITY_N
+//		}
+//	  utility
+//	}
+//  
+//  /**
+//   * Calculate Utilities from Constraints
+//   */
+//  def calculateOriginUtilities() : Map[Any, Map[Int, Double]] = {
+//     var utilValueMap = Map[Int, Double]()
+//      for (value <- 1 to valueSpace){
+//        if(constraints.hard.contains(value)){
+//          utilValueMap += (value -> HARD_UTILITY_N)
+//        }
+//        else if (constraints.soft.contains(value)){
+//          utilValueMap += (value -> SOFT_UTILITY_N)
+//        }
+//        else if (constraints.preference.values.toList.contains(value)){
+//          utilValueMap += (value -> PREF_UTILITY_N)
+//        }
 //      }
-  }
+//     
+//     var finalUtilities = Map[Any, Map[Int, Double]]()
+//     finalUtilities += (id -> utilValueMap)
+//     finalUtilities
+//  }
+  
+//  /**
+//   * Check if Meeting Scheduling is finished
+//   */
+//  def finishedCheck() = {
+//      var same : Boolean = true
+//      var refValue : Int  = meetingIndex.values.toList(0)
+//      for(value <- meetingIndex.values){
+//        if(value != refValue)
+//          same = false
+//      }
+//      if(same){
+//        finished = true
+////        Monitoring.update(id, messages)
+////              messages.clear()// FIXME move
+////        println(meetingID + " finished -> " + refValue)
+//      }
+////      else {
+////        println(meetingID + " not finished: " + meetingIndex.values)
+////      }
+//  }
 
   /**
    * Collect Signals
    */
 	def collect() = {
     
-    roundCount += 1
-////    println("roundCount: " + roundCount)
-//    if(roundCount >= 1000){
-//      finished = true
-//    }
-//    
+    newRound()
     
-    if(roundCount >= CHANGE_ROUND){
-      
-//      println(id + " - CHANGE!!!!!!!!!!!!!!!!!!!!: " + roundCount)
-      
-//      var participations : Set[Int] = Set[Int](meetingID)
-//      constraints = MeetingSchedulingFactory.buildSingleConstraints(id, participations)
-      roundCount = 0
-      
-//      println(id + " - " + roundCount)
-      
-//      initialized = false
-      
-    }
+//    roundCount += 1
+////    println("roundCount: " + roundCount)
+////    if(roundCount >= 1000){
+////      finished = true
+////    }
+////    
+//    
+//    if(roundCount >= CHANGE_ROUND){
+//      
+////      println(id + " - CHANGE!!!!!!!!!!!!!!!!!!!!: " + roundCount)
+//      
+////      var participations : Set[Int] = Set[Int](meetingID)
+////      constraints = MeetingSchedulingFactory.buildSingleConstraints(id, participations)
+////      roundCount = 0
+//      
+////      println(id + " - " + roundCount)
+//      
+////      initialized = false
+//      
+//    }
 
 		if(initialized){
       
@@ -358,23 +364,27 @@ class VariableVertex (
           if(!finished){
       		  val bestValueAssignment = findBestValueAssignment(allUtilities)
           }
-      
+          
           // calculate local utility
-      		agentUtility = calculateLocalUtility(bestValueAssignment)
-      			
-      	  // add current utility to messages
-            val timestamp: Long = System.currentTimeMillis / 1000
-            messages += timestamp.toString() -> agentUtility
-            
-            // Send if reached max
-            if(messages.size >= MESSAGES_MAX){
-              Monitoring.update(id, messages)
-              messages.clear()
-            }
-//          println(id + ": " + agentUtility + " -> " + bestValueAssignment)
+          agentUtility = calculateLocalUtility(bestValueAssignment)
+      
+          storeUtility()
+//          // calculate local utility
+//      		agentUtility = calculateLocalUtility(bestValueAssignment)
+//      			
+//      	  // add current utility to messages
+//            val timestamp: Long = System.currentTimeMillis / 1000
+//            messages += timestamp.toString() -> agentUtility
+//            
+//            // Send if reached max
+//            if(messages.size >= MESSAGES_MAX){
+//              println(roundCount)
+//              Monitoring.update(id, messages)
+//              messages.clear()
+//            }
+////          println(id + ": " + agentUtility + " -> " + bestValueAssignment)
           
        
-//       println("v" + roundCount + "_2: " + allUtilities)
         } 
     	 new MaxSumMessage(id, allUtilities)
       
