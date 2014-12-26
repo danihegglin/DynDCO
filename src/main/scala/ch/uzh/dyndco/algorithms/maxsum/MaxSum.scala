@@ -15,6 +15,8 @@ import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.problems.Problem
 import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
+import ch.uzh.dyndco.dynamic.EditVertex.DynamicController
+import ch.uzh.dyndco.dynamic.DynamicController
 
 /**
  * Based on: FIXME
@@ -30,11 +32,24 @@ object MaxSum {
     val maxSumGraph = MaxSumGraphFactory.build(problem)
     
     /**
+     * Add dynamic controller
+     */
+    maxSumGraph.graph.addVertex(new DynamicController("dyn1",maxSumGraph.graph))
+    
+    /**
      * Run the graph
      */ 
     val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
     val stats = maxSumGraph.graph.execute(execConfig)
     maxSumGraph.graph.shutdown
+    
+    /**
+     * Send remaining utilities
+     */
+    for(varVertex <- maxSumGraph.varVertices){
+      Monitoring.update(varVertex.id, varVertex.messages)
+      Thread sleep 20 // Otherwise too many messages at once
+    }
     
     /**
      * Results

@@ -159,7 +159,7 @@ public class Monitoring extends Controller {
 				JsonNode value = json.get(key);
 //				Double utility = value.getDoubleValue();
 				
-				System.out.println(key + " | " + value);
+				System.out.println(agent + " | " + key + " | " + value);
 				
 				String update = (key + ";" + agent + ";" + value + "\n");
 				collector.tell(update, ActorRef.noSender());

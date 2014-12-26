@@ -84,4 +84,5 @@ object MaxSumGraphFactory {
       // return graph
       new MaxSumGraph(varVertices, funcVertices, neighbourhoods, graph)
     }
+    
 }

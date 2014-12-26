@@ -47,19 +47,11 @@ object Monitoring {
     val immutable : scala.collection.immutable.Map[String,Double] = messages.toMap 
     val json = immutable.toJson
     
-//    println(json.toString())
-    
     var svc = url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + runID)
        .setBody(json.toString())
        val postFields: Map[String, String] = Map[String,String]()
      var result = Http(svc << postFields OK as.String)
     
-//    Http(url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + runID).setBody(
-//     "tracker={" + json.toString() + "}").setHeader(
-//     "Content-Type", "application/json") OK as.String)
-    
-    //    val svc = url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + id)
-//    val result = Http(svc OK as.String)
   }
   
   def sucess(id : String) = {

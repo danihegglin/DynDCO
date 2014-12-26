@@ -15,8 +15,8 @@ object SingleTest extends App {
   	 * Configuration
   	 */
   	var TIMESLOTS : Int = 20
-    var MEETINGS : Int = 5
-  	var AGENTS : Int = 25
+    var MEETINGS : Int = 3
+  	var AGENTS : Int = 15
     
     /**
      * Build id

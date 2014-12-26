@@ -27,23 +27,6 @@ class VariableVertex (
         constraints_,
         meetingIndex) {
   
-//  final var HARD_UTILITY_N : Double = 0
-//  final var SOFT_UTILITY_N : Double = 0.75
-//  final var PREF_UTILITY_N : Double = 1
-  
-  var MIN_VALUE : Double = 0
-  var MAX_VALUE : Double = 0
-  
-//  /**
-//   * Extended Config
-//   */
-//  final var CHANGE_ROUND : Int = 10
-//  final var MAX_ROUND : Int = 10000
-//  var roundCount = 0
-//  var messages : Map[String, Double] = Map[String, Double]()
-//  var MESSAGES_MAX = 10
-//  var PUSH_ROUND = 10 // FIXME make distributed
-
   /**
    * Meeting Value
    */
@@ -53,16 +36,12 @@ class VariableVertex (
 	/**
 	 * The Utility
 	 */
-//  var constraints = constraints_
-//	final var originalConstraints = constraints
-//	var agentUtility : Double = 0
 	var lastUtility : Double = 0
 	var lastCount : Int = 0
 
 	/**
 	 * Control parameters
 	 */
-//	var finished : Boolean = false
 	var initialized : Boolean = false
 
 	/**
@@ -70,7 +49,6 @@ class VariableVertex (
 	 * an instance of MaxSumMessage. This avoids type-checks/-casts.
 	 */
 	type Signal = MaxSumMessage
-
 	
   /**
    * Build Utilities
@@ -124,12 +102,12 @@ class VariableVertex (
   def normalize(utility : Double) : Double = {
     var normalized : Double = 0.0
     
-    MAX_VALUE = (meetingIndex.size - 1) * (meetingIndex.size)
+    var MAX_VALUE = (meetingIndex.size - 1) * (meetingIndex.size) // FIXME
     
     if(utility > 0){
       
       try {
-        normalized = (utility - MIN_VALUE) / (MAX_VALUE - MIN_VALUE)
+        normalized = (utility - 0) / (MAX_VALUE - 0)
       } 
       catch {
         case e : Exception => println("normalization error")
@@ -243,63 +221,6 @@ class VariableVertex (
 	  bestValueAssignment
 	}
 	
-//  /**
-//   * Calculate Utilities for current Best Value Assignment
-//   */
-//	def calculateLocalUtility(bestValueAssignment : Int): Double = {
-//	  var utility : Double = PREF_UTILITY_N
-//		if(originalConstraints.hard.contains(bestValueAssignment)){
-//		  utility = HARD_UTILITY_N
-//		}
-//		else if(originalConstraints.soft.contains(bestValueAssignment)){
-//		  utility = SOFT_UTILITY_N
-//		}
-//	  utility
-//	}
-//  
-//  /**
-//   * Calculate Utilities from Constraints
-//   */
-//  def calculateOriginUtilities() : Map[Any, Map[Int, Double]] = {
-//     var utilValueMap = Map[Int, Double]()
-//      for (value <- 1 to valueSpace){
-//        if(constraints.hard.contains(value)){
-//          utilValueMap += (value -> HARD_UTILITY_N)
-//        }
-//        else if (constraints.soft.contains(value)){
-//          utilValueMap += (value -> SOFT_UTILITY_N)
-//        }
-//        else if (constraints.preference.values.toList.contains(value)){
-//          utilValueMap += (value -> PREF_UTILITY_N)
-//        }
-//      }
-//     
-//     var finalUtilities = Map[Any, Map[Int, Double]]()
-//     finalUtilities += (id -> utilValueMap)
-//     finalUtilities
-//  }
-  
-//  /**
-//   * Check if Meeting Scheduling is finished
-//   */
-//  def finishedCheck() = {
-//      var same : Boolean = true
-//      var refValue : Int  = meetingIndex.values.toList(0)
-//      for(value <- meetingIndex.values){
-//        if(value != refValue)
-//          same = false
-//      }
-//      if(same){
-//        finished = true
-////        Monitoring.update(id, messages)
-////              messages.clear()// FIXME move
-////        println(meetingID + " finished -> " + refValue)
-//      }
-////      else {
-////        println(meetingID + " not finished: " + meetingIndex.values)
-////      }
-//  }
-
   /**
    * Collect Signals
    */
@@ -307,27 +228,10 @@ class VariableVertex (
     
     newRound()
     
-//    roundCount += 1
-////    println("roundCount: " + roundCount)
-////    if(roundCount >= 1000){
-////      finished = true
-////    }
-////    
-//    
-//    if(roundCount >= CHANGE_ROUND){
-//      
-////      println(id + " - CHANGE!!!!!!!!!!!!!!!!!!!!: " + roundCount)
-//      
-////      var participations : Set[Int] = Set[Int](meetingID)
-////      constraints = MeetingSchedulingFactory.buildSingleConstraints(id, participations)
-////      roundCount = 0
-//      
-////      println(id + " - " + roundCount)
-//      
-////      initialized = false
-//      
-//    }
-
+    if(isChangeRound()){
+//      initialized = false
+    }
+    
 		if(initialized){
       
        // check if finished
@@ -369,22 +273,6 @@ class VariableVertex (
           agentUtility = calculateLocalUtility(bestValueAssignment)
       
           storeUtility()
-//          // calculate local utility
-//      		agentUtility = calculateLocalUtility(bestValueAssignment)
-//      			
-//      	  // add current utility to messages
-//            val timestamp: Long = System.currentTimeMillis / 1000
-//            messages += timestamp.toString() -> agentUtility
-//            
-//            // Send if reached max
-//            if(messages.size >= MESSAGES_MAX){
-//              println(roundCount)
-//              Monitoring.update(id, messages)
-//              messages.clear()
-//            }
-////          println(id + ": " + agentUtility + " -> " + bestValueAssignment)
-          
-       
         } 
     	 new MaxSumMessage(id, allUtilities)
       
