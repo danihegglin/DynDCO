@@ -6,7 +6,12 @@ import com.signalcollect.Graph
 import com.signalcollect.GraphBuilder
 import com.signalcollect.StateForwarderEdge
 
-object DPOPGraph {
+object DPOPGraphFactory {
+  
+  // Configuration
+  final var SLOTS : Int = 1000 // Max communication slots
+  final var MAX_ROUND : Int = 10000 // Limit of communication rounds
+  final var CHANGE_ROUND : Int = 10
   
   def build(problem : MeetingSchedulingProblem) : Graph[Any, Any] = {
     
@@ -19,7 +24,8 @@ object DPOPGraph {
       * Build Graph
       */
       // build root node
-      var rootNode = new DPOPVertex("root", null, problem.TIMESLOTS, null, null)
+      var rootNode = new DPOPVertex("root", null)
+      rootNode.TIMESLOTS = problem.TIMESLOTS
       graph.addVertex(rootNode)
       
       // build middle nodes
@@ -27,8 +33,11 @@ object DPOPGraph {
       var meetingIndex : Map[Int, Map[Any, Int]] = Map[Int, Map[Any, Int]]()
       for(meeting <- problem.meetings){
         var middleNodeId = "m" + meeting.meetingID
-        var middleNode = new DPOPVertex(middleNodeId, null, problem.TIMESLOTS, null, meetingIndex)
-       
+        var middleNode = new DPOPVertex(middleNodeId, null)
+        
+        middleNode.TIMESLOTS = problem.TIMESLOTS
+//        middleNode.MEETING_INDEX = meetingIndex
+        
         middleNode.addParent(rootNode)
         rootNode.addChild(middleNode)
         
@@ -42,8 +51,12 @@ object DPOPGraph {
       
       // build leaf nodes
       var agentVertices : Set[DPOPVertex] = Set[DPOPVertex]()
-      var agentIndex : Map[Int, Map[Any, Int]] = Map[Int, Map[Any, Int]]()
+      
+      var slot = 0
+      
       for(agent <- problem.allParticipations.keys){
+        
+        var agentIndex : Map[Any, Int] = Map[Any, Int]()
         var constraints = problem.allConstraints.apply(agent)
         var participations = problem.allParticipations.apply(agent)
         
@@ -55,10 +68,25 @@ object DPOPGraph {
         // build vertices & edges
         for(participation <- participations){
           
+          slot += 1
+          
           var meetingVertex = meetingVertices.apply(participation)
           
           var leafNodeId = "a" + agent + "m" + participation
-          var leafNode = new DPOPVertex(leafNodeId, null, problem.TIMESLOTS, constraints, agentIndex) // FIXME
+          var leafNode = new DPOPVertex(leafNodeId, null) // FIXME
+          
+          // Basic
+          leafNode.MAX_ROUND = MAX_ROUND
+          leafNode.PUSH_ROUND = slot
+          
+          // Meeting Scheduling
+          leafNode.TIMESLOTS = problem.TIMESLOTS
+          leafNode.CONSTRAINTS_ORIGINAL = constraints
+          leafNode.CONSTRAINTS_CURRENT = constraints
+          leafNode.AGENT_INDEX = agentIndex
+          
+          // Dynamic
+          leafNode.CHANGE_ROUND = CHANGE_ROUND // FIXME
           
           leafNode.addParent(meetingVertex)
           meetingVertex.addChild(leafNode)

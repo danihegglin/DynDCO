@@ -36,16 +36,14 @@ object MGM extends App {
   /**
    * Build graph
    */
-  val graph = MGMGraph.build(problem)
+  val mgmGraph = MGMGraphFactory.build(problem)
   
 	/**
 	 * Run the graph
 	 */	
-//  Monitoring.start()
 	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
-	val stats = graph.execute(execConfig)
-  graph.shutdown
-//  Monitoring.stop()
+	val stats = mgmGraph.graph.execute(execConfig)
+  mgmGraph.graph.shutdown
   
   /**
    * Results
@@ -54,7 +52,7 @@ object MGM extends App {
   println(stats)
           
   // agents
-  for(vertex <- MGMGraph.vertices){
+  for(vertex <- mgmGraph.vertices){
     println(vertex.id + " -> " + vertex.values)
   }
 }

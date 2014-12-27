@@ -35,7 +35,7 @@ object DPOP extends App {
 	/**
    * Build graph
    */
-  val graph = DPOPGraph.build(problem)
+  val graph = DPOPGraphFactory.build(problem)
   
   /**
    * Run the graph

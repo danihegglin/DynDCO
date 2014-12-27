@@ -12,6 +12,11 @@ import com.signalcollect.GraphBuilder
 
 object MaxSumGraphFactory {
   
+  // Configuration
+  final var SLOTS : Int = 1000 // Max communication slots
+  final var MAX_ROUND : Int = 10000 // Limit of communication rounds
+  final var CHANGE_ROUND : Int = 10
+  
   def build(problem : MeetingSchedulingProblem) : MaxSumGraph = {
     
     var varVertices = Set[VariableVertex]()
@@ -34,6 +39,7 @@ object MaxSumGraphFactory {
       /**
        * Build neighbourhoods
        */
+      var slot = 0
       for(agent : Int <- problem.allParticipations.keys){
         
         var agentIndex = Map[Any,Int]()
@@ -42,20 +48,38 @@ object MaxSumGraphFactory {
         
         for(meetingId <- meetingIds){
           
+          slot += 1
+          
           // get index
           var meetingIndex = meetingIndices.apply(meetingId)
           
           // build variable vertex
           var variableId : Any = "v" + agent + "m" + meetingId
           var constraints = problem.allConstraints.apply(agent)
-          var varVertex = new VariableVertex(variableId,null,problem.TIMESLOTS, constraints, agentIndex, meetingIndex, meetingId)
+          var varVertex = new VariableVertex(variableId, null)
+          
+          // Basic
+          varVertex.MAX_ROUND = MAX_ROUND
+          varVertex.PUSH_ROUND = slot
+          
+          // Meeting Scheduling
+          varVertex.TIMESLOTS = problem.TIMESLOTS
+          varVertex.CONSTRAINTS_ORIGINAL = constraints
+          varVertex.CONSTRAINTS_CURRENT = constraints
+          varVertex.MEETING_INDEX = meetingIndex
+          varVertex.AGENT_INDEX = agentIndex
+          varVertex.MEETING_ID = meetingId
+          
+          // Dynamic
+          varVertex.CHANGE_ROUND = CHANGE_ROUND // FIXME
+          
           graph.addVertex(varVertex)
           varVertices += varVertex
           meetingIndex += (variableId -> constraints.preference.apply(meetingId))
           
           // build function vertex
           var functionId : Any = "f" + agent + "m" + meetingId
-          var funcVertex = new FunctionVertex(functionId,null,problem.TIMESLOTS)
+          var funcVertex = new FunctionVertex(functionId,null)
           graph.addVertex(funcVertex)
           funcVertices += funcVertex
           
@@ -66,6 +90,12 @@ object MaxSumGraphFactory {
           }
           neighbourhood += (varVertex -> funcVertex)
           neighbourhoods += (meetingId -> neighbourhood)
+          
+          // FIXME make nicer
+          if(slot == SLOTS){
+            slot = 0
+          }
+          
         }
       } 
       

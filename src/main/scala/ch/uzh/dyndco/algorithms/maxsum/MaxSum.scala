@@ -15,8 +15,7 @@ import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.problems.Problem
 import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
-import ch.uzh.dyndco.dynamic.EditVertex.DynamicController
-import ch.uzh.dyndco.dynamic.DynamicController
+import ch.uzh.dyndco.stack.DynamicController
 
 /**
  * Based on: FIXME

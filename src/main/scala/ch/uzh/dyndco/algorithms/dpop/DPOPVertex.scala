@@ -4,18 +4,13 @@ import com.signalcollect.DataGraphVertex
 import dispatch._, Defaults._
 import scala.collection.mutable.MutableList
 import scala.util.Random
-import ch.uzh.dyndco.dynamic.DynamicVertex
+import ch.uzh.dyndco.stack.DynamicVertex
 import ch.uzh.dyndco.problems.Constraints
 import collection.mutable.Map
 import collection.mutable.Set
 
-class DPOPVertex (
-    id: Any, 
-    agentView: DPOPMessage,
-    timeslots: Int,
-    constraints : Constraints,
-    index : Map[Int, Map[Any, Int]]
-    ) extends DynamicVertex(id, agentView, timeslots, constraints, null){ // FIXME
+class DPOPVertex (id: Any, agentView: DPOPMessage) 
+  extends DynamicVertex(id, agentView){
   
   // -------------------------- TERMINATION CRITERION -----------------------------------------
   /**
@@ -68,15 +63,15 @@ class DPOPVertex (
     utilValueMap.clear()
 	  
 	  // Initialize map
-    if(constraints != null){
-    	for (value <- 1 to timeslots){
-    		if(constraints.hard.contains(value)){
+    if(CONSTRAINTS_CURRENT != null){
+    	for (value <- 1 to TIMESLOTS){
+    		if(CONSTRAINTS_CURRENT.hard.contains(value)){
     			utilValueMap += (value -> HARD_UTILITY)
     		}
-    		else if (constraints.soft.contains(value)){
+    		else if (CONSTRAINTS_CURRENT.soft.contains(value)){
     			utilValueMap += (value -> SOFT_UTILITY)
     		}
-    		else if (constraints.preference.keys.toList.contains(value)){
+    		else if (CONSTRAINTS_CURRENT.preference.keys.toList.contains(value)){
     			utilValueMap += (value -> PREF_UTILITY)
     		}
     	}
@@ -84,7 +79,7 @@ class DPOPVertex (
 
     // Merge map with util messages
     for(utilMessage <- utilMessages){
-    	for (value <- 1 to timeslots){
+    	for (value <- 1 to TIMESLOTS){
     		var localValueUtility : Double = 0
     		if(utilValueMap.contains(value)){
     			localValueUtility = utilValueMap.get(value).get
@@ -96,7 +91,7 @@ class DPOPVertex (
     		utilValueMap += (value -> (localValueUtility + messageValueUtility)) 
     	}
 	 }
-//	  println(utilValueMap)
+    
 	}
 	
 	def chooseOptimal() = {

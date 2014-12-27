@@ -4,7 +4,7 @@ import collection.mutable.Map
 import collection.mutable.Set
 import scala.collection.SortedMap
 import scala.util.Random
-import ch.uzh.dyndco.dynamic.DynamicVertex
+import ch.uzh.dyndco.stack.DynamicVertex
 import ch.uzh.dyndco.problems.Constraints
 import ch.uzh.dyndco.util.Monitoring
 import scala.collection.mutable.MutableList
@@ -12,20 +12,8 @@ import ch.uzh.dyndco.problems.MeetingSchedulingFactory
 //import spray.json._
 //import DefaultJsonProtocol._
 
-class VariableVertex (
-		id: Any, 
-		initialState: MaxSumMessage, 
-		valueSpace: Int,
-    constraints_ : Constraints,
-    agentIndex : Map[Any, Int],
-    meetingIndex : Map[Any, Int],
-    meetingID : Int
-		) extends DynamicVertex(
-        id, 
-        initialState,
-        valueSpace,
-        constraints_,
-        meetingIndex) {
+class VariableVertex (id: Any, initialState: MaxSumMessage) 
+  extends DynamicVertex(id, initialState) {
   
   /**
    * Meeting Value
@@ -70,7 +58,7 @@ class VariableVertex (
   		
   		// build assignment -> costs for the particular functionVertex target
   		var assignmentMap : Map[Int,Double] = Map[Int,Double]()
-  		for(assignment : Int <- 1 to valueSpace){
+  		for(assignment : Int <- 1 to TIMESLOTS){
   
   			var utility : Double = 0
   				    
@@ -102,7 +90,7 @@ class VariableVertex (
   def normalize(utility : Double) : Double = {
     var normalized : Double = 0.0
     
-    var MAX_VALUE = (meetingIndex.size - 1) * (meetingIndex.size) // FIXME
+    var MAX_VALUE = (MEETING_INDEX.size - 1) * (MEETING_INDEX.size) // FIXME
     
     if(utility > 0){
       
@@ -179,9 +167,9 @@ class VariableVertex (
         var conflict : Boolean = false
         
         // index check
-        for(meeting <- agentIndex.keys){
-          if(meeting != meetingID){
-             if(agentIndex.apply(meeting) == assignment){
+        for(meeting <- AGENT_INDEX.keys){
+          if(meeting != MEETING_ID){
+             if(AGENT_INDEX.apply(meeting) == assignment){
                conflict = true
              }
            }
@@ -194,7 +182,7 @@ class VariableVertex (
       
         if(!conflict){
             bestValueAssignment = assignment
-            agentIndex += (meetingID -> assignment)
+            AGENT_INDEX += (MEETING_ID -> assignment)
             bucketHistory.add(assignment)
             accepted = true
         }
@@ -216,7 +204,7 @@ class VariableVertex (
         }
       }
 
-    meetingIndex += (id -> bestValueAssignment)
+    MEETING_INDEX += (id -> bestValueAssignment)
 	  
 	  bestValueAssignment
 	}
@@ -286,7 +274,7 @@ class VariableVertex (
 			initialized = true
       
       // add pref to index
-			var pref = constraints.preference.apply(meetingID)
+			var pref = CONSTRAINTS_CURRENT.preference.apply(MEETING_ID)
       bestValueAssignment = pref // assign best value
       
       new MaxSumMessage(id, calculateOriginUtilities())

@@ -2,13 +2,10 @@ package ch.uzh.dyndco.algorithms.maxsum
 
 import collection.mutable.Map
 import collection.mutable.Set
-import ch.uzh.dyndco.dynamic.DynamicVertex
+import ch.uzh.dyndco.stack.DynamicVertex
 
-class FunctionVertex (
-		id : Any, 
-		initialState: MaxSumMessage,
-		valueSpace: Int
-		) extends DynamicVertex(id, initialState, valueSpace, null, null) { // FIXME
+class FunctionVertex (id : Any, initialState: MaxSumMessage) 
+  extends DynamicVertex(id, initialState) {
   
 	/**
 	 * Control parameters
@@ -37,10 +34,10 @@ class FunctionVertex (
    */
 	def collect() = {
     
-    roundCount += 1
-    if(roundCount >= 100000){
-      finished = true
-    } // FIXME
+//    roundCount += 1
+//    if(roundCount >= 100000){
+//      finished = true
+//    } // FIXME
     
   		// Unpack messages
       var isNull : Boolean = false
