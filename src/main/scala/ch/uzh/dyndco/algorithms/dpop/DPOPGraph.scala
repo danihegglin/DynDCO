@@ -1,4 +1,4 @@
-package ch.uzh.dyndco.algorithms.mgm
+package ch.uzh.dyndco.algorithms.dpop
 
 import collection.mutable.Map
 import collection.mutable.Set
@@ -9,14 +9,17 @@ import com.signalcollect.Graph
 import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import com.signalcollect.GraphBuilder
+import ch.uzh.dyndco.algorithms.dpop.DPOPVertex
 
-class MGMGraph (
-    vertices_ : Set[MGMVertex], 
-    neighbourhoods_ : Map[Int, Set[MGMVertex]], 
+class DPOPGraph (
+    root_ : DPOPVertex, 
+    middle_ : Map[Int, DPOPVertex], 
+    leaf_ : Set[DPOPVertex], 
     graph_ : Graph[Any,Any]) {
   
-  var vertices = vertices_
-  var neighbourhoods = neighbourhoods_
+  var root = root_
+  var middle = middle_
+  var leaf = leaf_
   var graph = graph_
   
 }

@@ -10,7 +10,6 @@ import collection.mutable.Map
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
 import com.signalcollect.GraphBuilder
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
-import ch.uzh.dyndco.algorithms.mgm.MGMGraph
 
 object MGMGraphFactory {
   

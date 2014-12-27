@@ -20,16 +20,13 @@ object Monitoring {
    */
   def start(runID : String) = {
     
-    println("start")
-    
     this.runID = runID
     var svc = url("http://" + address + ":9000/start?id=" + runID)
     var result = Http(svc OK as.String)    
+    
   }
   
   def stop(runID : String) = {
-    
-    println("stop")
     
     val hello = new Thread(new Runnable {
       def run() {
@@ -38,11 +35,10 @@ object Monitoring {
          var result = Http(svc OK as.String)
       }
     })    
+    
   }
 
   def update(vertexId : Any, messages : Map[String, Double]) = {
-    
-    println("updating")
     
     val immutable : scala.collection.immutable.Map[String,Double] = messages.toMap 
     val json = immutable.toJson
@@ -55,8 +51,10 @@ object Monitoring {
   }
   
   def sucess(id : String) = {
+    
     val svc = url("http://" + address + ":9000/success?id=" + id)
     val result = Http(svc OK as.String)
+    
   }
   
 }

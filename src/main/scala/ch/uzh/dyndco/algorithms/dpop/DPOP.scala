@@ -12,6 +12,7 @@ import collection.mutable.Set
 import dispatch._
 import dispatch.Defaults._
 import ch.uzh.dyndco.util.Monitoring
+import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 
 ///**
 // * based on: A Scalable Method for Multiagent Constraint Optimization
@@ -19,42 +20,31 @@ import ch.uzh.dyndco.util.Monitoring
 //
 
 object DPOP extends App {
-	
-	/**
-	 * Configuration
-	 */
-  val TIMESLOTS : Int = 5
-	val AGENTS : Int = 2
-	val MEETINGS : Int = 1
   
-  /**
-   * Build problem
-   */
-  val problem = MeetingSchedulingFactory.build(TIMESLOTS,MEETINGS,AGENTS)
-  
-	/**
-   * Build graph
-   */
-  val graph = DPOPGraphFactory.build(problem)
-  
-  /**
-   * Run the graph
-   */ 
-//  Monitoring.start()
-  val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
-  val stats = graph.execute(execConfig)
-  graph.shutdown
-//  Monitoring.stop()
+    def run(problem : MeetingSchedulingProblem) = {
 	
-  /**
-   * Results
-   */
-	println(stats)
-	graph.foreachVertex(println(_))
-	
-//	for(agentVertex <- agentVertices){
-//	  println("----------" + agentVertex.id + "---------------")
-//		agentVertex.show()
-//	}
+  	/**
+     * Build graph
+     */
+    val DpopGraph = DPOPGraphFactory.build(problem)
+    
+    /**
+     * Run the graph
+     */ 
+    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
+    val stats = DpopGraph.graph.execute(execConfig)
+    DpopGraph.graph.shutdown
+  	
+    /**
+     * Results
+     */
+  	println(stats)
+  	graph.foreachVertex(println(_))
+  	
+  //	for(agentVertex <- agentVertices){
+  //	  println("----------" + agentVertex.id + "---------------")
+  //		agentVertex.show()
+  //	}
+    }
 	
 }

@@ -61,6 +61,7 @@ object MaxSumGraphFactory {
           // Basic
           varVertex.MAX_ROUND = MAX_ROUND
           varVertex.PUSH_ROUND = slot
+          varVertex.SLOTS = SLOTS
           
           // Meeting Scheduling
           varVertex.TIMESLOTS = problem.TIMESLOTS

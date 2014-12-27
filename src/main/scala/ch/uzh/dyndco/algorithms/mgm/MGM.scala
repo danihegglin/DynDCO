@@ -18,41 +18,31 @@ import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.algorithms.maxsum.Meeting
 import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.util.Monitoring
+import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 
 object MGM extends App {
   
-	/**
-	 * Configuration
-	 */
-	var TIMESLOTS : Int = 20 // args(0)
-  var MEETINGS : Int = 1 // args(2)
-	var AGENTS : Int = 3 // args(1)
-  
-  /**
-   * Build problem
-   */
-  val problem = MeetingSchedulingFactory.build(TIMESLOTS,MEETINGS,AGENTS)
+  def run(problem : MeetingSchedulingProblem) = {
+      
+    /**
+     * Build graph
+     */
+    val mgmGraph = MGMGraphFactory.build(problem)
     
-  /**
-   * Build graph
-   */
-  val mgmGraph = MGMGraphFactory.build(problem)
-  
-	/**
-	 * Run the graph
-	 */	
-	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
-	val stats = mgmGraph.graph.execute(execConfig)
-  mgmGraph.graph.shutdown
-  
-  /**
-   * Results
-   */
-  // show run info
-  println(stats)
-          
-  // agents
-  for(vertex <- mgmGraph.vertices){
-    println(vertex.id + " -> " + vertex.values)
+  	/**
+  	 * Run the graph
+  	 */	
+  	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
+  	val stats = mgmGraph.graph.execute(execConfig)
+    mgmGraph.graph.shutdown
+    
+    /**
+     * Results
+     */
+    println(stats)
+            
+    for(vertex <- mgmGraph.vertices){
+      println(vertex.id + " -> " + vertex.values)
+    }
   }
 }

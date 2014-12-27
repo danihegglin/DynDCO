@@ -5,6 +5,7 @@ import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import com.signalcollect.Graph
 import com.signalcollect.GraphBuilder
 import com.signalcollect.StateForwarderEdge
+import collection.mutable.Set
 
 object DPOPGraphFactory {
   
@@ -13,7 +14,7 @@ object DPOPGraphFactory {
   final var MAX_ROUND : Int = 10000 // Limit of communication rounds
   final var CHANGE_ROUND : Int = 10
   
-  def build(problem : MeetingSchedulingProblem) : Graph[Any, Any] = {
+  def build(problem : MeetingSchedulingProblem) : DPOPGraph = {
     
     /**
      * Initialize Graph
@@ -29,7 +30,7 @@ object DPOPGraphFactory {
       graph.addVertex(rootNode)
       
       // build middle nodes
-      var meetingVertices : Map[Int, DPOPVertex] = Map[Int, DPOPVertex]()
+      var middleNodes : Map[Int, DPOPVertex] = Map[Int, DPOPVertex]()
       var meetingIndex : Map[Int, Map[Any, Int]] = Map[Int, Map[Any, Int]]()
       for(meeting <- problem.meetings){
         var middleNodeId = "m" + meeting.meetingID
@@ -46,11 +47,11 @@ object DPOPGraphFactory {
         graph.addEdge(middleNodeId, new StateForwarderEdge("root"))
         graph.addEdge("root", new StateForwarderEdge(middleNodeId))
         
-        meetingVertices += (meeting.meetingID -> middleNode)
+        middleNodes += (meeting.meetingID -> middleNode)
       }
       
       // build leaf nodes
-      var agentVertices : Set[DPOPVertex] = Set[DPOPVertex]()
+      var leafNodes : Set[DPOPVertex] = Set[DPOPVertex]()
       
       var slot = 0
       
@@ -70,7 +71,7 @@ object DPOPGraphFactory {
           
           slot += 1
           
-          var meetingVertex = meetingVertices.apply(participation)
+          var meetingVertex = middleNodes.apply(participation)
           
           var leafNodeId = "a" + agent + "m" + participation
           var leafNode = new DPOPVertex(leafNodeId, null) // FIXME
@@ -96,14 +97,12 @@ object DPOPGraphFactory {
           graph.addEdge(leafNodeId, new StateForwarderEdge("m" + participation))
           graph.addEdge("m" + participation, new StateForwarderEdge(leafNodeId))
           
-          agentVertices += leafNode
+          leafNodes += leafNode
         }
       }
      
-     /**
-      * Return Graph
-      */
-      graph
+     // return graph
+      new DPOPGraph(rootNode, middleNodes, leafNodes, graph)
   }
 	
 }

@@ -8,6 +8,8 @@ import com.signalcollect.deployment.DeployableAlgorithm
 import akka.actor.ActorRef
 import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.util.IdFactory
+import ch.uzh.dyndco.algorithms.mgm.MGM
+import ch.uzh.dyndco.algorithms.dpop.DPOP
 
 object SingleTest extends App {
   
@@ -32,7 +34,9 @@ object SingleTest extends App {
      * Run graph
      */
     Monitoring.start(id)
-    MaxSum.run(problem)
+//    MaxSum.run(problem)
+//    MGM.run(problem)
+    DPOP.run(problem)
     Monitoring.sucess(id)
     
     System.exit(0)
