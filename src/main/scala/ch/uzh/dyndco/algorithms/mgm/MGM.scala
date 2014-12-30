@@ -37,12 +37,17 @@ object MGM extends App {
     mgmGraph.graph.shutdown
     
     /**
+     * Send remaining utilities
+     */
+    for(vertex <- mgmGraph.vertices){
+      Monitoring.update(vertex.id, vertex.messages)
+      Thread sleep 20 // Otherwise too many messages at once
+    }
+    
+    /**
      * Results
      */
     println(stats)
-            
-    for(vertex <- mgmGraph.vertices){
-      println(vertex.id + " -> " + vertex.values)
-    }
+    mgmGraph.show
   }
 }

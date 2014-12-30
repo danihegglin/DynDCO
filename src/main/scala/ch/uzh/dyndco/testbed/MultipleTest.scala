@@ -8,6 +8,7 @@ import com.signalcollect.deployment.DeployableAlgorithm
 import akka.actor.ActorRef
 import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.util.IdFactory
+import ch.uzh.dyndco.algorithms.mgm.MGM
 
 object MultipleTest extends DeployableAlgorithm {
   
@@ -25,7 +26,7 @@ object MultipleTest extends DeployableAlgorithm {
      */
     var RUNS : Int = 10 // Should be enough
     var FACTOR : Int = 2 // If 10 is ok, 2 should also be ok
-    var MAX : Int = 10000 // This should really be enough
+    var MAX : Int = 100 // This should really be enough
   	
   	/**
   	 * Signal Collect Mode
@@ -47,7 +48,8 @@ object MultipleTest extends DeployableAlgorithm {
           val runID = IdFactory.build(timeslots, meetings, agents, run)
           val problem = MeetingSchedulingFactory.build(timeslots,meetings,agents)
           Monitoring.start(runID)
-          MaxSum.run(problem)
+//          MaxSum.run(problem)
+          MGM.run(problem)
           Monitoring.sucess(runID)
         }
         meetings *= FACTOR

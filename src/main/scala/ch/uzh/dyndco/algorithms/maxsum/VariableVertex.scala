@@ -146,9 +146,9 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
         list += utility._1
       }
       
-      // check
+      // check validity
       var accepted : Boolean = false
-      var position_top : Int = 0 // FIXME test 0
+      var position_top : Int = 0
       var position_sub : Int = 0
      
       while(!accepted){
@@ -245,7 +245,6 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
               //println("signal was null")
   				}
   			}
-//        println("v" + roundCount + "_1: " + receivedUtilities)
         
     		// prepare utilities
     		val allUtilities = buildUtilities(receivedUtilities)
@@ -258,17 +257,13 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
           }
           
           // calculate local utility
-          agentUtility = calculateLocalUtility(bestValueAssignment)
-      
+          agentUtility = calculateOriginalUtility(bestValueAssignment)
           storeUtility()
         } 
     	 new MaxSumMessage(id, allUtilities)
       
     }
 		else {
-      
-      // already added at initialization of vertex
-//      meetingIndex += (id -> pref) // add value to index FIXME could already be too late
       
       // initialize
 			initialized = true
@@ -277,7 +272,11 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
 			var pref = CONSTRAINTS_CURRENT.preference.apply(MEETING_ID)
       bestValueAssignment = pref // assign best value
       
-      new MaxSumMessage(id, calculateOriginUtilities())
+      var currentUtilities = calculateCurrentUtilities()
+      var utilities = Map[Any, Map[Int, Double]]()
+      utilities += (id -> currentUtilities)
+      
+      new MaxSumMessage(id, utilities)
 		}
 	}
 }

@@ -39,7 +39,7 @@ object DPOP extends App {
      * Results
      */
   	println(stats)
-  	graph.foreachVertex(println(_))
+  	DpopGraph.graph.foreachVertex(println(_))
   	
   //	for(agentVertex <- agentVertices){
   //	  println("----------" + agentVertex.id + "---------------")

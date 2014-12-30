@@ -13,7 +13,7 @@ class MGMMessage(sender_ : Any, value_ : Int, gain_ : Double) {
   }
   
   def this(sender : Any, gain : Double) = {
-    this(sender, -1, gain)
+    this(sender, 0, gain)
     messageType = "gain"
   }
   

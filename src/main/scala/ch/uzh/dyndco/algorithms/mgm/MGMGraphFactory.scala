@@ -25,12 +25,14 @@ object MGMGraphFactory {
      /**
       * Initialize Graph
       */
-      val graph = GraphBuilder.withConsole(true,8091).build
+      val graph = GraphBuilder.build
     
     // build neighbourhoods
-      var neighbourhoods : Map[Int, Set[MGMVertex]] = Map[Int, Set[MGMVertex]]()
+      var neighbourhoods = Map[Int, Set[MGMVertex]]()
+      var meetingIndices = Map[Int, Map[Any,Int]]()
       for(meeting <- problem.meetings){
-         neighbourhoods += meeting.meetingID -> Set[MGMVertex]()
+         neighbourhoods += (meeting.meetingID -> Set[MGMVertex]())
+         meetingIndices += (meeting.meetingID -> Map[Any,Int]())
       }
               
       // establish edges to all meeting functions
@@ -48,9 +50,13 @@ object MGMGraphFactory {
             slot += 1
             
            // build agent vertex
-           var agentVariableId : Any = "v" + agent + "m" + meetingId
+           var agentId : Any = "v" + agent + "m" + meetingId
            var constraints = problem.allConstraints.apply(agent)
-           var vertex = new MGMVertex(agentVariableId,new MGMMessage(null,0,0))
+           var vertex = new MGMVertex(agentId,new MGMMessage(null,0,0))
+            
+           // initial index registration
+           var meetingIndex = meetingIndices.apply(meetingId)
+           meetingIndex += (agentId -> constraints.preference.apply(meetingId))
            
           // Basic
           vertex.MAX_ROUND = MAX_ROUND
@@ -60,7 +66,7 @@ object MGMGraphFactory {
           vertex.TIMESLOTS = problem.TIMESLOTS
           vertex.CONSTRAINTS_ORIGINAL = constraints
           vertex.CONSTRAINTS_CURRENT = constraints
-//          varVertex.MEETING_INDEX = meetingIndex
+          vertex.MEETING_INDEX = meetingIndex
           vertex.AGENT_INDEX = agentIndex
           vertex.MEETING_ID = meetingId
           

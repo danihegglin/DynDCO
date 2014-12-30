@@ -54,30 +54,7 @@ object MaxSum {
      * Results
      */
     println(stats)
-    
-    for(meeting <- maxSumGraph.neighbourhoods.keys.toList.sorted){
-      var correct = true
-      var value = -1
-      var wrong = Set[Int]()
-      for(neighbour <- maxSumGraph.neighbourhoods.apply(meeting).keys){
-        if(value < 0){
-          value = neighbour.bestValueAssignment
-        }
-        else {
-          if(value != neighbour.bestValueAssignment){
-            correct = false
-            wrong += neighbour.bestValueAssignment
-          }
-        }
-      }
-      
-      if(correct){
-        println("meeting " + meeting + " -> " + value)
-      }
-      else {
-         println("meeting " + meeting + " -> " + value + ", " + wrong)
-      }
-    }
+    maxSumGraph.show
     
   }
 }

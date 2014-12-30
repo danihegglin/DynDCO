@@ -63,7 +63,7 @@ abstract class MonitoredVertex (id: Any, initialState: Any)
             
             // Send if reached max
             if(cycleCount ==  PUSH_ROUND){
-              println("push: " + cycleCount + " | " + id + " | " + PUSH_ROUND + " | " + messages.size)
+//              println("push: " + cycleCount + " | " + id + " | " + PUSH_ROUND + " | " + messages.size)
               Monitoring.update(id, messages)
               messages.clear()
             }

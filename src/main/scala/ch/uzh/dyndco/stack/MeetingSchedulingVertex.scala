@@ -55,7 +55,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   /**
    * Calculate Utilities for current Best Value Assignment
    */
-  def calculateLocalUtility(bestValueAssignment : Int): Double = {
+  def calculateOriginalUtility(bestValueAssignment : Int): Double = {
     var utility : Double = PREF_UTILITY_N
     if(CONSTRAINTS_ORIGINAL.hard.contains(bestValueAssignment)){
       utility = HARD_UTILITY_N
@@ -63,29 +63,31 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     else if(CONSTRAINTS_ORIGINAL.soft.contains(bestValueAssignment)){
       utility = SOFT_UTILITY_N
     }
+    
+    // FIXME add agent index abzüge
+    
     utility
   }
   
   /**
    * Calculate Utilities from Constraints
    */
-  def calculateOriginUtilities() : Map[Any, Map[Int, Double]] = {
-     var utilValueMap = Map[Int, Double]()
+  def calculateCurrentUtilities(): Map[Int, Double] = {
+     
+    var utilities = Map[Int, Double]()
       for (value <- 1 to TIMESLOTS){
         if(CONSTRAINTS_CURRENT.hard.contains(value)){
-          utilValueMap += (value -> HARD_UTILITY_N)
+          utilities += (value -> HARD_UTILITY_N)
         }
         else if (CONSTRAINTS_CURRENT.soft.contains(value)){
-          utilValueMap += (value -> SOFT_UTILITY_N)
+          utilities += (value -> SOFT_UTILITY_N)
         }
         else if (CONSTRAINTS_CURRENT.preference.values.toList.contains(value)){
-          utilValueMap += (value -> PREF_UTILITY_N)
+          utilities += (value -> PREF_UTILITY_N)
         }
       }
      
-     var finalUtilities = Map[Any, Map[Int, Double]]()
-     finalUtilities += (id -> utilValueMap)
-     finalUtilities
+      utilities
   }
 
 }

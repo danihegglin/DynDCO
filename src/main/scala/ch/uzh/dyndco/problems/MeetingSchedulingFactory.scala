@@ -14,14 +14,8 @@ object MeetingSchedulingFactory {
   //	var HARD_CONSTRAINT_PROB : Double = 0.2 // args(3)
   
   /**
-   * Tools
-   */
-  var random : Random = new Random
-  
-  /**
    * Top-level build function
    */
-  
   var TIMESLOTS : Int = 0
   var MEETINGS : Int = 0
   var AGENTS : Int = 0
@@ -118,12 +112,12 @@ object MeetingSchedulingFactory {
 	}
 	
 	private def buildParticipations() : Set[Int] = {
-	   var participationsAmount : Int = random.nextInt(MEETINGS) + 1
+	   var participationsAmount : Int = Random.nextInt(MEETINGS) + 1
 	   var participations : Set[Int] = Set[Int]()
 	   for(partAmount <- 1 to participationsAmount){
 		   var done : Boolean = false
 				   while(done == false){						  
-					   var participation = random.nextInt(MEETINGS) + 1
+					   var participation = Random.nextInt(MEETINGS) + 1
 							   if(!participations.contains(participation)){
 								   participations += participation
 										   done = true
@@ -144,20 +138,20 @@ object MeetingSchedulingFactory {
 	private def buildPreferences(participations : Set[Int], availableTimeslots : MutableList[Int]) : Map[Int,Int] = {
 	  var preference : Map[Int,Int] = Map[Int,Int]()
 		for(participation <- participations){
-			var timeslot = random.nextInt(availableTimeslots.size)
+			var timeslot = Random.nextInt(availableTimeslots.size)
 			preference += (participation -> availableTimeslots.apply(timeslot))
 		}
 	  preference
 	}
 	
 	private def buildHardConstraints(availableTimeslots : MutableList[Int], used : Set[Int]) : Set[Int] = {
-			var available = random.nextInt(availableTimeslots.size) + 1
+			var available = Random.nextInt(availableTimeslots.size) + 1
 			var numOfHardConstraints : Int = available / 3 // FIXME
 			var hardConstraints: Set[Int] = Set()
 			for(hardConstraint <- 1 to numOfHardConstraints){
 				var timeslot = -1
 				while (timeslot < 0){
-					var proposedTimeslot : Int = random.nextInt(availableTimeslots.size) + 1
+					var proposedTimeslot : Int = Random.nextInt(availableTimeslots.size) + 1
 					if(!used.contains(proposedTimeslot)){
 						timeslot = proposedTimeslot
 					}

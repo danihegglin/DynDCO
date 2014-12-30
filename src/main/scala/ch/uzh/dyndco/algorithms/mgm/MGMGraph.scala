@@ -19,4 +19,44 @@ class MGMGraph (
   var neighbourhoods = neighbourhoods_
   var graph = graph_
   
+   def show {
+  
+    for(meeting <- neighbourhoods.keys.toList.sorted){
+      var correct = true
+      var value = -1
+      var wrong = Set[Int]()
+      for(neighbour <- neighbourhoods.apply(meeting)){
+        if(value < 0){
+          value = neighbour.lastValue
+        }
+        else {
+          if(value != neighbour.lastValue){
+            correct = false
+            wrong += neighbour.lastValue
+          }
+        }
+      }
+      
+      if(correct){
+        println("meeting " + meeting + " -> " + value)
+      }
+      else {
+         println("meeting " + meeting + " -> " + value + ", " + wrong)
+      }
+    }
+    
+    for(vertex <- vertices){
+      
+      var fullSize = vertex.AGENT_INDEX.size
+      var distinctSize = vertex.AGENT_INDEX.values.toList.distinct.size
+      
+      var isDifferent = true
+      if(fullSize != distinctSize)
+        isDifferent = false
+        
+      println(vertex.id + " -> " + isDifferent)
+    }
+    
+  }
+  
 }
