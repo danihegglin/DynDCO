@@ -1,9 +1,8 @@
 package ch.uzh.dyndco.stack
 
-import com.signalcollect.Graph
+import scala.collection.mutable.Map
+
 import ch.uzh.dyndco.problems.Constraints
-import collection.mutable.Map
-import collection.mutable.Set
 
 abstract class MeetingSchedulingVertex (id: Any, initialState: Any) 
   extends MonitoredVertex(id, initialState) {

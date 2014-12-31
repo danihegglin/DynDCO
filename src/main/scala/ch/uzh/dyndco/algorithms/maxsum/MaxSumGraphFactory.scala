@@ -13,8 +13,9 @@ import ch.uzh.dyndco.stack.GraphFactory
 import ch.uzh.dyndco.stack.DynamicVertex
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
 import ch.uzh.dyndco.stack.DynamicGraph
+import ch.uzh.dyndco.problems.Problem
 
-object MaxSumGraphFactory extends GraphFactory {
+object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingProblem] {
   
   // Configuration
   final var MAX_SLOTS : Int = 1000 // Max communication slots

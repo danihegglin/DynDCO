@@ -6,7 +6,10 @@ import ch.uzh.dyndco.algorithms.maxsum.VariableVertex
 import ch.uzh.dyndco.problems.Problem
 import scala.util.Random
 
-class DynamicController (id: Any, dynamicGraph : DynamicGraph, graphFactory : GraphFactory, problem : Problem) 
+class DynamicController (
+    id: Any, dynamicGraph : DynamicGraph, 
+    graphFactory : GraphFactory[DynamicGraph, Problem], 
+    problem : Problem) 
   extends DataGraphVertex(id, dynamicGraph) {
     
     /**
@@ -62,7 +65,7 @@ class DynamicController (id: Any, dynamicGraph : DynamicGraph, graphFactory : Gr
             // get meeting
             var meetingId = 
               if(first < firstProb)
-                Random.nextInt(dynamicGraph.neighbourhoods.size)
+                Random.nextInt(dynamicGraph.numOfNeighbourhoods())
               else
                 dynamicGraph.nextNeighbourhood()
                 

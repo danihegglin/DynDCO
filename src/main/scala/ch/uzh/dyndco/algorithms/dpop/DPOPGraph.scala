@@ -11,6 +11,7 @@ import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import com.signalcollect.GraphBuilder
 import ch.uzh.dyndco.algorithms.dpop.DPOPVertex
 import ch.uzh.dyndco.stack.DynamicGraph
+import ch.uzh.dyndco.stack.DynamicVertex
 
 class DPOPGraph (
     root_ : DPOPVertex, 
@@ -32,7 +33,8 @@ class DPOPGraph (
   def nextNeighbourhood() : Int = neighbourhoods.size + 1
   def nextAgent : Int = leaf.size + 1
   def numOfAgents : Int = leaf.size
-  def getAgents : Set[DPOPVertex] = leaf 
+  def numOfNeighbourhoods : Int = neighbourhoods.size
+  def getAgents : Set[DynamicVertex] = leaf.asInstanceOf[Set[DynamicVertex]] 
   
   def show {
     
@@ -71,8 +73,6 @@ class DPOPGraph (
         
       println(vertex.id + " -> " + isDifferent)
     }
-  }
-    
   }
   
 }

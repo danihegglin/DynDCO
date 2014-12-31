@@ -30,7 +30,8 @@ class MaxSumGraph (
   def nextNeighbourhood() : Int = neighbourhoods.size + 1
   def nextAgent : Int = varVertices.size + 1
   def numOfAgents : Int = varVertices.size
-  def getAgents : Set[VariableVertex] = varVertices 
+  def numOfNeighbourhoods : Int = neighbourhoods.size
+  def getAgents : Set[DynamicVertex] = varVertices.asInstanceOf[Set[DynamicVertex]]
   
   def show {
     for(meeting <- neighbourhoods.keys.toList.sorted){
