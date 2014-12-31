@@ -21,6 +21,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     var MEETING_INDEX : Map[Any, Int] = null // monitors values for specific meetings -> needs to be the same
     var AGENT_INDEX : Map[Any, Int] = null // monitors values chosen by user -> needs to be different
     var MEETING_ID : Int = -1
+    var AGENT_ID : Int = -1
     
    /**
     * Constraints
@@ -75,6 +76,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   def calculateCurrentUtilities(): Map[Int, Double] = {
      
     var utilities = Map[Int, Double]()
+    if(CONSTRAINTS_CURRENT != null){
       for (value <- 1 to TIMESLOTS){
         if(CONSTRAINTS_CURRENT.hard.contains(value)){
           utilities += (value -> HARD_UTILITY_N)
@@ -86,8 +88,9 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
           utilities += (value -> PREF_UTILITY_N)
         }
       }
+    }
      
-      utilities
+    utilities
   }
 
 }

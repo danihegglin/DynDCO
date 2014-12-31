@@ -10,17 +10,27 @@ import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import com.signalcollect.GraphBuilder
 import ch.uzh.dyndco.stack.DynamicGraph
+import ch.uzh.dyndco.stack.DynamicVertex
 
 class MaxSumGraph (
     varVertices_ : Set[VariableVertex], 
     funcVertices_ : Set[FunctionVertex], 
-    neighbourhoods_ : Map[Int, Map[VariableVertex,FunctionVertex]], 
+    neighbourhoods_ : Map[Int, Map[VariableVertex,FunctionVertex]],
+    agentIndices_ : Map[Int, Map[Any,Int]],
+    meetingIndices_ : Map[Int, Map[Any,Int]],
     graph_ : Graph[Any,Any]) extends DynamicGraph {
   
   var varVertices = varVertices_
   var funcVertices = funcVertices_
   var neighbourhoods = neighbourhoods_
+  var agentIndices = agentIndices_
+  var meetingIndices = meetingIndices_
   var graph = graph_
+  
+  def nextNeighbourhood() : Int = neighbourhoods.size + 1
+  def nextAgent : Int = varVertices.size + 1
+  def numOfAgents : Int = varVertices.size
+  def getAgents : Set[VariableVertex] = varVertices 
   
   def show {
     for(meeting <- neighbourhoods.keys.toList.sorted){

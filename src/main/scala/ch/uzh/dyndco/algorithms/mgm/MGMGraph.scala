@@ -9,15 +9,21 @@ import com.signalcollect.Graph
 import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import com.signalcollect.GraphBuilder
+import ch.uzh.dyndco.stack.DynamicGraph
 
 class MGMGraph (
     vertices_ : Set[MGMVertex], 
     neighbourhoods_ : Map[Int, Set[MGMVertex]], 
-    graph_ : Graph[Any,Any]) {
+    graph_ : Graph[Any,Any]) extends DynamicGraph {
   
   var vertices = vertices_
   var neighbourhoods = neighbourhoods_
   var graph = graph_
+  
+  def nextNeighbourhood() : Int = neighbourhoods.size + 1
+  def nextAgent : Int = vertices.size + 1
+  def numOfAgents : Int = vertices.size
+  def getAgents : Set[MGMVertex] = vertices 
   
    def show {
   

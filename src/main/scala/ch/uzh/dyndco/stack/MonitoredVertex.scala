@@ -13,7 +13,7 @@ abstract class MonitoredVertex (id: Any, initialState: Any)
      */    
     var MAX_ROUND : Int = -1
     var PUSH_ROUND = -1
-    var SLOTS = -1
+//    var SLOTS = -1
   
     /**
      * Finish Control
@@ -44,9 +44,9 @@ abstract class MonitoredVertex (id: Any, initialState: Any)
       roundCount += 1
       cycleCount += 1
       
-      if(cycleCount == SLOTS){
-        cycleCount = 0
-      }
+//      if(cycleCount == MAX_SLOTS){
+//        cycleCount = 0
+//      }
     }
     
  /**
@@ -62,10 +62,11 @@ abstract class MonitoredVertex (id: Any, initialState: Any)
             messages += timestamp.toString() -> agentUtility
             
             // Send if reached max
-            if(cycleCount ==  PUSH_ROUND){
+            if(cycleCount == PUSH_ROUND){
 //              println("push: " + cycleCount + " | " + id + " | " + PUSH_ROUND + " | " + messages.size)
               Monitoring.update(id, messages)
               messages.clear()
+              cycleCount = 0
             }
     }
 

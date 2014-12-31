@@ -69,7 +69,7 @@ object MeetingSchedulingFactory {
     allConstraints
   }
   
-  def buildSingleConstraints(agent : Any, participations : Set[Int]) : Constraints = {
+  def buildSingleConstraints(agent : Int, participations : Set[Int]) : Constraints = {
     
         // Build constraints
         val availableTimeslots : MutableList[Int] = buildTimeslots();

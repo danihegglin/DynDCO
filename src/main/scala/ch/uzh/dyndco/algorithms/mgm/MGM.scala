@@ -39,7 +39,7 @@ object MGM extends App {
     /**
      * Send remaining utilities
      */
-    for(vertex <- mgmGraph.vertices){
+    for(vertex <- mgmGraph.getAgents()){
       Monitoring.update(vertex.id, vertex.messages)
       Thread sleep 20 // Otherwise too many messages at once
     }

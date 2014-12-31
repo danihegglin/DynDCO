@@ -22,6 +22,9 @@ import scala.collection.mutable.MutableList
     var lastGain : Double = 0.0
     var lastValue : Int = -1
     
+    /**
+     * Choose max gain
+     */
    def chooseMaximalGain() = {
       
       var maxGain : Double = 0.0

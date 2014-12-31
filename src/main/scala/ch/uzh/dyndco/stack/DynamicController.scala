@@ -3,76 +3,85 @@ package ch.uzh.dyndco.stack
 import com.signalcollect.Graph
 import com.signalcollect.DataGraphVertex
 import ch.uzh.dyndco.algorithms.maxsum.VariableVertex
+import ch.uzh.dyndco.problems.Problem
+import scala.util.Random
 
-class DynamicController (id: Any, graph_ : Graph[Any,Any], vertices_ : Set[DynamicVertex]) 
-  extends DataGraphVertex(id, graph_) {
-  
-  /**
-   * Connections
-   */
-  var graph = graph_
-  var vertices = vertices_
-  
-  /**
-   * New Containers
-   */
-  var meetings = Set[Int]()
-  
-  /**
-   * Configuration
-   */
-  var CONSTRAINT_SWITCH_TIME = 10000 // every ten seconds 
-  var CONSTRAINT_SWITCH_PERCENTAGE = 50 // 50 % of all vertices get switched
-  var MEETING_ADD_TIME = 20000 // every twenty seconds 
-  var MEETING_ADD_AMOUNT = 1 // adds five meetings all twenty seconds
-  
-  
-    def addMeeting(meetingID : Any){
+class DynamicController (id: Any, dynamicGraph : DynamicGraph, graphFactory : GraphFactory, problem : Problem) 
+  extends DataGraphVertex(id, dynamicGraph) {
     
-//      graph.addVertex()
-      
-      // number of meetings
-    }
-    
-    def removeMeeting(meeting : Any){
-      
-    }
-    
-    def addParticipant(meeting : Any){
-      
-      graph.addVertex(new VariableVertex(null,null))
-      
-      // number of agents
-      
-    }
-    
-    def removeParticipant(meeting : Any, participantID : Any){
-      // remove from index
-      // remove
-    }
-    
+    /**
+     * The collect function
+     */
     def collect() = {
       null
     }
     
     /**
-     * Test runners
+     * Changes constraints of a percentage of agents on certain interval
      */
-    def initializeSwitch(){
+    def ConstraintsChange(interval : Int, percentage : Double){
+        
         while(true){
-          println("switcher")
+          
+          // choose agents
+          var agents = Set[DynamicVertex]()
+          var numToPick = Math.floor(dynamicGraph.numOfAgents() * percentage)
+          var allAgents = dynamicGraph.getAgents().toList
+          while(agents.size < numToPick){
+            agents += allAgents(Random.nextInt(allAgents.size))
+          }
+          
+          // change constraints
+          for(agent <- agents){
+            agent.changeConstraints()
+          }
+         
+          Thread sleep interval
         }      
     }
     
-    def initializeAdding(){
+    /**
+     * Changes meetings on a certain interval
+     */
+    def MeetingChange(
+        interval : Int, 
+        firstProb : Double, 
+        secondProb : Double, 
+        thirdProb : Double, 
+        number : Int){
+        
         while(true){
-          println("adder")
-        }   
-    }
-    
-    def initializeRemovals(){
-        while(true){
-          println("removals")
+          
+          for(change <- 1 to number){
+          
+            // Probabilities
+            var first = Random.nextDouble()
+            var second = Random.nextDouble()
+            var third = Random.nextDouble()
+            
+            // get meeting
+            var meetingId = 
+              if(first < firstProb)
+                Random.nextInt(dynamicGraph.neighbourhoods.size)
+              else
+                dynamicGraph.nextNeighbourhood()
+                
+           // get agent
+           var agentId =
+             if(second < secondProb)
+               Random.nextInt(dynamicGraph.numOfAgents())
+             else
+               dynamicGraph.nextAgent()
+            
+            // action
+            if(third < thirdProb)
+              graphFactory.addAgent(dynamicGraph, problem, agentId, meetingId)
+            else
+              graphFactory.removeAgent(dynamicGraph, agentId, meetingId)
+            
+          }
+          
+          Thread sleep interval
         }   
     }
 

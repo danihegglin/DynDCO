@@ -33,7 +33,9 @@ object MaxSum {
     /**
      * Add dynamic controller
      */
-    maxSumGraph.graph.addVertex(new DynamicController("dyn1",maxSumGraph.graph))
+    var dynamicController = new DynamicController("dyn1",maxSumGraph, MaxSumGraphFactory, problem)
+    maxSumGraph.graph.addVertex(dynamicController)
+    dynamicController.ConstraintsChange(20000, 1)
     
     /**
      * Run the graph
@@ -45,7 +47,7 @@ object MaxSum {
     /**
      * Send remaining utilities
      */
-    for(varVertex <- maxSumGraph.varVertices){
+    for(varVertex <- maxSumGraph.getAgents()){
       Monitoring.update(varVertex.id, varVertex.messages)
       Thread sleep 20 // Otherwise too many messages at once
     }

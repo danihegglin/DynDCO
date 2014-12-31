@@ -26,25 +26,32 @@ object DPOP extends App {
   	/**
      * Build graph
      */
-    val DpopGraph = DPOPGraphFactory.build(problem)
+    val dpopGraph = DPOPGraphFactory.build(problem)
     
     /**
      * Run the graph
      */ 
     val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
-    val stats = DpopGraph.graph.execute(execConfig)
-    DpopGraph.graph.shutdown
+    val stats = dpopGraph.graph.execute(execConfig)
+    dpopGraph.graph.shutdown
+    
+    /**
+     * Send remaining utilities
+     */
+    for(varVertex <- dpopGraph.getAgents()){
+      Monitoring.update(varVertex.id, varVertex.messages)
+      Thread sleep 20 // Otherwise too many messages at once
+    }
   	
     /**
      * Results
      */
-  	println(stats)
-  	DpopGraph.graph.foreachVertex(println(_))
-  	
-  //	for(agentVertex <- agentVertices){
-  //	  println("----------" + agentVertex.id + "---------------")
-  //		agentVertex.show()
-  //	}
+    /**
+     * Results
+     */
+    println(stats)
+    dpopGraph.show
+    
     }
 	
 }

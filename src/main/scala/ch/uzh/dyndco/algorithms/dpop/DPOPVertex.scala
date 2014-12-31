@@ -12,29 +12,11 @@ import collection.mutable.Set
 class DPOPVertex (id: Any, agentView: DPOPMessage) 
   extends DynamicVertex(id, agentView){
   
-  // -------------------------- TERMINATION CRITERION -----------------------------------------
-  /**
-   * Finish boolean
-   */
-//	var finished : Boolean = false
-//
-//	override def scoreSignal: Double = {
-//		if(this.finished){ 0}
-//		else {1}
-//	}
-	
 	/**
 	 * Parent / Child relationships
 	 */
 	var parent : DPOPVertex = null
 	var children : MutableList[DPOPVertex] = MutableList()
-	
-	/**
-	 * Config
-	 */
-	final var HARD_UTILITY : Double = -10
-	final var SOFT_UTILITY : Double = 0
-	final var PREF_UTILITY : Double = 10
 	
 	/**
 	 * The Utility
@@ -44,7 +26,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	/**
 	 * Full map of values and their utility at this node
 	 */
-	var utilValueMap : Map[Int,Double] = Map[Int, Double]()
+	var utilities : Map[Int,Double] = Map[Int, Double]()
 	var optimalChoice : Int = 0
 	
 	/**
@@ -53,52 +35,47 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	var utilMessages : MutableList[DPOPMessage] = MutableList()
 	var valueMessages : MutableList[DPOPMessage] = MutableList()
 
-	//-------------------------- FUNCTIONS ---------------------------------------------------
-
+  /**
+   * Relationships
+   */
 	def addParent(_parent : DPOPVertex) = {parent = _parent}
 	def addChild(_child : DPOPVertex) = {children += _child}
 	
+  /**
+   * Calculates all utilities
+   */
 	def computeUtils() = {
     
-    utilValueMap.clear()
+    utilities.clear()
 	  
 	  // Initialize map
-    if(CONSTRAINTS_CURRENT != null){
-    	for (value <- 1 to TIMESLOTS){
-    		if(CONSTRAINTS_CURRENT.hard.contains(value)){
-    			utilValueMap += (value -> HARD_UTILITY)
-    		}
-    		else if (CONSTRAINTS_CURRENT.soft.contains(value)){
-    			utilValueMap += (value -> SOFT_UTILITY)
-    		}
-    		else if (CONSTRAINTS_CURRENT.preference.keys.toList.contains(value)){
-    			utilValueMap += (value -> PREF_UTILITY)
-    		}
-    	}
-    }
+    calculateCurrentUtilities()
 
     // Merge map with util messages
     for(utilMessage <- utilMessages){
     	for (value <- 1 to TIMESLOTS){
     		var localValueUtility : Double = 0
-    		if(utilValueMap.contains(value)){
-    			localValueUtility = utilValueMap.get(value).get
+    		if(utilities.contains(value)){
+    			localValueUtility = utilities.get(value).get
     		}
     	  var messageValueUtility : Double = 0
     		if(utilMessage.getUtilValueMap.contains(value)){
     			messageValueUtility = utilMessage.getUtilValueMap.get(value).get
     		}
-    		utilValueMap += (value -> (localValueUtility + messageValueUtility)) 
+    		utilities += (value -> (localValueUtility + messageValueUtility)) 
     	}
 	 }
     
 	}
 	
+  /**
+   * Choose value with highest utility
+   */
 	def chooseOptimal() = {
 	  
 	  // Take value with highest utility
 	  var highestUtility = 0.0
-	  utilValueMap.foreach {
+	  utilities.foreach {
 	    keyVal =>
 	    if(keyVal._2 > highestUtility){
 	      optimalChoice = keyVal._1
@@ -108,22 +85,11 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	  
 	  println("optimal choice: " + optimalChoice + " / " + highestUtility)
 	  
-	  // Push current utility to monitoring
-//	  System.out.println(id + ": utility - " + localUtility)
-//	  val svc = url("http://localhost:9000/utility/agent/" + id + "?utility=" + localUtility)
-//	  val result = Http(svc OK as.String)
-	  
 	}
-	
-				def show() = {
-		println("variable " + id)
-		println("--------------")
-//		println("hc:" + hardConstraints.toString())
-//		println("sc:" + softConstraints.toString())
-//		println("pf:" + preferences.toString())
-		println("--------------")
-				}
-	
+  
+  /**
+   * Collect signals
+   */
 	def collect() = {
 	  
 	  var finalMessage : DPOPMessage = null
@@ -154,28 +120,23 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 		// Leaf Node: Create Util
 		if(children.size == 0){
 		  computeUtils()
-		  finalMessage = new DPOPMessage(id, 0, utilValueMap, "Util")
+		  finalMessage = new DPOPMessage(id, 0, utilities, "Util")
 		}
 		else {
       
-//      println("utilMessage: " + utilMessages.size)
-//      println("children: " + children.size)
-		  
 		  // Check if util message from all children have arrived
 			if(utilMessages.size == children.size){
         
-//        println("boom")
-        
 				// Node is root -> Value Message to all children
 				if(parent == null){
-//				  System.out.println(id + ": Parent Node, Root, choosingOptimal")
 				  chooseOptimal()
-				  finalMessage = new DPOPMessage(id, 0, utilValueMap, "Value")
+				  finalMessage = new DPOPMessage(id, 0, utilities, "Value")
 				}
-				// Node is not root -> Meeting Node, Util Message to parent
+
+        // Node is not root -> Meeting Node, Util Message to parent
 				else {
 				  computeUtils()
-				  finalMessage = new DPOPMessage(id, 0, utilValueMap, "Util")
+				  finalMessage = new DPOPMessage(id, 0, utilities, "Util")
 				}
         
         utilMessages.clear()
@@ -183,12 +144,14 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 
 			// Check if value messages have arrived
 			if(valueMessages.size > 0){
-//		    System.out.println(id + ": Process Value Messages, chooseOptimal")
 				chooseOptimal()
-		    finalMessage = new DPOPMessage(id, 0, utilValueMap, "Value")
+		    finalMessage = new DPOPMessage(id, 0, utilities, "Value")
         valueMessages.clear()
 		  }
 		}
+    
+    // Send current utility
+    // FIXME 
 		
     // Send final message
     finalMessage
