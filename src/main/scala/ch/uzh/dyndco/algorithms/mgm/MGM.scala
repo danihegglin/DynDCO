@@ -46,7 +46,7 @@ object MGM extends App {
     /**
      * Results
      */
-    println(stats)
-    mgmGraph.show
+//    println(stats)
+//    mgmGraph.show
   }
 }

@@ -26,7 +26,7 @@ object MultipleTest extends DeployableAlgorithm {
      */
     var RUNS : Int = 10 // Should be enough
     var FACTOR : Int = 2 // If 10 is ok, 2 should also be ok
-    var MAX : Int = 100 // This should really be enough
+    var MAX : Int = 1000 // This should really be enough
   	
   	/**
   	 * Signal Collect Mode

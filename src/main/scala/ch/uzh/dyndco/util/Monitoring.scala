@@ -38,9 +38,9 @@ object Monitoring {
     
   }
 
-  def update(vertexId : Any, messages : Map[String, Double]) = {
+  def update(vertexId : Any, messages : Map[String, String]) = {
     
-    val immutable : scala.collection.immutable.Map[String,Double] = messages.toMap 
+    val immutable : scala.collection.immutable.Map[String,String] = messages.toMap 
     val json = immutable.toJson
     
     var svc = url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + runID)

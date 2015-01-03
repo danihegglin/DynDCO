@@ -13,7 +13,6 @@ abstract class MonitoredVertex (id: Any, initialState: Any)
      */    
     var MAX_ROUND : Int = -1
     var PUSH_ROUND = -1
-//    var SLOTS = -1
   
     /**
      * Finish Control
@@ -43,31 +42,6 @@ abstract class MonitoredVertex (id: Any, initialState: Any)
     def newRound(){
       roundCount += 1
       cycleCount += 1
-      
-//      if(cycleCount == MAX_SLOTS){
-//        cycleCount = 0
-//      }
-    }
-    
- /**
-  * Utility Message Control
-  */
- var messages : Map[String, Double] = Map[String, Double]()
-  
-    var agentUtility : Double = 0
-    def storeUtility(){
-            
-          // add current utility to messages
-            val timestamp: Long = System.currentTimeMillis
-            messages += timestamp.toString() -> agentUtility
-            
-            // Send if reached max
-            if(cycleCount == PUSH_ROUND){
-//              println("push: " + cycleCount + " | " + id + " | " + PUSH_ROUND + " | " + messages.size)
-              Monitoring.update(id, messages)
-              messages.clear()
-              cycleCount = 0
-            }
     }
 
 }

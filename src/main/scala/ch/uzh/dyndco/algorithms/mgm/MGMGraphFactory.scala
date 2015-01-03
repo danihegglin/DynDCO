@@ -17,7 +17,7 @@ object MGMGraphFactory {
   final var MAX_ROUND : Int = 10000 // Limit of communication rounds
   final var CHANGE_ROUND : Int = 10
   
-  var vertices = Set[MGMVertex]() // FIXME should not be here, create graph object
+  var vertices = Set[MGMVertex]()
   
   def build(problem : MeetingSchedulingProblem) : MGMGraph = {
     

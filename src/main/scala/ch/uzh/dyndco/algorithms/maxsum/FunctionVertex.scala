@@ -18,7 +18,6 @@ class FunctionVertex (id : Any, initialState: MaxSumMessage)
 	def collect() = {
     
   		// Process messages
-      var isNull : Boolean = false
       var receivedUtilities = Map[Any, Map[Int,Double]]()
   		for (signal <- signals.iterator) {
         try {

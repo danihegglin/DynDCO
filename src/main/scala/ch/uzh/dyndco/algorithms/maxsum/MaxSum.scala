@@ -33,17 +33,17 @@ object MaxSum {
     /**
      * Add dynamic controller
      */
-//    var dynamicController = new DynamicController(
-//        "dyn1",
-//        maxSumGraph,
-//        problem)
-//    maxSumGraph.graph.addVertex(dynamicController)
-//    dynamicController.ConstraintsChange(20000, 1)
+    var dynamicController = new DynamicController(
+        "dyn1",
+        maxSumGraph,
+        problem)
+    maxSumGraph.graph.addVertex(dynamicController)
+//    dynamicController.ConstraintsChange(2000, 1)
     
     /**
      * Run the graph
      */ 
-    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
+    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.OptimizedAsynchronous)
     val stats = maxSumGraph.graph.execute(execConfig)
     maxSumGraph.graph.shutdown
     
@@ -58,8 +58,8 @@ object MaxSum {
     /**
      * Results
      */
-    println(stats)
-    maxSumGraph.show
+//    println(stats)
+//    maxSumGraph.show
     
   }
 }

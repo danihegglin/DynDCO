@@ -63,7 +63,6 @@ object MeetingSchedulingFactory {
         // add to constraint & participations collections
         allConstraints += (agent -> constraints)
         
-        constraints.show()
     }
     allConstraints
   }

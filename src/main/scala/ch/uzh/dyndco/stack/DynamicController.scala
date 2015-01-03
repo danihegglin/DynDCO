@@ -22,8 +22,8 @@ class DynamicController (
     /**
      * Changes constraints of a percentage of agents on certain interval
      */
-    def ConstraintsChange(interval : Int, percentage : Double){
-        
+    private def ConstraintsChange(interval : Int, percentage : Double){
+      
         while(true){
           
           // choose agents
@@ -46,7 +46,7 @@ class DynamicController (
     /**
      * Changes meetings on a certain interval
      */
-    def MeetingChange(
+    private def MeetingChange(
         interval : Int, 
         firstProb : Double, 
         secondProb : Double, 

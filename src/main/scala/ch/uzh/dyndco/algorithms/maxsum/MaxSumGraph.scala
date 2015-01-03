@@ -35,10 +35,8 @@ class MaxSumGraph (
   def nextAgent : Int = varVertices.size + 1
   def numOfAgents : Int = varVertices.size
   def numOfNeighbourhoods : Int = neighbourhoods.size
-  def getAgents : Set[DynamicVertex] = {
-    println("num of Agents: " + varVertices.asInstanceOf[Set[DynamicVertex]].size)
-    varVertices.asInstanceOf[Set[DynamicVertex]]
-  }
+  def getAgents : Set[DynamicVertex] = varVertices.asInstanceOf[Set[DynamicVertex]]
+  
   def getFactory : GraphFactory[DynamicGraph, Problem] = MaxSumGraphFactory.asInstanceOf[GraphFactory[DynamicGraph, Problem]]
   
   def show {

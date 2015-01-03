@@ -5,6 +5,7 @@ import collection.mutable.Set
 import ch.uzh.dyndco.problems.MeetingConstraints
 import scala.collection.mutable.MutableList
 import scala.util.Random
+import ch.uzh.dyndco.util.Monitoring
 
 abstract class MeetingSchedulingVertex (id: Any, initialState: Any) 
   extends MonitoredVertex(id, initialState) {
@@ -63,12 +64,9 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         
         if(same && different){
           finished = true
-//          println(id + ": finished")
-//          println(id + ": agent -> " + AGENT_INDEX)
-//          println(id + ": meeting -> " + MEETING_INDEX)
         }
-        else 
-          println(id + ": processing -> " + MEETING_INDEX + " -> " + AGENT_INDEX)
+//        else 
+//          println(id + " -> " + MEETING_INDEX + " -> " + AGENT_INDEX)
       }
     }
       
@@ -133,41 +131,45 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   /**
    * Find best value
    */
-  var bucketHistory : Set[Int] = Set[Int]()
+  var history = Map[Int,Int]()
   
   def findMaxValue(utilities : Map[Int, Double]) : Int = {
       
       var orderedUtilities = utilities.toList sortBy {_._2}
       orderedUtilities = orderedUtilities.reverse
+      
+    
 
       // build buckets
-      var lastValue : Double = -1
-      var bucketCount : Int = 0
-      var buckets : Map[Int, MutableList[Int]] = Map[Int,MutableList[Int]]()
-      var list : MutableList[Int] = MutableList[Int]()
-      var count : Int = 0
+//      var lastValue : Double = -1
+//      var bucketCount : Int = 0
+//      var buckets : Map[Int, MutableList[Int]] = Map[Int,MutableList[Int]]()
+//      var list : MutableList[Int] = MutableList[Int]()
+//      var count : Int = 0
       
-      for(utility <- orderedUtilities){
+//      for(utility <- orderedUtilities){
         
-        count += 1
-        
-        if(lastValue < 0){
-          lastValue = utility._2
-        }
-        if(utility._2 != lastValue || count == orderedUtilities.size){
-          val finalSet = list.sortWith(_ < _) // smallest timeslot first
-          buckets += (bucketCount -> finalSet)
-          bucketCount += 1
-          list = MutableList[Int]()
-          lastValue = utility._2
-        }
-        list += utility._1
-      }
+//        count += 1
+//        
+//        if(lastValue < 0){
+//          lastValue = utility._2
+//        }
+//        if(utility._2 != lastValue || count == orderedUtilities.size){
+//          val finalSet = list.sortWith(_ < _) // smallest timeslot first
+//          buckets += (bucketCount -> finalSet)
+//          bucketCount += 1
+//          list = MutableList[Int]()
+//          lastValue = utility._2
+//        }
+//        list += utility._1
+//      }
       
       // check validity
       var accepted : Boolean = false
-      var position_top : Int = 0
-      var position_sub : Int = 0
+//      var position_top : Int = 0
+//      var position_sub : Int = 0
+      
+      var position = 0
       
       var maxRounds = 10
       var roundCount = 0
@@ -177,111 +179,149 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         roundCount += 1
         
         // Retrieve List
-        var curList : MutableList[Int] = MutableList[Int]()
-        var assignment : Int = -1
+//        var curList : MutableList[Int] = MutableList[Int]()
+//        var assignment : Int = -1
         
-        try {
-          curList = buckets.apply(position_top)
-          assignment = curList.apply(position_sub)
-        } catch {
-           case e : Exception => println("BUCKET ERROR: " + position_top + " | " + position_sub + " | " + buckets + " | " + curList.length)
-        }
+//        try {
+//          curList = buckets.apply(position_top)
+          var assignment = orderedUtilities(position)
+//        } catch {
+//           case e : Exception => 
+             //println("BUCKET ERROR: " + position_top + " | " + position_sub + " | " + buckets + " | " + curList.length)
+//        }
         
         var conflict : Boolean = false
         
         // index check
         for(meeting <- AGENT_INDEX.keys){
           if(meeting != MEETING_ID){
-             if(AGENT_INDEX.apply(meeting) == assignment){               
-               if(Random.nextDouble() > 0.25)
+             if(AGENT_INDEX.apply(meeting) == assignment._1){               
+//               if(Random.nextDouble() > 0.25)
                conflict = true
              }
            }
         }
         
         // history check FIXME test
-//        if(bucketHistory.contains(assignment)){
-//          if(Random.nextDouble() > 0.25)
-//            conflict = true
-//        }
+        if(history.contains(assignment._1)){
+          if(history.apply(assignment._1) > 10){
+            conflict = true
+            history += (assignment._1 -> 0)
+          }
+        }
       
         if(!conflict){
-            AGENT_INDEX += (MEETING_ID -> assignment)
-            MEETING_INDEX += (AGENT_ID -> assignment)
-            value = assignment
-            CONSTRAINTS_CURRENT.update(MEETING_ID, assignment)
-            bucketHistory.add(assignment)
+            AGENT_INDEX += (MEETING_ID -> assignment._1)
+            MEETING_INDEX += (AGENT_ID -> assignment._1)
+            value = assignment._1
+            CONSTRAINTS_CURRENT.update(MEETING_ID, assignment._1)
             accepted = true
+            
+            if(history.contains(assignment._1))
+            history += (assignment._1 -> (history.apply(assignment._1) + 1))
+            else
+              history += assignment._1 -> 1
         }
         else {
           
-           if(curList.length > (position_sub + 1)){
-               position_sub += 1          
-           }
-           else {
-              if(buckets.size > (position_top + 1)){
-                position_top += 1
-              }
-              else {
-                position_top = 0
-              }
-              position_sub = 0
-              bucketHistory.clear()
-           }
+          if((position + 1) > (orderedUtilities.size - 1)){
+            position = 0
+          }
+          else {
+            if(Random.nextDouble() > 0.25)
+            position += 1
+          }
+          
+//           if(curList.length > (position_sub + 1)){
+//               position_sub += 1          
+//           }
+//           else {
+//              if(buckets.size > (position_top + 1)){
+//                position_top += 1
+//              }
+//              else {
+//                position_top = 0
+//              }
+//              position_sub = 0
+//              bucketHistory.clear()
+//           }
         }
       }
     
     value
   }
   
-  def findBestValueTwo(utilities : Map[Int, Double]) : Int = {
-    
-      // Take value with highest utility
-      var highestUtility = 0.0
-      var optimalChoice : Int = -1
-      var best = MutableList[Int]()
-      var bestValue : Int = -1
-      
-      utilities.foreach {
-        keyVal =>
-          
-          var isBlocked = false
-          
-          var key = keyVal._1
-          var value = keyVal._2
-          
-          for(blocked <- AGENT_INDEX.values) {
-             if(key == blocked) {
-                value -= 1
-               isBlocked = true
-             }
-          }
-////          println(key + " -> " + isBlocked)
+//  def findBestValueTwo(utilities : Map[Int, Double]) : Int = {
+//    
+//      // Take value with highest utility
+//      var highestUtility = 0.0
+//      var optimalChoice : Int = -1
+//      var best = MutableList[Int]()
+//      var bestValue : Int = -1
+//      
+//      utilities.foreach {
+//        keyVal =>
 //          
-//          if(!isBlocked){
-            if(value == highestUtility){
-              best += key
-            }
-            if(value > highestUtility){
-              best.clear
-              best += key
-              highestUtility = value
-            }
+//          var isBlocked = false
+//          
+//          var key = keyVal._1
+//          var value = keyVal._2
+//          
+//          for(blocked <- AGENT_INDEX.values) {
+//             if(key == blocked) {
+//                value -= 1
+//               isBlocked = true
+//             }
 //          }
-     }
-      
-//     if(best.size > 0){
-     
-       bestValue = best.sorted.get(0).get
-//       lastGain = utilities.apply(lastValue) - lastGain
-       
-       // Update indices
-       MEETING_INDEX += (AGENT_ID -> bestValue)
-       AGENT_INDEX += (MEETING_ID -> bestValue)
-       
-       bestValue
+//////          println(key + " -> " + isBlocked)
+////          
+////          if(!isBlocked){
+//            if(value == highestUtility){
+//              best += key
+//            }
+//            if(value > highestUtility){
+//              best.clear
+//              best += key
+//              highestUtility = value
+//            }
+////          }
 //     }
-    
-  }
+//      
+////     if(best.size > 0){
+//     
+//       bestValue = best.sorted.get(0).get
+////       lastGain = utilities.apply(lastValue) - lastGain
+//       
+//       // Update indices
+//       MEETING_INDEX += (AGENT_ID -> bestValue)
+//       AGENT_INDEX += (MEETING_ID -> bestValue)
+//       
+//       bestValue
+////     }
+//    
+//  }
+  
+  /**
+    * Utility Message Control
+    */
+   var messages = Map[String, String]()
+   
+   def storeMessage(utility : Double){
+     
+      var utility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
+      var message = utility+ ";" + AGENT_INDEX + ";" + MEETING_INDEX
+              
+      // add current utility to messages
+      val timestamp: Long = System.currentTimeMillis
+      messages += timestamp.toString() -> message
+              
+      // Send if reached max
+      if(cycleCount == PUSH_ROUND){
+  //     println("push: " + cycleCount + " | " + id + " | " + PUSH_ROUND + " | " + messages.size)
+         Monitoring.update(id, messages)
+         messages.clear()
+         cycleCount = 0
+      }
+   }
 
 }

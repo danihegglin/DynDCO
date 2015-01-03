@@ -90,6 +90,8 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    * Collect signals
    */
 	def collect() = {
+    
+    newRound()
 	  
 	  var finalMessage : DPOPMessage = null
 	  
@@ -149,9 +151,8 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 		  }
 		}
     
-    // calculate local utility
-    agentUtility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
-    storeUtility()
+    // store values of current round
+    storeMessage(value)
 		
     // Send final message
     finalMessage

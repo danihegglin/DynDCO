@@ -72,12 +72,12 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
   def normalize(utility : Double) : Double = {
     var normalized : Double = 0.0
     
-    var MAX_VALUE = (MEETING_INDEX.size - 1) * (MEETING_INDEX.size) // FIXME
+    var max = (MEETING_INDEX.size - 1) * (MEETING_INDEX.size) // FIXME
     
     if(utility > 0){
       
       try {
-        normalized = (utility - 0) / (MAX_VALUE - 0)
+        normalized = (utility - 0) / (max - 0)
       } 
       catch {
         case e : Exception => println("normalization error")
@@ -113,10 +113,6 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
 	def collect() = {
     
     newRound()
-    
-//    if(isChangeRound()){
-////      initialized = false
-//    }
     
 		if(initialized){
       
@@ -154,13 +150,12 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
       		  value = findBestValueAssignment(allUtilities)
           }
           
-          // calculate local utility
-          agentUtility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
-          storeUtility()
-        } 
+          // store values of current round
+          storeMessage(value)
+        }
         
-    	 new MaxSumMessage(id, allUtilities)
-      
+    	  new MaxSumMessage(id, allUtilities)
+        
     }
 		else {
       

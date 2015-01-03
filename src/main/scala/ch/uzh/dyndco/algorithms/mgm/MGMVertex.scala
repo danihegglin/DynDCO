@@ -50,6 +50,8 @@ import scala.collection.mutable.MutableList
 
 	def collect() = {
     
+    newRound()
+    
     var outgoing : MGMMessage = null
 	  
 	  if(!initialized){
@@ -123,9 +125,8 @@ import scala.collection.mutable.MutableList
     
 	  }
     
-    // calculate local utility
-   agentUtility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
-   storeUtility()
+    // store values of current round
+    storeMessage(value)
     
    outgoing
   }
