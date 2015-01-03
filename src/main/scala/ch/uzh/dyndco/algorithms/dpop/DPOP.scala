@@ -12,6 +12,9 @@ import dispatch._
 import dispatch.Defaults._
 import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
+import ch.uzh.dyndco.stack.Configuration
+import ch.uzh.dyndco.stack.DynamicController
+import ch.uzh.dyndco.stack.TestMode
 
 ///**
 // * based on: A Scalable Method for Multiagent Constraint Optimization
@@ -20,18 +23,34 @@ import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 
 object DPOP extends App {
   
-    def run(problem : MeetingSchedulingProblem) = {
-	
+    def run(
+        problem : MeetingSchedulingProblem, 
+        configuration : Configuration
+      ) = {	
+      
   	/**
      * Build graph
      */
     val dpopGraph = DPOPGraphFactory.build(problem)
     
     /**
+     * Build dynamic if mode is set
+     */
+    if(configuration.testMode != TestMode.Normal){
+      
+      var dynamicController = new DynamicController("dyn1",dpopGraph,problem)
+      dpopGraph.graph.addVertex(dynamicController)
+    
+      configuration.testMode match {
+        case TestMode.DynamicConstraints => dynamicController.changeConstraints(configuration.parameters)
+        case TestMode.DynamicMeetings => dynamicController.changeMeetings(configuration.parameters)
+      }
+    }
+    
+    /**
      * Run the graph
      */ 
-    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
-    val stats = dpopGraph.graph.execute(execConfig)
+    val stats = dpopGraph.graph.execute(configuration.execConfig)
     dpopGraph.graph.shutdown
     
     /**

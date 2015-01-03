@@ -157,14 +157,16 @@ public class Monitoring extends Controller {
 				
 				String key = it.next();
 				JsonNode value = json.get(key);
-//				Double utility = value.getDoubleValue();
+				String info = value.toString();
 				
-				System.out.println(agent + " | " + key + " | " + value);
+				String[] parts = info.split(";");
 				
-				String update = (key + ";" + agent + ";" + value + "\n");
+				System.out.println(agent + " | " + key + " | " + info);
+				
+				String update = (key + ";" + agent + ";" + info + "\n");
 				collector.tell(update, ActorRef.noSender());
 				
-				agentUtilities.put(agent, Double.parseDouble(value.toString()));
+				agentUtilities.put(agent, Double.parseDouble(parts[0].toString()));
 			}
 
 			// Determine Global Utility

@@ -13,4 +13,6 @@ trait DynamicGraph extends MeetingSchedulingGraph {
   def numOfNeighbourhoods() : Int
   def getAgents() : Set[DynamicVertex]
   
+  
+  
 }

@@ -5,7 +5,7 @@ import collection.mutable.Map
 import collection.mutable.Set
 import ch.uzh.dyndco.util.Monitoring
 
-abstract class MonitoredVertex (id: Any, initialState: Any) 
+abstract class BasicVertex (id: Any, initialState: Any) 
   extends DataGraphVertex(id, initialState) {
   
     /**

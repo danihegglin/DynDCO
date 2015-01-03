@@ -6,20 +6,20 @@ import com.signalcollect.Graph
 import com.signalcollect.GraphBuilder
 import com.signalcollect.StateForwarderEdge
 import collection.mutable.Set
+import ch.uzh.dyndco.stack.GraphFactory
 
-object DPOPGraphFactory {
+object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem] {
   
   // Configuration
   final var SLOTS : Int = 1000 // Max communication slots
-  final var MAX_ROUND : Int = 10000 // Limit of communication rounds
-  final var CHANGE_ROUND : Int = 10
+  final var MAX_ROUND : Int = 3000 // Limit of communication rounds
   
   def build(problem : MeetingSchedulingProblem) : DPOPGraph = {
     
     /**
      * Initialize Graph
      */
-     val graph = GraphBuilder.withConsole(true,8091).build
+     val graph = GraphBuilder.build
     
      /**
       * Build Graph
@@ -83,18 +83,16 @@ object DPOPGraphFactory {
           var leafNodeId = "a" + agent + "m" + participation
           var leafNode = new DPOPVertex(leafNodeId, null) // FIXME
           
-          // Basic
+          // parameters
           leafNode.MAX_ROUND = MAX_ROUND
           leafNode.PUSH_ROUND = slot
-          
-          // Meeting Scheduling
           leafNode.TIMESLOTS = problem.TIMESLOTS
           leafNode.CONSTRAINTS_ORIGINAL = constraints.clone()
           leafNode.CONSTRAINTS_CURRENT = constraints.clone()
           leafNode.AGENT_INDEX = agentIndex
           
           // Dynamic
-          leafNode.CHANGE_ROUND = CHANGE_ROUND // FIXME
+//          leafNode.CHANGE_ROUND = CHANGE_ROUND // FIXME
           
           leafNode.addParent(meetingVertex)
           meetingVertex.addChild(leafNode)
@@ -111,5 +109,16 @@ object DPOPGraphFactory {
      // return graph
       new DPOPGraph(rootNode, middleNodes, leafNodes, null, agentIndices, meetingIndices, graph)
   }
+  
+  def addAgent(
+      dynamicGraph: DPOPGraph,
+      problem: MeetingSchedulingProblem,
+      agentId: Int,
+      meetingId: Int) {}
+  
+  def removeAgent(
+      dynamicGraph: DPOPGraph,
+      agentId: Int, 
+      meetingId: Int) {}
 	
 }

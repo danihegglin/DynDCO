@@ -13,6 +13,7 @@ import ch.uzh.dyndco.stack.DynamicGraph
 import ch.uzh.dyndco.stack.DynamicVertex
 import ch.uzh.dyndco.stack.GraphFactory
 import ch.uzh.dyndco.problems.Problem
+import ch.uzh.dyndco.stack.MeetingSchedulingVertex
 
 class MGMGraph (
     vertices_ : Set[MGMVertex], 
@@ -37,41 +38,10 @@ class MGMGraph (
   
    def show {
   
-    for(meeting <- neighbourhoods.keys.toList.sorted){
-      var correct = true
-      var value = -1
-      var wrong = Set[Int]()
-      for(neighbour <- neighbourhoods.apply(meeting)){
-        if(value < 0){
-          value = neighbour.value
-        }
-        else {
-          if(value != neighbour.value){
-            correct = false
-            wrong += neighbour.value
-          }
-        }
-      }
-      
-      if(correct){
-        println("meeting " + meeting + " -> " + value)
-      }
-      else {
-         println("meeting " + meeting + " -> " + value + ", " + wrong)
-      }
-    }
-    
-    for(vertex <- vertices){
-      
-      var fullSize = vertex.AGENT_INDEX.size
-      var distinctSize = vertex.AGENT_INDEX.values.toList.distinct.size
-      
-      var isDifferent = true
-      if(fullSize != distinctSize)
-        isDifferent = false
-        
-      println(vertex.id + " -> " + isDifferent)
-    }
+     showMeetingResults(neighbourhoods
+         .asInstanceOf[Map[Int, Set[MeetingSchedulingVertex]]])
+     showAgentResults(vertices
+         .asInstanceOf[Set[MeetingSchedulingVertex]])
     
   }
   

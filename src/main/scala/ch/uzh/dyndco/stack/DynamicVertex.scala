@@ -27,7 +27,7 @@ abstract class DynamicVertex (id: Any, initialState: Any)
   }
   
   def changeConstraints(){
-      //      var participations : Set[Int] = Set[Int](meetingID)
+//      var participations : Set[Int] = Set[Int](meetingID)
 //      constraints = MeetingSchedulingFactory.buildSingleConstraints(id, participations)
    }
   

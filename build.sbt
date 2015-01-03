@@ -64,7 +64,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "2.1.1",
   "org.webjars" % "reconnecting-websocket" % "23d2fbc",
   "org.webjars" % "intro.js" % "1.0.0",
-  "io.spray" % "spray-json_2.11" % "1.3.1"
+  "io.spray" % "spray-json_2.11" % "1.3.1",
+  "org.clapper" % "argot_2.11" % "1.0.3"
 )
 
 resolvers += "Scala-Tools Repository" at "https://oss.sonatype.org/content/groups/scala-tools/"
@@ -74,5 +75,7 @@ resolvers += "Sonatype Snapshots Repository" at "https://oss.sonatype.org/conten
 resolvers += "spray" at "http://repo.spray.io/"
 
 resolvers += "Ifi Public" at "https://maven.ifi.uzh.ch/maven2/content/groups/public/"
+
+resolvers += "Brian Clapper's Bintray" at "http://dl.bintray.com/bmc/maven"
 
 transitiveClassifiers := Seq("sources")

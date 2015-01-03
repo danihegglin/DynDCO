@@ -9,13 +9,13 @@ import collection.mutable.Map
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
 import com.signalcollect.GraphBuilder
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
+import ch.uzh.dyndco.stack.GraphFactory
 
-object MGMGraphFactory {
+object MGMGraphFactory extends GraphFactory[MGMGraph, MeetingSchedulingProblem] {
   
   // Configuration
   final var SLOTS : Int = 1000 // Max communication slots
-  final var MAX_ROUND : Int = 10000 // Limit of communication rounds
-  final var CHANGE_ROUND : Int = 10
+  final var MAX_ROUND : Int = 3000 // Limit of communication rounds
   
   var vertices = Set[MGMVertex]()
   
@@ -67,7 +67,6 @@ object MGMGraphFactory {
           vertex.AGENT_INDEX = agentIndex
           vertex.MEETING_ID = meetingId
           vertex.AGENT_ID = agent
-          vertex.CHANGE_ROUND = CHANGE_ROUND // FIXME
            
            graph.addVertex(vertex)
            vertices += vertex
@@ -98,5 +97,15 @@ object MGMGraphFactory {
       // return graph
       new MGMGraph(vertices, neighbourhoods, agentIndices, meetingIndices, graph)
   }
-
+  
+    def addAgent(
+      dynamicGraph: MGMGraph,
+      problem: MeetingSchedulingProblem,
+      agentId: Int,
+      meetingId: Int) {}
+  
+  def removeAgent(
+      dynamicGraph: MGMGraph,
+      agentId: Int, 
+      meetingId: Int) {}
 }

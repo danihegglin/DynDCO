@@ -18,21 +18,40 @@ import com.signalcollect.configuration.ExecutionMode
 import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
+import ch.uzh.dyndco.stack.Configuration
+import ch.uzh.dyndco.stack.DynamicController
+import ch.uzh.dyndco.stack.TestMode
 
 object MGM extends App {
   
-  def run(problem : MeetingSchedulingProblem) = {
+  def run(
+      problem : MeetingSchedulingProblem, 
+      configuration : Configuration
+      ) = {
       
     /**
      * Build graph
      */
     val mgmGraph = MGMGraphFactory.build(problem)
     
+     /**
+     * Build dynamic if mode is set
+     */
+    if(configuration.testMode != TestMode.Normal){
+      
+      var dynamicController = new DynamicController("dyn1",mgmGraph,problem)
+      mgmGraph.graph.addVertex(dynamicController)
+    
+      configuration.testMode match {
+        case TestMode.DynamicConstraints => dynamicController.changeConstraints(configuration.parameters)
+        case TestMode.DynamicMeetings => dynamicController.changeMeetings(configuration.parameters)
+      }
+    }
+    
   	/**
   	 * Run the graph
   	 */	
-  	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
-  	val stats = mgmGraph.graph.execute(execConfig)
+  	val stats = mgmGraph.graph.execute(configuration.execConfig)
     mgmGraph.graph.shutdown
     
     /**
@@ -46,7 +65,7 @@ object MGM extends App {
     /**
      * Results
      */
-//    println(stats)
-//    mgmGraph.show
+    println(stats)
+    mgmGraph.show
   }
 }

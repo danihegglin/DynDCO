@@ -16,14 +16,22 @@ import ch.uzh.dyndco.problems.Problem
 import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import ch.uzh.dyndco.stack.DynamicController
+import ch.uzh.dyndco.stack.MeetingSchedulingVertex
+import ch.uzh.dyndco.stack.DCOAlgorithm
+import com.signalcollect.configuration.ExecutionMode
+import ch.uzh.dyndco.stack.TestMode
+import ch.uzh.dyndco.stack.Configuration
 
 /**
  * Based on: FIXME
  */
 
-object MaxSum {
+object MaxSum extends DCOAlgorithm {
 
-  def run(problem : MeetingSchedulingProblem) = {
+  def run(
+      problem : MeetingSchedulingProblem,
+      configuration : Configuration
+      ) = {
 
     /**
      * Build graph
@@ -31,20 +39,23 @@ object MaxSum {
     val maxSumGraph = MaxSumGraphFactory.build(problem)
     
     /**
-     * Add dynamic controller
+     * Build dynamic if mode is set
      */
-    var dynamicController = new DynamicController(
-        "dyn1",
-        maxSumGraph,
-        problem)
-    maxSumGraph.graph.addVertex(dynamicController)
-//    dynamicController.ConstraintsChange(2000, 1)
+    if(configuration.testMode != TestMode.Normal){
+      
+      var dynamicController = new DynamicController("dyn1",maxSumGraph,problem)
+      maxSumGraph.graph.addVertex(dynamicController)
+    
+      configuration.testMode match {
+        case TestMode.DynamicConstraints => dynamicController.changeConstraints(configuration.parameters)
+        case TestMode.DynamicMeetings => dynamicController.changeMeetings(configuration.parameters)
+      }
+    }
     
     /**
      * Run the graph
      */ 
-    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.OptimizedAsynchronous)
-    val stats = maxSumGraph.graph.execute(execConfig)
+    val stats = maxSumGraph.graph.execute(configuration.execConfig)
     maxSumGraph.graph.shutdown
     
     /**
@@ -58,8 +69,10 @@ object MaxSum {
     /**
      * Results
      */
-//    println(stats)
-//    maxSumGraph.show
+    var prepStats = maxSumGraph.prepareStats(stats)
+    Monitoring.update(0, prepStats)
+    Thread sleep 1000 // Otherwise stop too fast
+    maxSumGraph.show()
     
   }
 }

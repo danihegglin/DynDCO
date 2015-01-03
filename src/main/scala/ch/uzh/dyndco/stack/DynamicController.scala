@@ -22,7 +22,10 @@ class DynamicController (
     /**
      * Changes constraints of a percentage of agents on certain interval
      */
-    private def ConstraintsChange(interval : Int, percentage : Double){
+    def changeConstraints(parameters : Array[String]){
+      
+        var interval : Int = parameters(0).toInt
+        var percentage : Double = parameters(1).toDouble
       
         while(true){
           
@@ -46,12 +49,13 @@ class DynamicController (
     /**
      * Changes meetings on a certain interval
      */
-    private def MeetingChange(
-        interval : Int, 
-        firstProb : Double, 
-        secondProb : Double, 
-        thirdProb : Double, 
-        number : Int){
+    def changeMeetings(parameters : Array[String]){
+      
+        var interval : Int = parameters(0).toInt
+        var firstProb : Double = parameters(1).toDouble
+        var secondProb : Double = parameters(2).toDouble
+        var thirdProb : Double = parameters(3).toDouble
+        var number : Int = parameters(4).toInt
         
         while(true){
           

@@ -10,37 +10,55 @@ import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.util.IdFactory
 import ch.uzh.dyndco.algorithms.mgm.MGM
 import ch.uzh.dyndco.algorithms.dpop.DPOP
+import ch.uzh.dyndco.stack.TestMode
+import ch.uzh.dyndco.stack.Configuration
+import ch.uzh.dyndco.stack.ConfigurationFactory
 
-object SingleTest extends App {
+object SingleTest extends DeployableAlgorithm {
   
-    /**
-  	 * Configuration
-  	 */
-  	var TIMESLOTS : Int = 10
-    var MEETINGS : Int = 1
-  	var AGENTS : Int = 2
+  def execute(parameters: Map[String, String], nodeActors: Array[ActorRef]){
+  
+      /**
+    	 * Parameters
+    	 */
+      val ALGORITHM : String = parameters.apply("algorithm")
+      val EXECUTION : String = parameters.apply("execution")
+      val MODE : String = parameters.apply("mode")
+      val PARAM : String = parameters.apply("param")
+    	val TIMESLOTS : Int = parameters.apply("timeslots").toInt
+      val MEETINGS : Int = parameters.apply("meetings").toInt
+    	val AGENTS : Int = parameters.apply("agents").toInt
+      
+      /**
+       * Build id
+       */
+      val id = IdFactory.build(TIMESLOTS, MEETINGS, AGENTS, 1)
+  
+      /**
+       * Build problem
+       */
+      val problem = MeetingSchedulingFactory.build(TIMESLOTS, MEETINGS, AGENTS)
+      
+      /**
+       * Build configuration
+       */  
+      var configuration = ConfigurationFactory.build(EXECUTION, MODE, PARAM)
+                        
+      /**
+       * Run graph
+       */
+      Monitoring.start(id)
+      
+      ALGORITHM match {
+        case "maxsum" => MaxSum.run(problem, configuration)
+        case "mgm" => MGM.run(problem, configuration)
+        case "dpop" => DPOP.run(problem, configuration)
+      }
+      
+      Monitoring.sucess(id)
+      
+      System.exit(0)
     
-    /**
-     * Build id
-     */
-    val id = IdFactory.build(TIMESLOTS, MEETINGS, AGENTS, 1)
-
-    /**
-     * Build problem
-     */
-    val problem = MeetingSchedulingFactory.build(TIMESLOTS, MEETINGS, AGENTS)
-    
-    /**
-     * Run graph
-     */
-    Monitoring.start(id)
-    
-//    MaxSum.run(problem)
-//    MGM.run(problem)
-    DPOP.run(problem)
-    
-    Monitoring.sucess(id)
-    
-    System.exit(0)
+  }
        
 }
