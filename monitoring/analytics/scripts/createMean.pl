@@ -18,7 +18,7 @@ sub median
 my $dir = "/Users/daniel/git/dyndco/monitoring/analytics/results";
 
 # timeseries matrix
-my @matrix = ();
+my %matrix = ();
 
 # read all files from directory
 foreach my $fp (glob("$dir/*.txt")) {
@@ -41,15 +41,15 @@ foreach my $fp (glob("$dir/*.txt")) {
 
 		# add to matrix
 		my $timepoints = "";
-		if($matrix[$timepoint] != null){
-			$timepoints = $matrix[$timepoint];
+		if(exists $matrix{$timepoint}){
+			$timepoints = $matrix{$timepoint};
 			$timepoints .= ";".$value
 		}
 		else {
 			$timepoints = $value;
 		}
 		#print "length timepoints: " . scalar @timepoints;
-		$matrix[$timepoint] = $timepoints;
+		$matrix{$timepoint} = $timepoints;
 
   	}
   	close $fh;

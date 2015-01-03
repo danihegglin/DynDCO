@@ -5,7 +5,7 @@ import collection.mutable.Set
 import scala.collection.SortedMap
 import scala.util.Random
 import ch.uzh.dyndco.stack.DynamicVertex
-import ch.uzh.dyndco.problems.Constraints
+import ch.uzh.dyndco.problems.MeetingConstraints
 import ch.uzh.dyndco.util.Monitoring
 import scala.collection.mutable.MutableList
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
@@ -16,34 +16,16 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
   extends DynamicVertex(id, initialState) {
   
   /**
-   * Meeting Value
+   * This avoids type-checks/-casts.
    */
-  var bestValueAssignment : Int = -1 // Contains best combination of assignments for the greater good
-	var bucketHistory : Set[Int] = Set[Int]()
-  
-	/**
-	 * The Utility
-	 */
-	var lastUtility : Double = 0
-	var lastCount : Int = 0
-
-	/**
-	 * Control parameters
-	 */
-	var initialized : Boolean = false
-
-	/**
-	 * Indicates that every signal this vertex receives is
-	 * an instance of MaxSumMessage. This avoids type-checks/-casts.
-	 */
-	type Signal = MaxSumMessage
+  type Signal = MaxSumMessage
 	
   /**
-   * Build Utilities
+   * Build Utilities for all Function Vertices
    */
 	def buildUtilities(allMarginalUtilities : Map[Any, Map[Any, Map[Int, Double]]]): Map[Any,Map[Int, Double]] = {
 	  
-	  val marginalUtilities = Map[Any,Map[Int, Double]]() // Keeps track which meeting has which assignment
+	  val utilities = Map[Any,Map[Int, Double]]() // Keeps track which meeting has which assignment
 		
 	  for(functionVertex <- allMarginalUtilities.keys){
 	    
@@ -79,9 +61,9 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
   			assignmentMap += (assignment -> utility)
   		}
   		// Add assignment costs to map for all functionVertices
-  		marginalUtilities += (functionVertex -> assignmentMap)
+  		utilities += (functionVertex -> assignmentMap)
 	  }
-	  marginalUtilities
+	  utilities
 	}
   
   /**
@@ -109,6 +91,7 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
    */
 	def findBestValueAssignment(marginalUtilities : Map[Any,Map[Int, Double]]) : Int = {
     
+      // Sum of all utilities
       var allUtilities = Map[Int,Double]()
       for(utilities <- marginalUtilities.values){
         for(timeslot <- utilities.keys){
@@ -119,94 +102,9 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
           allUtilities += (timeslot -> utility)
         }
       }
-
-	    var orderedUtilities = allUtilities.toList sortBy {_._2}
-	    orderedUtilities = orderedUtilities.reverse
-
-      // build buckets
-      var lastValue : Double = -1
-      var bucketCount : Int = 0
-      var buckets : Map[Int, MutableList[Int]] = Map[Int,MutableList[Int]]()
-      var list : MutableList[Int] = MutableList[Int]()
-      var count : Int = 0
-      for(utility <- orderedUtilities){
-        
-        count += 1
-        
-        if(lastValue < 0){
-          lastValue = utility._2
-        }
-        if(utility._2 != lastValue || count == orderedUtilities.size){
-          val finalSet = list.sortWith(_ < _) // smallest timeslot first
-          buckets += (bucketCount -> finalSet)
-          bucketCount += 1
-          list = MutableList[Int]()
-          lastValue = utility._2
-        }
-        list += utility._1
-      }
       
-      // check validity
-      var accepted : Boolean = false
-      var position_top : Int = 0
-      var position_sub : Int = 0
-     
-      while(!accepted){
-        
-        // Retrieve List
-        var curList : MutableList[Int] = MutableList[Int]()
-        var assignment : Int = -1
-  	    
-        try {
-          curList = buckets.apply(position_top)
-          assignment = curList.apply(position_sub)
-        } catch {
-           case e : Exception => println("BUCKET ERROR: " + position_top + " | " + position_sub + " | " + buckets + " | " + curList.length)
-        }
-        
-        var conflict : Boolean = false
-        
-        // index check
-        for(meeting <- AGENT_INDEX.keys){
-          if(meeting != MEETING_ID){
-             if(AGENT_INDEX.apply(meeting) == assignment){
-               conflict = true
-             }
-           }
-        }
-        
-        // history check FIXME test
-        if(bucketHistory.contains(assignment)){
-          conflict = true
-        }
-      
-        if(!conflict){
-            bestValueAssignment = assignment
-            AGENT_INDEX += (MEETING_ID -> assignment)
-            bucketHistory.add(assignment)
-            accepted = true
-        }
-        else {
-          
-           if(curList.length > (position_sub + 1)){
-               position_sub += 1          
-           }
-           else {
-              if(buckets.size > (position_top + 1)){
-                position_top += 1
-              }
-              else {
-                position_top = 0
-              }
-              position_sub = 0
-              bucketHistory.clear()
-           }
-        }
-      }
-
-    MEETING_INDEX += (id -> bestValueAssignment)
-	  
-	  bestValueAssignment
+      // Find max value
+      findMaxValue(allUtilities)
 	}
 	
   /**
@@ -216,9 +114,9 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
     
     newRound()
     
-    if(isChangeRound()){
-//      initialized = false
-    }
+//    if(isChangeRound()){
+////      initialized = false
+//    }
     
 		if(initialized){
       
@@ -253,13 +151,14 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
     			
           // find best assignments for all requirements
           if(!finished){
-      		  val bestValueAssignment = findBestValueAssignment(allUtilities)
+      		  value = findBestValueAssignment(allUtilities)
           }
           
           // calculate local utility
-          agentUtility = calculateOriginalUtility(bestValueAssignment)
+          agentUtility = calculateSingleOriginalUtility(value)
           storeUtility()
         } 
+        
     	 new MaxSumMessage(id, allUtilities)
       
     }
@@ -270,13 +169,14 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
       
       // add pref to index
 			var pref = CONSTRAINTS_CURRENT.preference.apply(MEETING_ID)
-      bestValueAssignment = pref // assign best value
+      value = pref // assign best value
       
-      var currentUtilities = calculateCurrentUtilities()
+      var currentUtilities = calculateAllCurrentUtilities()
       var utilities = Map[Any, Map[Int, Double]]()
       utilities += (id -> currentUtilities)
       
       new MaxSumMessage(id, utilities)
+      
 		}
 	}
 }

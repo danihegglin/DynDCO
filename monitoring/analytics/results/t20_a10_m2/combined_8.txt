@@ -1,3 +1,0 @@
-timestamp;utility
-1;145
-2;195

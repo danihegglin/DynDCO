@@ -6,7 +6,6 @@ import com.signalcollect.GraphBuilder
 import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
 import scala.collection.mutable.MutableList
-import ch.uzh.dyndco.algorithms.maxsum.Meeting
 import collection.mutable.Map
 import collection.mutable.Set
 import dispatch._

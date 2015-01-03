@@ -1,7 +1,6 @@
 package ch.uzh.dyndco.problems
 
 import scala.collection.mutable.MutableList
-import ch.uzh.dyndco.algorithms.maxsum.Meeting
 import scala.util.Random
 import collection.mutable.Set
 import collection.mutable.Map
@@ -28,7 +27,7 @@ object MeetingSchedulingFactory {
     
     var meetings : MutableList[Meeting] = buildMeetings()
     var allParticipations : Map[Int, Set[Int]] = buildAllParticipations()
-    var allConstraints : Map[Int, Constraints] = buildAllConstraints(allParticipations)
+    var allConstraints : Map[Int, MeetingConstraints] = buildAllConstraints(allParticipations)
     
     new MeetingSchedulingProblem(
         meetings,allParticipations,allConstraints,
@@ -51,8 +50,8 @@ object MeetingSchedulingFactory {
     allParticipations
   }
   
-  def buildAllConstraints(allParticipations : Map[Int, Set[Int]]) : Map[Int, Constraints] = {
-    val allConstraints : Map[Int, Constraints] = Map[Int, Constraints]()
+  def buildAllConstraints(allParticipations : Map[Int, Set[Int]]) : Map[Int, MeetingConstraints] = {
+    val allConstraints : Map[Int, MeetingConstraints] = Map[Int, MeetingConstraints]()
     for(agent <- 1 to AGENTS){
       
         // Build participations
@@ -69,7 +68,7 @@ object MeetingSchedulingFactory {
     allConstraints
   }
   
-  def buildSingleConstraints(agent : Int, participations : Set[Int]) : Constraints = {
+  def buildSingleConstraints(agent : Int, participations : Set[Int]) : MeetingConstraints = {
     
         // Build constraints
         val availableTimeslots : MutableList[Int] = buildTimeslots();
@@ -95,7 +94,7 @@ object MeetingSchedulingFactory {
         var softConstraints : Set[Int] = buildSoftConstraints(availableTimeslots, used)
         
         // Constraint pack
-        new Constraints(agent,hardConstraints,softConstraints,preferences)
+        new MeetingConstraints(agent,hardConstraints,softConstraints,preferences)
     
   }
 

@@ -3,15 +3,15 @@ package ch.uzh.dyndco.algorithms.dpop
 import collection.mutable.Map
 import collection.mutable.Set
 import com.signalcollect.AbstractVertex
-import ch.uzh.dyndco.problems.Constraints
 import scala.collection.mutable.MutableList
 import com.signalcollect.Graph
 import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import com.signalcollect.GraphBuilder
-import ch.uzh.dyndco.algorithms.dpop.DPOPVertex
 import ch.uzh.dyndco.stack.DynamicGraph
 import ch.uzh.dyndco.stack.DynamicVertex
+import ch.uzh.dyndco.stack.GraphFactory
+import ch.uzh.dyndco.problems.Problem
 
 class DPOPGraph (
     root_ : DPOPVertex, 
@@ -34,7 +34,8 @@ class DPOPGraph (
   def nextAgent : Int = leaf.size + 1
   def numOfAgents : Int = leaf.size
   def numOfNeighbourhoods : Int = neighbourhoods.size
-  def getAgents : Set[DynamicVertex] = leaf.asInstanceOf[Set[DynamicVertex]] 
+  def getAgents : Set[DynamicVertex] = leaf.asInstanceOf[Set[DynamicVertex]]
+  def getFactory : GraphFactory[DynamicGraph, Problem] = DPOPGraphFactory.asInstanceOf[GraphFactory[DynamicGraph, Problem]]
   
   def show {
     

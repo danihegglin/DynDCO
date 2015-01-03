@@ -5,7 +5,7 @@ import dispatch._, Defaults._
 import scala.collection.mutable.MutableList
 import scala.util.Random
 import ch.uzh.dyndco.stack.DynamicVertex
-import ch.uzh.dyndco.problems.Constraints
+import ch.uzh.dyndco.problems.MeetingConstraints
 import collection.mutable.Map
 import collection.mutable.Set
 
@@ -49,7 +49,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     utilities.clear()
 	  
 	  // Initialize map
-    calculateCurrentUtilities()
+    calculateAllCurrentUtilities()
 
     // Merge map with util messages
     for(utilMessage <- utilMessages){

@@ -15,7 +15,6 @@ import scala.collection.mutable.MutableList
 import com.signalcollect.GraphBuilder
 import com.signalcollect.ExecutionConfiguration
 import com.signalcollect.configuration.ExecutionMode
-import ch.uzh.dyndco.algorithms.maxsum.Meeting
 import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem

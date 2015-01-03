@@ -3,7 +3,6 @@ package ch.uzh.dyndco.algorithms.maxsum
 import collection.mutable.Map
 import collection.mutable.Set
 import com.signalcollect.AbstractVertex
-import ch.uzh.dyndco.problems.Constraints
 
 class MaxSumMessage (
       sender_ : Any,

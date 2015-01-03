@@ -7,7 +7,7 @@ import collection.mutable.Map
 import scala.util.Random
 import scala.collection.mutable.MutableList
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
-import ch.uzh.dyndco.problems.Constraints
+import ch.uzh.dyndco.problems.MeetingConstraints
 import dispatch._
 import dispatch.Defaults._
 import ch.uzh.dyndco.util.Monitoring
@@ -33,9 +33,12 @@ object MaxSum {
     /**
      * Add dynamic controller
      */
-    var dynamicController = new DynamicController("dyn1",maxSumGraph, MaxSumGraphFactory, problem)
-    maxSumGraph.graph.addVertex(dynamicController)
-    dynamicController.ConstraintsChange(20000, 1)
+//    var dynamicController = new DynamicController(
+//        "dyn1",
+//        maxSumGraph,
+//        problem)
+//    maxSumGraph.graph.addVertex(dynamicController)
+//    dynamicController.ConstraintsChange(20000, 1)
     
     /**
      * Run the graph

@@ -8,23 +8,24 @@ import collection.mutable.Map
 
 object MonitoringTesting extends App {
   
-//    final var address = "178.62.200.138"
-    final var address = "localhost"
+    final var address = "178.62.200.138"
+//    final var address = "localhost"
     final var vertexId = 1
     final var agentUtility = 1
     final var id = 1
     
     var messages = Map[String,Double]()
-    messages += (""+123 -> 5.0)
-    messages += (""+124 -> 8.0)
-    
-    val immutable : scala.collection.immutable.Map[String,Double] = messages.toMap 
-    val json = immutable.toJson
    
    var svc = url("http://" + address + ":9000/start?id=" + id)
    var result = Http(svc OK as.String)    
    for(i : Int <- 1 to 250){
      Thread sleep 50
+     
+    messages += (""+i -> 5.0)
+    
+    val immutable : scala.collection.immutable.Map[String,Double] = messages.toMap 
+    val json = immutable.toJson
+     
      println(i)
      println(json.toString())
      
@@ -36,6 +37,8 @@ object MonitoringTesting extends App {
        val postFields: Map[String, String] = Map[String,String]()
      var result = Http(svc << postFields OK as.String)
 //     
+     
+     messages.clear()
 //        println(result)
      
 //     val SERVICES_URL = "http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + id
@@ -48,5 +51,5 @@ object MonitoringTesting extends App {
    svc = url("http://" + address + ":9000/stop?id=" + id)
    result = Http(svc OK as.String)
    
-   System.exit(0)
+//   System.exit(0)
 }

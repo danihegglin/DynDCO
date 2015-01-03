@@ -2,8 +2,7 @@ package ch.uzh.dyndco.algorithms.mgm
 
 import com.signalcollect.Graph
 import scala.collection.mutable.MutableList
-import ch.uzh.dyndco.problems.Constraints
-import ch.uzh.dyndco.algorithms.maxsum.Meeting
+import ch.uzh.dyndco.problems.MeetingConstraints
 import com.signalcollect.StateForwarderEdge
 import collection.mutable.Set
 import collection.mutable.Map
@@ -36,7 +35,7 @@ object MGMGraphFactory {
       }
               
       // establish edges to all meeting functions
-      var agentIndices : Map[Any, Map[Any,Int]] = Map[Any, Map[Any,Int]]()
+      var agentIndices : Map[Int, Map[Any,Int]] = Map[Int, Map[Any,Int]]()
       var slot = 0
       for(agent : Int <- problem.allParticipations.keys){
           
@@ -56,23 +55,19 @@ object MGMGraphFactory {
             
            // initial index registration
            var meetingIndex = meetingIndices.apply(meetingId)
-           meetingIndex += (agentId -> constraints.preference.apply(meetingId))
+           meetingIndex += (agent -> constraints.preference.apply(meetingId))
            
-          // Basic
+          // Add parameters
           vertex.MAX_ROUND = MAX_ROUND
           vertex.PUSH_ROUND = slot
-          
-          // Meeting Scheduling
           vertex.TIMESLOTS = problem.TIMESLOTS
-          vertex.CONSTRAINTS_ORIGINAL = constraints
-          vertex.CONSTRAINTS_CURRENT = constraints
+          vertex.CONSTRAINTS_ORIGINAL = constraints.clone()
+          vertex.CONSTRAINTS_CURRENT = constraints.clone()
           vertex.MEETING_INDEX = meetingIndex
           vertex.AGENT_INDEX = agentIndex
           vertex.MEETING_ID = meetingId
-          
-          // Dynamic
+          vertex.AGENT_ID = agent
           vertex.CHANGE_ROUND = CHANGE_ROUND // FIXME
-           
            
            graph.addVertex(vertex)
            vertices += vertex
@@ -81,7 +76,6 @@ object MGMGraphFactory {
            neighbourhood += vertex
            neighbourhoods += meetingId -> neighbourhood 
            
-          // FIXME make nicer
           if(slot == SLOTS){
             slot = 0
           }
@@ -102,7 +96,7 @@ object MGMGraphFactory {
       }
       
       // return graph
-      new MGMGraph(vertices, neighbourhoods, graph)
+      new MGMGraph(vertices, neighbourhoods, agentIndices, meetingIndices, graph)
   }
 
 }

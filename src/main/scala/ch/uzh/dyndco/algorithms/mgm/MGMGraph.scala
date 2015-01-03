@@ -3,7 +3,7 @@ package ch.uzh.dyndco.algorithms.mgm
 import collection.mutable.Map
 import collection.mutable.Set
 import com.signalcollect.AbstractVertex
-import ch.uzh.dyndco.problems.Constraints
+import ch.uzh.dyndco.problems.MeetingConstraints
 import scala.collection.mutable.MutableList
 import com.signalcollect.Graph
 import com.signalcollect.StateForwarderEdge
@@ -11,6 +11,8 @@ import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import com.signalcollect.GraphBuilder
 import ch.uzh.dyndco.stack.DynamicGraph
 import ch.uzh.dyndco.stack.DynamicVertex
+import ch.uzh.dyndco.stack.GraphFactory
+import ch.uzh.dyndco.problems.Problem
 
 class MGMGraph (
     vertices_ : Set[MGMVertex], 
@@ -29,7 +31,9 @@ class MGMGraph (
   def nextAgent : Int = vertices.size + 1
   def numOfAgents : Int = vertices.size
   def numOfNeighbourhoods : Int = neighbourhoods.size
-  def getAgents : Set[DynamicVertex] = vertices.asInstanceOf[Set[DynamicVertex]] 
+  def getAgents : Set[DynamicVertex] = vertices.asInstanceOf[Set[DynamicVertex]]
+  def getFactory : GraphFactory[DynamicGraph, Problem] = MGMGraphFactory.asInstanceOf[GraphFactory[DynamicGraph, Problem]]
+
   
    def show {
   
@@ -39,12 +43,12 @@ class MGMGraph (
       var wrong = Set[Int]()
       for(neighbour <- neighbourhoods.apply(meeting)){
         if(value < 0){
-          value = neighbour.lastValue
+          value = neighbour.value
         }
         else {
-          if(value != neighbour.lastValue){
+          if(value != neighbour.value){
             correct = false
-            wrong += neighbour.lastValue
+            wrong += neighbour.value
           }
         }
       }

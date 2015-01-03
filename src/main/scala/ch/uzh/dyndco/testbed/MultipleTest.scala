@@ -37,20 +37,24 @@ object MultipleTest extends DeployableAlgorithm {
      * Run tests
      */
     var agents : Int = 2
-    var meetings : Int = 1
-    var timeslots : Int = 20
+    var meetings : Int = 16
+    var timeslots : Int = 32
+    
     while(agents < MAX){
       while(meetings < MAX){
         println("--- AGENTS " + agents + " ---")
-        println("--- MEETINGS " + meetings + " ---")
+        println("--- MEETINGS " + meetings + " (AGENTS: "+agents+") ---")
         for(run <- 1 to RUNS){
-          println("--- RUN " + run + " of " + RUNS + " ---")
+          println("--- RUN " + run + " of " + RUNS + " (AGENTS: "+agents+", MEETINGS: "+meetings+")  ---")
           val runID = IdFactory.build(timeslots, meetings, agents, run)
           val problem = MeetingSchedulingFactory.build(timeslots,meetings,agents)
           Monitoring.start(runID)
-//          MaxSum.run(problem)
-          MGM.run(problem)
+          MaxSum.run(problem)
+//          MGM.run(problem)
           Monitoring.sucess(runID)
+          
+          // Clear memory
+          Runtime.getRuntime().gc;
         }
         meetings *= FACTOR
       }

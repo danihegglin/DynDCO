@@ -3,12 +3,11 @@ package ch.uzh.dyndco.problems
 import collection.mutable.Set
 import collection.mutable.Map
 import scala.collection.mutable.MutableList
-import ch.uzh.dyndco.algorithms.maxsum.Meeting
 
 class MeetingSchedulingProblem (
     meetings_ : MutableList[Meeting],
     allParticipations_ : Map[Int, Set[Int]],
-    allConstraints_ : Map[Int, Constraints],
+    allConstraints_ : Map[Int, MeetingConstraints],
     TIMESLOTS_ : Int, 
     MEETINGS_ : Int, 
     AGENTS_ : Int

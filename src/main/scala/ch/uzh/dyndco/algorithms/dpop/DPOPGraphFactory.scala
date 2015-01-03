@@ -31,7 +31,7 @@ object DPOPGraphFactory {
       
       // build middle nodes
       var middleNodes : Map[Int, DPOPVertex] = Map[Int, DPOPVertex]()
-      var meetingIndex : Map[Int, Map[Any, Int]] = Map[Int, Map[Any, Int]]()
+      var meetingIndices : Map[Int, Map[Any, Int]] = Map[Int, Map[Any, Int]]()
       for(meeting <- problem.meetings){
         var middleNodeId = "m" + meeting.meetingID
         var middleNode = new DPOPVertex(middleNodeId, null)
@@ -48,16 +48,21 @@ object DPOPGraphFactory {
         graph.addEdge("root", new StateForwarderEdge(middleNodeId))
         
         middleNodes += (meeting.meetingID -> middleNode)
+        
+        var meetingIndex : Map[Any, Int] = Map[Any, Int]()
+        meetingIndices += (meeting.meetingID -> meetingIndex)
       }
       
       // build leaf nodes
       var leafNodes : Set[DPOPVertex] = Set[DPOPVertex]()
       
       var slot = 0
-      
+      var agentIndices = Map[Int, Map[Any, Int]]()
       for(agent <- problem.allParticipations.keys){
         
         var agentIndex : Map[Any, Int] = Map[Any, Int]()
+        agentIndices += (agent -> agentIndex)
+        
         var constraints = problem.allConstraints.apply(agent)
         var participations = problem.allParticipations.apply(agent)
         
@@ -67,6 +72,8 @@ object DPOPGraphFactory {
             constraints.preference)
         
         // build vertices & edges
+            // FIXME add meeting index
+            // FIXME add neighbourhood
         for(participation <- participations){
           
           slot += 1
@@ -82,8 +89,8 @@ object DPOPGraphFactory {
           
           // Meeting Scheduling
           leafNode.TIMESLOTS = problem.TIMESLOTS
-          leafNode.CONSTRAINTS_ORIGINAL = constraints
-          leafNode.CONSTRAINTS_CURRENT = constraints
+          leafNode.CONSTRAINTS_ORIGINAL = constraints.clone()
+          leafNode.CONSTRAINTS_CURRENT = constraints.clone()
           leafNode.AGENT_INDEX = agentIndex
           
           // Dynamic
@@ -102,7 +109,7 @@ object DPOPGraphFactory {
       }
      
      // return graph
-      new DPOPGraph(rootNode, middleNodes, leafNodes, graph)
+      new DPOPGraph(rootNode, middleNodes, leafNodes, null, agentIndices, meetingIndices, graph)
   }
 	
 }

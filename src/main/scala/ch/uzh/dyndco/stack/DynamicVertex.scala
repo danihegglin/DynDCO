@@ -1,7 +1,6 @@
 package ch.uzh.dyndco.stack
 
 import com.signalcollect.DataGraphVertex
-import ch.uzh.dyndco.problems.Constraints
 import collection.mutable.Map
 import collection.mutable.Set
 import ch.uzh.dyndco.util.Monitoring

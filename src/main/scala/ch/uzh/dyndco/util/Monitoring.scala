@@ -11,8 +11,8 @@ object Monitoring {
   /**
    * Configuration
    */
-  //final var address = "178.62.200.138"
-  final var address = "localhost"
+  final var address = "178.62.200.138"
+//  final var address = "localhost"
   var runID : String = "" 
   
   /**

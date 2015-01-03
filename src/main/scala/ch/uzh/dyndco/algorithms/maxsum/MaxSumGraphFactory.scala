@@ -3,7 +3,7 @@ package ch.uzh.dyndco.algorithms.maxsum
 import collection.mutable.Map
 import collection.mutable.Set
 import com.signalcollect.AbstractVertex
-import ch.uzh.dyndco.problems.Constraints
+import ch.uzh.dyndco.problems.MeetingConstraints
 import scala.collection.mutable.MutableList
 import com.signalcollect.Graph
 import com.signalcollect.StateForwarderEdge
@@ -78,11 +78,20 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
             meetingIndex,
             graph
           )
+          
+          // adjust indices
           varVertices += varVertex
-          meetingIndex += (varVertex.id -> constraints.preference.apply(meetingId))
+          meetingIndex += (agentId -> constraints.preference.apply(meetingId))
+          agentIndex += (meetingId -> constraints.preference.apply(meetingId))
           
           // build function vertex
-          var funcVertex = buildFunctionVertex(agentId, meetingId, graph)
+          var funcVertex = buildFunctionVertex(
+              agentId, 
+              meetingId, 
+              constraints,
+              problem.TIMESLOTS,
+              graph
+          )
           funcVertices += funcVertex
           
           // add to neighbourhood
@@ -105,7 +114,7 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
      def buildVariableVertex(
          agentId : Int, 
          meetingId : Int,
-         constraints : Constraints, 
+         constraints : MeetingConstraints, 
          timeslots : Int,
          agentIndex : Map[Any,Int],
          meetingIndex : Map[Any,Int],
@@ -122,8 +131,8 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
        varVertex.MAX_ROUND = MAX_ROUND
        varVertex.PUSH_ROUND = slot
        varVertex.TIMESLOTS = timeslots
-       varVertex.CONSTRAINTS_ORIGINAL = constraints
-       varVertex.CONSTRAINTS_CURRENT = constraints
+       varVertex.CONSTRAINTS_ORIGINAL = constraints.clone()
+       varVertex.CONSTRAINTS_CURRENT = constraints.clone()
        varVertex.MEETING_INDEX = meetingIndex
        varVertex.AGENT_INDEX = agentIndex
        varVertex.MEETING_ID = meetingId
@@ -143,12 +152,18 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
      
      def buildFunctionVertex(
          agentId : Int, 
-         meetingId : Int, 
+         meetingId : Int,
+         constraints : MeetingConstraints,
+         timeslots : Int,
          graph : Graph[Any, Any]) : FunctionVertex = {
        
        // build vertex
        var functionId : Any = "f" + agentId + "m" + meetingId
        var funcVertex = new FunctionVertex(functionId,null)
+       
+       // add parameters
+       funcVertex.CONSTRAINTS_CURRENT = constraints
+       funcVertex.TIMESLOTS = timeslots
        
        // add to graph
        graph.addVertex(funcVertex)
@@ -187,7 +202,7 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
       
       // prepare
       var participations = Set[Int](meetingId)
-      var constraints : Constraints = MeetingSchedulingFactory.buildSingleConstraints(agentId, participations)
+      var constraints : MeetingConstraints = MeetingSchedulingFactory.buildSingleConstraints(agentId, participations)
       var agentIndex = 
         if(maxSumGraph.agentIndices.contains(agentId)) 
           maxSumGraph.agentIndices.apply(agentId)
@@ -210,7 +225,13 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
           maxSumGraph.graph
           )
       
-      var funcVertex = buildFunctionVertex(agentId, meetingId, maxSumGraph.graph)      
+      var funcVertex = buildFunctionVertex(
+          agentId, 
+          meetingId, 
+          constraints, 
+          problem.TIMESLOTS, 
+          maxSumGraph.graph
+          )      
       
       // add to neighbourhoods
       addToNeighbourhoods(meetingId, varVertex, funcVertex, maxSumGraph.neighbourhoods)

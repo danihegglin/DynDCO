@@ -3,7 +3,7 @@ package ch.uzh.dyndco.algorithms.maxsum
 import collection.mutable.Map
 import collection.mutable.Set
 import com.signalcollect.AbstractVertex
-import ch.uzh.dyndco.problems.Constraints
+import ch.uzh.dyndco.problems.MeetingConstraints
 import scala.collection.mutable.MutableList
 import com.signalcollect.Graph
 import com.signalcollect.StateForwarderEdge
@@ -11,14 +11,18 @@ import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import com.signalcollect.GraphBuilder
 import ch.uzh.dyndco.stack.DynamicGraph
 import ch.uzh.dyndco.stack.DynamicVertex
+import ch.uzh.dyndco.stack.GraphFactory
+import ch.uzh.dyndco.problems.Problem
 
 class MaxSumGraph (
-    varVertices_ : Set[VariableVertex], 
-    funcVertices_ : Set[FunctionVertex], 
-    neighbourhoods_ : Map[Int, Map[VariableVertex,FunctionVertex]],
-    agentIndices_ : Map[Int, Map[Any,Int]],
-    meetingIndices_ : Map[Int, Map[Any,Int]],
-    graph_ : Graph[Any,Any]) extends DynamicGraph {
+      varVertices_ : Set[VariableVertex], 
+      funcVertices_ : Set[FunctionVertex], 
+      neighbourhoods_ : Map[Int, Map[VariableVertex,FunctionVertex]],
+      agentIndices_ : Map[Int, Map[Any,Int]],
+      meetingIndices_ : Map[Int, Map[Any,Int]],
+      graph_ : Graph[Any,Any]
+    )
+    extends DynamicGraph {
   
   var varVertices = varVertices_
   var funcVertices = funcVertices_
@@ -31,7 +35,11 @@ class MaxSumGraph (
   def nextAgent : Int = varVertices.size + 1
   def numOfAgents : Int = varVertices.size
   def numOfNeighbourhoods : Int = neighbourhoods.size
-  def getAgents : Set[DynamicVertex] = varVertices.asInstanceOf[Set[DynamicVertex]]
+  def getAgents : Set[DynamicVertex] = {
+    println("num of Agents: " + varVertices.asInstanceOf[Set[DynamicVertex]].size)
+    varVertices.asInstanceOf[Set[DynamicVertex]]
+  }
+  def getFactory : GraphFactory[DynamicGraph, Problem] = MaxSumGraphFactory.asInstanceOf[GraphFactory[DynamicGraph, Problem]]
   
   def show {
     for(meeting <- neighbourhoods.keys.toList.sorted){
@@ -40,12 +48,12 @@ class MaxSumGraph (
       var wrong = Set[Int]()
       for(neighbour <- neighbourhoods.apply(meeting).keys){
         if(value < 0){
-          value = neighbour.bestValueAssignment
+          value = neighbour.value
         }
         else {
-          if(value != neighbour.bestValueAssignment){
+          if(value != neighbour.value){
             correct = false
-            wrong += neighbour.bestValueAssignment
+            wrong += neighbour.value
           }
         }
       }

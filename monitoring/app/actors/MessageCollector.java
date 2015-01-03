@@ -82,7 +82,8 @@ public class MessageCollector extends UntypedActor {
 			}
 		}
 
-		String message = "timestamp;agent;utility\n";
+		String message = new Date().getTime()+";start\n";
+//		message += "timestamp;agent;utility\n";
 		messages.add(message);
 	} 
 
@@ -91,7 +92,7 @@ public class MessageCollector extends UntypedActor {
 	}
 
 	public void success(){
-		String message = (new Date().getTime() / 100) + ";finished\n";
+		String message = (new Date().getTime()) + ";finished\n";
 		messages.add(message);
 		stop();
 	}

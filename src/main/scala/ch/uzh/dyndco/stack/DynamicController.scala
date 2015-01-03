@@ -7,8 +7,8 @@ import ch.uzh.dyndco.problems.Problem
 import scala.util.Random
 
 class DynamicController (
-    id: Any, dynamicGraph : DynamicGraph, 
-    graphFactory : GraphFactory[DynamicGraph, Problem], 
+    id: Any, 
+    dynamicGraph : DynamicGraph, 
     problem : Problem) 
   extends DataGraphVertex(id, dynamicGraph) {
     
@@ -78,9 +78,9 @@ class DynamicController (
             
             // action
             if(third < thirdProb)
-              graphFactory.addAgent(dynamicGraph, problem, agentId, meetingId)
+              dynamicGraph.getFactory().addAgent(dynamicGraph, problem, agentId, meetingId)
             else
-              graphFactory.removeAgent(dynamicGraph, agentId, meetingId)
+              dynamicGraph.getFactory().removeAgent(dynamicGraph, agentId, meetingId)
             
           }
           
