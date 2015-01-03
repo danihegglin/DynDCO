@@ -90,6 +90,7 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
               meetingId, 
               constraints,
               problem.TIMESLOTS,
+              agentIndex,
               graph
           )
           funcVertices += funcVertex
@@ -155,6 +156,7 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
          meetingId : Int,
          constraints : MeetingConstraints,
          timeslots : Int,
+         agentIndex : Map[Any,Int],
          graph : Graph[Any, Any]) : FunctionVertex = {
        
        // build vertex
@@ -164,6 +166,7 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
        // add parameters
        funcVertex.CONSTRAINTS_CURRENT = constraints
        funcVertex.TIMESLOTS = timeslots
+       funcVertex.AGENT_INDEX = agentIndex
        
        // add to graph
        graph.addVertex(funcVertex)
@@ -229,7 +232,8 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
           agentId, 
           meetingId, 
           constraints, 
-          problem.TIMESLOTS, 
+          problem.TIMESLOTS,
+          agentIndex,
           maxSumGraph.graph
           )      
       

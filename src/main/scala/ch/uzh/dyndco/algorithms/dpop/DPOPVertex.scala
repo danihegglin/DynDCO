@@ -49,7 +49,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     utilities.clear()
 	  
 	  // Initialize map
-    calculateAllCurrentUtilities()
+    calculateAllUtilities(CONSTRAINTS_CURRENT)
 
     // Merge map with util messages
     for(utilMessage <- utilMessages){

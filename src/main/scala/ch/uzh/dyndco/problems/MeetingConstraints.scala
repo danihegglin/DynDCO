@@ -18,9 +18,16 @@ class MeetingConstraints (
   def update(meetingId : Int, pref : Int){
     if(preference != null){
       try {
+          
+          // add to pref
           var prefNew = preference.clone()
           prefNew.put(meetingId, pref)
           preference = prefNew
+          
+          // remove from soft constraints
+          if(soft.contains(pref))
+            soft.remove(pref)
+          
       } catch {
            case e : Exception => println("PREF FAIL: " + e.printStackTrace())
       }

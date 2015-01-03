@@ -31,7 +31,7 @@ object MGM extends App {
   	/**
   	 * Run the graph
   	 */	
-  	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
+  	val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
   	val stats = mgmGraph.graph.execute(execConfig)
     mgmGraph.graph.shutdown
     

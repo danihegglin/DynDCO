@@ -43,7 +43,7 @@ object MaxSum {
     /**
      * Run the graph
      */ 
-    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
+    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
     val stats = maxSumGraph.graph.execute(execConfig)
     maxSumGraph.graph.shutdown
     

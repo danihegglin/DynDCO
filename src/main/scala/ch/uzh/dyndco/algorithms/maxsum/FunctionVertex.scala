@@ -56,7 +56,7 @@ class FunctionVertex (id : Any, initialState: MaxSumMessage)
          }
           
          // add original utility represented by f -> 
-         var currentUtilities = calculateAllCurrentUtilities()
+         var currentUtilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
          for(timeslot <- utilities.keys){
            var utility = utilities.apply(timeslot)
            utility += currentUtilities.apply(timeslot)

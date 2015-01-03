@@ -29,14 +29,14 @@ import scala.collection.mutable.MutableList
         var maxGain : Double = 0.0
         
         // build ordered list of best timeslots
-        var utilities = calculateAllCurrentUtilities()
+        var utilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
         
         // add agents -> utility increase
         for(agent <- values.keys){
           if(agent != id){
             var favoriteValue = values.apply(agent)
             var utility = utilities.apply(favoriteValue)
-            utility += 1.0
+            utility += 2.0
             utilities += (favoriteValue -> utility)
           }
         }
@@ -61,7 +61,7 @@ import scala.collection.mutable.MutableList
 	    var meetingPref : Int = preferences.apply(MEETING_ID)
 	    
 	    // build ordered list of best timeslots
-      var utilities = calculateAllCurrentUtilities
+      var utilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
       
       // initialize local value & gain
 	    lastGain = utilities.apply(meetingPref)
@@ -124,7 +124,7 @@ import scala.collection.mutable.MutableList
 	  }
     
     // calculate local utility
-   agentUtility = calculateSingleOriginalUtility(value)
+   agentUtility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
    storeUtility()
     
    outgoing

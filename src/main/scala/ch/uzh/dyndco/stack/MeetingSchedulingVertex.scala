@@ -82,20 +82,34 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   /**
    * Calculate Utility for current Best Value Assignment for original constraints
    */
-  def calculateSingleOriginalUtility(value : Int): Double = {
+  def calculateSingleUtility(constraints : MeetingConstraints, value : Int): Double = {
     
+    var utility : Double = 0
+        
     // timeslot utility
-    var timeslotUtility : Double = (TIMESLOTS - (value - 1)) / TIMESLOTS 
-    
-    var utility : Double = PREF_UTILITY_N 
-    if(CONSTRAINTS_ORIGINAL.hard.contains(value)){
-      utility = HARD_UTILITY_N
+    utility += (TIMESLOTS - (value - 1)) / TIMESLOTS  
+        
+    // calendar utility
+    if(CONSTRAINTS_CURRENT.hard.contains(value)){
+      utility += HARD_UTILITY_N
     }
-    else if(CONSTRAINTS_ORIGINAL.soft.contains(value)){
-      utility = SOFT_UTILITY_N
+    else if (CONSTRAINTS_CURRENT.soft.contains(value)){
+      utility += SOFT_UTILITY_N
     }
-    
-    utility += timeslotUtility
+    else if (CONSTRAINTS_CURRENT.preference.values.toList.contains(value)){
+      utility += PREF_UTILITY_N
+    }
+        
+    // agent index utility
+    for(meeting <- AGENT_INDEX.keys){
+      if(meeting != MEETING_ID){
+        if(AGENT_INDEX.contains(meeting)){
+           if(AGENT_INDEX.apply(meeting) == value){
+              utility = 0
+           }
+        }
+      }
+    }
     
     utility
   }
@@ -103,26 +117,13 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   /**
    * Calculate Utilities from Constraints
    */
-  def calculateAllCurrentUtilities() : Map[Int, Double] = {
+  def calculateAllUtilities(constraints : MeetingConstraints): Map[Int, Double] = {
      
     var utilities = Map[Int, Double]()
     
-    if(CONSTRAINTS_CURRENT != null){
-      for (value <- 1 to TIMESLOTS){
-        
-        // timeslot utility
-        var timeslotUtility : Double = (TIMESLOTS - (value - 1)) / TIMESLOTS  
-        
-        // calendar utility
-        if(CONSTRAINTS_CURRENT.hard.contains(value)){
-          utilities += (value -> (HARD_UTILITY_N + timeslotUtility))
-        }
-        else if (CONSTRAINTS_CURRENT.soft.contains(value)){
-          utilities += (value -> (SOFT_UTILITY_N + timeslotUtility))
-        }
-        else if (CONSTRAINTS_CURRENT.preference.values.toList.contains(value)){
-          utilities += (value -> (PREF_UTILITY_N + timeslotUtility))
-        }
+    if(constraints != null){
+      for (value <- 1 to TIMESLOTS){ 
+        utilities += (value -> calculateSingleUtility(constraints, value))
       }
     }
      
@@ -135,17 +136,6 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   var bucketHistory : Set[Int] = Set[Int]()
   
   def findMaxValue(utilities : Map[Int, Double]) : Int = {
-    
-      // add AGENT_INDEX
-//      for(timeslot <- utilities.keys){
-//        for(meeting <- AGENT_INDEX.keys){
-//          if(AGENT_INDEX.apply(meeting) == timeslot){
-//            var utility = utilities.apply(timeslot)
-//            utility -= 1
-//            utilities += (timeslot -> utility)
-//          }
-//        }
-//      }
       
       var orderedUtilities = utilities.toList sortBy {_._2}
       orderedUtilities = orderedUtilities.reverse
@@ -202,7 +192,8 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         // index check
         for(meeting <- AGENT_INDEX.keys){
           if(meeting != MEETING_ID){
-             if(AGENT_INDEX.apply(meeting) == assignment){
+             if(AGENT_INDEX.apply(meeting) == assignment){               
+//               if(Random.nextDouble() > 0.5)
                conflict = true
              }
            }
@@ -210,7 +201,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         
         // history check FIXME test
         if(bucketHistory.contains(assignment)){
-          if(Random.nextDouble() > 0.5)
+          if(Random.nextDouble() > 0.25)
             conflict = true
         }
       

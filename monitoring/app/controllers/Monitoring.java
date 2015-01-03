@@ -163,20 +163,19 @@ public class Monitoring extends Controller {
 				
 				String update = (key + ";" + agent + ";" + value + "\n");
 				collector.tell(update, ActorRef.noSender());
+				
+				agentUtilities.put(agent, Double.parseDouble(value.toString()));
 			}
 
-			//			// Add to Utilities
-			//			agentUtilities.put(agent, utility);
-			//			
-			//			// Determine Global Utility
-			//			double utilityGlobal = 0.0;
-			//			for(String agentUtility : agentUtilities.keySet()){
-			//				utilityGlobal += agentUtilities.get(agentUtility);
-			//			}
-			//			
-			//			// Update UI
-			//			Application.sendUpdate(utilityGlobal);
-			//			System.out.println(utilityGlobal);
+			// Determine Global Utility
+			double utilityGlobal = 0.0;
+			for(String agentUtility : agentUtilities.keySet()){
+				utilityGlobal += agentUtilities.get(agentUtility);
+			}
+			
+			// Update UI
+			Application.sendUpdate(utilityGlobal);
+//			System.out.println(utilityGlobal);
 
 		} catch (Exception e){
 			e.printStackTrace();

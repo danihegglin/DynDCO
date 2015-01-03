@@ -155,7 +155,7 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
           }
           
           // calculate local utility
-          agentUtility = calculateSingleOriginalUtility(value)
+          agentUtility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
           storeUtility()
         } 
         
@@ -168,10 +168,10 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
 			initialized = true
       
       // add pref to index
-			var pref = CONSTRAINTS_CURRENT.preference.apply(MEETING_ID)
-      value = pref // assign best value
+			value = CONSTRAINTS_CURRENT.preference.apply(MEETING_ID)
       
-      var currentUtilities = calculateAllCurrentUtilities()
+      var currentUtilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
+      
       var utilities = Map[Any, Map[Int, Double]]()
       utilities += (id -> currentUtilities)
       

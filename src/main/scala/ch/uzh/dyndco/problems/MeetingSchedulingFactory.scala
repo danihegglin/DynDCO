@@ -10,7 +10,7 @@ object MeetingSchedulingFactory {
   /**
  	 * Configuration
 	 */
-  //	var HARD_CONSTRAINT_PROB : Double = 0.2 // args(3)
+  var MAX_PARTICIPATIONS = 5
   
   /**
    * Top-level build function
@@ -111,9 +111,9 @@ object MeetingSchedulingFactory {
 	}
 	
 	private def buildParticipations() : Set[Int] = {
-	   var participationsAmount : Int = Random.nextInt(MEETINGS) + 1
+	   var participationsAmount : Int = Random.nextInt(MAX_PARTICIPATIONS)
 	   var participations : Set[Int] = Set[Int]()
-	   for(partAmount <- 1 to participationsAmount){
+	   for(partAmount <- 1 to participationsAmount + 1){
 		   var done : Boolean = false
 				   while(done == false){						  
 					   var participation = Random.nextInt(MEETINGS) + 1
