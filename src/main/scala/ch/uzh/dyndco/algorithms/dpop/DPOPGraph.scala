@@ -45,12 +45,12 @@ class DPOPGraph (
       var wrong = Set[Int]()
       for(neighbour <- neighbourhoods.apply(meeting)){
         if(value < 0){
-          value = neighbour.optimalChoice
+          value = neighbour.value
         }
         else {
-          if(value != neighbour.optimalChoice){
+          if(value != neighbour.value){
             correct = false
-            wrong += neighbour.optimalChoice
+            wrong += neighbour.value
           }
         }
       }

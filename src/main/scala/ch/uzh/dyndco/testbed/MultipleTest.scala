@@ -37,8 +37,8 @@ object MultipleTest extends DeployableAlgorithm {
      * Run tests
      */
     var agents : Int = 2
-    var meetings : Int = 16
-    var timeslots : Int = 32
+    var meetings : Int = 1
+    var timeslots : Int = 100
     
     while(agents < MAX){
       while(meetings < MAX){
@@ -51,6 +51,7 @@ object MultipleTest extends DeployableAlgorithm {
           Monitoring.start(runID)
           MaxSum.run(problem)
 //          MGM.run(problem)
+//          DPOP.run(problem)
           Monitoring.sucess(runID)
           
           // Clear memory

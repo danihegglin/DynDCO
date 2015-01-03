@@ -16,9 +16,9 @@ object SingleTest extends App {
     /**
   	 * Configuration
   	 */
-  	var TIMESLOTS : Int = 50
-    var MEETINGS : Int = 10
-  	var AGENTS : Int = 20
+  	var TIMESLOTS : Int = 10
+    var MEETINGS : Int = 1
+  	var AGENTS : Int = 2
     
     /**
      * Build id
@@ -34,9 +34,11 @@ object SingleTest extends App {
      * Run graph
      */
     Monitoring.start(id)
-    MaxSum.run(problem)
+    
+//    MaxSum.run(problem)
 //    MGM.run(problem)
-//    DPOP.run(problem)
+    DPOP.run(problem)
+    
     Monitoring.sucess(id)
     
     System.exit(0)

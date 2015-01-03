@@ -193,17 +193,17 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         for(meeting <- AGENT_INDEX.keys){
           if(meeting != MEETING_ID){
              if(AGENT_INDEX.apply(meeting) == assignment){               
-//               if(Random.nextDouble() > 0.5)
+               if(Random.nextDouble() > 0.25)
                conflict = true
              }
            }
         }
         
         // history check FIXME test
-        if(bucketHistory.contains(assignment)){
-          if(Random.nextDouble() > 0.25)
-            conflict = true
-        }
+//        if(bucketHistory.contains(assignment)){
+//          if(Random.nextDouble() > 0.25)
+//            conflict = true
+//        }
       
         if(!conflict){
             AGENT_INDEX += (MEETING_ID -> assignment)

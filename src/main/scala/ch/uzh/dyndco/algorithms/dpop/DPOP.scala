@@ -30,7 +30,7 @@ object DPOP extends App {
     /**
      * Run the graph
      */ 
-    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.Synchronous)
+    val execConfig = ExecutionConfiguration.withExecutionMode(ExecutionMode.PureAsynchronous)
     val stats = dpopGraph.graph.execute(execConfig)
     dpopGraph.graph.shutdown
     

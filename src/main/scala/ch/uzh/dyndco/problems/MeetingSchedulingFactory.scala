@@ -10,7 +10,7 @@ object MeetingSchedulingFactory {
   /**
  	 * Configuration
 	 */
-  var MAX_PARTICIPATIONS = 5
+  val MAX_PARTICIPATIONS : Int = 5
   
   /**
    * Top-level build function
@@ -111,17 +111,26 @@ object MeetingSchedulingFactory {
 	}
 	
 	private def buildParticipations() : Set[Int] = {
-	   var participationsAmount : Int = Random.nextInt(MAX_PARTICIPATIONS)
-	   var participations : Set[Int] = Set[Int]()
-	   for(partAmount <- 1 to participationsAmount + 1){
-		   var done : Boolean = false
-				   while(done == false){						  
-					   var participation = Random.nextInt(MEETINGS) + 1
-							   if(!participations.contains(participation)){
-								   participations += participation
-										   done = true
-							   }
-				   }
+	  
+    var participationsAmount : Int = 0
+    if(MAX_PARTICIPATIONS > MEETINGS){
+      participationsAmount = Random.nextInt(MEETINGS)
+    }
+    else{
+      participationsAmount = Random.nextInt(MAX_PARTICIPATIONS)
+    }
+	   
+     var participations : Set[Int] = Set[Int]()
+     
+	   for(partAmount <- 1 to (participationsAmount + 1)){
+  		   var done : Boolean = false
+  				   while(done == false){						  
+  					   var participation = Random.nextInt(MEETINGS) + 1
+  							   if(!participations.contains(participation)){
+  								   participations += participation
+  										   done = true
+  							   }
+  				   }
 	   }
 	  participations
 	}

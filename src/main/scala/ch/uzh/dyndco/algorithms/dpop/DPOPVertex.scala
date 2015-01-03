@@ -27,7 +27,6 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	 * Full map of values and their utility at this node
 	 */
 	var utilities : Map[Int,Double] = Map[Int, Double]()
-	var optimalChoice : Int = 0
 	
 	/**
 	 * Message containers
@@ -46,10 +45,8 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    */
 	def computeUtils() = {
     
-    utilities.clear()
-	  
 	  // Initialize map
-    calculateAllUtilities(CONSTRAINTS_CURRENT)
+    utilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
 
     // Merge map with util messages
     for(utilMessage <- utilMessages){
@@ -74,16 +71,18 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	def chooseOptimal() = {
 	  
 	  // Take value with highest utility
-	  var highestUtility = 0.0
-	  utilities.foreach {
-	    keyVal =>
-	    if(keyVal._2 > highestUtility){
-	      optimalChoice = keyVal._1
-	      highestUtility = keyVal._2
-	    }
-	  }
+//	  var highestUtility = 0.0
+//	  utilities.foreach {
+//	    keyVal =>
+//	    if(keyVal._2 > highestUtility){
+//	      value = keyVal._1
+//	      highestUtility = keyVal._2
+//	    }
+//	  }
 	  
-	  println("optimal choice: " + optimalChoice + " / " + highestUtility)
+//	  println("optimal choice: " + value + " / " + highestUtility)
+    
+    findMaxValue(utilities)
 	  
 	}
   
@@ -150,8 +149,9 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 		  }
 		}
     
-    // Send current utility
-    // FIXME 
+    // calculate local utility
+    agentUtility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
+    storeUtility()
 		
     // Send final message
     finalMessage
