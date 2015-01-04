@@ -263,14 +263,12 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
         // clear indices
         varVertex.AGENT_INDEX.remove(meetingId)
         varVertex.MEETING_INDEX.remove(agentId)
+        maxSumGraph.varVertices -= varVertex
+        maxSumGraph.funcVertices -= funcVertex
          
         // clear neighbourhood
         neighbourhood.remove(varVertex)
-         
-        // clear lists
-        maxSumGraph.varVertices -= varVertex
-        maxSumGraph.funcVertices -= funcVertex
-       
+        maxSumGraph.neighbourhoods += (meetingId -> neighbourhood)
       }
     }
     

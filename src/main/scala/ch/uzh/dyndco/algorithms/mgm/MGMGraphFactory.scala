@@ -158,7 +158,7 @@ object MGMGraphFactory extends GraphFactory[MGMGraph, MeetingSchedulingProblem] 
    * Dynamic Functions
    */
     def addAgent(
-      maxSumGraph : MaxSumGraph,
+      mgmGraph : MGMGraph,
       problem: MeetingSchedulingProblem,
       agentId: Int,
       meetingId: Int) {
@@ -167,75 +167,60 @@ object MGMGraphFactory extends GraphFactory[MGMGraph, MeetingSchedulingProblem] 
       var participations = Set[Int](meetingId)
       var constraints : MeetingConstraints = MeetingSchedulingFactory.buildSingleConstraints(agentId, participations)
       var agentIndex = 
-        if(maxSumGraph.agentIndices.contains(agentId)) 
-          maxSumGraph.agentIndices.apply(agentId)
+        if(mgmGraph.agentIndices.contains(agentId)) 
+          mgmGraph.agentIndices.apply(agentId)
         else 
           Map[Any,Int]()
       var meetingIndex = 
-        if(maxSumGraph.meetingIndices.contains(meetingId))
-          maxSumGraph.meetingIndices.apply(meetingId)
+        if(mgmGraph.meetingIndices.contains(meetingId))
+          mgmGraph.meetingIndices.apply(meetingId)
         else
           Map[Any,Int]()
       
       // build
-      var varVertex = buildVariableVertex(
+      var vertex = buildMgmVertex(
           agentId, 
           meetingId,
           constraints,
           problem.TIMESLOTS,
           agentIndex,
           meetingIndex,
-          maxSumGraph.graph
+          mgmGraph.graph
           )
-      
-      var funcVertex = buildFunctionVertex(
-          agentId, 
-          meetingId, 
-          constraints, 
-          problem.TIMESLOTS,
-          agentIndex,
-          maxSumGraph.graph
-          )      
-      
+            
       // add to neighbourhoods
-      addToNeighbourhoods(meetingId, varVertex, funcVertex, maxSumGraph.neighbourhoods)
+      addToNeighbourhoods(meetingId, vertex, mgmGraph.neighbourhoods)
       
       // add to indices
-      maxSumGraph.varVertices += varVertex
-      maxSumGraph.funcVertices += funcVertex
+      mgmGraph.vertices += vertex
       
     }
   
   def removeAgent(
-      maxSumGraph : MaxSumGraph,
+      mgmGraph : MGMGraph,
       agentId: Int, 
       meetingId: Int) {
     
-    if(maxSumGraph.neighbourhoods.contains(meetingId)){
-        var neighbourhood = maxSumGraph.neighbourhoods.apply(meetingId)
-        var varVertex : VariableVertex = null
-        var funcVertex : FunctionVertex = null
-        for(neighbour <- neighbourhood.keys){
+    if(mgmGraph.neighbourhoods.contains(meetingId)){
+        var neighbourhood = mgmGraph.neighbourhoods.apply(meetingId)
+        var vertex : MGMVertex = null
+        for(neighbour <- neighbourhood){
           if(neighbour.AGENT_ID == agentId){
-            varVertex = neighbour
-            funcVertex = neighbourhood.apply(neighbour)
+            vertex = neighbour
           }
         }
         
         // remove vertices
-        maxSumGraph.graph.removeVertex(varVertex)
-        maxSumGraph.graph.removeVertex(funcVertex)
+        mgmGraph.graph.removeVertex(vertex)
               
         // clear indices
-        varVertex.AGENT_INDEX.remove(meetingId)
-        varVertex.MEETING_INDEX.remove(agentId)
-         
-        // clear neighbourhood
-        neighbourhood.remove(varVertex)
-         
-        // clear lists
-        maxSumGraph.varVertices -= varVertex
-        maxSumGraph.funcVertices -= funcVertex
+        vertex.AGENT_INDEX.remove(meetingId)
+        vertex.MEETING_INDEX.remove(agentId)
+        mgmGraph.vertices -= vertex
+        
+        // adjust neighbourhoods
+        neighbourhood.remove(vertex)
+        mgmGraph.neighbourhoods += (meetingId -> neighbourhood)
        
       }
     

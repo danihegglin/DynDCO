@@ -235,16 +235,23 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
       // build
       var meetingVertex : DPOPVertex = null
       if(!dpopGraph.neighbourhoods.contains(meetingId)){
-        meetingVertex = buildMiddleVertex(
-                
+        meetingVertex = 
+          buildMiddleVertex(
+              meetingId,
+              problem.TIMESLOTS,
+              meetingIndex,
+              dpopGraph.root,
+              dpopGraph.graph
            )
+           
+        dpopGraph.middle += (meetingId -> meetingVertex)
+        dpopGraph.neighbourhoods += (meetingId -> Set[DPOPVertex]())
       }
       else {
-        meetingVertex = dpopGraph.middleVertices.apply(meetingId)
+        meetingVertex = dpopGraph.middle.apply(meetingId)
       }
           
-          
-      var varVertex = buildLeafVertex(
+      var leafVertex = buildLeafVertex(
           agentId, 
           meetingId,
           constraints,
@@ -254,50 +261,46 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           dpopGraph.graph
           )
           
-          // FIXME add middle node when meeting is new
-      
       // add to neighbourhoods
-      addToNeighbourhoods(meetingId, varVertex, funcVertex, dpopGraph.neighbourhoods)
+      addToNeighbourhoods(meetingId, leafVertex, dpopGraph.neighbourhoods)
       
       // add to indices
-      dpopGraph.varVertices += varVertex
+      dpopGraph.leaf += leafVertex
   }
   
   def removeAgent(
-      maxSumGraph : MaxSumGraph,
+      dpopGraph : DPOPGraph,
       agentId: Int, 
       meetingId: Int) {
     
-      if(maxSumGraph.neighbourhoods.contains(meetingId)){
-        var neighbourhood = maxSumGraph.neighbourhoods.apply(meetingId)
-        var varVertex : VariableVertex = null
-        var funcVertex : FunctionVertex = null
-        for(neighbour <- neighbourhood.keys){
+      if(dpopGraph.neighbourhoods.contains(meetingId)){
+        var neighbourhood = dpopGraph.neighbourhoods.apply(meetingId)
+        var leafVertex : DPOPVertex = null
+        for(neighbour <- neighbourhood){
           if(neighbour.AGENT_ID == agentId){
-            varVertex = neighbour
-            funcVertex = neighbourhood.apply(neighbour)
+            leafVertex = neighbour
           }
         }
         
         // remove vertices
-        maxSumGraph.graph.removeVertex(varVertex)
-        maxSumGraph.graph.removeVertex(funcVertex)
+        dpopGraph.graph.removeVertex(leafVertex)
               
         // clear indices
-        varVertex.AGENT_INDEX.remove(meetingId)
-        varVertex.MEETING_INDEX.remove(agentId)
-         
-        // clear neighbourhood
-        neighbourhood.remove(varVertex)
-         
-        // clear lists
-        maxSumGraph.varVertices -= varVertex
-        maxSumGraph.funcVertices -= funcVertex
+        leafVertex.AGENT_INDEX.remove(meetingId)
+        neighbourhood.remove(leafVertex)
+        dpopGraph.neighbourhoods += (meetingId -> neighbourhood)
+        dpopGraph.leaf -= leafVertex
+        
+        // remove from meeting index in middle vertex
+        var middleVertex = dpopGraph.middle.apply(meetingId)   
+        middleVertex.MEETING_INDEX.remove(agentId)
+        
+        if(neighbourhood.size == 0){
+          dpopGraph.graph.removeVertex(middleVertex)
+          dpopGraph.middle -= middleVertex.MEETING_ID
+        }
        
       }
-      
-      // FIXME remove middle node if leaf was the last one
-    
     
   }
 	
