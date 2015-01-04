@@ -20,7 +20,6 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
   // Configuration
   final var MAX_SLOTS : Int = 1000 // Max communication slots
   final var MAX_ROUND : Int = 3000 // Limit of communication rounds
-//  final var CHANGE_ROUND : Int = 10
   
   // Current State
   var slot : Int = 0
@@ -47,7 +46,7 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
        */
       var meetingIndices = Map[Int, Map[Any,Int]]()
       for(meeting <- problem.meetings){
-        meetingIndices += (meeting.meetingID -> Map[Any,Int]())
+        meetingIndices += (meeting.id -> Map[Any,Int]())
       }
       var agentIndices = Map[Int, Map[Any,Int]]()
         
@@ -138,7 +137,6 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
        varVertex.AGENT_INDEX = agentIndex
        varVertex.MEETING_ID = meetingId
        varVertex.AGENT_ID = agentId
-//       varVertex.CHANGE_ROUND = CHANGE_ROUND
        
        // add to graph
        graph.addVertex(varVertex)

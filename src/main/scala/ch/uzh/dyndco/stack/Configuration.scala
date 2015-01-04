@@ -5,7 +5,7 @@ import com.signalcollect.configuration.ExecutionMode
 
 class Configuration(
     execConfig_ : ExecutionConfiguration[Any, Any], 
-    testMode_ : TestMode, 
+    testMode_ : TestMode.Value, 
     param_ : Array[String]) {
   
   val execConfig = execConfig_

@@ -14,8 +14,11 @@ import ch.uzh.dyndco.stack.GraphFactory
 object MGMGraphFactory extends GraphFactory[MGMGraph, MeetingSchedulingProblem] {
   
   // Configuration
-  final var SLOTS : Int = 1000 // Max communication slots
+  final var MAX_SLOTS : Int = 1000 // Max communication slots
   final var MAX_ROUND : Int = 3000 // Limit of communication rounds
+  
+  // Current State
+  var slot : Int = 0
   
   var vertices = Set[MGMVertex]()
   
@@ -30,52 +33,49 @@ object MGMGraphFactory extends GraphFactory[MGMGraph, MeetingSchedulingProblem] 
       var neighbourhoods = Map[Int, Set[MGMVertex]]()
       var meetingIndices = Map[Int, Map[Any,Int]]()
       for(meeting <- problem.meetings){
-         neighbourhoods += (meeting.meetingID -> Set[MGMVertex]())
-         meetingIndices += (meeting.meetingID -> Map[Any,Int]())
+         neighbourhoods += (meeting.id -> Set[MGMVertex]())
+         meetingIndices += (meeting.id -> Map[Any,Int]())
       }
               
       // establish edges to all meeting functions
       var agentIndices : Map[Int, Map[Any,Int]] = Map[Int, Map[Any,Int]]()
       var slot = 0
-      for(agent : Int <- problem.allParticipations.keys){
-          
+      for(agentId : Int <- problem.allParticipations.keys){
+        
+        // build agent index
         var agentIndex : Map[Any, Int] = Map[Any, Int]()
-        agentIndices += agent -> agentIndex
+        agentIndices += agentId -> agentIndex
+        
+        // prepare elements
+        var constraints = problem.allConstraints.apply(agentId)
+        var participations : Set[Int] = problem.allParticipations.apply(agentId)
+        
+        for(meetingId <- participations){
           
-        var meetingIds : Set[Int] = problem.allParticipations.apply(agent)
-          
-        for(meetingId <- meetingIds){
-          
-            slot += 1
+           slot += 1
+           
+           // register in meeting index
+           var meetingIndex = meetingIndices.apply(meetingId)
+           meetingIndex += (agentId -> constraints.preference.apply(meetingId))
             
            // build agent vertex
-           var agentId : Any = "v" + agent + "m" + meetingId
-           var constraints = problem.allConstraints.apply(agent)
-           var vertex = new MGMVertex(agentId,new MGMMessage(null,0,0))
-            
-           // initial index registration
-           var meetingIndex = meetingIndices.apply(meetingId)
-           meetingIndex += (agent -> constraints.preference.apply(meetingId))
+           var vertex = buildMgmVertex(
+                 agentId,
+                 meetingId,
+                 constraints,
+                 problem.TIMESLOTS,
+                 agentIndex,
+                 meetingIndex,
+                 graph
+             )
            
-          // Add parameters
-          vertex.MAX_ROUND = MAX_ROUND
-          vertex.PUSH_ROUND = slot
-          vertex.TIMESLOTS = problem.TIMESLOTS
-          vertex.CONSTRAINTS_ORIGINAL = constraints.clone()
-          vertex.CONSTRAINTS_CURRENT = constraints.clone()
-          vertex.MEETING_INDEX = meetingIndex
-          vertex.AGENT_INDEX = agentIndex
-          vertex.MEETING_ID = meetingId
-          vertex.AGENT_ID = agent
-           
-           graph.addVertex(vertex)
+           // add to index 
            vertices += vertex
            
-           var neighbourhood : Set[MGMVertex] = neighbourhoods.apply(meetingId)
-           neighbourhood += vertex
-           neighbourhoods += meetingId -> neighbourhood 
+           // add to neighbourhood
+           addToNeighbourhoods(meetingId, vertex, neighbourhoods)
            
-          if(slot == SLOTS){
+          if(slot == MAX_SLOTS){
             slot = 0
           }
           
@@ -98,14 +98,146 @@ object MGMGraphFactory extends GraphFactory[MGMGraph, MeetingSchedulingProblem] 
       new MGMGraph(vertices, neighbourhoods, agentIndices, meetingIndices, graph)
   }
   
+    /**
+     * Builder Functions
+     */
+     def buildMgmVertex(
+         agentId : Int, 
+         meetingId : Int,
+         constraints : MeetingConstraints, 
+         timeslots : Int,
+         agentIndex : Map[Any,Int],
+         meetingIndex : Map[Any,Int],
+         graph : Graph[Any, Any]) : MGMVertex = {
+       
+       // increment monitoring slot
+       slot += 1
+       
+       // build agent vertex
+       var vertexId : Any = "v" + agentId + "m" + meetingId
+       var vertex = new MGMVertex(vertexId,new MGMMessage(null,0,0))
+           
+       // add parameters
+       vertex.MAX_ROUND = MAX_ROUND
+       vertex.PUSH_ROUND = slot
+       vertex.TIMESLOTS = timeslots
+       vertex.CONSTRAINTS_ORIGINAL = constraints.clone()
+       vertex.CONSTRAINTS_CURRENT = constraints.clone()
+       vertex.MEETING_INDEX = meetingIndex
+       vertex.AGENT_INDEX = agentIndex
+       vertex.MEETING_ID = meetingId
+       vertex.AGENT_ID = agentId
+       
+       // add to graph
+       graph.addVertex(vertex)
+       
+       // adjust slot
+       if(slot == MAX_SLOTS){
+         slot = 0
+       }
+       
+       vertex
+     }
+     
+     def addToNeighbourhoods(
+         meetingId : Int,
+         leafVertex : MGMVertex, 
+         neighbourhoods : Map[Int, Set[MGMVertex]]
+         ) : Map[Int, Set[MGMVertex]] = {
+       
+        var neighbourhood = Set[MGMVertex]()
+          if(neighbourhoods.contains(meetingId)){
+            neighbourhood = neighbourhoods.apply(meetingId)
+          }
+          neighbourhood += (leafVertex)
+          neighbourhoods += (meetingId -> neighbourhood)
+     }
+     
+  
+  /**
+   * Dynamic Functions
+   */
     def addAgent(
-      dynamicGraph: MGMGraph,
+      maxSumGraph : MaxSumGraph,
       problem: MeetingSchedulingProblem,
       agentId: Int,
-      meetingId: Int) {}
+      meetingId: Int) {
+      
+      // prepare
+      var participations = Set[Int](meetingId)
+      var constraints : MeetingConstraints = MeetingSchedulingFactory.buildSingleConstraints(agentId, participations)
+      var agentIndex = 
+        if(maxSumGraph.agentIndices.contains(agentId)) 
+          maxSumGraph.agentIndices.apply(agentId)
+        else 
+          Map[Any,Int]()
+      var meetingIndex = 
+        if(maxSumGraph.meetingIndices.contains(meetingId))
+          maxSumGraph.meetingIndices.apply(meetingId)
+        else
+          Map[Any,Int]()
+      
+      // build
+      var varVertex = buildVariableVertex(
+          agentId, 
+          meetingId,
+          constraints,
+          problem.TIMESLOTS,
+          agentIndex,
+          meetingIndex,
+          maxSumGraph.graph
+          )
+      
+      var funcVertex = buildFunctionVertex(
+          agentId, 
+          meetingId, 
+          constraints, 
+          problem.TIMESLOTS,
+          agentIndex,
+          maxSumGraph.graph
+          )      
+      
+      // add to neighbourhoods
+      addToNeighbourhoods(meetingId, varVertex, funcVertex, maxSumGraph.neighbourhoods)
+      
+      // add to indices
+      maxSumGraph.varVertices += varVertex
+      maxSumGraph.funcVertices += funcVertex
+      
+    }
   
   def removeAgent(
-      dynamicGraph: MGMGraph,
+      maxSumGraph : MaxSumGraph,
       agentId: Int, 
-      meetingId: Int) {}
+      meetingId: Int) {
+    
+    if(maxSumGraph.neighbourhoods.contains(meetingId)){
+        var neighbourhood = maxSumGraph.neighbourhoods.apply(meetingId)
+        var varVertex : VariableVertex = null
+        var funcVertex : FunctionVertex = null
+        for(neighbour <- neighbourhood.keys){
+          if(neighbour.AGENT_ID == agentId){
+            varVertex = neighbour
+            funcVertex = neighbourhood.apply(neighbour)
+          }
+        }
+        
+        // remove vertices
+        maxSumGraph.graph.removeVertex(varVertex)
+        maxSumGraph.graph.removeVertex(funcVertex)
+              
+        // clear indices
+        varVertex.AGENT_INDEX.remove(meetingId)
+        varVertex.MEETING_INDEX.remove(agentId)
+         
+        // clear neighbourhood
+        neighbourhood.remove(varVertex)
+         
+        // clear lists
+        maxSumGraph.varVertices -= varVertex
+        maxSumGraph.funcVertices -= funcVertex
+       
+      }
+    
+  }
 }

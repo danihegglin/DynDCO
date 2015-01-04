@@ -6,7 +6,7 @@ import ch.uzh.dyndco.algorithms.maxsum.FunctionVertex
 
 class Meeting(meetingId : Int) {
   
-  var meetingID = meetingId
+  var id = meetingId
 
   var participants : Map[Int,Set[FunctionVertex]] = Map[Int,Set[FunctionVertex]]()
   

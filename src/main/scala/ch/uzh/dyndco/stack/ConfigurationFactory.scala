@@ -22,7 +22,7 @@ object ConfigurationFactory {
       }
   }
   
-  private def buildMode(MODE : String) : TestMode = {
+  private def buildMode(MODE : String) : TestMode.Value = {
       MODE match {
         case "normal" => TestMode.Normal
         case "dynamicConstraints" => TestMode.DynamicConstraints
