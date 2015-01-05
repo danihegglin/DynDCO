@@ -128,7 +128,7 @@ public class MessageCollector extends UntypedActor {
 
 			// Process messages
 			for(String key : stats.keySet()){
-				fw.write(key + " " + stats.get(key));
+				fw.write(key + ";" + stats.get(key) + "\n");
 			}
 			fw.close();
 		} catch (Exception e){

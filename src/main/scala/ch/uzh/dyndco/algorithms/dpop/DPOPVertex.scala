@@ -19,11 +19,6 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	var children : MutableList[DPOPVertex] = MutableList()
 	
 	/**
-	 * The Utility
-	 */
-//	var localUtility : Double = 0.0
-	
-	/**
 	 * Full map of values and their utility at this node
 	 */
 	var utilities : Map[Int,Double] = Map[Int, Double]()
@@ -69,21 +64,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    * Choose value with highest utility
    */
 	def chooseOptimal() = {
-	  
-	  // Take value with highest utility
-//	  var highestUtility = 0.0
-//	  utilities.foreach {
-//	    keyVal =>
-//	    if(keyVal._2 > highestUtility){
-//	      value = keyVal._1
-//	      highestUtility = keyVal._2
-//	    }
-//	  }
-	  
-//	  println("optimal choice: " + value + " / " + highestUtility)
-    
     findMaxValue(utilities)
-	  
 	}
   
   /**
@@ -102,13 +83,11 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 						if(message.getMessageType == "Util"){
 							if(message.sender != parent.id){
 								utilMessages += message
-//										System.out.println(id + ": Util message received");
 							}
 						}
 						else if (message.getMessageType == "Value"){
 							if(message.sender == parent.id){ // FIXME
 								valueMessages += message
-//										System.out.println(id + ": Value message received");
 							}
 						}
 			}
@@ -149,6 +128,8 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 		    finalMessage = new DPOPMessage(id, 0, utilities, "Value")
         valueMessages.clear()
 		  }
+      
+      finalMessage = new DPOPMessage(id, 0, utilities, "Value")
 		}
     
     // store values of current round

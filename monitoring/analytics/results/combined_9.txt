@@ -1,10 +1,2 @@
 timestamp;utility
 14201712407;11.5
-timestamp;utility
-14201712407;11.5
-timestamp;utility
-14201712407;11.5
-timestamp;utility
-14201712407;11.5
-timestamp;utility
-14201712407;11.5

@@ -171,7 +171,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
             history.clear
           }
           else {
-            if(Random.nextDouble() > 0.25)
+            if(Random.nextDouble() > 0.75)
               position += 1
           }
           
@@ -196,7 +196,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
 
     // history check
     if(history.contains(candidateValue)){
-    	if(history.apply(candidateValue) > 10){
+    	if(history.apply(candidateValue) > 20){
     		conflict = true
     				history += (candidateValue -> 0)
     	}

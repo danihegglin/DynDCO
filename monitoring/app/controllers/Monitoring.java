@@ -161,14 +161,23 @@ public class Monitoring extends Controller {
 				JsonNode value = json.get(key);
 
 				// Process Text
-				String info = value.toString().substring(1,-1);
+				String info = value.toString();
 				String[] parts = info.split(";");
-				System.out.println(info);
-				System.out.println(parts);
-				System.out.println(agent + " | " + key + " | " + info);
+				
+				String utility = parts[0].replaceAll("\"", "");
+				String agentIndex = parts[1].replaceAll("\"", "");
+				String meetingIndex = parts[2].replaceAll("\"", "");
+				
+				System.out.println(agent + " | " + key + " | " + utility + " | " + agent);
 
 				// Send to Collector Actor				
-				String update = (key + ";" + agent + ";" + info + "\n");
+				String update = (
+						key + ";" + 
+						agent + ";" + 
+						utility + ";" + 
+						agentIndex + ";" + 
+						meetingIndex + "\n");
+				
 				collector.tell(new Utility(update), ActorRef.noSender());
 
 				// Add to utilities
@@ -248,4 +257,5 @@ public class Monitoring extends Controller {
 		}
 		return parameters;
 	}
+	
 }
