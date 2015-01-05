@@ -43,7 +43,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     override def finishedCheck() = {
     
     // Check Meeting Index
-    if(MEETING_INDEX.size > 0){
+    if(MEETING_INDEX != null && MEETING_INDEX.size > 0){
       var same : Boolean = true
       var refValue : Int  = MEETING_INDEX.values.toList(0)
       for(value <- MEETING_INDEX.values){
@@ -52,7 +52,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       }
       
       // Check Agent Index
-      if(AGENT_INDEX.size > 0){
+      if(AGENT_INDEX != null && AGENT_INDEX.size > 0){
         
         var different : Boolean = true
         refValue = -1

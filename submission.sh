@@ -11,7 +11,7 @@
 
 #...commands to be run before jobs starts...
 jarname=dyndco-1.1-SNAPSHOT.jar
-mainClass=ch.uzh.dyndco.testbed.Driver
+mainClass=ch.uzh.dyndco.testbed.MultipleDriver
 #workingDir=/home/slurm/USER_ID-${SLURM_JOB_ID}
 vm_args=" -Xmx10240m -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:+UseNUMA -XX:-UseBiasedLocking -XX:MaxInlineSize=1024"
 
@@ -20,7 +20,7 @@ vm_args=" -Xmx10240m -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:+UseNUMA -XX:-U
 #srun --ntasks-per-node=1 cp ~/$jarname $workingDir/
 
 # run test directly from home folder
-srun --ntasks-per-node=1 --partition=fast /home/user/hegglin/jdk/jdk1.8.0_25/bin/java $jvmParameters -cp ~/data/$jarname $mainClass dyndco1
+srun --ntasks-per-node=1 --partition=fast /home/user/hegglin/jdk/jdk1.8.0_25/bin/java $jvmParameters -cp ~/data/$jarname $mainClass --algorithm "maxsum" --execution "synchronous" --mode "normal" --param  "" --timeslots 100 --meetings 1 --agents 1 --runs 1 --factor 1 --max 100
 #or run test from work folder
 #srun --ntasks-per-node=1 --partition=slow /home/user/USER_ID/jdk1.7.0_45/bin/#java $jvmParameters -cp $workingDir/$jarname $mainClass 108
 

@@ -44,8 +44,6 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	  // Create local utilities
     utilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
     
-    println("leaf: PRECALC -> " + utilities)
-
     // Merge map with util messages
     for(utilMessage <- utilMessages){
     	for (value <- 1 to TIMESLOTS){
@@ -74,9 +72,24 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     /**
      * FIXME needs to handle multiple meetings in root
      */
-    findMaxValue(utilities)
-    
-    // update values FIXME 
+    if(isRoot){
+        value = findMaxValue(utilities)  
+        println ("root: " + value)
+    }
+    else {
+      
+      for(valueMessage <- valueMessages){
+        value = valueMessage.getValue
+      }
+      
+//      println("received: " + value)
+      
+      if(isLeaf){
+        CONSTRAINTS_CURRENT.update(MEETING_ID, value)
+        AGENT_INDEX += (MEETING_ID -> value)
+        MEETING_INDEX += (AGENT_ID -> value)
+      }
+  }
     
 	}
   
@@ -84,13 +97,24 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    * Helper functions
    */
   def isLeaf() : Boolean = children.size == 0
+  def isRoot() : Boolean = parent == null
   
   /**
    * Collect signals
    */
 	def collect() = {
     
+    if(!initialized && isLeaf){
+      value = CONSTRAINTS_ORIGINAL.preference.apply(MEETING_ID)
+      AGENT_INDEX += (MEETING_ID -> value)
+      MEETING_INDEX += (AGENT_ID -> value)
+      initialized = true
+      
+      println(id + ": " + value + " | " + AGENT_INDEX + " | " + MEETING_INDEX)
+    }
+    
     newRound()
+    finishedCheck()
 	  
 		/**
      * Process messages 
@@ -118,7 +142,6 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     // Leaf Node: Create Util
 		if(isLeaf){
 		  computeUtils()
-      println("leaf:" + utilities)
 		}
 		else {
       
@@ -129,38 +152,31 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
   			 if(parent == null){
            computeUtils() // not in the paper but should be here
   			   chooseOptimal()
-           println("root: " + utilities)
   			 }
   
          // Node is not root: Meeting Node, Util Message to parent
   		   else {
   			   computeUtils()
-           println("middle: " + utilities)
   			 }
           
 			}
     }
     utilMessages.clear()
-//    
-//    /**
-//     * VALUE message propagation
-//     */
-//
-//			// Check if value messages have arrived
+    
+    /**
+     * VALUE message propagation
+     */
+
+			// Check if value messages have arrived
 			if(valueMessages.size > 0){
-//				chooseOptimal()
-//        
-//         if(isLeaf){
-//           
-//           println("leaf: " + value)
-//            // take value for this meeting id
-//            
-//            // store curent utility
-//            storeAgentUtility()
-//         }
-//         else {
-//           println("middle: " + value)
-//         }
+
+        chooseOptimal()
+        
+         if(isLeaf){
+           
+            // store curent utility
+            storeAgentUtility()
+         }
     
          valueMessages.clear()
 		  }

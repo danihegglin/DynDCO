@@ -176,6 +176,8 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
        leafVertex.CONSTRAINTS_CURRENT = constraints.clone()
        leafVertex.AGENT_INDEX = agentIndex
        leafVertex.MEETING_INDEX = meetingIndex
+       leafVertex.MEETING_ID = meetingId
+       leafVertex.AGENT_ID = agentId
        
        // add leaf to middle vertex
        leafVertex.addParent(meetingVertex)
