@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import akka.actor.UntypedActor;
 import app.messages.Stats;
@@ -107,7 +108,7 @@ public class MessageCollector extends UntypedActor {
 
 	}
 
-	public void stats(JsonNode stats){
+	public void stats(Map<String,String> stats){
 
 		File file = new File("/root/monitoring/analytics/experiments/" + id + "_stats.txt");
 
@@ -126,18 +127,8 @@ public class MessageCollector extends UntypedActor {
 			FileWriter fw = new FileWriter(filepath);
 
 			// Process messages
-			Iterator<String> it = stats.fieldNames();
-			while(it.hasNext()){
-
-				String key = it.next();
-				JsonNode value = stats.get(key);
-
-				// Process Text
-				String singleStat = value.toString();
-				System.out.println(stats);
-
-
-				fw.write(key + " " + stats);
+			for(String key : stats.keySet()){
+				fw.write(key + " " + stats.get(key));
 			}
 			fw.close();
 		} catch (Exception e){
