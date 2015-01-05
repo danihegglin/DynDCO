@@ -1,20 +1,14 @@
 package actors;
 
-import akka.actor.UntypedActor;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import play.Play;
-import play.libs.Json;
-import play.mvc.WebSocket;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
+
+import akka.actor.UntypedActor;
+import app.messages.Stats;
+import app.messages.Utility;
 
 
 public class MessageCollector extends UntypedActor {
@@ -30,14 +24,14 @@ public class MessageCollector extends UntypedActor {
 	private File file;
 	private LinkedList<String> messages = new LinkedList<String>();
 	private String id;
-	
+
 	/**
 	 * Constructor
 	 * @param id
 	 */
 	public MessageCollector(String id) {
 		this.id = id;
-    }
+	}
 
 	/**
 	 * Messagebox
@@ -58,10 +52,16 @@ public class MessageCollector extends UntypedActor {
 			else if(command == "success"){
 				success();
 			}
-			else {
-				update(command);
-			}
+		}
 
+		if(message instanceof Utility){
+			Utility utility = (Utility) message;
+			update(utility.getUtility());
+		}
+
+		if(message instanceof Stats){
+			Stats stats = (Stats) message;
+			stats(stats.getStats());
 		}
 	}
 
@@ -69,10 +69,10 @@ public class MessageCollector extends UntypedActor {
 	 * Functions
 	 */
 	public void start(){
-		
+
 		file = new File("/root/monitoring/analytics/experiments/" + id + ".txt");
 
-//		 if file doesn't exist, create it
+		// if file doesn't exist, create it
 		if (!file.exists()) {
 			try {
 				file.createNewFile();
@@ -83,7 +83,6 @@ public class MessageCollector extends UntypedActor {
 		}
 
 		String message = new Date().getTime()+";start\n";
-//		message += "timestamp;agent;utility\n";
 		messages.add(message);
 	} 
 
@@ -98,9 +97,9 @@ public class MessageCollector extends UntypedActor {
 	}
 
 	public void update(String update){
-		
+
 		messages.add(update);
-		
+
 		// Check if writout is necessary
 		if(messages.size() > MESSAGE_LIMIT){
 			writeToFile();
@@ -108,6 +107,49 @@ public class MessageCollector extends UntypedActor {
 
 	}
 
+	public void stats(JsonNode stats){
+
+		File file = new File("/root/monitoring/analytics/experiments/" + id + "_stats.txt");
+
+		// if file doesn't exist, create it
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (Exception e){
+				System.out.println("Creating file failed");
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			String filepath = file.getAbsolutePath();
+			FileWriter fw = new FileWriter(filepath);
+
+			// Process messages
+			Iterator<String> it = stats.fieldNames();
+			while(it.hasNext()){
+
+				String key = it.next();
+				JsonNode value = stats.get(key);
+
+				// Process Text
+				String singleStat = value.toString();
+				System.out.println(stats);
+
+
+				fw.write(key + " " + stats);
+			}
+			fw.close();
+		} catch (Exception e){
+			System.out.println("FileWriting failed");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Helper Functions
+	 */
 	private void writeToFile(){
 
 		if(!messages.isEmpty()){

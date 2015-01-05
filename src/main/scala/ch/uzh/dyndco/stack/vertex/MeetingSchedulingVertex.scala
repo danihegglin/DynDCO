@@ -1,4 +1,4 @@
-package ch.uzh.dyndco.stack
+package ch.uzh.dyndco.stack.vertex
 
 import collection.mutable.Map
 import collection.mutable.Set

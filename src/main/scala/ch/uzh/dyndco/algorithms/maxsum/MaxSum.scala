@@ -15,12 +15,12 @@ import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.problems.Problem
 import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
-import ch.uzh.dyndco.stack.DynamicController
-import ch.uzh.dyndco.stack.MeetingSchedulingVertex
-import ch.uzh.dyndco.stack.DCOAlgorithm
+import ch.uzh.dyndco.stack.dynamic.DynamicController
+import ch.uzh.dyndco.stack.vertex.MeetingSchedulingVertex
+import ch.uzh.dyndco.stack.tests.DCOAlgorithm
 import com.signalcollect.configuration.ExecutionMode
-import ch.uzh.dyndco.stack.TestMode
-import ch.uzh.dyndco.stack.Configuration
+import ch.uzh.dyndco.stack.tests.TestMode
+import ch.uzh.dyndco.stack.configuration.Configuration
 
 /**
  * Based on: FIXME
@@ -70,7 +70,7 @@ object MaxSum extends DCOAlgorithm {
      * Results
      */
     var prepStats = maxSumGraph.prepareStats(stats)
-    Monitoring.update(0, prepStats)
+    Monitoring.stats(prepStats)
     Thread sleep 1000 // Otherwise stop too fast
     maxSumGraph.show()
     

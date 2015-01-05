@@ -1,4 +1,4 @@
-package ch.uzh.dyndco.stack
+package ch.uzh.dyndco.stack.graph
 
 import com.signalcollect.Graph
 import ch.uzh.dyndco.problems.Problem

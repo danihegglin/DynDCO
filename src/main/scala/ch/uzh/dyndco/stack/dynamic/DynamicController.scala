@@ -1,10 +1,12 @@
-package ch.uzh.dyndco.stack
+package ch.uzh.dyndco.stack.dynamic
 
 import com.signalcollect.Graph
 import com.signalcollect.DataGraphVertex
 import ch.uzh.dyndco.algorithms.maxsum.VariableVertex
 import ch.uzh.dyndco.problems.Problem
 import scala.util.Random
+import ch.uzh.dyndco.stack.graph.DynamicGraph
+import ch.uzh.dyndco.stack.vertex.DynamicVertex
 
 class DynamicController (
     id: Any, 

@@ -11,15 +11,14 @@ object Monitoring {
   /**
    * Configuration
    */
-  final var address = "178.62.200.138"
-//  final var address = "localhost"
+//  final var address = "178.62.200.138"
+  final var address = "localhost"
   var runID : String = "" 
   
   /**
    * Main
    */
-  def start(runID : String) = {
-    
+  def start(runID : String) = {    
     this.runID = runID
     var svc = url("http://" + address + ":9000/start?id=" + runID)
     var result = Http(svc OK as.String)    
@@ -50,9 +49,21 @@ object Monitoring {
     
   }
   
-  def sucess(id : String) = {
+  def stats(stats : Map[String, String]) = {
     
-    val svc = url("http://" + address + ":9000/success?id=" + id)
+    val immutable : scala.collection.immutable.Map[String,String] = stats.toMap 
+    val json = immutable.toJson
+    
+    val svc = url("http://" + address + ":9000/stats?id=" + runID)
+    .setBody(json.toString())
+       val postFields: Map[String, String] = Map[String,String]()
+     var result = Http(svc << postFields OK as.String)
+    
+  }
+  
+  def sucess(runID : String) = {
+    
+    val svc = url("http://" + address + ":9000/success?id=" + runID)
     val result = Http(svc OK as.String)
     
   }

@@ -2,7 +2,7 @@ package ch.uzh.dyndco.algorithms.maxsum
 
 import collection.mutable.Map
 import collection.mutable.Set
-import ch.uzh.dyndco.stack.DynamicVertex
+import ch.uzh.dyndco.stack.vertex.DynamicVertex
 
 class FunctionVertex (id : Any, initialState: MaxSumMessage) 
   extends DynamicVertex(id, initialState) {

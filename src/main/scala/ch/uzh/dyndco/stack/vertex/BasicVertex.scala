@@ -1,4 +1,4 @@
-package ch.uzh.dyndco.stack
+package ch.uzh.dyndco.stack.vertex
 
 import com.signalcollect.DataGraphVertex
 import collection.mutable.Map

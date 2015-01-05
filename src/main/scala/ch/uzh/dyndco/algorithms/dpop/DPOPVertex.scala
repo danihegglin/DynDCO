@@ -4,7 +4,7 @@ import com.signalcollect.DataGraphVertex
 import dispatch._, Defaults._
 import scala.collection.mutable.MutableList
 import scala.util.Random
-import ch.uzh.dyndco.stack.DynamicVertex
+import ch.uzh.dyndco.stack.vertex.DynamicVertex
 import ch.uzh.dyndco.problems.MeetingConstraints
 import collection.mutable.Map
 import collection.mutable.Set

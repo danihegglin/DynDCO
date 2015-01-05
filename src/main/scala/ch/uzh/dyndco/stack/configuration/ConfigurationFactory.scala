@@ -1,7 +1,8 @@
-package ch.uzh.dyndco.stack
+package ch.uzh.dyndco.stack.configuration
 
 import com.signalcollect.ExecutionConfiguration
 import com.signalcollect.configuration.ExecutionMode
+import ch.uzh.dyndco.stack.tests.TestMode
 
 object ConfigurationFactory {
   

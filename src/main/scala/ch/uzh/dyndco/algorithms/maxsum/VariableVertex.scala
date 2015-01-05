@@ -4,13 +4,11 @@ import collection.mutable.Map
 import collection.mutable.Set
 import scala.collection.SortedMap
 import scala.util.Random
-import ch.uzh.dyndco.stack.DynamicVertex
+import ch.uzh.dyndco.stack.vertex.DynamicVertex
 import ch.uzh.dyndco.problems.MeetingConstraints
 import ch.uzh.dyndco.util.Monitoring
 import scala.collection.mutable.MutableList
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
-//import spray.json._
-//import DefaultJsonProtocol._
 
 class VariableVertex (id: Any, initialState: MaxSumMessage) 
   extends DynamicVertex(id, initialState) {

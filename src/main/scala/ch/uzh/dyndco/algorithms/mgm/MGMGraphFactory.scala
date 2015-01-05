@@ -9,7 +9,7 @@ import collection.mutable.Map
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
 import com.signalcollect.GraphBuilder
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
-import ch.uzh.dyndco.stack.GraphFactory
+import ch.uzh.dyndco.stack.graph.GraphFactory
 
 object MGMGraphFactory extends GraphFactory[MGMGraph, MeetingSchedulingProblem] {
   

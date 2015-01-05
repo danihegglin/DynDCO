@@ -10,9 +10,9 @@ import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.util.IdFactory
 import ch.uzh.dyndco.algorithms.mgm.MGM
 import ch.uzh.dyndco.algorithms.dpop.DPOP
-import ch.uzh.dyndco.stack.TestMode
-import ch.uzh.dyndco.stack.Configuration
-import ch.uzh.dyndco.stack.ConfigurationFactory
+import ch.uzh.dyndco.stack.tests.TestMode
+import ch.uzh.dyndco.stack.configuration.Configuration
+import ch.uzh.dyndco.stack.configuration.ConfigurationFactory
 
 object SingleTest extends DeployableAlgorithm {
   

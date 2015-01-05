@@ -10,6 +10,8 @@ import java.util.LinkedList;
 
 import actors.MessageCollector;
 import akka.actor.*;
+import app.messages.Stats;
+import app.messages.Utility;
 import play.libs.Akka;
 import play.libs.F;
 import play.libs.Json;
@@ -132,7 +134,7 @@ public class Monitoring extends Controller {
 	 * Utility message processing
 	 */
 	public static Result updateAgent(String agent) throws Exception {
-		
+
 		try {
 
 			// Receive get parameters
@@ -148,24 +150,28 @@ public class Monitoring extends Controller {
 				return badRequest("Expecting Json data");
 			}
 
-			// Tell actor
+			// Get collector
 			ActorRef collector = collectors.get(id);
-			
+
 			// Process messages
 			Iterator<String> it = json.fieldNames();
 			while(it.hasNext()){
-				
+
 				String key = it.next();
 				JsonNode value = json.get(key);
-				String info = value.toString();
-				
+
+				// Process Text
+				String info = value.toString().substring(1,-1);
 				String[] parts = info.split(";");
-				
+				System.out.println(info);
+				System.out.println(parts);
 				System.out.println(agent + " | " + key + " | " + info);
-				
+
+				// Send to Collector Actor				
 				String update = (key + ";" + agent + ";" + info + "\n");
-				collector.tell(update, ActorRef.noSender());
-				
+				collector.tell(new Utility(update), ActorRef.noSender());
+
+				// Add to utilities
 				agentUtilities.put(agent, Double.parseDouble(parts[0].toString()));
 			}
 
@@ -174,16 +180,58 @@ public class Monitoring extends Controller {
 			for(String agentUtility : agentUtilities.keySet()){
 				utilityGlobal += agentUtilities.get(agentUtility);
 			}
-			
+
 			// Update UI
 			Application.sendUpdate(utilityGlobal);
-//			System.out.println(utilityGlobal);
+			System.out.println(utilityGlobal);
 
 		} catch (Exception e){
 			e.printStackTrace();
 		}
 
 		return ok("Update received: " + agent);
+	}
+
+	/**
+	 * Stats message processing
+	 */
+	public static Result stats() throws Exception {
+
+		try {
+
+			// Receive parameter
+			final Set<Map.Entry<String,String[]>> entries = request().queryString().entrySet();
+			Map<String, String> parameters = getParameters(entries);
+			String id = parameters.get("id");
+
+			// Get json body
+			RequestBody body = request().body();
+			JsonNode json = Json.parse(body.asText());
+			if(json == null) {
+				System.out.println("JSON is NULL");
+				return badRequest("Expecting Json data");
+			}
+
+			// Get collector
+			ActorRef collector = collectors.get(id);
+
+			// Process stats
+			Map<String,String> stats = new HashMap<String,String>();
+			Iterator<String> it = json.fieldNames();
+			while(it.hasNext()){
+				String key = it.next();
+				String value = json.get(key).toString();
+				stats.put(key,value);
+			}
+
+			// Send to Collector Actor				
+			collector.tell(new Stats(stats), ActorRef.noSender());
+
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+
+		return ok("Stats received");
 	}
 
 	/**

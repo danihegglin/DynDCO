@@ -1,9 +1,10 @@
-package ch.uzh.dyndco.stack
+package ch.uzh.dyndco.stack.graph
 
 import collection.mutable.Map
 import collection.mutable.Set
 import scala.collection.mutable.MutableList
 import ch.uzh.dyndco.util.Tabulator
+import ch.uzh.dyndco.stack.vertex.MeetingSchedulingVertex
 
 trait MeetingSchedulingGraph extends BasicGraph {
   

@@ -9,8 +9,8 @@ import akka.actor.ActorRef
 import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.util.IdFactory
 import ch.uzh.dyndco.algorithms.mgm.MGM
-import ch.uzh.dyndco.stack.TestMode
-import ch.uzh.dyndco.stack.ConfigurationFactory
+import ch.uzh.dyndco.stack.tests.TestMode
+import ch.uzh.dyndco.stack.configuration.ConfigurationFactory
 import ch.uzh.dyndco.algorithms.dpop.DPOP
 
 object MultipleTest extends DeployableAlgorithm {
@@ -50,9 +50,9 @@ object MultipleTest extends DeployableAlgorithm {
     /**
      * Run tests
      */
-    var agents : Int = 2
-    var meetings : Int = 1
-    var timeslots : Int = 100
+    var timeslots : Int = TIMESLOTS
+    var meetings : Int = MEETINGS
+    var agents : Int = AGENTS
     
     while(agents < MAX){
       while(meetings < MAX){
@@ -76,9 +76,20 @@ object MultipleTest extends DeployableAlgorithm {
           // Clear memory
           Runtime.getRuntime().gc;
         }
-        meetings *= FACTOR
+        
+        // Increase meetings
+        FACTOR match {
+          case 1 => meetings += FACTOR
+          case _ => meetings *= FACTOR 
+        }
       }
-      agents *= FACTOR
+      
+      // Increase Agents
+      FACTOR match {
+        case 1 => agents += FACTOR
+        case _ => agents *= FACTOR
+      }
+      
       meetings = 1
     }
     

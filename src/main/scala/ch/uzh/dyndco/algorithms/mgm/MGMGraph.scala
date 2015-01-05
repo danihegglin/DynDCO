@@ -9,11 +9,11 @@ import com.signalcollect.Graph
 import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import com.signalcollect.GraphBuilder
-import ch.uzh.dyndco.stack.DynamicGraph
-import ch.uzh.dyndco.stack.DynamicVertex
-import ch.uzh.dyndco.stack.GraphFactory
 import ch.uzh.dyndco.problems.Problem
-import ch.uzh.dyndco.stack.MeetingSchedulingVertex
+import ch.uzh.dyndco.stack.graph.DynamicGraph
+import ch.uzh.dyndco.stack.vertex.DynamicVertex
+import ch.uzh.dyndco.stack.graph.GraphFactory
+import ch.uzh.dyndco.stack.vertex.MeetingSchedulingVertex
 
 class MGMGraph (
     vertices_ : Set[MGMVertex], 

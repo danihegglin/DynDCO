@@ -1,4 +1,4 @@
-package ch.uzh.dyndco.stack
+package ch.uzh.dyndco.stack.graph
 
 import collection.mutable.Map
 import com.signalcollect.Graph

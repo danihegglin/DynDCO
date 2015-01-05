@@ -9,11 +9,9 @@ import com.signalcollect.Graph
 import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import com.signalcollect.GraphBuilder
-import ch.uzh.dyndco.stack.GraphFactory
-import ch.uzh.dyndco.stack.DynamicVertex
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
-import ch.uzh.dyndco.stack.DynamicGraph
 import ch.uzh.dyndco.problems.Problem
+import ch.uzh.dyndco.stack.graph.GraphFactory
 
 object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingProblem] {
   

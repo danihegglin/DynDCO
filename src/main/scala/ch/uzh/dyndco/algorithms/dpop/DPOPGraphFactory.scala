@@ -6,9 +6,9 @@ import com.signalcollect.Graph
 import com.signalcollect.GraphBuilder
 import com.signalcollect.StateForwarderEdge
 import collection.mutable.Set
-import ch.uzh.dyndco.stack.GraphFactory
 import ch.uzh.dyndco.problems.MeetingConstraints
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
+import ch.uzh.dyndco.stack.graph.GraphFactory
 
 object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem] {
   

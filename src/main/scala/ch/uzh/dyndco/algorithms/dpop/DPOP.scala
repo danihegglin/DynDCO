@@ -12,9 +12,9 @@ import dispatch._
 import dispatch.Defaults._
 import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
-import ch.uzh.dyndco.stack.Configuration
-import ch.uzh.dyndco.stack.DynamicController
-import ch.uzh.dyndco.stack.TestMode
+import ch.uzh.dyndco.stack.configuration.Configuration
+import ch.uzh.dyndco.stack.dynamic.DynamicController
+import ch.uzh.dyndco.stack.tests.TestMode
 
 ///**
 // * based on: A Scalable Method for Multiagent Constraint Optimization

@@ -2,8 +2,7 @@ package ch.uzh.dyndco.algorithms.mgm
 
 import scala.collection.mutable.Map
 import scala.collection.mutable.MutableList
-
- import ch.uzh.dyndco.stack.DynamicVertex
+import ch.uzh.dyndco.stack.vertex.DynamicVertex
 
  class MGMVertex (id: Any, agentView: MGMMessage) 
    extends DynamicVertex(id, agentView){

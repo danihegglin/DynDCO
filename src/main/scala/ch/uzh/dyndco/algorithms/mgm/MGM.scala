@@ -18,9 +18,9 @@ import com.signalcollect.configuration.ExecutionMode
 import com.signalcollect.StateForwarderEdge
 import ch.uzh.dyndco.util.Monitoring
 import ch.uzh.dyndco.problems.MeetingSchedulingProblem
-import ch.uzh.dyndco.stack.Configuration
-import ch.uzh.dyndco.stack.DynamicController
-import ch.uzh.dyndco.stack.TestMode
+import ch.uzh.dyndco.stack.configuration.Configuration
+import ch.uzh.dyndco.stack.tests.TestMode
+import ch.uzh.dyndco.stack.dynamic.DynamicController
 
 object MGM extends App {
   
