@@ -19,9 +19,10 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	var children : MutableList[DPOPVertex] = MutableList()
 	
 	/**
-	 * Full map of values and their utility at this node
+	 * Current utilities and values
 	 */
-	var utilities : Map[Int,Double] = Map[Int, Double]()
+	var utilities = Map[Int, Double]()
+//  var values = Map[Int,Int]()
 	
 	/**
 	 * Message containers
@@ -40,32 +41,49 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    */
 	def computeUtils() = {
     
-	  // Initialize map
+	  // Create local utilities
     utilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
+    
+    println("leaf: PRECALC -> " + utilities)
 
     // Merge map with util messages
     for(utilMessage <- utilMessages){
     	for (value <- 1 to TIMESLOTS){
-    		var localValueUtility : Double = 0
+    		
+        var localUtility : Double = 0
     		if(utilities.contains(value)){
-    			localValueUtility = utilities.get(value).get
+    			localUtility = utilities.get(value).get
     		}
-    	  var messageValueUtility : Double = 0
-    		if(utilMessage.getUtilValueMap.contains(value)){
-    			messageValueUtility = utilMessage.getUtilValueMap.get(value).get
+    	  
+        var messageValueUtility : Double = 0
+    		if(utilMessage.getUtilities.contains(value)){
+    			messageValueUtility = utilMessage.getUtilities.get(value).get
     		}
-    		utilities += (value -> (localValueUtility + messageValueUtility)) 
+        
+    		utilities += (value -> (localUtility + messageValueUtility))
     	}
 	 }
     
 	}
 	
   /**
-   * Choose value with highest utility
+   * Choose values with highest utility
    */
 	def chooseOptimal() = {
+    
+    /**
+     * FIXME needs to handle multiple meetings in root
+     */
     findMaxValue(utilities)
+    
+    // update values FIXME 
+    
 	}
+  
+  /**
+   * Helper functions
+   */
+  def isLeaf() : Boolean = children.size == 0
   
   /**
    * Collect signals
@@ -74,68 +92,84 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     
     newRound()
 	  
-	  var finalMessage : DPOPMessage = null
-	  
-		// Message Type
+		/**
+     * Process messages 
+     */
 		for (signal <- signals.iterator) {
 			try {
 				var message : DPOPMessage = signal.asInstanceOf[DPOPMessage]
-						if(message.getMessageType == "Util"){
-							if(message.sender != parent.id){
+						if(children.contains(message.sender)){
 								utilMessages += message
-							}
 						}
-						else if (message.getMessageType == "Value"){
-							if(message.sender == parent.id){ // FIXME
+						else if(parent == message.sender){
 								valueMessages += message
-							}
 						}
 			}
 			catch {
 			  case e : Exception => 
-//          println(id + ": signal was null")
+          //println(id + ": signal was null")
 			}
 		}
 		
-		// Leaf Node: Create Util
-		if(children.size == 0){
+    /**
+     * UTIL message propagation
+     */
+		
+    // Leaf Node: Create Util
+		if(isLeaf){
 		  computeUtils()
-		  finalMessage = new DPOPMessage(id, 0, utilities, "Util")
+      println("leaf:" + utilities)
 		}
 		else {
       
-		  // Check if util message from all children have arrived
-			if(utilMessages.size == children.size){
+      // Check if util message from all children have arrived
+  		if(utilMessages.size == children.size){
         
-				// Node is root -> Value Message to all children
-				if(parent == null){
-				  chooseOptimal()
-				  finalMessage = new DPOPMessage(id, 0, utilities, "Value")
-				}
-
-        // Node is not root -> Meeting Node, Util Message to parent
-				else {
-				  computeUtils()
-				  finalMessage = new DPOPMessage(id, 0, utilities, "Util")
-				}
-        
-        utilMessages.clear()
+  			 // Node is root: value message to all children
+  			 if(parent == null){
+           computeUtils() // not in the paper but should be here
+  			   chooseOptimal()
+           println("root: " + utilities)
+  			 }
+  
+         // Node is not root: Meeting Node, Util Message to parent
+  		   else {
+  			   computeUtils()
+           println("middle: " + utilities)
+  			 }
+          
 			}
-
-			// Check if value messages have arrived
+    }
+    utilMessages.clear()
+//    
+//    /**
+//     * VALUE message propagation
+//     */
+//
+//			// Check if value messages have arrived
 			if(valueMessages.size > 0){
-				chooseOptimal()
-		    finalMessage = new DPOPMessage(id, 0, utilities, "Value")
-        valueMessages.clear()
-		  }
-      
-      finalMessage = new DPOPMessage(id, 0, utilities, "Value")
-		}
+//				chooseOptimal()
+//        
+//         if(isLeaf){
+//           
+//           println("leaf: " + value)
+//            // take value for this meeting id
+//            
+//            // store curent utility
+//            storeAgentUtility()
+//         }
+//         else {
+//           println("middle: " + value)
+//         }
     
-    // store values of current round
-    storeMessage(value)
-		
-    // Send final message
-    finalMessage
+         valueMessages.clear()
+		  }
+     
+      
+     /**
+      * FINAL message: contains both; parent reads util, children read values
+      */
+     new DPOPMessage(this, utilities, value)
+     
 	}
 }

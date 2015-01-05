@@ -148,8 +148,8 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
       		  value = findBestValueAssignment(allUtilities)
           }
           
-          // store values of current round
-          storeMessage(value)
+          // store curent utility
+          storeAgentUtility()
         }
         
     	  new MaxSumMessage(id, allUtilities)

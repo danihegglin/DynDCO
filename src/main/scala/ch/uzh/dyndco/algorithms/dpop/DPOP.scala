@@ -67,7 +67,9 @@ object DPOP extends App {
     /**
      * Results
      */
-    println(stats)
+//    var prepStats = dpopGraph.prepareStats(stats)
+//    Monitoring.stats(prepStats)
+    Thread sleep 1000 // Otherwise stop too fast
     dpopGraph.show
     
     }

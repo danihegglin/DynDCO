@@ -50,7 +50,6 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
         var middleNode = buildMiddleVertex(
             meeting.id,
             problem.TIMESLOTS,
-            meetingIndex,
             rootVertex,
             graph)
         
@@ -76,6 +75,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           slot += 1
           
           var meetingVertex = middleVertices.apply(meetingId)
+          var meetingIndex = meetingIndices.apply(meetingId)
           
           var leafVertex = buildLeafVertex(
               agentId,
@@ -83,6 +83,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
               constraints,
               problem.TIMESLOTS,
               agentIndex,
+              meetingIndex,
               meetingVertex,
               graph
           )
@@ -125,7 +126,6 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
      def buildMiddleVertex(
          meetingId : Int,
          timeslots : Int,
-         meetingIndex : Map[Any,Int],
          rootVertex : DPOPVertex,
          graph : Graph[Any, Any]) : DPOPVertex = {
        
@@ -135,7 +135,6 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           
           // parameters
           middleVertex.TIMESLOTS = timeslots
-          middleVertex.MEETING_INDEX = meetingIndex
           
           // add middle to root vertex
           middleVertex.addParent(rootVertex)
@@ -158,6 +157,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
          constraints : MeetingConstraints, 
          timeslots : Int,
          agentIndex : Map[Any,Int],
+         meetingIndex : Map[Any,Int],
          meetingVertex : DPOPVertex,
          graph : Graph[Any, Any]) : DPOPVertex = {
        
@@ -175,6 +175,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
        leafVertex.CONSTRAINTS_ORIGINAL = constraints.clone()
        leafVertex.CONSTRAINTS_CURRENT = constraints.clone()
        leafVertex.AGENT_INDEX = agentIndex
+       leafVertex.MEETING_INDEX = meetingIndex
        
        // add leaf to middle vertex
        leafVertex.addParent(meetingVertex)
@@ -239,7 +240,6 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           buildMiddleVertex(
               meetingId,
               problem.TIMESLOTS,
-              meetingIndex,
               dpopGraph.root,
               dpopGraph.graph
            )
@@ -257,6 +257,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           constraints,
           problem.TIMESLOTS,
           agentIndex,
+          meetingIndex,
           meetingVertex,
           dpopGraph.graph
           )

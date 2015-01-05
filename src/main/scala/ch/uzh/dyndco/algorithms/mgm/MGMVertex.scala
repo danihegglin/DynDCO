@@ -124,8 +124,8 @@ import ch.uzh.dyndco.stack.vertex.DynamicVertex
     
 	  }
     
-    // store values of current round
-    storeMessage(value)
+    // store curent utility
+    storeAgentUtility()
     
    outgoing
   }

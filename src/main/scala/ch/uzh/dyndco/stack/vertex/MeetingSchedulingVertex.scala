@@ -86,7 +86,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     var utility : Double = 0
         
     // timeslot utility
-    utility += (TIMESLOTS - (value - 1)) / TIMESLOTS  
+    utility += (TIMESLOTS - (value - 1)).asInstanceOf[Double] / TIMESLOTS.asInstanceOf[Double]  
         
     // calendar utility
     if(CONSTRAINTS_CURRENT.hard.contains(value)){
@@ -186,12 +186,14 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     var conflict : Boolean = false
     
     // agent index check
-    for(meeting <- AGENT_INDEX.keys){
-    	if(meeting != MEETING_ID){
-   			if(AGENT_INDEX.apply(meeting) == candidateValue){               
-   				conflict = true
-   			}
-   		}
+    if(AGENT_INDEX != null) {
+      for(meeting <- AGENT_INDEX.keys){
+      	if(meeting != MEETING_ID){
+     			if(AGENT_INDEX.apply(meeting) == candidateValue){               
+     				conflict = true
+     			}
+     		}
+      }
     }
 
     // history check
@@ -211,10 +213,13 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       value = candidateValue
     
       // update constraints
-      CONSTRAINTS_CURRENT.update(MEETING_ID, candidateValue)
+      if(CONSTRAINTS_CURRENT != null)
+        CONSTRAINTS_CURRENT.update(MEETING_ID, candidateValue)
     
       // add to indices
-      AGENT_INDEX += (MEETING_ID -> candidateValue)
+      if(AGENT_INDEX != null)
+        AGENT_INDEX += (MEETING_ID -> candidateValue)
+      if(MEETING_INDEX != null)
       MEETING_INDEX += (AGENT_ID -> candidateValue)
       
       // add to history
@@ -230,7 +235,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     */
    var messages = Map[String, String]()
    
-   def storeMessage(utility : Double){
+   def storeAgentUtility(){
      
       // build message
       var utility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
