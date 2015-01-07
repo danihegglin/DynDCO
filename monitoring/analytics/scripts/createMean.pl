@@ -56,7 +56,7 @@ foreach my $fp (glob("$dir/*.txt")) {
 }
 
 # open results file
-open(my $fw, '>>', $dir . '/calculated_'.time().'.txt') or die "Could not open file: $!";
+open(my $fw, '>>', $dir . '/final_'.time().'.txt') or die "Could not open file: $!";
 $header = "timepoint;mean;median;utility\n";
 print $fw $header;
 

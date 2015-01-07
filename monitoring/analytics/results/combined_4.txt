@@ -1,2 +1,0 @@
-timestamp;utility
-14201712260;22.75

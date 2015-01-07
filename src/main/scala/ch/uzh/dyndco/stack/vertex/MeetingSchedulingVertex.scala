@@ -26,6 +26,10 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     var MEETING_ID : Int = -1
     var AGENT_ID : Int = -1
     
+    var MAX_REPETITIONS = 20
+    var MAX_ATTEMPTS = 10
+    var REPEAT_PROB = 0.75
+    
   /**
    * Meeting Value
    */
@@ -41,7 +45,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
      * Finish when all participants have same timeslot for meeting
      */
     override def finishedCheck() = {
-    
+      
     // Check Meeting Index
     if(MEETING_INDEX != null && MEETING_INDEX.size > 0){
       var same : Boolean = true
@@ -52,7 +56,13 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       }
       
       // Check Agent Index
-      if(AGENT_INDEX != null && AGENT_INDEX.size > 0){
+      if(AGENT_INDEX == null){
+        if(same){
+          finished = true
+          println("finish 1: " + id)
+        }
+      }
+      else if(AGENT_INDEX.size > 0){
         
         var different : Boolean = true
         refValue = -1
@@ -65,6 +75,8 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         
         if(same && different){
           finished = true
+          println("finish 2: " + id + AGENT_INDEX + MEETING_INDEX)
+//          System.exit(0)
         }
         else 
           showState()
@@ -142,10 +154,10 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       // find max value
       var accepted : Boolean = false
       var position = 0
-      var maxRounds = 10
       var roundCount = 0
+      var maxValue = 0
       
-      while(!accepted && roundCount < maxRounds){
+      while(!accepted && roundCount < MAX_ATTEMPTS){
         
         roundCount += 1
         
@@ -158,33 +170,42 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       
         // process results
         if(!conflict){
-            
-            // register new value preference
-            registerValue(candidateValue)
+          
+            // add to history
+            if(history.contains(candidateValue))
+              history += (candidateValue -> (history.apply(candidateValue) + 1))
+            else
+              history += candidateValue -> 1
               
             accepted = true
+            maxValue = candidateValue
         }
         else {
-          
+
           if((position + 1) > (orderedUtilities.size - 1)){
             position = 0
             history.clear
           }
           else {
-            if(Random.nextDouble() > 0.75)
+            if(Random.nextDouble() > REPEAT_PROB)
               position += 1
           }
           
         }
       }
-    
-    value
+      
+    maxValue
   }
   
   private def isValid(candidateValue : Int) : Boolean = {
     
     var conflict : Boolean = false
     
+    // basic check
+    if(candidateValue <= 0){
+      conflict = true
+    }
+      
     // agent index check
     if(AGENT_INDEX != null) {
       for(meeting <- AGENT_INDEX.keys){
@@ -198,16 +219,19 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
 
     // history check
     if(history.contains(candidateValue)){
-    	if(history.apply(candidateValue) > 20){
+    	if(history.apply(candidateValue) > MAX_REPETITIONS){
     		conflict = true
-    				history += (candidateValue -> 0)
+    	  history += (candidateValue -> 0)
     	}
     }
     
     conflict
   }
   
-  private def registerValue(candidateValue : Int) {
+  /**
+   * Update all indexes
+   */
+  def registerValue(candidateValue : Int) {
     
       // update local value
       value = candidateValue
@@ -220,13 +244,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       if(AGENT_INDEX != null)
         AGENT_INDEX += (MEETING_ID -> candidateValue)
       if(MEETING_INDEX != null)
-      MEETING_INDEX += (AGENT_ID -> candidateValue)
-      
-      // add to history
-      if(history.contains(candidateValue))
-        history += (candidateValue -> (history.apply(candidateValue) + 1))
-      else
-        history += candidateValue -> 1
+        MEETING_INDEX += (AGENT_ID -> candidateValue)
       
   }
   
@@ -256,7 +274,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     * Show state
     */
    def showState(){
-       printf("%-10.8s  %-40.60s  %-30.30s%n", id, MEETING_INDEX, AGENT_INDEX);
+      printf("%-10.8s  %-40.60s  %-30.30s%n", id, "m " + MEETING_INDEX, "a " + AGENT_INDEX);
    }
 
 }

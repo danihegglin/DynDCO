@@ -12,7 +12,6 @@ object Monitoring {
    * Configuration
    */
   final var address = "178.62.200.138"
-//  final var address = "localhost"
   var runID : String = "" 
   
   /**
@@ -27,13 +26,13 @@ object Monitoring {
   
   def stop(runID : String) = {
     
-    val hello = new Thread(new Runnable {
+    new Thread(new Runnable {
       def run() {
-         Thread sleep 60000
+         Thread sleep 10000
          var svc = url("http://" + address + ":9000/stop?id=" + runID)
          var result = Http(svc OK as.String)
       }
-    })    
+    }).start()
     
   }
 
@@ -62,9 +61,13 @@ object Monitoring {
   }
   
   def sucess(runID : String) = {
-    
-    val svc = url("http://" + address + ":9000/success?id=" + runID)
-    val result = Http(svc OK as.String)
+   new Thread(new Runnable {
+     def run() {
+      Thread sleep 10000
+      val svc = url("http://" + address + ":9000/success?id=" + runID)
+      val result = Http(svc OK as.String)
+     }
+  }).start()
     
   }
   

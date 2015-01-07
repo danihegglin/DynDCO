@@ -14,12 +14,15 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
   
   // Configuration
   final var MAX_SLOTS : Int = 1000 // Max communication slots
-  final var MAX_ROUND : Int = 3000 // Limit of communication rounds
+  final var MAX_ROUND : Int = 5000 // Limit of communication rounds
   
   // Current State
   var slot : Int = 0
   
   def build(problem : MeetingSchedulingProblem) : DPOPGraph = {
+    
+    // initialize slots state (new build -> new run)
+    slot = 0
     
     /**
      * Initialize Graph
@@ -51,6 +54,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
             meeting.id,
             problem.TIMESLOTS,
             rootVertex,
+            meetingIndex,
             graph)
         
         middleVertices += (meeting.id -> middleNode)
@@ -58,7 +62,6 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
       }
       
       // build leaf nodes
-      var slot = 0
       for(agentId <- problem.allParticipations.keys){
         
         // build agent index
@@ -116,6 +119,8 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
        
        // parameters
        rootVertex.TIMESLOTS = timeslots
+       rootVertex.AGENT_INDEX = Map[Any, Int]()
+       rootVertex.MEETING_ID = 999
        
        // add to graph
        graph.addVertex(rootVertex)
@@ -127,6 +132,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
          meetingId : Int,
          timeslots : Int,
          rootVertex : DPOPVertex,
+         meetingIndex : Map[Any,Int],
          graph : Graph[Any, Any]) : DPOPVertex = {
        
           // build vertex
@@ -134,7 +140,10 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           var middleVertex = new DPOPVertex(middleVertexId, null)
           
           // parameters
+          middleVertex.MAX_ROUND = MAX_ROUND
           middleVertex.TIMESLOTS = timeslots
+          middleVertex.MEETING_INDEX = meetingIndex
+          middleVertex.MEETING_ID = meetingId
           
           // add middle to root vertex
           middleVertex.addParent(rootVertex)
@@ -148,7 +157,6 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           graph.addEdge("root", new StateForwarderEdge(middleVertexId))
           
           middleVertex
-       
      }
      
      def buildLeafVertex(
@@ -243,6 +251,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
               meetingId,
               problem.TIMESLOTS,
               dpopGraph.root,
+              meetingIndex,
               dpopGraph.graph
            )
            

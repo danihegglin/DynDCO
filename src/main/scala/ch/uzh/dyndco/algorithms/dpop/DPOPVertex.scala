@@ -22,7 +22,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	 * Current utilities and values
 	 */
 	var utilities = Map[Int, Double]()
-//  var values = Map[Int,Int]()
+  var values = Map[Any,Int]()
 	
 	/**
 	 * Message containers
@@ -69,28 +69,42 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    */
 	def chooseOptimal() = {
     
-    /**
-     * FIXME needs to handle multiple meetings in root
-     */
-    if(isRoot){
-        value = findMaxValue(utilities)  
-        println ("root: " + value)
-    }
-    else {
-      
-      for(valueMessage <- valueMessages){
-        value = valueMessage.getValue
-      }
-      
-//      println("received: " + value)
-      
-      if(isLeaf){
-        CONSTRAINTS_CURRENT.update(MEETING_ID, value)
-        AGENT_INDEX += (MEETING_ID -> value)
-        MEETING_INDEX += (AGENT_ID -> value)
-      }
-  }
+    if(!finished){
     
+      if(isRoot){
+        
+        computeUtils()
+        
+        var it = children.iterator
+        while(it.hasNext){
+          var vertex : DPOPVertex = it.next()
+//          if(!vertex.finished){
+            var localValue = findMaxValue(utilities)
+            println("the best value: " + localValue)
+//            AGENT_INDEX += (vertex.MEETING_ID -> localValue)
+            values.put(vertex,localValue)
+//            println("root: " + localValue + "-" + roundCount)
+//          }
+        } 
+      }
+      else {
+        
+        for(valueMessage <- valueMessages){
+            values = valueMessage.values
+        }
+        
+        if(isLeaf){
+          
+            if(values.contains(this.parent)){
+              var maxValue = values.get(parent).get
+              println("received value: " + maxValue)
+              registerValue(maxValue)
+              
+              println("leaf: " + id + " - " + value + " - " + MEETING_INDEX + " | " + AGENT_INDEX)
+          }
+        }
+    }
+   }
 	}
   
   /**
@@ -104,17 +118,18 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    */
 	def collect() = {
     
+    if(!isRoot && initialized){
+      finishedCheck()
+    }
+    
     if(!initialized && isLeaf){
       value = CONSTRAINTS_ORIGINAL.preference.apply(MEETING_ID)
       AGENT_INDEX += (MEETING_ID -> value)
       MEETING_INDEX += (AGENT_ID -> value)
       initialized = true
-      
-      println(id + ": " + value + " | " + AGENT_INDEX + " | " + MEETING_INDEX)
     }
     
     newRound()
-    finishedCheck()
 	  
 		/**
      * Process messages 
@@ -150,12 +165,12 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
         
   			 // Node is root: value message to all children
   			 if(parent == null){
-           computeUtils() // not in the paper but should be here
   			   chooseOptimal()
   			 }
   
          // Node is not root: Meeting Node, Util Message to parent
   		   else {
+           println("middle: " + id)
   			   computeUtils()
   			 }
           
@@ -185,7 +200,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
      /**
       * FINAL message: contains both; parent reads util, children read values
       */
-     new DPOPMessage(this, utilities, value)
+     new DPOPMessage(this, utilities, values)
      
 	}
 }

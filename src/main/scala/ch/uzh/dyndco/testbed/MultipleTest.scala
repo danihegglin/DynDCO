@@ -60,7 +60,7 @@ object MultipleTest extends DeployableAlgorithm {
           
           println("RUN " + run + " of " + RUNS + " (AGENTS: "+agents+", MEETINGS: "+meetings+")")
           
-          val runID = IdFactory.build(timeslots, meetings, agents, run)
+          val runID = IdFactory.build(ALGORITHM, EXECUTION, MODE, timeslots, meetings, agents, run)
           val problem = MeetingSchedulingFactory.build(timeslots,meetings,agents)
           
           Monitoring.start(runID)

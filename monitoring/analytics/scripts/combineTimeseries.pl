@@ -22,7 +22,7 @@ foreach my $file (glob("$dir/experiments/*.txt")) {
 	my $counter = 0;
 
 	# result file
-	open(my $fw, '>>', $dir . '/results/combined_'.$filecounter.'.txt') or die "Could not open file: $!";
+	open(my $fw, '> ', $dir . '/results/combined_'.$filecounter.'.txt') or die "Could not open file: $!";
 	$header = "timestamp;utility\n";
 	print $fw $header;
 
@@ -32,6 +32,8 @@ foreach my $file (glob("$dir/experiments/*.txt")) {
 
 	my %bucket = ();
 
+	my $normalizedTimestamp = 0;
+	my $lastTimestamp = 0;
 	while ( my $line = <$fh> ) {
 
 		$linecount++;
@@ -39,16 +41,24 @@ foreach my $file (glob("$dir/experiments/*.txt")) {
 		# split line
 		@split = split(";", $line);
 
-		# check timestamp of line
-		my $timestamp = floor($split[0] / 100);
-
 		if($split[1] =~ /start/){
-			$start{$filecounter} = $timestamp;
+			$start{$filecounter} = 0; # is always 0 when normalized
 		}
 		elsif($split[1] =~ /finished/){
-			$finish{$filecounter} = $timestamp;
+			$finish{$filecounter} = $lastTimestamp; # real stop time is the last utility update from the agents
 		}
 		else {
+
+			# check timestamp of line
+			my $timestamp = floor($split[0]/100);
+
+			if($normalizedTimestamp == 0){
+				print $timestamp
+				$normalizedTimestamp = $timestamp
+			}
+
+			$timestamp = ($timestamp - $normalizedTimestamp) + 2; # makes timestamps start at 0
+			$lastTimestamp = $timestamp;
 
 			if($timestamp ne "0"){
 				$value = $split[2];
@@ -68,12 +78,15 @@ foreach my $file (glob("$dir/experiments/*.txt")) {
 
 	close($fh);
 
-	for my $timestamp (sort keys %bucket){
+	$counter = 1;
+	for my $timestamp (sort { $a <=> $b } keys %bucket){
 
-		if($timestamp ne "timestamp"){
+		if($timestamp ne "timestamp" && $counter < %bucket){
 		
-			my $entry = $timestamp . ";" . $bucket{$timestamp} . "\n";		
+			my $entry = $counter . ";" . $bucket{$timestamp} . "\n";		
 			print $fw $entry;
+			$counter++;
+
 		}	
 
 	}

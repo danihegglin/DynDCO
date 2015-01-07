@@ -5,16 +5,14 @@ import scala.collection.mutable.Map
 class DPOPMessage(
     _sender : DPOPVertex, 
     _utilities : Map[Int,Double], 
-//  _value : Map[Int,Int]
-    _value : Int
+    _values : Map[Any,Int]
     ) {
   
   var sender : DPOPVertex = _sender
 	var utilities = _utilities
-  var value = _value
+  var values = _values
   
-//	def getValue : Map[Int,Int] = value
-  def getValue : Int = value
+	def getValues : Map[Any,Int] = values
 	def getUtilities : Map[Int,Double] = utilities
 	
 }

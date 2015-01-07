@@ -124,7 +124,7 @@ public class Monitoring extends Controller {
 			collector.tell("success", ActorRef.noSender());
 
 		} catch (Exception e){
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 
 		return ok("Success");
@@ -157,8 +157,8 @@ public class Monitoring extends Controller {
 			Iterator<String> it = json.fieldNames();
 			while(it.hasNext()){
 
-				String key = it.next();
-				JsonNode value = json.get(key);
+				String timestamp = it.next();
+				JsonNode value = json.get(timestamp);
 
 				// Process Text
 				String info = value.toString();
@@ -168,20 +168,20 @@ public class Monitoring extends Controller {
 				String agentIndex = parts[1].replaceAll("\"", "");
 				String meetingIndex = parts[2].replaceAll("\"", "");
 				
-				System.out.println(agent + " | " + key + " | " + utility + " | " + agent);
+				System.out.println(agent + " | " + timestamp + " | " + utility + " | " + agent);
 
 				// Send to Collector Actor				
 				String update = (
-						key + ";" + 
+						timestamp + ";" + 
 						agent + ";" + 
 						utility + ";" + 
 						agentIndex + ";" + 
 						meetingIndex + "\n");
 				
-				collector.tell(new Utility(update), ActorRef.noSender());
+				collector.tell(new Utility(agent, timestamp, update), ActorRef.noSender());
 
 				// Add to utilities
-				agentUtilities.put(agent, Double.parseDouble(parts[0].toString()));
+				agentUtilities.put(agent, Double.parseDouble(utility.toString()));
 			}
 
 			// Determine Global Utility
@@ -192,7 +192,6 @@ public class Monitoring extends Controller {
 
 			// Update UI
 			Application.sendUpdate(utilityGlobal);
-			System.out.println(utilityGlobal);
 
 		} catch (Exception e){
 			e.printStackTrace();

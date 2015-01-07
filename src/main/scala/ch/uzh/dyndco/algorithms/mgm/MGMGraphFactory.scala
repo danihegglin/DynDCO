@@ -20,17 +20,25 @@ object MGMGraphFactory extends GraphFactory[MGMGraph, MeetingSchedulingProblem] 
   // Current State
   var slot : Int = 0
   
-  var vertices = Set[MGMVertex]()
-  
   def build(problem : MeetingSchedulingProblem) : MGMGraph = {
+    
+    // initialize slots state (new build -> new run)
+    var slot = 0
     
      /**
       * Initialize Graph
       */
       val graph = GraphBuilder.build
     
-    // build neighbourhoods
+      /**
+       * Indices
+       */
       var neighbourhoods = Map[Int, Set[MGMVertex]]()
+      var vertices = Set[MGMVertex]()
+      
+      /**
+       *  Build index for each meeting and all agents
+       */
       var meetingIndices = Map[Int, Map[Any,Int]]()
       for(meeting <- problem.meetings){
          neighbourhoods += (meeting.id -> Set[MGMVertex]())
@@ -39,7 +47,6 @@ object MGMGraphFactory extends GraphFactory[MGMGraph, MeetingSchedulingProblem] 
               
       // establish edges to all meeting functions
       var agentIndices : Map[Int, Map[Any,Int]] = Map[Int, Map[Any,Int]]()
-      var slot = 0
       for(agentId : Int <- problem.allParticipations.keys){
         
         // build agent index

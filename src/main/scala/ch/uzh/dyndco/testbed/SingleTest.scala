@@ -32,7 +32,7 @@ object SingleTest extends DeployableAlgorithm {
       /**
        * Build id
        */
-      val id = IdFactory.build(TIMESLOTS, MEETINGS, AGENTS, 1)
+      val id = IdFactory.build(ALGORITHM, EXECUTION, MODE, TIMESLOTS, MEETINGS, AGENTS, 1)
   
       /**
        * Build problem
@@ -57,6 +57,7 @@ object SingleTest extends DeployableAlgorithm {
       
       Monitoring.sucess(id)
       
+      Thread sleep 10000
       System.exit(0)
     
   }

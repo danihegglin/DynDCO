@@ -2,10 +2,15 @@ package actors;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 import akka.actor.UntypedActor;
 import app.messages.Stats;
@@ -17,13 +22,17 @@ public class MessageCollector extends UntypedActor {
 	/**
 	 * Configuration
 	 */
-	private final int MESSAGE_LIMIT = 5000;
+	private final int MESSAGE_LIMIT = 100;
+	private final String ROOT_FOLDER = "/root/monitoring/analytics/experiments/";
+	private String TEST_FOLDER = "";
 
 	/**
 	 * Containers
 	 */
 	private File file;
-	private LinkedList<String> messages = new LinkedList<String>();
+	private HashMap<String, TreeMap<Long,String>> messages = new HashMap<String, TreeMap<Long,String>>();
+	private String startTime;
+	private String finishTime;
 	private String id;
 
 	/**
@@ -32,6 +41,14 @@ public class MessageCollector extends UntypedActor {
 	 */
 	public MessageCollector(String id) {
 		this.id = id;
+
+		// Build folder for test case
+		TEST_FOLDER = id.substring(0, id.lastIndexOf("-"));
+		File dir = new File(ROOT_FOLDER + TEST_FOLDER);
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+
 	}
 
 	/**
@@ -57,7 +74,7 @@ public class MessageCollector extends UntypedActor {
 
 		if(message instanceof Utility){
 			Utility utility = (Utility) message;
-			update(utility.getUtility());
+			update(utility.getAgent(), utility.getTimestamp(), utility.getUtility());
 		}
 
 		if(message instanceof Stats){
@@ -71,7 +88,7 @@ public class MessageCollector extends UntypedActor {
 	 */
 	public void start(){
 
-		file = new File("/root/monitoring/analytics/experiments/" + id + ".txt");
+		file = new File(ROOT_FOLDER + TEST_FOLDER + "/" + id + ".txt");
 
 		// if file doesn't exist, create it
 		if (!file.exists()) {
@@ -83,34 +100,39 @@ public class MessageCollector extends UntypedActor {
 			}
 		}
 
-		String message = new Date().getTime()+";start\n";
-		messages.add(message);
+		startTime = new Date().getTime()+";start\n";
+		writeLine(startTime, false);
 	} 
 
 	public void stop(){
-		writeToFile();
+		writeAllToFile();
 	}
 
 	public void success(){
-		String message = (new Date().getTime()) + ";finished\n";
-		messages.add(message);
-		stop();
+		writeAllToFile();
+		finishTime = (new Date().getTime()) + ";finished\n";
+		writeLine(finishTime, true);
 	}
 
-	public void update(String update){
+	public void update(String agent, Long timestamp, String update){
 
-		messages.add(update);
+		TreeMap<Long, String> entries = new TreeMap<>();
+		if(messages.containsKey(agent)){
+			entries = messages.get(agent);
+		}
+		entries.put(timestamp, update);
+		messages.put(agent, entries);
 
 		// Check if writout is necessary
-		if(messages.size() > MESSAGE_LIMIT){
-			writeToFile();
+		if(entries.size() > MESSAGE_LIMIT){
+			writeToFile(agent, entries, null);
 		}
 
 	}
 
 	public void stats(Map<String,String> stats){
 
-		File file = new File("/root/monitoring/analytics/experiments/" + id + "_stats.txt");
+		File file = new File(ROOT_FOLDER + TEST_FOLDER + "/" + id + "_stats.txt");
 
 		// if file doesn't exist, create it
 		if (!file.exists()) {
@@ -124,7 +146,7 @@ public class MessageCollector extends UntypedActor {
 
 		try {
 			String filepath = file.getAbsolutePath();
-			FileWriter fw = new FileWriter(filepath);
+			FileWriter fw = new FileWriter(filepath, true);
 
 			// Process messages
 			for(String key : stats.keySet()){
@@ -141,26 +163,80 @@ public class MessageCollector extends UntypedActor {
 	/**
 	 * Helper Functions
 	 */
-	private void writeToFile(){
+	private void writeAllToFile(){
+		
+		// Determine longest running agent and last timestamp (other agents utilities need to be expanded)
+		Long maxRuntime = Long.parseLong("0");
+		for(TreeMap<Long,String> value : messages.values()){
+			for(Long timestamp : value.keySet()){
+				if(timestamp > maxRuntime)
+					maxRuntime = timestamp;
+			}
+		}
+		
+		System.out.println(maxRuntime);
+		
+		for(String agent : messages.keySet()){
+			writeToFile(agent, messages.get(agent), maxRuntime);
+		}
+	}
 
-		if(!messages.isEmpty()){
+	private void writeToFile(String agent, TreeMap<Long,String> entries, Long maxRuntime){
+		
+		try {
+			String filepath = file.getAbsolutePath();
+			FileWriter fw = new FileWriter(filepath, true);
 
-			final LinkedList<String> writeout = (LinkedList<String>) messages.clone();
-			messages.clear();
-
-			try {
-				String filepath = file.getAbsolutePath();
-				FileWriter fw = new FileWriter(filepath);
-				for(String message : writeout){
-					fw.write(message);
+			Long lastTimepoint = (long) 0;
+			String lastEntry = "";
+			String data = "";
+			for(Long timepoint : entries.keySet()){
+				if(lastTimepoint != 0){
+					while(lastTimepoint < timepoint){
+						data = lastEntry.substring(lastEntry.indexOf(";"));
+						lastTimepoint += 100;
+						if(lastTimepoint < timepoint){
+							fw.write(lastTimepoint + data);
+						}
+					}
 				}
-				fw.close();
-			} catch (Exception e){
-				System.out.println("FileWriting failed");
-				e.printStackTrace();
+				
+				lastTimepoint = timepoint;
+				lastEntry = entries.get(timepoint);
+				fw.write(lastEntry);
+			}
+			
+			// if a maxRuntime is given, continue last utility until last timepoint
+			if(maxRuntime != null && lastTimepoint < maxRuntime){
+				while(lastTimepoint <= maxRuntime){
+					data = lastEntry.substring(lastEntry.indexOf(";"));
+					lastTimepoint += 100;
+					if(lastTimepoint <= maxRuntime){
+						fw.write(lastTimepoint + data);
+					}
+				}
 			}
 
+			fw.close();
+		} catch (Exception e){
+			System.out.println("FileWriting failed");
+			e.printStackTrace();
 		}
 
+		entries.clear();
+		messages.put(agent, entries);
+	}
+	
+	private void writeLine(String line, Boolean append){
+		
+		try {
+			String filepath = file.getAbsolutePath();
+			FileWriter fw = new FileWriter(filepath, append);
+			fw.write(line);
+			fw.close();
+		} catch (Exception e){
+			System.out.println("FileWriting failed");
+			e.printStackTrace();
+		}
 	}
 }

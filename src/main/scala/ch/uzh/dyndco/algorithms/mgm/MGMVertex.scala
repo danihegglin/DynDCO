@@ -41,7 +41,8 @@ import ch.uzh.dyndco.stack.vertex.DynamicVertex
         }
         
         // Take value with highest utility
-        value = findMaxValue(utilities)
+        var maxValue = findMaxValue(utilities)
+        registerValue(maxValue)
         lastGain = utilities.apply(value) - lastGain
       
       }

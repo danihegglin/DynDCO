@@ -145,7 +145,8 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
     			
           // find best assignments for all requirements
           if(!finished){
-      		  value = findBestValueAssignment(allUtilities)
+      		  var maxValue = findBestValueAssignment(allUtilities)
+            registerValue(maxValue)
           }
           
           // store curent utility
