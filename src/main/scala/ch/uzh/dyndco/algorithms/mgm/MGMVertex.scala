@@ -94,20 +94,15 @@ import ch.uzh.dyndco.stack.vertex.DynamicVertex
       
       var sendValueMessage : Boolean = false
       
-//      println(id + ": last gain -> " + lastGain + " | GAINS: " + gains + " | VALUES: " + values)
-      
       // Determine biggest gain
       if(gains.size > 0){
         var hasBestGain = true
         for(gain <- gains.values){
           if(gain > lastGain){
-//            println(gain)
             hasBestGain = false
           }
         }
         if(hasBestGain == true){
-          
-//          println(id + " - has best gain, sending value: " + value)
           
           // Update values
           values += (id -> value)

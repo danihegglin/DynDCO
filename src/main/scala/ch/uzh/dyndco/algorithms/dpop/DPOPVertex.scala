@@ -73,19 +73,26 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     
       if(isRoot){
         
-        computeUtils()
-        
-        var it = children.iterator
-        while(it.hasNext){
-          var vertex : DPOPVertex = it.next()
-//          if(!vertex.finished){
-            var localValue = findMaxValue(utilities)
-            println("the best value: " + localValue)
-//            AGENT_INDEX += (vertex.MEETING_ID -> localValue)
-            values.put(vertex,localValue)
-//            println("root: " + localValue + "-" + roundCount)
-//          }
+        for(utilMessage <- utilMessages){
+          
+          var localUtilities = utilMessage.getUtilities
+          var vertex : DPOPVertex = utilMessage.sender
+          if(localUtilities != null){
+            try {
+              var localValue = findMaxValue(localUtilities)
+              AGENT_INDEX.put(vertex.MEETING_ID, localValue)
+              values.put(vertex, localValue)
+            } catch {
+              case e : Exception => 
+                //e.printStackTrace()
+            }
+          }
+          else {
+            println("ERROR")
+          }
         } 
+        
+        
       }
       else {
         
@@ -94,15 +101,12 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
         }
         
         if(isLeaf){
-          
-            if(values.contains(this.parent)){
-              var maxValue = values.get(parent).get
-              println("received value: " + maxValue)
-              registerValue(maxValue)
-              
-              println("leaf: " + id + " - " + value + " - " + MEETING_INDEX + " | " + AGENT_INDEX)
+          if(values.contains(this.parent)){
+            var maxValue = values.get(parent).get
+            registerValue(maxValue)
           }
         }
+        
     }
    }
 	}
@@ -110,7 +114,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
   /**
    * Helper functions
    */
-  def isLeaf() : Boolean = children.size == 0
+  def isLeaf() : Boolean = children.size == 0 && id.toString().size > 2
   def isRoot() : Boolean = parent == null
   
   /**
@@ -118,14 +122,29 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    */
 	def collect() = {
     
-    if(!isRoot && initialized){
+    // Check if finished
+    if(isLeaf && initialized && !finished){
       finishedCheck()
+    } else {
+      if(!isRoot && children.size > 0){
+        var isFinished = true
+        for(child <- children){
+          if(!child.finished)
+            isFinished = false
+        }
+        if(isFinished){
+          finished = true
+        }
+      }
     }
     
-    if(!initialized && isLeaf){
-      value = CONSTRAINTS_ORIGINAL.preference.apply(MEETING_ID)
-      AGENT_INDEX += (MEETING_ID -> value)
-      MEETING_INDEX += (AGENT_ID -> value)
+    // Initialize
+    if(!initialized){
+      if(isLeaf){
+        value = CONSTRAINTS_ORIGINAL.preference.apply(MEETING_ID)
+        AGENT_INDEX += (MEETING_ID -> value)
+        MEETING_INDEX += (AGENT_ID -> value)
+      }
       initialized = true
     }
     
@@ -134,21 +153,27 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 		/**
      * Process messages 
      */
-		for (signal <- signals.iterator) {
-			try {
-				var message : DPOPMessage = signal.asInstanceOf[DPOPMessage]
-						if(children.contains(message.sender)){
-								utilMessages += message
-						}
-						else if(parent == message.sender){
-								valueMessages += message
-						}
-			}
-			catch {
-			  case e : Exception => 
-          //println(id + ": signal was null")
-			}
-		}
+     for (signal <- signals.iterator) {
+				      
+       var message : DPOPMessage = signal.asInstanceOf[DPOPMessage]
+              
+       if(message != null){
+         
+         // Util messages
+         if(!isLeaf){
+				   if(children.contains(message.sender)){
+					   utilMessages += message
+					 }
+         }
+				
+         // Value messages
+         if(!isRoot){
+           if(parent == message.sender){
+					   valueMessages += message
+				   }
+         }
+       }
+     }
 		
     /**
      * UTIL message propagation
@@ -170,7 +195,6 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
   
          // Node is not root: Meeting Node, Util Message to parent
   		   else {
-           println("middle: " + id)
   			   computeUtils()
   			 }
           
@@ -185,11 +209,11 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 			// Check if value messages have arrived
 			if(valueMessages.size > 0){
 
+        // Choose the best value
         chooseOptimal()
-        
+          
+         // store curent utility
          if(isLeaf){
-           
-            // store curent utility
             storeAgentUtility()
          }
     

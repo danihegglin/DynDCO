@@ -27,7 +27,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     var AGENT_ID : Int = -1
     
     var MAX_REPETITIONS = 20
-    var MAX_ATTEMPTS = 10
+    var MAX_ATTEMPTS = 20
     var REPEAT_PROB = 0.75
     
   /**
@@ -59,7 +59,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       if(AGENT_INDEX == null){
         if(same){
           finished = true
-          println("finish 1: " + id)
+//          println("finish 1: " + id)
         }
       }
       else if(AGENT_INDEX.size > 0){
@@ -75,8 +75,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         
         if(same && different){
           finished = true
-          println("finish 2: " + id + AGENT_INDEX + MEETING_INDEX)
-//          System.exit(0)
+//          println("finish 2: " + id + AGENT_INDEX + MEETING_INDEX)
         }
         else 
           showState()
@@ -87,6 +86,9 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     if(roundCount >= MAX_ROUND){
       finished = true
     }
+    
+    if(finished)
+      println(id + " - " + finished)
           
   }  
     
@@ -177,8 +179,8 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
             else
               history += candidateValue -> 1
               
-            accepted = true
             maxValue = candidateValue
+            accepted = true
         }
         else {
 
@@ -194,10 +196,12 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         }
       }
       
-    maxValue
+     history.clear()
+
+     maxValue
   }
   
-  private def isValid(candidateValue : Int) : Boolean = {
+  def isValid(candidateValue : Int) : Boolean = {
     
     var conflict : Boolean = false
     
@@ -212,6 +216,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       	if(meeting != MEETING_ID){
      			if(AGENT_INDEX.apply(meeting) == candidateValue){               
      				conflict = true
+//                println("conflict2: " + conflict + " | " + AGENT_INDEX + " | " + candidateValue)
      			}
      		}
       }
@@ -233,6 +238,8 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
    */
   def registerValue(candidateValue : Int) {
     
+    if(candidateValue > 0 && candidateValue <= TIMESLOTS){
+    
       // update local value
       value = candidateValue
     
@@ -245,6 +252,8 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         AGENT_INDEX += (MEETING_ID -> candidateValue)
       if(MEETING_INDEX != null)
         MEETING_INDEX += (AGENT_ID -> candidateValue)
+        
+    }
       
   }
   
@@ -274,7 +283,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     * Show state
     */
    def showState(){
-      printf("%-10.8s  %-40.60s  %-30.30s%n", id, "m " + MEETING_INDEX, "a " + AGENT_INDEX);
+//      printf("%-10.8s  %-40.60s  %-30.30s%n", id, "m " + MEETING_INDEX, "a " + AGENT_INDEX);
    }
 
 }

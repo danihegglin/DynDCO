@@ -20,6 +20,8 @@ vm_args=" -Xmx10240m -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:+UseNUMA -XX:-U
 #srun --ntasks-per-node=1 cp ~/$jarname $workingDir/
 
 # run test directly from home folder
-srun --ntasks-per-node=1 --partition=slow /home/user/hegglin/jdk/jdk1.8.0_25/bin/java $jvmParameters -cp ~/data/$jarname $mainClass --algorithm "mgm" --execution "synchronous" --mode "normal" --param  "" --timeslots 200 --meetings 1 --agents 2 --runs 10 --factor 1 --max 100
+srun --ntasks-per-node=1 --partition=02 /home/user/hegglin/jdk/jdk1.8.0_25/bin/java $jvmParameters -cp ~/data/$jarname $mainClass \ 
+--algorithm $ALGORITHM --execution $EXECUTION --mode $MODE --param $PARAMS \ 
+--timeslots $TIMESLOTS --meetings $MEETINGS --agents $AGENTS --runs $RUNS --factor $FACTOR --max $MAX
 
 #...commands to be run after jobs have finished...

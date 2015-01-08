@@ -17,8 +17,8 @@ object SingleDriver extends App {
 	parser.parse(args)
 
 	// build map
+  var parameters = Map[String, String]()
   try {
-  	var parameters = Map[String, String]()
   	parameters += ("algorithm" -> algorithm.value.get)
   	parameters += ("execution" -> execution.value.get)
   	parameters += ("mode" -> mode.value.get)
@@ -26,12 +26,12 @@ object SingleDriver extends App {
   	parameters += ("timeslots" -> timeslots.value.get)
   	parameters += ("meetings" -> meetings.value.get)
   	parameters += ("agents" -> agents.value.get)
-  
-  	SingleTest.execute(parameters, null)
   } 
   catch {
     case e: Exception  => println("Too few arguments")
   }
+  
+  SingleTest.execute(parameters, null)
 
 	System.exit(0)
 

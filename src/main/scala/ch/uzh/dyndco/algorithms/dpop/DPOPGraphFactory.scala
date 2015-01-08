@@ -14,7 +14,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
   
   // Configuration
   final var MAX_SLOTS : Int = 1000 // Max communication slots
-  final var MAX_ROUND : Int = 5000 // Limit of communication rounds
+  final var MAX_ROUND : Int = 3000 // Limit of communication rounds
   
   // Current State
   var slot : Int = 0
@@ -120,7 +120,6 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
        // parameters
        rootVertex.TIMESLOTS = timeslots
        rootVertex.AGENT_INDEX = Map[Any, Int]()
-       rootVertex.MEETING_ID = 999
        
        // add to graph
        graph.addVertex(rootVertex)

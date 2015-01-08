@@ -13,6 +13,17 @@ class DynamicController (
     dynamicGraph : DynamicGraph, 
     problem : Problem) 
   extends DataGraphVertex(id, dynamicGraph) {
+  
+   /**
+     * Finish Control
+     */
+    var finished : Boolean = false
+    var run : Boolean = true
+    
+    override def scoreSignal: Double = {
+      if(this.finished) 0
+      else 1
+    }
     
     /**
      * The collect function
@@ -29,7 +40,9 @@ class DynamicController (
         var interval : Int = parameters(0).toInt
         var percentage : Double = parameters(1).toDouble
       
-        while(true){
+        while(run){
+          
+          checkFinish()
           
           // choose agents
           var agents = Set[DynamicVertex]()
@@ -54,12 +67,12 @@ class DynamicController (
     def changeMeetings(parameters : Array[String]){
       
         var interval : Int = parameters(0).toInt
-        var firstProb : Double = parameters(1).toDouble
-        var secondProb : Double = parameters(2).toDouble
-        var thirdProb : Double = parameters(3).toDouble
+        var nextMeetingProb : Double = parameters(1).toDouble
+        var nextAgentProb : Double = parameters(2).toDouble
+        var removeProb : Double = parameters(3).toDouble
         var number : Int = parameters(4).toInt
         
-        while(true){
+        while(run){
           
           for(change <- 1 to number){
           
@@ -70,28 +83,53 @@ class DynamicController (
             
             // get meeting
             var meetingId = 
-              if(first < firstProb)
+              if(first < nextMeetingProb)
                 Random.nextInt(dynamicGraph.numOfNeighbourhoods())
               else
                 dynamicGraph.nextNeighbourhood()
                 
            // get agent
+           var isNew = false
            var agentId =
-             if(second < secondProb)
+             if(second < nextAgentProb)
                Random.nextInt(dynamicGraph.numOfAgents())
-             else
+             else{
+               isNew = true
                dynamicGraph.nextAgent()
+             }
             
             // action
-            if(third < thirdProb)
+            if(third < removeProb){
               dynamicGraph.getFactory().addAgent(dynamicGraph, problem, agentId, meetingId)
-            else
-              dynamicGraph.getFactory().removeAgent(dynamicGraph, agentId, meetingId)
+            }
+            else {
+                if(!isNew){
+                  try {
+                    dynamicGraph.getFactory().removeAgent(dynamicGraph, agentId, meetingId)
+                  }
+                  catch {
+                    case e : Exception => e.printStackTrace()                    
+                  }
+                }
+            }
             
           }
           
           Thread sleep interval
         }   
+    }
+    
+    private def checkFinish(){
+      var isFinished = true
+      for(vertex <- dynamicGraph.getAgents()){
+        if(!vertex.finished)
+          isFinished = false
+      }
+      
+      if(isFinished){
+        run = false
+        finished = true
+      }
     }
 
 }

@@ -26,8 +26,8 @@ object MultipleDriver extends App {
   parser.parse(args)
   
   // build map
+  var parameters = Map[String, String]()
   try {
-    var parameters = Map[String, String]()
     parameters += ("algorithm" -> algorithm.value.get)
     parameters += ("execution" -> execution.value.get)
     parameters += ("mode" -> mode.value.get)
@@ -38,14 +38,13 @@ object MultipleDriver extends App {
     parameters += ("runs" -> runs.value.get)
     parameters += ("factor" -> factor.value.get)
     parameters += ("max" -> max.value.get)
-      
-    MultipleTest.execute(parameters,null)
   } 
   catch {
     case e: Exception  => println("Too few arguments")
   }
 
-  
+  MultipleTest.execute(parameters,null)
+      
   System.exit(0)
 	
 }
