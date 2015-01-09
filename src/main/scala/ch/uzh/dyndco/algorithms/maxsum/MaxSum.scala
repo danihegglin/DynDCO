@@ -44,7 +44,7 @@ object MaxSum extends DCOAlgorithm {
     if(configuration.testMode != TestMode.Normal){
       
       var dynamicController = new DynamicController("dyn1",maxSumGraph,problem)
-      maxSumGraph.graph.addVertex(dynamicController)
+//      maxSumGraph.graph.addVertex(dynamicController)
     
       configuration.testMode match {
         case TestMode.DynamicConstraints => dynamicController.changeConstraints(configuration.parameters)

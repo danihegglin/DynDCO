@@ -17,7 +17,7 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
   
   // Configuration
   final var MAX_SLOTS : Int = 1000 // Max communication slots
-  final var MAX_ROUND : Int = 3000 // Limit of communication rounds
+  final var MAX_ROUND : Int = 1000 // Limit of communication rounds
   
   // Current State
   var slot : Int = 0
@@ -130,7 +130,7 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
        varVertex.PUSH_ROUND = slot
        varVertex.TIMESLOTS = timeslots
        varVertex.CONSTRAINTS_ORIGINAL = constraints.clone()
-       varVertex.CONSTRAINTS_CURRENT = constraints.clone()
+       varVertex.CONSTRAINTS_CURRENT = constraints // interlinked with function vertex
        varVertex.MEETING_INDEX = meetingIndex
        varVertex.AGENT_INDEX = agentIndex
        varVertex.MEETING_ID = meetingId
@@ -160,7 +160,7 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
        var funcVertex = new FunctionVertex(functionId,null)
        
        // add parameters
-       funcVertex.CONSTRAINTS_CURRENT = constraints
+       funcVertex.CONSTRAINTS_CURRENT = constraints // interlinked with variable vertex
        funcVertex.TIMESLOTS = timeslots
        funcVertex.AGENT_INDEX = agentIndex
        

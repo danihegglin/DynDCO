@@ -21,8 +21,10 @@ object MultipleDriver extends App {
   val meetings = parser.option[String](List("meetings"), "s","meetings")
   val agents = parser.option[String](List("agents"), "s","agents")
   val runs = parser.option[String](List("runs"), "s","runs")
-  val factor = parser.option[String](List("factor"), "s","factor")
-  val max = parser.option[String](List("max"), "s","max")
+  val factoragents = parser.option[String](List("factoragents"), "s","factoragents")
+  val factormeetings = parser.option[String](List("factormeetings"), "s","factormeetings")
+  val maxagents = parser.option[String](List("maxagents"), "s","max-agents")
+  val maxmeetings = parser.option[String](List("maxmeetings"), "s","max-meetings")
   parser.parse(args)
   
   // build map
@@ -36,8 +38,10 @@ object MultipleDriver extends App {
     parameters += ("meetings" -> meetings.value.get)
     parameters += ("agents" -> agents.value.get)
     parameters += ("runs" -> runs.value.get)
-    parameters += ("factor" -> factor.value.get)
-    parameters += ("max" -> max.value.get)
+    parameters += ("factoragents" -> factoragents.value.get)
+    parameters += ("factormeetings" -> factormeetings.value.get)
+    parameters += ("maxagents" -> maxagents.value.get)
+    parameters += ("maxmeetings" -> maxmeetings.value.get)
   } 
   catch {
     case e: Exception  => println("Too few arguments")

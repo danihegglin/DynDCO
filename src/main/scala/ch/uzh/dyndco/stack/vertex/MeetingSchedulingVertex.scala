@@ -59,7 +59,6 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       if(AGENT_INDEX == null){
         if(same){
           finished = true
-//          println("finish 1: " + id)
         }
       }
       else if(AGENT_INDEX.size > 0){
@@ -75,7 +74,6 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         
         if(same && different){
           finished = true
-//          println("finish 2: " + id + AGENT_INDEX + MEETING_INDEX)
         }
         else 
           showState()
@@ -87,9 +85,6 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       finished = true
     }
     
-    if(finished)
-      println(id + " - " + finished)
-          
   }  
     
   /**
@@ -216,7 +211,6 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       	if(meeting != MEETING_ID){
      			if(AGENT_INDEX.apply(meeting) == candidateValue){               
      				conflict = true
-//                println("conflict2: " + conflict + " | " + AGENT_INDEX + " | " + candidateValue)
      			}
      		}
       }
@@ -283,7 +277,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     * Show state
     */
    def showState(){
-//      printf("%-10.8s  %-40.60s  %-30.30s%n", id, "m " + MEETING_INDEX, "a " + AGENT_INDEX);
+      printf("%-10.8s  %-40.60s  %-30.30s%n", id, "m " + MEETING_INDEX, "a " + AGENT_INDEX);
    }
 
 }

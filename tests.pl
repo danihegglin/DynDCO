@@ -2,20 +2,22 @@
 
 # Configuration
 $runs = 10;
-$factor = 10;
-$max = 10000;
+$factoragents = 10;
+$factormeetings = 0;
+$maxagents = 1000;
+$maxmeetings = 10;
 
-$timeslots = 100;
-$meetings = 1;
-$agents = 1;
+$timeslots = 1000;
+$meetings = 10;
+$agents = 5;
 
 # Categories
-@algorithms = ("maxsum", "mgm", "dpop");
+@algorithms = ("maxsum", "mgm","dpop");
 @execution = ("synchronous", "asynchronous");
 @mode = ("normal", "dynamicConstraints", "dynamicMeetings");
 
 @params1_1 = (2000,5000,10000); 
-@params1_2 = (25,50,75,100);
+@params1_2 = (0.25,0.50,0.75,1);
 
 @params2_1 = (2000,5000,10000);
 @params2_2 = (0,0.5,1);
@@ -25,21 +27,25 @@ $agents = 1;
 
 # Build all tests
 for my $algorithm (@algorithms){
-	for my $execution (@execution){
-		#for my $mode (@execution)
-		$command = "submission.sh " .
-			"ALGORITHM='$algorithm' " .
-			"EXECUTION='$execution' " .
-			"MODE='normal' " .
-			"PARAMS='' " .
-			"TIMESLOTS=$timeslots " . 
-			"MEETINGS=$meetings " .
-			"AGENTS=$agents " .
-			"RUNS=$runs " .
-			"FACTOR=$factor " . 
-			"MAX=$max"; 
+	# for my $execution (@execution){
+		#for my $param (@params1_1){
+		$command = "sh submission.sh " .
+				"'$algorithm' " .
+				"'synchronous' " .
+				"'normal' " .
+				"'' " .
+				"$timeslots " . 
+				"$meetings " .
+				"$agents " .
+				"$runs " .
+				"$factoragents " . 
+				"$factormeetings " .
+				"$maxagents " .  
+				"$maxmeetings &"; 
 
+		print($command . "\n");
 		system($command);
-	}
+		#}
+	# }
 }
 

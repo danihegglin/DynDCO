@@ -75,8 +75,6 @@ object MeetingSchedulingFactory {
         // preferences
        var preferences : Map[Int,Int] = buildPreferences(participations,availableTimeslots)
        
-       println(agent + " -> " + preferences) // FIXME remove
-       
        // initialized used set
        var used : Set[Int] = Set()
        for(preference <- preferences.values){

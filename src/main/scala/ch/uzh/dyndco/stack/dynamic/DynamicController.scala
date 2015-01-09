@@ -11,8 +11,8 @@ import ch.uzh.dyndco.stack.vertex.DynamicVertex
 class DynamicController (
     id: Any, 
     dynamicGraph : DynamicGraph, 
-    problem : Problem) 
-  extends DataGraphVertex(id, dynamicGraph) {
+    problem : Problem) {
+//  extends DataGraphVertex(id, dynamicGraph) {
   
    /**
      * Finish Control
@@ -20,45 +20,59 @@ class DynamicController (
     var finished : Boolean = false
     var run : Boolean = true
     
-    override def scoreSignal: Double = {
-      if(this.finished) 0
-      else 1
-    }
-    
-    /**
-     * The collect function
-     */
-    def collect() = {
-      null
-    }
+//    override def scoreSignal: Double = {
+//      if(this.finished) 0
+//      else 1
+//    }
+//    
+//    /**
+//     * The collect function
+//     */
+//    def collect() = {
+//      null
+//    }
     
     /**
      * Changes constraints of a percentage of agents on certain interval
      */
     def changeConstraints(parameters : Array[String]){
       
-        var interval : Int = parameters(0).toInt
-        var percentage : Double = parameters(1).toDouble
-      
-        while(run){
+        new Thread(new Runnable(){
           
-          checkFinish()
+          def run(){
+            
+            Thread sleep 1000
           
-          // choose agents
-          var agents = Set[DynamicVertex]()
-          var numToPick = Math.floor(dynamicGraph.numOfAgents() * percentage)
-          var allAgents = dynamicGraph.getAgents().toList
-          while(agents.size < numToPick){
-            agents += allAgents(Random.nextInt(allAgents.size))
+            var interval : Int = parameters(0).toInt
+            var percentage : Double = parameters(1).toDouble
+          
+            while(true){
+              
+              checkFinish()
+              
+              // choose agents
+              var agents = Set[DynamicVertex]()
+              var numToPick = Math.floor(dynamicGraph.numOfAgents() * percentage)
+              var allAgents = dynamicGraph.getAgents().toList
+              while(agents.size < numToPick){
+                agents += allAgents(Random.nextInt(allAgents.size))
+              }
+              
+              // change constraints
+              for(agent <- agents){
+                agent.changeConstraints()
+                agent.finished = false
+              }
+              
+              // reactivate agents
+              for(agent <- allAgents){
+                agent.finished = false
+              }
+             
+              Thread sleep interval
+            } 
           }
-          
-          // change constraints
-          for(agent <- agents){
-            agent.changeConstraints()
-          }
-         
-          Thread sleep interval
-        }      
+        }).start();
     }
     
     /**

@@ -1,0 +1,2 @@
+timepoint;u_mean;u_median;u_sum;a_mean;a_median;a_sum;m_mean;m_median;m_sum
+1;0.0839714285714286;0.0839714285714286;0.0839714285714286;15;15;15;9;9;9

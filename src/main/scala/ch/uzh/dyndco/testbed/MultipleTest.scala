@@ -28,8 +28,10 @@ object MultipleTest extends DeployableAlgorithm {
     val MEETINGS : Int = parameters.apply("meetings").toInt
     val AGENTS : Int = parameters.apply("agents").toInt
     val RUNS : Int = parameters.apply("runs").toInt
-    val FACTOR : Int = parameters.apply("factor").toInt
-    val MAX : Int = parameters.apply("max").toInt
+    val FACTOR_AGENTS : Int = parameters.apply("factoragents").toInt
+    val FACTOR_MEETINGS : Int = parameters.apply("factormeetings").toInt
+    val MAX_AGENTS : Int = parameters.apply("maxagents").toInt
+    val MAX_MEETINGS : Int = parameters.apply("maxmeetings").toInt
   	
     /**
      * Build execution mode
@@ -54,13 +56,16 @@ object MultipleTest extends DeployableAlgorithm {
     var meetings : Int = MEETINGS
     var agents : Int = AGENTS
     
-    while(agents < MAX){
-      while(meetings < MAX){
+    var stopMeetings = false
+    
+    
+    while(agents <= MAX_AGENTS){
+      while(meetings <= MAX_MEETINGS && stopMeetings == false){
         for(run <- 1 to RUNS){
           
           println("RUN " + run + " of " + RUNS + " (AGENTS: "+agents+", MEETINGS: "+meetings+")")
           
-          val runID = IdFactory.build(ALGORITHM, EXECUTION, MODE, timeslots, meetings, agents, run)
+          val runID = IdFactory.build(ALGORITHM, EXECUTION, MODE, PARAM, timeslots, meetings, agents, run)
           val problem = MeetingSchedulingFactory.build(timeslots,meetings,agents)
           
           Monitoring.start(runID)
@@ -72,25 +77,28 @@ object MultipleTest extends DeployableAlgorithm {
           }
           
           Monitoring.sucess(runID)
+          Thread sleep 3000
           
           // Clear memory
           Runtime.getRuntime().gc;
         }
         
         // Increase meetings
-        FACTOR match {
-          case 1 => meetings += FACTOR
-          case _ => meetings *= FACTOR 
+        FACTOR_MEETINGS match {
+          case 0 => stopMeetings = true
+          case _ => meetings += FACTOR_MEETINGS
         }
       }
+      stopMeetings = false
+      meetings = 10
       
       // Increase Agents
-      FACTOR match {
-        case 1 => agents += FACTOR
-        case _ => agents *= FACTOR
+      FACTOR_AGENTS match {
+        case 1 => agents += FACTOR_AGENTS
+        case _ => agents += FACTOR_AGENTS
       }
       
-      meetings = 1
+//      meetings = 1
     }
     
   }

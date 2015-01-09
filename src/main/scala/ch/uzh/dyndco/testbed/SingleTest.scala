@@ -32,7 +32,7 @@ object SingleTest extends DeployableAlgorithm {
       /**
        * Build id
        */
-      val id = IdFactory.build(ALGORITHM, EXECUTION, MODE, TIMESLOTS, MEETINGS, AGENTS, 1)
+      val id = IdFactory.build(ALGORITHM, EXECUTION, MODE, PARAM, TIMESLOTS, MEETINGS, AGENTS, 1)
   
       /**
        * Build problem

@@ -114,13 +114,15 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
   /**
    * Helper functions
    */
-  def isLeaf() : Boolean = children.size == 0 && id.toString().size > 2
+  def isLeaf() : Boolean = children.size == 0 && id.toString().contains("a")
   def isRoot() : Boolean = parent == null
   
   /**
    * Collect signals
    */
 	def collect() = {
+    
+    try {
     
     // Check if finished
     if(isLeaf && initialized && !finished){
@@ -141,9 +143,13 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     // Initialize
     if(!initialized){
       if(isLeaf){
-        value = CONSTRAINTS_ORIGINAL.preference.apply(MEETING_ID)
-        AGENT_INDEX += (MEETING_ID -> value)
-        MEETING_INDEX += (AGENT_ID -> value)
+          try {
+            value = CONSTRAINTS_ORIGINAL.preference.apply(MEETING_ID)
+            AGENT_INDEX += (MEETING_ID -> value)
+            MEETING_INDEX += (AGENT_ID -> value)
+          } catch {
+            case e : Exception => "Initialization fail"
+          }
       }
       initialized = true
     }
@@ -214,11 +220,20 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
           
          // store curent utility
          if(isLeaf){
+           try {
             storeAgentUtility()
+           } catch {
+             case e : Exception => println("Storage fail: " + id)
+           }
          }
     
          valueMessages.clear()
 		  }
+    } catch {
+      case e : Exception => 
+        e.printStackTrace() 
+        System.exit(0)
+    }
      
       
      /**

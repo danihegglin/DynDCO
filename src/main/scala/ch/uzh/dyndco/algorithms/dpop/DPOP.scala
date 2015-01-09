@@ -39,7 +39,7 @@ object DPOP extends App {
     if(configuration.testMode != TestMode.Normal){
       
       var dynamicController = new DynamicController("dyn1",dpopGraph,problem)
-      dpopGraph.graph.addVertex(dynamicController)
+//      dpopGraph.graph.addVertex(dynamicController)
     
       configuration.testMode match {
         case TestMode.DynamicConstraints => dynamicController.changeConstraints(configuration.parameters)
@@ -64,11 +64,8 @@ object DPOP extends App {
     /**
      * Results
      */
-    /**
-     * Results
-     */
-//    var prepStats = dpopGraph.prepareStats(stats)
-//    Monitoring.stats(prepStats)
+    var prepStats = dpopGraph.prepareStats(stats)
+    Monitoring.stats(prepStats)
     Thread sleep 1000 // Otherwise stop too fast
     dpopGraph.show
     

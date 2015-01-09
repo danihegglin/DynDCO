@@ -40,7 +40,7 @@ object MGM extends App {
     if(configuration.testMode != TestMode.Normal){
       
       var dynamicController = new DynamicController("dyn1",mgmGraph,problem)
-      mgmGraph.graph.addVertex(dynamicController)
+//      mgmGraph.graph.addVertex(dynamicController)
     
       configuration.testMode match {
         case TestMode.DynamicConstraints => dynamicController.changeConstraints(configuration.parameters)
