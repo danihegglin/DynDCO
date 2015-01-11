@@ -11,7 +11,7 @@ object Monitoring {
   /**
    * Configuration
    */
-  final var address = "178.62.200.138"
+  final var address = "localhost" //"178.62.200.138"
   var runID : String = "" 
   
   /**
@@ -42,6 +42,18 @@ object Monitoring {
     val json = immutable.toJson
     
     var svc = url("http://" + address + ":9000/utility/agent/" + vertexId + "?id=" + runID)
+       .setBody(json.toString())
+       val postFields: Map[String, String] = Map[String,String]()
+     var result = Http(svc << postFields OK as.String)
+    
+  }
+  
+  def conflict(vertexId : Any, messages : Map[String, String]) = {
+    
+    val immutable : scala.collection.immutable.Map[String,String] = messages.toMap 
+    val json = immutable.toJson
+    
+    var svc = url("http://" + address + ":9000/conflicts/agent/" + vertexId + "?id=" + runID)
        .setBody(json.toString())
        val postFields: Map[String, String] = Map[String,String]()
      var result = Http(svc << postFields OK as.String)

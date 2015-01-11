@@ -6,5 +6,9 @@ import scala.collection.mutable.MutableList
 
 trait Problem {
   
+  def getDomain() : Any
+  def setDomain(domain : Any)
+  def increaseDomain(percentage : Double)
+  def decreaseDomain(percentage : Double)
   
 }

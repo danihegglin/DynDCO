@@ -43,12 +43,12 @@ object MaxSum extends DCOAlgorithm {
      */
     if(configuration.testMode != TestMode.Normal){
       
-      var dynamicController = new DynamicController("dyn1",maxSumGraph,problem)
-//      maxSumGraph.graph.addVertex(dynamicController)
+      var dynamicController = new DynamicController(maxSumGraph,problem)
     
       configuration.testMode match {
         case TestMode.DynamicConstraints => dynamicController.changeConstraints(configuration.parameters)
-        case TestMode.DynamicMeetings => dynamicController.changeMeetings(configuration.parameters)
+        case TestMode.DynamicVariables => dynamicController.changeVariables(configuration.parameters)
+        case TestMode.DynamicDomain => dynamicController.changeDomain(configuration.parameters)
       }
     }
     
@@ -59,20 +59,24 @@ object MaxSum extends DCOAlgorithm {
     maxSumGraph.graph.shutdown
     
     /**
-     * Send remaining utilities
+     * Send remaining utilities & conflicts
      */
     for(varVertex <- maxSumGraph.getAgents()){
-      Monitoring.update(varVertex.id, varVertex.messages)
+      Monitoring.update(varVertex.id, varVertex.updates)
       Thread sleep 20 // Otherwise too many messages at once
+    }
+    for(varVertex <- maxSumGraph.getAgents()){
+      Monitoring.conflict(varVertex.id, varVertex.conflicts)
     }
     
     /**
-     * Results
+     * Send & show results
      */
     var prepStats = maxSumGraph.prepareStats(stats)
     Monitoring.stats(prepStats)
-    Thread sleep 1000 // Otherwise stop too fast
     maxSumGraph.show()
+    
+    Thread sleep 5000 // Otherwise stop too fast
     
   }
 }

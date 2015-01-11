@@ -1,51 +1,93 @@
 #!/usr/bin/perl
 
-# Configuration
-$runs = 10;
-$factoragents = 10;
-$factormeetings = 0;
-$maxagents = 1000;
-$maxmeetings = 10;
+# Run Configuration
+$runs = 10; # How many runs per setting
+$factoragents = 10; # 0 for scalability test of meetings
+$factormeetings = 0; # 0 for scalability test of agents
+$maxagents = 1000; # max number of agents in the setting
+$maxmeetings = 10; # max number of meetings in the setting
 
-$timeslots = 1000;
+# Problem Configuration
+$timeslots = 100;
 $meetings = 10;
 $agents = 5;
 
-# Categories
-@algorithms = ("maxsum", "mgm","dpop");
+# Test Categories
+@density = (0.25, 0.5, 0.75, 1);
+@algorithms = ("maxsum","mgm","dpop");
 @execution = ("synchronous", "asynchronous");
-@mode = ("normal", "dynamicConstraints", "dynamicMeetings");
+@mode = ("normal"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"
 
-@params1_1 = (2000,5000,10000); 
-@params1_2 = (0.25,0.50,0.75,1);
-
-@params2_1 = (2000,5000,10000);
-@params2_2 = (0,0.5,1);
-@params2_3 = (0,0.5,1);
-@params2_4 = (0,0.5,1);
-@params2_5 = (1,2,5,10);
+# Params for dynamicConstraints, dynamicDomain, dynamicVariables
+@interval = (2000,5000,10000); # Interval 
+@percentage = (0.25,0.50,0.75,1); # Percentage
+@newMeeting = (0,0.5,1); # Next Meeting Probability (otherwise existing meeting)
+@newAgent = (0,0.5,1); # Next Agent Probability (otherwise existing agent)
+@action = (0,0.5,1); # Add/Remove Probability
+@number = (1,2,5,10); # Number of changed variables
 
 # Build all tests
-for my $algorithm (@algorithms){
-	# for my $execution (@execution){
-		#for my $param (@params1_1){
-		$command = "sh submission.sh " .
-				"'$algorithm' " .
-				"'synchronous' " .
-				"'normal' " .
-				"'' " .
-				"$timeslots " . 
-				"$meetings " .
-				"$agents " .
-				"$runs " .
-				"$factoragents " . 
-				"$factormeetings " .
-				"$maxagents " .  
-				"$maxmeetings &"; 
+@commands = ();
+for my $density (@density){
+	for my $algorithm (@algorithms){
+		for my $execution (@execution){
+			for my $mode (@mode) {
 
-		print($command . "\n");
-		system($command);
-		#}
-	# }
+				$command_pre = "sh submission.sh " .
+					"'$density' " . # Density
+					"'$algorithm' " . # Algorithm
+					"'$execution' " . # Execution
+					"'$mode' "; # Mode
+
+				$command_post = "$timeslots " . # Timeslots
+					"$meetings " . # Meetings
+					"$agents " . # Agents
+					"$runs " . # Runs per setting
+					"$factoragents " . # Increase of agents
+					"$factormeetings " . # Increase of meetings
+					"$maxagents " . # Max Agents
+					"$maxmeetings &"; # Max Meetings
+
+				if($mode eq "normal"){
+					# Params null
+					my $command = $command_pre . "'' " . $command_post;
+					push(@commands, $command);
+				}
+				elsif($mode eq "dynamicConstraints" || $mode eq "dynamicDomain"){
+					for my $interval (@interval){
+						for my $percentage (@percentage){
+							# Params: interval, percentage
+							my $command = $command_pre . "'$interval,$percentage' " . $command_post;
+							push(@commands, $command);
+						}
+					}
+				}
+				elsif($mode eq "dynamicVariables"){
+					for my $interval (@interval){
+						for my $newMeeting (@newMeeting){
+							for my $newAgent (@newAgent){
+								for my $action (@action){
+									for my $number (@number){
+										# Params: interval, newMeeting, newAgent, Action, Number
+										my $command = $command_pre . "'$interval,$newMeeting,$newAgent,$action,$number' " . $command_post;
+										push(@commands, $command);
+									}
+								}
+							}
+						}
+					}
+				}
+
+			}
+		}
+	}
 }
+
+# Run tests
+for my $command (@commands){
+	print($command . "\n");
+	# system($command);
+}
+
+exit(0)
 

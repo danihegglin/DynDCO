@@ -38,12 +38,12 @@ object DPOP extends App {
      */
     if(configuration.testMode != TestMode.Normal){
       
-      var dynamicController = new DynamicController("dyn1",dpopGraph,problem)
-//      dpopGraph.graph.addVertex(dynamicController)
+      var dynamicController = new DynamicController(dpopGraph,problem)
     
       configuration.testMode match {
         case TestMode.DynamicConstraints => dynamicController.changeConstraints(configuration.parameters)
-        case TestMode.DynamicMeetings => dynamicController.changeMeetings(configuration.parameters)
+        case TestMode.DynamicVariables => dynamicController.changeVariables(configuration.parameters)
+        case TestMode.DynamicDomain => dynamicController.changeDomain(configuration.parameters)
       }
     }
     
@@ -57,7 +57,7 @@ object DPOP extends App {
      * Send remaining utilities
      */
     for(varVertex <- dpopGraph.getAgents()){
-      Monitoring.update(varVertex.id, varVertex.messages)
+      Monitoring.update(varVertex.id, varVertex.updates)
       Thread sleep 20 // Otherwise too many messages at once
     }
   	

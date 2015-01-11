@@ -7,6 +7,7 @@ object SingleDriver extends App {
 
 	// parse parameters
   val parser = new ArgotParser("DynDCO: Single")
+  val density = parser.option[String](List("density"), "s","density")
 	val algorithm = parser.option[String](List("algorithm"), "s","algorithm")
 	val execution = parser.option[String](List("execution"), "s","execution")
 	val mode = parser.option[String](List("mode"), "s","mode")
@@ -19,6 +20,7 @@ object SingleDriver extends App {
 	// build map
   var parameters = Map[String, String]()
   try {
+    parameters += ("density" -> density.value.get)
   	parameters += ("algorithm" -> algorithm.value.get)
   	parameters += ("execution" -> execution.value.get)
   	parameters += ("mode" -> mode.value.get)

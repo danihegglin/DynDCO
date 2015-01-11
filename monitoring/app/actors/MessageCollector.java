@@ -15,7 +15,7 @@ import java.util.TreeMap;
 import akka.actor.UntypedActor;
 import app.messages.Stats;
 import app.messages.Utility;
-
+import app.messages.Conflicts;
 
 public class MessageCollector extends UntypedActor {
 
@@ -29,8 +29,11 @@ public class MessageCollector extends UntypedActor {
 	/**
 	 * Containers
 	 */
-	private File file;
-	private HashMap<String, TreeMap<Long,String>> messages = new HashMap<String, TreeMap<Long,String>>();
+	private File utilityFile;
+	private File conflictsFile;
+	private File statsFile;
+	private HashMap<String, TreeMap<Long,String>> utilities = new HashMap<String, TreeMap<Long,String>>();
+	private HashMap<String, TreeMap<Long,String>> conflicts = new HashMap<String, TreeMap<Long,String>>();
 	private String startTime;
 	private String finishTime;
 	private String id;
@@ -47,6 +50,45 @@ public class MessageCollector extends UntypedActor {
 		File dir = new File(ROOT_FOLDER + TEST_FOLDER);
 		if (!dir.exists()) {
 			dir.mkdir();
+		}
+		
+		// Create utility file
+		utilityFile = new File(ROOT_FOLDER + TEST_FOLDER + "/" + id + ".txt");
+
+		// if file doesn't exist, create it
+		if (!utilityFile.exists()) {
+			try {
+				utilityFile.createNewFile();
+			} catch (Exception e){
+				System.out.println("Creating file failed");
+				e.printStackTrace();
+			}
+		}
+		
+		// Create conflics file
+		conflictsFile = new File(ROOT_FOLDER + TEST_FOLDER + "/" + id + "_conflicts.txt");
+
+		// if file doesn't exist, create it
+		if (!conflictsFile.exists()) {
+			try {
+				conflictsFile.createNewFile();
+			} catch (Exception e){
+				System.out.println("Creating file failed");
+				e.printStackTrace();
+			}
+		}
+		
+		// Create stats file
+		statsFile = new File(ROOT_FOLDER + TEST_FOLDER + "/" + id + "_stats.txt");
+
+		// if file doesn't exist, create it
+		if (!statsFile.exists()) {
+			try {
+				statsFile.createNewFile();
+			} catch (Exception e){
+				System.out.println("Creating file failed");
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -76,6 +118,11 @@ public class MessageCollector extends UntypedActor {
 			Utility utility = (Utility) message;
 			update(utility.getAgent(), utility.getTimestamp(), utility.getUtility());
 		}
+		
+		if(message instanceof Conflicts){
+			Conflicts conflicts = (Conflicts) message;
+			conflicts(conflicts.getAgent(), conflicts.getTimestamp(), conflicts.getConflicts());
+		}
 
 		if(message instanceof Stats){
 			Stats stats = (Stats) message;
@@ -87,21 +134,8 @@ public class MessageCollector extends UntypedActor {
 	 * Functions
 	 */
 	public void start(){
-
-		file = new File(ROOT_FOLDER + TEST_FOLDER + "/" + id + ".txt");
-
-		// if file doesn't exist, create it
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (Exception e){
-				System.out.println("Creating file failed");
-				e.printStackTrace();
-			}
-		}
-
 		startTime = new Date().getTime()+";start\n";
-		writeLine(startTime, false);
+		writeLine(startTime, false, utilityFile);
 	} 
 
 	public void stop(){
@@ -111,41 +145,45 @@ public class MessageCollector extends UntypedActor {
 	public void success(){
 		writeAllToFile();
 		finishTime = (new Date().getTime()) + ";finished\n";
-		writeLine(finishTime, true);
+		writeLine(finishTime, true, utilityFile);
 	}
 
 	public void update(String agent, Long timestamp, String update){
 
 		TreeMap<Long, String> entries = new TreeMap<>();
-		if(messages.containsKey(agent)){
-			entries = messages.get(agent);
+		if(utilities.containsKey(agent)){
+			entries = utilities.get(agent);
 		}
 		entries.put(timestamp, update);
-		messages.put(agent, entries);
+		utilities.put(agent, entries);
 
 		// Check if writout is necessary
 		if(entries.size() > MESSAGE_LIMIT){
-			writeToFile(agent, entries, null);
+			writeUtilitiesToFile(agent, entries, null, utilityFile);
+		}
+
+	}
+	
+	public void conflicts(String agent, Long timestamp, String numConflicts){
+		
+		TreeMap<Long, String> entries = new TreeMap<>();
+		if(conflicts.containsKey(agent)){
+			entries = conflicts.get(agent);
+		}
+		entries.put(timestamp, numConflicts);
+		conflicts.put(agent, entries);
+
+		// Check if writout is necessary
+		if(entries.size() > MESSAGE_LIMIT){
+			writeConflictsToFile(agent, entries, conflictsFile);
 		}
 
 	}
 
 	public void stats(Map<String,String> stats){
 
-		File file = new File(ROOT_FOLDER + TEST_FOLDER + "/" + id + "_stats.txt");
-
-		// if file doesn't exist, create it
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (Exception e){
-				System.out.println("Creating file failed");
-				e.printStackTrace();
-			}
-		}
-
 		try {
-			String filepath = file.getAbsolutePath();
+			String filepath = statsFile.getAbsolutePath();
 			FileWriter fw = new FileWriter(filepath, true);
 
 			// Process messages
@@ -167,21 +205,25 @@ public class MessageCollector extends UntypedActor {
 		
 		// Determine longest running agent and last timestamp (other agents utilities need to be expanded)
 		Long maxRuntime = Long.parseLong("0");
-		for(TreeMap<Long,String> value : messages.values()){
+		for(TreeMap<Long,String> value : utilities.values()){
 			for(Long timestamp : value.keySet()){
 				if(timestamp > maxRuntime)
 					maxRuntime = timestamp;
 			}
 		}
 		
-		System.out.println(maxRuntime);
+		// Write all utilities
+		for(String agent : utilities.keySet()){
+			writeUtilitiesToFile(agent, utilities.get(agent), maxRuntime, utilityFile);
+		}
 		
-		for(String agent : messages.keySet()){
-			writeToFile(agent, messages.get(agent), maxRuntime);
+		// Write all conflicts
+		for(String agent : conflicts.keySet()){
+			writeConflictsToFile(agent, conflicts.get(agent), conflictsFile);
 		}
 	}
 
-	private void writeToFile(String agent, TreeMap<Long,String> entries, Long maxRuntime){
+	private void writeUtilitiesToFile(String agent, TreeMap<Long,String> entries, Long maxRuntime, File file){
 		
 		try {
 			String filepath = file.getAbsolutePath();
@@ -224,10 +266,32 @@ public class MessageCollector extends UntypedActor {
 		}
 
 		entries.clear();
-		messages.put(agent, entries);
+		utilities.put(agent, entries);
 	}
 	
-	private void writeLine(String line, Boolean append){
+	private void writeConflictsToFile(String agent, TreeMap<Long,String> entries, File file){
+		
+		try {
+			String filepath = file.getAbsolutePath();
+			FileWriter fw = new FileWriter(filepath, true);
+
+			for(Long timepoint : entries.keySet()){
+				fw.write(""+timepoint+"\n");
+			}
+			
+			fw.close();
+		} catch (Exception e){
+			System.out.println("FileWriting failed");
+			e.printStackTrace();
+		}
+
+		entries.clear();
+		conflicts.put(agent, entries);
+	}
+	
+	
+	
+	private void writeLine(String line, Boolean append, File file){
 		
 		try {
 			String filepath = file.getAbsolutePath();

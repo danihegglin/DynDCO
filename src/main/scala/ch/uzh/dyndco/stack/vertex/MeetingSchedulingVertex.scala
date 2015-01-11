@@ -224,6 +224,9 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     	}
     }
     
+    if(conflict)
+      storeAgentConflicts()
+    
     conflict
   }
   
@@ -252,9 +255,10 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   }
   
   /**
-    * Utility Message Control
+    * Message Control
     */
-   var messages = Map[String, String]()
+   var updates = Map[String, String]()
+   var conflicts = Map[String, String]()
    
    def storeAgentUtility(){
      
@@ -262,15 +266,28 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       var utility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
       var message = utility + ";" + AGENT_INDEX + ";" + MEETING_INDEX
               
-      // add current utility to messages
-      messages += (System.currentTimeMillis.toString() -> message)
+      // add current utility to update messages
+      updates += (System.currentTimeMillis.toString() -> message)
               
       // send if reached max rounds
       if(cycleCount == PUSH_ROUND){
-         Monitoring.update(id, messages)
-         messages.clear()
+         Monitoring.update(id, updates)
+         updates.clear()
          cycleCount = 0
       }
+   }
+   
+   def storeAgentConflicts() {
+     
+     conflicts += (System.currentTimeMillis.toString()  -> "conflict")
+     
+     // send if reached max rounds
+     if(cycleCount == PUSH_ROUND){
+         Monitoring.conflict(id, conflicts)
+         conflicts.clear()
+         cycleCount = 0
+      }
+         
    }
    
    /**

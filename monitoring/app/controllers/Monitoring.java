@@ -12,6 +12,7 @@ import actors.MessageCollector;
 import akka.actor.*;
 import app.messages.Stats;
 import app.messages.Utility;
+import app.messages.Conflicts;
 import play.libs.Akka;
 import play.libs.F;
 import play.libs.Json;
@@ -50,8 +51,6 @@ public class Monitoring extends Controller {
 	 */
 	public static Result start() throws Exception {
 
-		System.out.println("Start signal received");
-
 		try{
 
 			// Receive parameter
@@ -78,8 +77,6 @@ public class Monitoring extends Controller {
 	 * @return
 	 */
 	public static Result stop() {
-
-		System.out.println("Stop signal received");
 
 		try {
 
@@ -110,8 +107,6 @@ public class Monitoring extends Controller {
 	 */
 	public static Result success() {
 
-		System.out.println("Success");
-
 		try {
 
 			// Receive parameter
@@ -133,7 +128,7 @@ public class Monitoring extends Controller {
 	/**
 	 * Utility message processing
 	 */
-	public static Result updateAgent(String agent) throws Exception {
+	public static Result updateUtility(String agent) throws Exception {
 
 		try {
 
@@ -167,8 +162,6 @@ public class Monitoring extends Controller {
 				String utility = parts[0].replaceAll("\"", "");
 				String agentIndex = parts[1].replaceAll("\"", "");
 				String meetingIndex = parts[2].replaceAll("\"", "");
-				
-				System.out.println(agent + " | " + timestamp + " | " + utility + " | " + agent);
 
 				// Send to Collector Actor				
 				String update = (
@@ -182,6 +175,58 @@ public class Monitoring extends Controller {
 
 				// Add to utilities
 				agentUtilities.put(agent, Double.parseDouble(utility.toString()));
+			}
+
+			// Determine Global Utility
+			double utilityGlobal = 0.0;
+			for(String agentUtility : agentUtilities.keySet()){
+				utilityGlobal += agentUtilities.get(agentUtility);
+			}
+
+			// Update UI
+			Application.sendUpdate(utilityGlobal);
+
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+
+		return ok("Update received: " + agent);
+	}
+	
+	/**
+	 * Conflicts message processing
+	 */
+	public static Result updateConflicts(String agent) throws Exception {
+
+		try {
+
+			// Receive get parameters
+			final Set<Map.Entry<String,String[]>> entries = request().queryString().entrySet();
+			Map<String, String> parameters = getParameters(entries);
+			String id = parameters.get("id");
+
+			// Get json body
+			RequestBody body = request().body();
+			JsonNode json = Json.parse(body.asText());
+			if(json == null) {
+				System.out.println("JSON is NULL");
+				return badRequest("Expecting Json data");
+			}
+
+			// Get collector
+			ActorRef collector = collectors.get(id);
+
+			// Process messages
+			Iterator<String> it = json.fieldNames();
+			while(it.hasNext()){
+
+				String timestamp = it.next();
+				JsonNode value = json.get(timestamp);
+
+				// Process Text
+				String numberOfConflicts = value.toString();
+
+				collector.tell(new Conflicts(agent, timestamp, numberOfConflicts), ActorRef.noSender());
 			}
 
 			// Determine Global Utility

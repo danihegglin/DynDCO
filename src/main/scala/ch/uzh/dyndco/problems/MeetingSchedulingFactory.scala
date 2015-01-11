@@ -18,12 +18,14 @@ object MeetingSchedulingFactory {
   var TIMESLOTS : Int = 0
   var MEETINGS : Int = 0
   var AGENTS : Int = 0
+  var DENSITY : Double = 0
   
-  def build(TIMESLOTS_ : Int, MEETINGS_ : Int, AGENTS_ : Int) : MeetingSchedulingProblem = {
+  def build(TIMESLOTS_ : Int, MEETINGS_ : Int, AGENTS_ : Int, DENSITY_ : Double) : MeetingSchedulingProblem = {
     
     TIMESLOTS = TIMESLOTS_
     MEETINGS = MEETINGS_
     AGENTS = AGENTS_
+    DENSITY = DENSITY_
     
     var meetings : MutableList[Meeting] = buildMeetings()
     var allParticipations : Map[Int, Set[Int]] = buildAllParticipations()
@@ -153,7 +155,7 @@ object MeetingSchedulingFactory {
 	
 	private def buildHardConstraints(availableTimeslots : MutableList[Int], used : Set[Int]) : Set[Int] = {
 			var available = Random.nextInt(availableTimeslots.size) + 1
-			var numOfHardConstraints : Int = available / 3 // FIXME
+			var numOfHardConstraints : Int = Math.floor(available * DENSITY).toInt
 			var hardConstraints: Set[Int] = Set()
 			for(hardConstraint <- 1 to numOfHardConstraints){
 				var timeslot = -1

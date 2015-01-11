@@ -21,4 +21,13 @@ class MeetingSchedulingProblem (
   var MEETINGS = MEETINGS_
   var AGENTS = AGENTS_
   
+  def getDomain() : Any = TIMESLOTS
+  def setDomain(domain : Any) {TIMESLOTS = domain.asInstanceOf[Int]}
+  def increaseDomain(percentage : Double){ 
+    // override 
+  }
+  def decreaseDomain(percentage : Double){
+    // override
+  }
+  
 }

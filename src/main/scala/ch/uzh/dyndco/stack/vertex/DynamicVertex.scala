@@ -9,30 +9,16 @@ import ch.uzh.dyndco.problems.MeetingSchedulingFactory
 abstract class DynamicVertex (id: Any, initialState: Any) 
     extends MeetingSchedulingVertex(id, initialState) {
   
-  /**
-   * Round control
-   */
-  var CHANGE_ROUND : Int = -1
-  
-  def isChangeRound() : Boolean = {
-
-    // Check Change
-    if(roundCount >= CHANGE_ROUND){
-        changeConstraints()
-        true
-    }
-    else{
-      false
-    }
-    
-  }
-  
   def changeConstraints(){
-      
       var participations : Set[Int] = Set[Int](MEETING_ID)
       var newConstraints = MeetingSchedulingFactory.buildSingleConstraints(AGENT_ID, participations)
       CONSTRAINTS_CURRENT = newConstraints.clone() 
       CONSTRAINTS_ORIGINAL = newConstraints.clone()
+  }
+  
+  def changeDomain(domain : Any){
+        TIMESLOTS = domain.asInstanceOf[Int]
+        // FIXME
   }
   
 }

@@ -21,6 +21,7 @@ object SingleTest extends DeployableAlgorithm {
       /**
     	 * Parameters
     	 */
+      val DENSITY : Double = parameters.apply("density").toDouble
       val ALGORITHM : String = parameters.apply("algorithm")
       val EXECUTION : String = parameters.apply("execution")
       val MODE : String = parameters.apply("mode")
@@ -32,12 +33,12 @@ object SingleTest extends DeployableAlgorithm {
       /**
        * Build id
        */
-      val id = IdFactory.build(ALGORITHM, EXECUTION, MODE, PARAM, TIMESLOTS, MEETINGS, AGENTS, 1)
+      val id = IdFactory.build(ALGORITHM, EXECUTION, MODE, PARAM, DENSITY, TIMESLOTS, MEETINGS, AGENTS, 1)
   
       /**
        * Build problem
        */
-      val problem = MeetingSchedulingFactory.build(TIMESLOTS, MEETINGS, AGENTS)
+      val problem = MeetingSchedulingFactory.build(TIMESLOTS, MEETINGS, AGENTS, DENSITY)
       
       /**
        * Build configuration

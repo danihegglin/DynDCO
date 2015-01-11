@@ -1,9 +1,9 @@
-package ch.uzh.dyndco.studies
+package ch.uzh.dyndco.monitoring
 
 import dispatch._
 import dispatch.Defaults._
 import spray.json._
-import DefaultJsonProtocol._
+import spray.json.DefaultJsonProtocol._
 import collection.mutable.Map
 
 object MonitoringTesting extends App {

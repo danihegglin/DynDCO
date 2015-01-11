@@ -43,7 +43,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     
 	  // Create local utilities
     utilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
-    
+       
     // Merge map with util messages
     for(utilMessage <- utilMessages){
     	for (value <- 1 to TIMESLOTS){
@@ -122,6 +122,8 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    */
 	def collect() = {
     
+    newRound()
+    
     try {
     
     // Check if finished
@@ -153,8 +155,6 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
       }
       initialized = true
     }
-    
-    newRound()
 	  
 		/**
      * Process messages 

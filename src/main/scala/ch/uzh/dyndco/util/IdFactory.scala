@@ -7,6 +7,7 @@ object IdFactory {
       execution : String, 
       mode : String, 
       param : String,
+      density : Double,
       timeslots : Int, 
       meetings : Int, 
       agents : Int, 
@@ -16,7 +17,8 @@ object IdFactory {
       algorithm +
       "_" + execution +
       "_" + mode +
-      "_" + param + 
+      "_" + param +
+      "_" + density +
       "-" +
       "a" + agents + 
       "m" + meetings + 

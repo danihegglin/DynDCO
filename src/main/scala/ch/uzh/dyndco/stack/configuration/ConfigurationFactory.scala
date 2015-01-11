@@ -27,7 +27,8 @@ object ConfigurationFactory {
       MODE match {
         case "normal" => TestMode.Normal
         case "dynamicConstraints" => TestMode.DynamicConstraints
-        case "dynamicMeetings" => TestMode.DynamicMeetings
+        case "dynamicVariables" => TestMode.DynamicVariables
+        case "dynamicDomain" => TestMode.DynamicDomain
       }
   }
 

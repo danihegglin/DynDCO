@@ -20,6 +20,7 @@ object MultipleTest extends DeployableAlgorithm {
     /**
      * Testconfigs
      */
+    val DENSITY : Double = parameters.apply("density").toDouble
     val ALGORITHM : String = parameters.apply("algorithm")
     val EXECUTION : String = parameters.apply("execution")
     val MODE : String = parameters.apply("mode")
@@ -55,18 +56,19 @@ object MultipleTest extends DeployableAlgorithm {
     var timeslots : Int = TIMESLOTS
     var meetings : Int = MEETINGS
     var agents : Int = AGENTS
+    var density : Double = DENSITY
     
     var stopMeetings = false
+    var stopAgents = false
     
-    
-    while(agents <= MAX_AGENTS){
+    while(agents <= MAX_AGENTS && stopAgents == false){
       while(meetings <= MAX_MEETINGS && stopMeetings == false){
         for(run <- 1 to RUNS){
           
           println("RUN " + run + " of " + RUNS + " (AGENTS: "+agents+", MEETINGS: "+meetings+")")
           
-          val runID = IdFactory.build(ALGORITHM, EXECUTION, MODE, PARAM, timeslots, meetings, agents, run)
-          val problem = MeetingSchedulingFactory.build(timeslots,meetings,agents)
+          val runID = IdFactory.build(ALGORITHM, EXECUTION, MODE, PARAM, DENSITY, timeslots, meetings, agents, run)
+          val problem = MeetingSchedulingFactory.build(timeslots,meetings,agents,density)
           
           Monitoring.start(runID)
           
@@ -77,7 +79,7 @@ object MultipleTest extends DeployableAlgorithm {
           }
           
           Monitoring.sucess(runID)
-          Thread sleep 3000
+          Thread sleep 5000
           
           // Clear memory
           Runtime.getRuntime().gc;
@@ -90,15 +92,15 @@ object MultipleTest extends DeployableAlgorithm {
         }
       }
       stopMeetings = false
-      meetings = 10
       
       // Increase Agents
       FACTOR_AGENTS match {
-        case 1 => agents += FACTOR_AGENTS
+        case 0 => stopAgents = true
         case _ => agents += FACTOR_AGENTS
       }
       
-//      meetings = 1
+      // Reset meetings to starting point
+      meetings = MEETINGS
     }
     
   }
