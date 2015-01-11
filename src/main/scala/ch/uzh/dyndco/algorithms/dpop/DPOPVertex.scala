@@ -35,6 +35,13 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    */
 	def addParent(_parent : DPOPVertex) = {parent = _parent}
 	def addChild(_child : DPOPVertex) = {children += _child}
+  def removeChild(_child : DPOPVertex) = {
+    for(childNum <- 0 to children.size){
+      var child = children.get(childNum)
+      if(child == _child)
+        children.drop(childNum)
+    }
+  }
 	
   /**
    * Calculates all utilities

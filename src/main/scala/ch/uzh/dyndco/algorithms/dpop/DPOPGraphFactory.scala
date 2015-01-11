@@ -9,6 +9,8 @@ import collection.mutable.Set
 import ch.uzh.dyndco.problems.MeetingConstraints
 import ch.uzh.dyndco.problems.MeetingSchedulingFactory
 import ch.uzh.dyndco.stack.graph.GraphFactory
+import scala.util.Random
+import scala.collection.mutable.MutableList
 
 object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem] {
   
@@ -34,34 +36,18 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
       */
      
       // indices
-      var middleVertices : Map[Int, DPOPVertex] = Map[Int, DPOPVertex]()
-      var leafVertices : Set[DPOPVertex] = Set[DPOPVertex]()
+      var vertices : Set[DPOPVertex] = Set[DPOPVertex]()
       var neighbourhoods = Map[Int, Set[DPOPVertex]]()
       var meetingIndices : Map[Int, Map[Any, Int]] = Map[Int, Map[Any, Int]]()
       var agentIndices = Map[Int, Map[Any, Int]]()
      
-      // build root node
-      var rootVertex = buildRootVertex(problem.TIMESLOTS, graph)
-      
-      // build middle nodes
+      // prepare meetings
       for(meeting <- problem.meetings){
-        
-        // add to meeting index
-        var meetingIndex : Map[Any, Int] = Map[Any, Int]()
-        meetingIndices += (meeting.id -> meetingIndex)
-                
-        var middleNode = buildMiddleVertex(
-            meeting.id,
-            problem.TIMESLOTS,
-            rootVertex,
-            meetingIndex,
-            graph)
-        
-        middleVertices += (meeting.id -> middleNode)
+        meetingIndices += (meeting.id -> Map[Any, Int]())
         neighbourhoods += (meeting.id -> Set[DPOPVertex]())
       }
       
-      // build leaf nodes
+      // build nodes
       for(agentId <- problem.allParticipations.keys){
         
         // build agent index
@@ -77,22 +63,20 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           
           slot += 1
           
-          var meetingVertex = middleVertices.apply(meetingId)
           var meetingIndex = meetingIndices.apply(meetingId)
           
-          var leafVertex = buildLeafVertex(
+          var leafVertex = buildVertex(
               agentId,
               meetingId,
               constraints,
               problem.TIMESLOTS,
               agentIndex,
               meetingIndex,
-              meetingVertex,
               graph
           )
           
           // add to index
-          leafVertices += leafVertex
+          vertices += leafVertex
           
           // add to neighbourhood
           addToNeighbourhoods(
@@ -102,107 +86,54 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
             )
         }
       }
-     
+    
+     // build edges
+     buildPseudoTree(vertices, graph)
+    
      // return graph
-      new DPOPGraph(rootVertex, middleVertices, leafVertices, neighbourhoods, agentIndices, meetingIndices, graph)
+      new DPOPGraph(vertices, neighbourhoods, agentIndices, meetingIndices, graph)
   }
   
     /**
      * Builder Functions
      */
-     def buildRootVertex(
-         timeslots : Int,
-         graph : Graph[Any, Any]) : DPOPVertex = {
-       
-       // build vertex
-       var rootVertex = new DPOPVertex("root", null)
-       
-       // parameters
-       rootVertex.TIMESLOTS = timeslots
-       rootVertex.AGENT_INDEX = Map[Any, Int]()
-       
-       // add to graph
-       graph.addVertex(rootVertex)
-       
-       rootVertex
-     }
-     
-     def buildMiddleVertex(
-         meetingId : Int,
-         timeslots : Int,
-         rootVertex : DPOPVertex,
-         meetingIndex : Map[Any,Int],
-         graph : Graph[Any, Any]) : DPOPVertex = {
-       
-          // build vertex
-          var middleVertexId = "m" + meetingId
-          var middleVertex = new DPOPVertex(middleVertexId, null)
-          
-          // parameters
-          middleVertex.MAX_ROUND = MAX_ROUND
-          middleVertex.TIMESLOTS = timeslots
-          middleVertex.MEETING_INDEX = meetingIndex
-          middleVertex.MEETING_ID = meetingId
-          
-          // add middle to root vertex
-          middleVertex.addParent(rootVertex)
-          rootVertex.addChild(middleVertex)
-          
-          // add to graph
-          graph.addVertex(middleVertex)
-          
-          // add edges
-          graph.addEdge(middleVertexId, new StateForwarderEdge("root"))
-          graph.addEdge("root", new StateForwarderEdge(middleVertexId))
-          
-          middleVertex
-     }
-     
-     def buildLeafVertex(
+     def buildVertex(
          agentId : Int, 
          meetingId : Int,
          constraints : MeetingConstraints, 
          timeslots : Int,
          agentIndex : Map[Any,Int],
          meetingIndex : Map[Any,Int],
-         meetingVertex : DPOPVertex,
+//         meetingVertex : DPOPVertex,
          graph : Graph[Any, Any]) : DPOPVertex = {
        
        // increment monitoring slot
        slot += 1
        
        // build vertex
-       var leafVertexId = "a" + agentId + "m" + meetingId
-       var leafVertex = new DPOPVertex(leafVertexId, null)
+       var vertexId = "a" + agentId + "m" + meetingId
+       var vertex = new DPOPVertex(vertexId, null)
           
        // parameters
-       leafVertex.MAX_ROUND = MAX_ROUND
-       leafVertex.PUSH_ROUND = slot
-       leafVertex.TIMESLOTS = timeslots
-       leafVertex.CONSTRAINTS_ORIGINAL = constraints.clone()
-       leafVertex.CONSTRAINTS_CURRENT = constraints.clone()
-       leafVertex.AGENT_INDEX = agentIndex
-       leafVertex.MEETING_INDEX = meetingIndex
-       leafVertex.MEETING_ID = meetingId
-       leafVertex.AGENT_ID = agentId
-       
-       // add leaf to middle vertex
-       leafVertex.addParent(meetingVertex)
-       meetingVertex.addChild(leafVertex)
+       vertex.MAX_ROUND = MAX_ROUND
+       vertex.PUSH_ROUND = slot
+       vertex.TIMESLOTS = timeslots
+       vertex.CONSTRAINTS_ORIGINAL = constraints.clone()
+       vertex.CONSTRAINTS_CURRENT = constraints.clone()
+       vertex.AGENT_INDEX = agentIndex
+       vertex.MEETING_INDEX = meetingIndex
+       vertex.MEETING_ID = meetingId
+       vertex.AGENT_ID = agentId
        
        // add to graph
-       graph.addVertex(leafVertex)
-       
-       // add edges
-       graph.addEdge(leafVertexId, new StateForwarderEdge("m" + meetingId))
-       graph.addEdge("m" + meetingId, new StateForwarderEdge(leafVertexId))
-       
+       graph.addVertex(vertex)
+
        // adjust slot
        if(slot == MAX_SLOTS){
          slot = 0
        }
        
-       leafVertex
+       vertex
      }
      
      def addToNeighbourhoods(
@@ -218,6 +149,57 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           neighbourhood += (leafVertex)
           neighbourhoods += (meetingId -> neighbourhood)
      }
+     
+     /**
+      * Pseudotree Functions
+      */
+     var connectableVertices = MutableList[DPOPVertex]()
+     var leafVertices = Set[DPOPVertex]()
+     
+     def buildPseudoTree(vertices : Set[DPOPVertex], graph : Graph[Any,Any]){
+      
+      // build list and random picks
+      var verticesList = vertices.toList
+      var randomPicks = Random.shuffle((0 until verticesList.length).toList)
+      
+      for(randomPick <- randomPicks){
+        
+        // choose leader
+        if(connectableVertices.isEmpty){
+          connectableVertices += verticesList.apply(randomPick)
+        }
+        else {
+          addLeaf(verticesList.apply(randomPick), graph)
+        }
+      }
+      
+    }
+    
+    def addLeaf(childVertex : DPOPVertex, graph : Graph[Any,Any]) {
+       
+        // add random nodes from the set to the tree
+        var parentVertex = connectableVertices.apply(0)
+          
+         // add parent/child relationship
+         childVertex.addParent(parentVertex)
+         parentVertex.addChild(childVertex)
+         
+         // add edges
+         graph.addEdge(childVertex.id, new StateForwarderEdge(parentVertex.id))
+         graph.addEdge(parentVertex.id, new StateForwarderEdge(childVertex.id))
+         
+         // remove parent from connectable list if full
+         if(parentVertex.children.size == 2){
+           connectableVertices.drop(0)
+         }
+          
+         // add child to connectable list
+         connectableVertices += childVertex
+    }
+    
+    def removeVertex(vertex : DPOPVertex, grap : Graph[Any, Any]) {
+      
+    }
   
   /**
    * Dynamic Functions
@@ -228,55 +210,47 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
       agentId: Int,
       meetingId: Int) {
     
-          // prepare
+      // prepare
       var participations = Set[Int](meetingId)
       var constraints : MeetingConstraints = MeetingSchedulingFactory.buildSingleConstraints(agentId, participations)
-      var agentIndex = 
-        if(dpopGraph.agentIndices.contains(agentId)) 
-          dpopGraph.agentIndices.apply(agentId)
-        else 
-          Map[Any,Int]()
-      var meetingIndex = 
-        if(dpopGraph.meetingIndices.contains(meetingId))
-          dpopGraph.meetingIndices.apply(meetingId)
-        else
-          Map[Any,Int]()
       
-      // build
-      var meetingVertex : DPOPVertex = null
-      if(!dpopGraph.neighbourhoods.contains(meetingId)){
-        meetingVertex = 
-          buildMiddleVertex(
-              meetingId,
-              problem.TIMESLOTS,
-              dpopGraph.root,
-              meetingIndex,
-              dpopGraph.graph
-           )
-           
-        dpopGraph.middle += (meetingId -> meetingVertex)
-        dpopGraph.neighbourhoods += (meetingId -> Set[DPOPVertex]())
+      var agentIndex = 
+      if(dpopGraph.agentIndices.contains(agentId)){
+        dpopGraph.agentIndices.apply(agentId)
+      }
+      else { 
+        Map[Any,Int]()
+      }
+      
+      // indices
+      var meetingIndex = 
+      if(dpopGraph.meetingIndices.contains(meetingId)){
+        dpopGraph.meetingIndices.apply(meetingId)
       }
       else {
-        meetingVertex = dpopGraph.middle.apply(meetingId)
+        var meetingIndex = Map[Any,Int]()
+        dpopGraph.meetingIndices += (meetingId -> meetingIndex)
+        meetingIndex
       }
-          
-      var leafVertex = buildLeafVertex(
+      
+      var vertex = buildVertex(
           agentId, 
           meetingId,
           constraints,
           problem.TIMESLOTS,
           agentIndex,
           meetingIndex,
-          meetingVertex,
           dpopGraph.graph
           )
           
       // add to neighbourhoods
-      addToNeighbourhoods(meetingId, leafVertex, dpopGraph.neighbourhoods)
+      addToNeighbourhoods(meetingId, vertex, dpopGraph.neighbourhoods)
       
       // add to indices
-      dpopGraph.leaf += leafVertex
+      dpopGraph.vertices += vertex
+      
+      // add to graph
+      addLeaf(vertex, dpopGraph.graph)
   }
   
   def removeAgent(
@@ -284,35 +258,40 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
       agentId: Int, 
       meetingId: Int) {
     
+      // get vertex object
       if(dpopGraph.neighbourhoods.contains(meetingId)){
         var neighbourhood = dpopGraph.neighbourhoods.apply(meetingId)
-        var leafVertex : DPOPVertex = null
-        for(neighbour <- neighbourhood){
-          if(neighbour.AGENT_ID == agentId){
-            leafVertex = neighbour
+        var vertex : DPOPVertex = null
+        for(participant <- neighbourhood){
+          if(participant.AGENT_ID == agentId){
+            vertex = participant
           }
         }
         
-        // remove vertices
-        dpopGraph.graph.removeVertex(leafVertex)
-              
-        // clear indices
-        leafVertex.AGENT_INDEX.remove(meetingId)
-        neighbourhood.remove(leafVertex)
-        dpopGraph.neighbourhoods += (meetingId -> neighbourhood)
-        dpopGraph.leaf -= leafVertex
-        
-        // remove from meeting index in middle vertex
-        var middleVertex = dpopGraph.middle.apply(meetingId)   
-        middleVertex.MEETING_INDEX.remove(agentId)
-        
-        if(neighbourhood.size == 0){
-          dpopGraph.graph.removeVertex(middleVertex)
-          dpopGraph.middle -= middleVertex.MEETING_ID
+        // connect children to parent
+        vertex.parent.removeChild(vertex)
+        if(vertex.children.size > 0){
+          vertex.parent.addChild(vertex.children.apply(0))
+          if(vertex.children.size > 1){
+            addLeaf(vertex.children.apply(1), dpopGraph.graph)
+          }
         }
-       
+          
+        // remove vertices
+        dpopGraph.graph.removeVertex(vertex)
+                
+        // clear indices
+        vertex.AGENT_INDEX.remove(meetingId)
+        neighbourhood.remove(vertex)
+        if(neighbourhood.size > 0)
+          dpopGraph.neighbourhoods += (meetingId -> neighbourhood)
+        else
+          dpopGraph.neighbourhoods.remove(meetingId)
+        
+        dpopGraph.vertices -= vertex
+        
       }
     
-  }
+    }
 	
 }
