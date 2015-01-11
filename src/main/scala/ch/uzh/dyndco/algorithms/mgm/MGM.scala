@@ -21,6 +21,7 @@ import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import ch.uzh.dyndco.stack.configuration.Configuration
 import ch.uzh.dyndco.stack.tests.TestMode
 import ch.uzh.dyndco.stack.dynamic.DynamicController
+import ch.uzh.dyndco.stack.Settings
 
 object MGM extends App {
   
@@ -55,19 +56,24 @@ object MGM extends App {
     mgmGraph.graph.shutdown
     
     /**
-     * Send remaining utilities
+     * Send remaining utilities & conflicts
      */
     for(vertex <- mgmGraph.getAgents()){
       Monitoring.update(vertex.id, vertex.updates)
       Thread sleep 20 // Otherwise too many messages at once
     }
+    for(varVertex <- mgmGraph.getAgents()){
+      Monitoring.conflict(varVertex.id, varVertex.conflicts)
+    }
     
     /**
-     * Results
+     * Send & show results
      */
     var prepStats = mgmGraph.prepareStats(stats)
     Monitoring.stats(prepStats)
-    Thread sleep 1000 // Otherwise stop too fast
     mgmGraph.show
+    
+    Thread sleep Settings.SLEEP_FINISH // Otherwise stop too fast
+    
   }
 }

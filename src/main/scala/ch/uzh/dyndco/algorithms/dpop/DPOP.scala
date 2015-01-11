@@ -15,6 +15,7 @@ import ch.uzh.dyndco.problems.MeetingSchedulingProblem
 import ch.uzh.dyndco.stack.configuration.Configuration
 import ch.uzh.dyndco.stack.dynamic.DynamicController
 import ch.uzh.dyndco.stack.tests.TestMode
+import ch.uzh.dyndco.stack.Settings
 
 ///**
 // * based on: A Scalable Method for Multiagent Constraint Optimization
@@ -54,20 +55,24 @@ object DPOP extends App {
     dpopGraph.graph.shutdown
     
     /**
-     * Send remaining utilities
+     * Send remaining utilities & conflicts
      */
     for(varVertex <- dpopGraph.getAgents()){
       Monitoring.update(varVertex.id, varVertex.updates)
       Thread sleep 20 // Otherwise too many messages at once
     }
+    for(varVertex <- dpopGraph.getAgents()){
+      Monitoring.conflict(varVertex.id, varVertex.conflicts)
+    }
   	
     /**
-     * Results
+     * Send & show results
      */
     var prepStats = dpopGraph.prepareStats(stats)
     Monitoring.stats(prepStats)
-    Thread sleep 1000 // Otherwise stop too fast
     dpopGraph.show
+    
+    Thread sleep Settings.SLEEP_FINISH // Otherwise stop too fast
     
     }
 	

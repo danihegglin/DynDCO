@@ -21,6 +21,7 @@ import ch.uzh.dyndco.stack.tests.DCOAlgorithm
 import com.signalcollect.configuration.ExecutionMode
 import ch.uzh.dyndco.stack.tests.TestMode
 import ch.uzh.dyndco.stack.configuration.Configuration
+import ch.uzh.dyndco.stack.Settings
 
 /**
  * Based on: FIXME
@@ -76,7 +77,7 @@ object MaxSum extends DCOAlgorithm {
     Monitoring.stats(prepStats)
     maxSumGraph.show()
     
-    Thread sleep 5000 // Otherwise stop too fast
+    Thread sleep Settings.SLEEP_FINISH // Otherwise stop too fast
     
   }
 }

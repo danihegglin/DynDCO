@@ -1,2 +1,0 @@
-timestamp;utility;agent_index;meeting_index 
-1;0.484161290322581;153.5;117.433333333333;

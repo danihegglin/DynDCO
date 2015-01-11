@@ -5,13 +5,14 @@ import dispatch.Defaults._
 import collection.mutable.Map
 import spray.json._
 import DefaultJsonProtocol._
+import ch.uzh.dyndco.stack.Settings
 
 object Monitoring {
   
   /**
    * Configuration
    */
-  final var address = "localhost" //"178.62.200.138"
+  final var address = Settings.MONITORING_ADDRESS
   var runID : String = "" 
   
   /**
