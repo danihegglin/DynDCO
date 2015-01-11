@@ -21,8 +21,8 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	/**
 	 * Current utilities and values
 	 */
-	var utilities = Map[Int, Double]()
-  var values = Map[Any,Int]()
+	var utilities = Map[Int, Map[Int, Double]]()
+  var values = Map[Int,Int]()
 	
 	/**
 	 * Message containers
@@ -49,25 +49,36 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 	def computeUtils() = {
     
 	  // Create local utilities
-    utilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
+    var localUtilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
+    utilities += (MEETING_ID -> localUtilities)
        
     // Merge map with util messages
     for(utilMessage <- utilMessages){
-    	for (value <- 1 to TIMESLOTS){
-    		
-        var localUtility : Double = 0
-    		if(utilities.contains(value)){
-    			localUtility = utilities.get(value).get
-    		}
-    	  
-        var messageValueUtility : Double = 0
-    		if(utilMessage.getUtilities.contains(value)){
-    			messageValueUtility = utilMessage.getUtilities.get(value).get
-    		}
+      
+      for(singleUtility <- utilMessage.utilities.keys){
         
-    		utilities += (value -> (localUtility + messageValueUtility))
-    	}
-	 }
+        var combinedUtilities : Map[Int, Double] = Map[Int, Double]()
+    	  for (value <- 1 to TIMESLOTS){
+    		
+          var localUtility : Double = 0
+          if(singleUtility == MEETING_ID){
+            var localUtilities = utilities.apply(singleUtility)
+        		if(localUtilities.contains(value)){
+        			localUtility = localUtilities.get(value).get
+        		}
+          }
+    	  
+          var messageValueUtility : Double = 0
+          var messageUtilities : Map[Int, Double] = utilMessage.getUtilities.get(singleUtility).get
+      		if(messageUtilities.contains(value)){
+    			  messageValueUtility = messageUtilities.get(value).get
+      		}
+        
+        combinedUtilities += (value -> (localUtility + messageValueUtility))
+    	 }
+       utilities += (singleUtility -> combinedUtilities)
+	   }
+    }
     
 	}
 	
@@ -78,43 +89,38 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     
     if(!finished){
     
+      /**
+       *  Root Node
+       */
       if(isRoot){
         
-        for(utilMessage <- utilMessages){
-          
-          var localUtilities = utilMessage.getUtilities
-          var vertex : DPOPVertex = utilMessage.sender
-          if(localUtilities != null){
-            try {
-              var localValue = findMaxValue(localUtilities)
-              AGENT_INDEX.put(vertex.MEETING_ID, localValue)
-              values.put(vertex, localValue)
-            } catch {
-              case e : Exception => 
-                //e.printStackTrace()
-            }
-          }
-          else {
-            println("ERROR")
-          }
-        } 
-        
+        computeUtils()
+        var localValue = findMaxValue(utilities.get(MEETING_ID).get)
+        registerValue(localValue)
+        values.put(MEETING_ID, localValue)
         
       }
+      /**
+       * Middle, Leaf Nodes
+       */
       else {
         
-        for(valueMessage <- valueMessages){
-            values = valueMessage.values
+        var maxValue = -1
+        if(values.contains(MEETING_ID)){
+          maxValue = values.get(MEETING_ID).get
+//          if(!isValid(maxValue)){
+//            maxValue = findMaxValue(utilities.get(MEETING_ID).get) 
+//          }
+          registerValue(maxValue)
+          values.put(MEETING_ID, maxValue)
         }
-        
-        if(isLeaf){
-          if(values.contains(this.parent)){
-            var maxValue = values.get(parent).get
-            registerValue(maxValue)
-          }
+        else {
+          maxValue = findMaxValue(utilities.get(MEETING_ID).get)
+          computeUtils()
         }
-        
-    }
+        registerValue(maxValue)
+        values.put(MEETING_ID, maxValue)
+      }
    }
 	}
   
@@ -131,34 +137,25 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     
     newRound()
     
-    try {
-    
     // Check if finished
-    if(isLeaf && initialized && !finished){
-      finishedCheck()
-    } else {
-      if(!isRoot && children.size > 0){
-        var isFinished = true
-        for(child <- children){
-          if(!child.finished)
-            isFinished = false
-        }
-        if(isFinished){
-          finished = true
-        }
+    if(initialized && !finished){
+      var isFinished = true
+      for(child <- children){
+        if(!child.finished) isFinished = false
       }
-    }
+      if(isFinished){
+        finishedCheck()
+      }
+    } 
     
     // Initialize
     if(!initialized){
-      if(isLeaf){
-          try {
-            value = CONSTRAINTS_ORIGINAL.preference.apply(MEETING_ID)
-            AGENT_INDEX += (MEETING_ID -> value)
-            MEETING_INDEX += (AGENT_ID -> value)
-          } catch {
-            case e : Exception => "Initialization fail"
-          }
+      try {
+        value = CONSTRAINTS_ORIGINAL.preference.apply(MEETING_ID)
+        AGENT_INDEX += (MEETING_ID -> value)
+        MEETING_INDEX += (AGENT_ID -> value)
+      } catch {
+        case e : Exception => "Initialization fail"
       }
       initialized = true
     }
@@ -221,30 +218,23 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
 
 			// Check if value messages have arrived
 			if(valueMessages.size > 0){
+        
+        // Add to agent view
+        for(valueMessage <- valueMessages){
+            values = valueMessage.values
+        }
 
         // Choose the best value
         chooseOptimal()
           
          // store curent utility
-         if(isLeaf){
-           try {
-            storeAgentUtility()
-           } catch {
-             case e : Exception => println("Storage fail: " + id)
-           }
-         }
+         storeAgentUtility(true)
     
          valueMessages.clear()
 		  }
-    } catch {
-      case e : Exception => 
-        e.printStackTrace() 
-        System.exit(0)
-    }
-     
-      
+    
      /**
-      * FINAL message: contains both; parent reads util, children read values
+      * MESSAGE: contains both value and utilities; parent reads util, children read values
       */
      new DPOPMessage(this, utilities, values)
      

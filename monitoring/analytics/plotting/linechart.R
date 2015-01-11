@@ -5,25 +5,16 @@ plot(rnorm(100),type="l",col=2)
 lines(rnorm(100),col=3)
 
 # various runs
-experiment1 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/maxsum_asynchronous_normal/5_5/mean.txt", sep=";")
-plot(experiment1$timepoint, experiment1$u_sum, xlab= "timepoint", ylab= "Utility", type='l', col=2)
+experiment1 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/maxsum_synchronous_normal__0.25/20_10/mean.txt", sep=";")
 plot(experiment1$timepoint, experiment1$u_median, xlab= "timepoint", ylab= "Utility", type='l', col='black')
-plot(experiment1$timepoint, experiment1$u_mean, xlab= "timepoint", ylab= "Utility", type='l', col='red')
-experiment2 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/mgm_asynchronous_normal/5_5/mean.txt", sep=";")
-plot(experiment2$timepoint, experiment2$u_sum, xlab= "timepoint", ylab= "Utility", type='l', col='red')
+experiment2 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/mgm_synchronous_normal__0.25/20_10/mean.txt", sep=";")
 plot(experiment2$timepoint, experiment2$u_median, xlab= "timepoint", ylab= "Utility", type='l', col='black')
-plot(experiment2$timepoint, experiment2$u_mean, xlab= "timepoint", ylab= "Utility", type='l', col='red')
-experiment3 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/dpop_asynchronous_normal/5_5/mean.txt", sep=";")
-plot(experiment3$timepoint, experiment3$u_sum, xlab= "timepoint", ylab= "Utility", type='l', col='red')
+experiment3 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/dpop_synchronous_normal__0.25/20_10/mean.txt", sep=";")
 plot(experiment3$timepoint, experiment3$u_median, xlab= "timepoint", ylab= "Utility", type='l', col='black')
-plot(experiment3$timepoint, experiment3$u_mean, xlab= "timepoint", ylab= "Utility", type='l', col='red')
-# mod <- lm(experiment$median ~ experiment$timepoint)
-# abline(mod, col = "blue")
 
-
-plot(experiment1$u_median,type="l",col="red")
+plot(experiment3$u_median,type="l",col="red")
 lines(experiment2$u_median,col="blue")
-lines(experiment3$u_median,col="green")
+lines(experiment1$u_median,col="green")
 legend(2000,9.5, c("Maxsum","MGM","DPOP"),lty=c(1,1), lwd=c(2.5,2.5),col=c("red","blue","green")) 
 
 # scalability

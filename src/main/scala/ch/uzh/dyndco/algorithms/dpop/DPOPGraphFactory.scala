@@ -104,7 +104,6 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
          timeslots : Int,
          agentIndex : Map[Any,Int],
          meetingIndex : Map[Any,Int],
-//         meetingVertex : DPOPVertex,
          graph : Graph[Any, Any]) : DPOPVertex = {
        
        // increment monitoring slot

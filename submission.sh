@@ -9,17 +9,6 @@
 #SBATCH -o /home/user/hegglin/log/out/dyndco1.out
 #SBATCH -e /home/user/hegglin//log/err/dyndco1.err
 
-echo $1
-echo $2
-echo $3
-echo $4
-echo $5
-echo $6
-echo $7
-echo $8
-echo $9
-echo ${10}
-
 #...commands to be run before jobs starts...
 jarname=dyndco-1.1-SNAPSHOT.jar
 mainClass=ch.uzh.dyndco.testbed.MultipleDriver

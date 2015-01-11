@@ -255,15 +255,39 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   }
   
   /**
+   * Normalize
+   */
+  def normalize(utility : Double) : Double = {
+    var normalized : Double = 0.0
+    
+    var max = (MEETING_INDEX.size - 1) * (MEETING_INDEX.size)
+    
+    if(utility > 0){
+      
+      try {
+        normalized = (utility - 0) / (max - 0)
+      } 
+      catch {
+        case e : Exception => println("normalization error")
+      }
+    }
+    normalized
+  } 
+  
+  /**
     * Message Control
     */
    var updates = Map[String, String]()
    var conflicts = Map[String, String]()
    
-   def storeAgentUtility(){
+   def storeAgentUtility(normalizeValue : Boolean){
      
       // build message
       var utility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
+      
+      if(normalizeValue)
+        utility = normalize(utility)
+      
       var message = utility + ";" + AGENT_INDEX + ";" + MEETING_INDEX
               
       // add current utility to update messages

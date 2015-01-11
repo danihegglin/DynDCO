@@ -65,26 +65,6 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
 	}
   
   /**
-   * Normalize
-   */
-  def normalize(utility : Double) : Double = {
-    var normalized : Double = 0.0
-    
-    var max = (MEETING_INDEX.size - 1) * (MEETING_INDEX.size) // FIXME
-    
-    if(utility > 0){
-      
-      try {
-        normalized = (utility - 0) / (max - 0)
-      } 
-      catch {
-        case e : Exception => println("normalization error")
-      }
-    }
-    normalized
-  } 
-	
-  /**
    * Find Best Value
    */
 	def findBestValueAssignment(marginalUtilities : Map[Any,Map[Int, Double]]) : Int = {
@@ -150,7 +130,7 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
           }
           
           // store curent utility
-          storeAgentUtility()
+          storeAgentUtility(false)
         }
         
     	  new MaxSumMessage(id, allUtilities)

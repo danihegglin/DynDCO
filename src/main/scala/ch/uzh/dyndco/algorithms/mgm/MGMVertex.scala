@@ -121,7 +121,7 @@ import ch.uzh.dyndco.stack.vertex.DynamicVertex
 	  }
     
     // store curent utility
-    storeAgentUtility()
+    storeAgentUtility(true)
     
    outgoing
   }
