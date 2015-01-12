@@ -95,7 +95,7 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
 		if(initialized){
       
        // check if finished
-       finishedCheck()
+       convergenceCheck()
       
   		  // build all Utilities: function -> variable -> timeslot -> utility
         var isNull : Boolean = true
@@ -124,7 +124,7 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
         if(!isNull){
     			
           // find best assignments for all requirements
-          if(!finished){
+          if(!converged){
       		  var maxValue = findBestValueAssignment(allUtilities)
             registerValue(maxValue)
           }

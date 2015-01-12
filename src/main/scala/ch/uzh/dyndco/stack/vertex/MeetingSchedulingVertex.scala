@@ -41,10 +41,10 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   var initialized : Boolean = false
     
   /**
-     * Adjusted Finish Control: 
-     * Finish when all participants have same timeslot for meeting
-     */
-    override def finishedCheck() = {
+   * Adjusted Finish Control: 
+   * Finish when all participants have same timeslot for meeting
+   */
+   override def convergenceCheck() = {
       
     // Check Meeting Index
     if(MEETING_INDEX != null && MEETING_INDEX.size > 0){
@@ -58,7 +58,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       // Check Agent Index
       if(AGENT_INDEX == null){
         if(same){
-          finished = true
+          converged = true
         }
       }
       else if(AGENT_INDEX.size > 0){
@@ -73,7 +73,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         }
         
         if(same && different){
-          finished = true
+          converged = true
         }
         else 
           showState()
@@ -82,7 +82,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
       
     // Check Max Round      
     if(roundCount >= MAX_ROUND){
-      finished = true
+      converged = true
     }
     
   }  

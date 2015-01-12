@@ -23,7 +23,7 @@ import ch.uzh.dyndco.stack.vertex.DynamicVertex
      */
    def chooseMaximalGain() = {
       
-      if(!finished){
+      if(!converged){
       
         var maxGain : Double = 0.0
         
@@ -77,7 +77,7 @@ import ch.uzh.dyndco.stack.vertex.DynamicVertex
 	  }
 	  else{
       
-      finishedCheck()
+      convergenceCheck()
 	    
       // process messages
       var gains : Map[Any, Double] = Map[Any, Double]()

@@ -15,20 +15,20 @@ abstract class BasicVertex (id: Any, initialState: Any)
     var PUSH_ROUND = -1
   
     /**
-     * Finish Control
+     * Convergence Control
      */
-    var finished : Boolean = false
+    var converged : Boolean = false
     
     override def scoreSignal: Double = {
-      if(this.finished) 0
+      if(this.converged) 0
       else 1
     }
   
-  def finishedCheck() = {
+  def convergenceCheck() = {
       
     // Check Max Round      
     if(roundCount >= MAX_ROUND){
-      finished = true
+      converged = true
     }
           
   }

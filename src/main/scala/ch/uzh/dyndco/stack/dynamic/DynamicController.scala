@@ -50,12 +50,12 @@ class DynamicController (
               // change constraints
               for(agent <- agents){
                 agent.changeConstraints()
-                agent.finished = false
+                agent.converged = false
               }
               
               // reactivate agents
               for(agent <- allAgents){
-                agent.finished = false
+                agent.converged = false
               }
               
               if(mode == "Single"){
@@ -80,7 +80,7 @@ class DynamicController (
             // parameters
             var mode : String = parameters(0).toString
             var interval : Int = parameters(1).toInt
-            var nextMeetingProb : Double = parameters(2).toDouble
+            var nextNeighbourhoodProb : Double = parameters(2).toDouble
             var nextAgentProb : Double = parameters(3).toDouble
             var removeProb : Double = parameters(4).toDouble
             var number : Int = parameters(5).toInt
@@ -95,8 +95,8 @@ class DynamicController (
               for(change <- 1 to number){
               
                 // get meeting
-                var meetingId = 
-                  if(Random.nextDouble() < nextMeetingProb)
+                var neighbourhoodId = 
+                  if(Random.nextDouble() < nextNeighbourhoodProb)
                     Random.nextInt(dynamicGraph.numOfNeighbourhoods())
                   else
                     dynamicGraph.nextNeighbourhood()
@@ -113,12 +113,12 @@ class DynamicController (
                 
                 // get action
                 if(Random.nextDouble() < removeProb){
-                  dynamicGraph.getFactory().addAgent(dynamicGraph, problem, agentId, meetingId)
+                  dynamicGraph.getFactory().addAgent(dynamicGraph, problem, agentId, neighbourhoodId)
                 }
                 else {
                     if(!isNew){
                       try {
-                        dynamicGraph.getFactory().removeAgent(dynamicGraph, agentId, meetingId)
+                        dynamicGraph.getFactory().removeAgent(dynamicGraph, agentId, neighbourhoodId)
                       }
                       catch {
                         case e : Exception => e.printStackTrace()                    
@@ -148,9 +148,10 @@ class DynamicController (
           def run(){
             
             // Parameters
-            var interval : Int = parameters(0).toInt
-            var percentage : Double = parameters(1).toDouble
-            var increaseProb : Double = parameters(2).toDouble
+            var mode : String = parameters(0).toString
+            var interval : Int = parameters(1).toInt
+            var percentage : Double = parameters(2).toDouble
+            var increaseProb : Double = parameters(3).toDouble
             
             // wait on graph
             while(!isStarted){}
@@ -180,7 +181,10 @@ class DynamicController (
                 
               }
             
-            
+              if(mode == "Single"){
+                isRunning = false;
+              }
+                          
               Thread sleep interval
             } 
           }
@@ -198,7 +202,7 @@ class DynamicController (
     private def checkFinish(){
       var isFinished = true
       for(vertex <- dynamicGraph.getAgents()){
-        if(!vertex.finished)
+        if(!vertex.converged)
           isFinished = false
       }
       

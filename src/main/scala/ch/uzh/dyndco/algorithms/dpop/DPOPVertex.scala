@@ -87,7 +87,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
    */
 	def chooseOptimal() = {
     
-    if(!finished){
+    if(!converged){
     
       /**
        *  Root Node
@@ -138,13 +138,13 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     newRound()
     
     // Check if finished
-    if(initialized && !finished){
+    if(initialized && !converged){
       var isFinished = true
       for(child <- children){
-        if(!child.finished) isFinished = false
+        if(!child.converged) isFinished = false
       }
       if(isFinished){
-        finishedCheck()
+        convergenceCheck()
       }
     } 
     
