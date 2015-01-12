@@ -1,52 +1,47 @@
 \chapter{Design}
+
 \section{Meeting Scheduling Problem}
+
 \subsection{Formal Definition}
+
 - General problem and definitions
-- General constraints Different, Same (sources for that)
-- Considerations for all algorithms
-\subsection{Problem Generation Considerations}
+- hard constraints Different, Same (sources for that)
+- timeslot utility design: first slot preference, preferences, soft constraints (free slots, 'blocked' slots)
 
-\section{General Considerations for Dynamics Framework}
+\subsection{Problem Generation}
 
-\section{Complete - DPOP}
-\subsection{Design Considerations}
-\subsection{Graph}
+\section{General Framework}
+\subsection{Basic Functionality}
+\subsection{Dynamics Controller}
+
+\section{Mapping of DPOP}
+\subsection{Analysis}
+    
+    - Why DPOP
+    - Pseudocode
+
+\subsection{Graph Structure}
 \subsection{Vertices}
 
+\section{Mapping of MGM}
+\subsection{Analysis}
 
-\section{Local Iterative Best-Respone - Maximum Gain Messaging}
-\subsection{Design Considerations}
-\subsection{Graph}
+     - Why MGM
+    - Pseudocode
+
+\subsection{Graph Structure}
 \subsection{Vertices}
 
+\section{Mapping of MaxSum}
+\subsection{Analysis}
+    
+    - Why MaxSum
+    - Pseudocode
 
-\section{Local Iterative Message Passing - MaxSum}
-\subsection{Design Considerations}
-\subsection{Graph}
+\subsection{Graph Structure}
 \subsection{Vertices}
 
--> Local Iterative
--> Good fit for dynamic
--> Better than the above
--> Fewer information disclosure
+\section{Monitoring Platform}
 
-\section{Dynamic Environment Module}
-
-%\subsection{Best Response, Local Search - Population-Based Iterated Local Search}
-%\subsubsection{Why Population-Based for Dynamic Problems}
-%-> Local Iterative
-%-> Provides multiple solutions to a problem
-%-> Good fit for dynamic -> check which solution is best for changed circumstances
-%-> Good fit to stop getting stuck in local optima
-%-> Better than the above
-%
-%
-%\subsection{Dynamic, Complete - RSDPOP}
-%\subsection{Not local-iterative - SBDO}
-%\subsection{Best Response - DSA}
-%
-%- Distributed, Dynamic, Not-Local-Iterative -> Show what is wrong with this approach regarding dynamic
-%
-%\subsubsection{Implementation in Signal/Collect}
-
-\section{Testbed, Monitoring}
+    - Why is it needed: lightweight, non-blocking, analysis on other spot, direct transmit to analyzing platform, live monitoring
+    - How can http requests be better than filewrites

@@ -19,6 +19,7 @@ $agents = 5;
 @mode = ("normal"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"
 
 # Params for dynamicConstraints, dynamicDomain, dynamicVariables
+@changeMode = ("single","multiple");
 @interval = (2000,5000,10000); # Interval 
 @percentage = (0.25,0.50,0.75,1); # Percentage
 @newMeeting = (0,0.5,1); # Next Meeting Probability (otherwise existing meeting)

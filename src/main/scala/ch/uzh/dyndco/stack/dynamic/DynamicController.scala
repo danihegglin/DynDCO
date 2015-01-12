@@ -27,6 +27,7 @@ class DynamicController (
           def run(){
             
             // parameters
+            var mode : String = parameters(0).toString
             var interval : Int = parameters(0).toInt
             var percentage : Double = parameters(1).toDouble
             
@@ -56,6 +57,10 @@ class DynamicController (
               for(agent <- allAgents){
                 agent.finished = false
               }
+              
+              if(mode == "Single"){
+                isRunning = false;
+              }
              
               Thread sleep interval
             } 
@@ -73,16 +78,17 @@ class DynamicController (
           def run(){
             
             // parameters
-            var interval : Int = parameters(0).toInt
-            var nextMeetingProb : Double = parameters(1).toDouble
-            var nextAgentProb : Double = parameters(2).toDouble
-            var removeProb : Double = parameters(3).toDouble
-            var number : Int = parameters(4).toInt
+            var mode : String = parameters(0).toString
+            var interval : Int = parameters(1).toInt
+            var nextMeetingProb : Double = parameters(2).toDouble
+            var nextAgentProb : Double = parameters(3).toDouble
+            var removeProb : Double = parameters(4).toDouble
+            var number : Int = parameters(5).toInt
             
             // wait on graph
             while(!isStarted){}
       
-           while(isRunning){
+            while(isRunning){
               
               checkFinish()
           
@@ -120,6 +126,10 @@ class DynamicController (
                     }
                 }
             
+              }
+              
+              if(mode == "Single"){
+                isRunning = false;
               }
           
               Thread sleep interval
