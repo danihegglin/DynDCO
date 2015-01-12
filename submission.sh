@@ -9,6 +9,20 @@
 #SBATCH -o /home/user/hegglin/log/out/dyndco1.out
 #SBATCH -e /home/user/hegglin//log/err/dyndco1.err
 
+echo "density" $1;
+echo "algorithm" $2;
+echo "execution" $3;
+echo "mode" $4;
+echo "param" $5 ;
+echo "timeslots" $6;
+echo "meetings" $7;
+echo "agents" $8;
+echo "runs" $9;
+echo "factoragents" ${10};
+echo "factormeetings" ${11};
+echo "maxagents" ${12};
+echo "maxmeetings" ${13};
+
 #...commands to be run before jobs starts...
 jarname=dyndco-1.1-SNAPSHOT.jar
 mainClass=ch.uzh.dyndco.testbed.MultipleDriver
@@ -20,6 +34,6 @@ vm_args=" -Xmx8G -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:+UseNUMA -XX:-UseBi
 #srun --ntasks-per-node=1 cp ~/$jarname $workingDir/
 
 # run test directly from home folder
-srun --ntasks-per-node=1 --partition=superfast /home/user/hegglin/jdk/jdk1.8.0_25/bin/java $jvmParameters -cp ~/data/$jarname $mainClass --algorithm $1 --execution $2 --mode $3 --param $4 --timeslots $5 --meetings $6 --agents $7 --runs $8 --factor $9 --max ${10}
+srun --ntasks-per-node=1 --partition=superfast /home/user/hegglin/jdk/jdk1.8.0_25/bin/java $jvmParameters -cp ~/data/$jarname $mainClass --density $1 --algorithm $2 --execution $3 --mode $4 --param '' --timeslots $6 --meetings $7 --agents $8 --runs $9 --factoragents ${10} --factormeetings ${11} --maxagents ${12} --maxmeetings ${13}
 
 #...commands to be run after jobs have finished...

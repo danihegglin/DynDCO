@@ -23,8 +23,9 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
   
   def build(problem : MeetingSchedulingProblem) : DPOPGraph = {
     
-    // initialize slots state (new build -> new run)
+    // initialize state (new build -> new run)
     slot = 0
+    connectableVertices.clear()
     
     /**
      * Initialize Graph
@@ -65,7 +66,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           
           var meetingIndex = meetingIndices.apply(meetingId)
           
-          var leafVertex = buildVertex(
+          var vertex = buildVertex(
               agentId,
               meetingId,
               constraints,
@@ -76,12 +77,12 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           )
           
           // add to index
-          vertices += leafVertex
+          vertices += vertex
           
           // add to neighbourhood
           addToNeighbourhoods(
             meetingId,
-            leafVertex,
+            vertex,
             neighbourhoods    
             )
         }
@@ -153,7 +154,6 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
       * Pseudotree Functions
       */
      var connectableVertices = MutableList[DPOPVertex]()
-     var leafVertices = Set[DPOPVertex]()
      
      def buildPseudoTree(vertices : Set[DPOPVertex], graph : Graph[Any,Any]){
       
