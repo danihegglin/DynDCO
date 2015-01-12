@@ -142,7 +142,7 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
 			initialized = true
       
       // add pref to index
-			value = CONSTRAINTS_CURRENT.preference.apply(MEETING_ID)
+			value = CONSTRAINTS_CURRENT.preferred.apply(MEETING_ID)
       
       var currentUtilities = calculateAllUtilities(CONSTRAINTS_CURRENT)
       

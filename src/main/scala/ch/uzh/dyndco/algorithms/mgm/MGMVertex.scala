@@ -59,7 +59,7 @@ import ch.uzh.dyndco.stack.vertex.DynamicVertex
       initialized = true
 	    
 	    // send current preference for meeting
-	    var preferences = CONSTRAINTS_CURRENT.preference
+	    var preferences = CONSTRAINTS_CURRENT.preferred
 	    var meetingPref : Int = preferences.apply(MEETING_ID)
 	    
 	    // build ordered list of best timeslots

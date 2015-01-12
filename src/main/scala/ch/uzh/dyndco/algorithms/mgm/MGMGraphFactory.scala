@@ -63,7 +63,7 @@ object MGMGraphFactory extends GraphFactory[MGMGraph, MeetingSchedulingProblem] 
            
            // register in meeting index
            var meetingIndex = meetingIndices.apply(meetingId)
-           meetingIndex += (agentId -> constraints.preference.apply(meetingId))
+           meetingIndex += (agentId -> constraints.preferred.apply(meetingId))
             
            // build agent vertex
            var vertex = buildMgmVertex(

@@ -2,20 +2,20 @@
 
 # Run Configuration
 $runs = 10; # How many runs per setting
-$factoragents = 5; # 0 for scalability test of meetings
-$factormeetings = 5; # 0 for scalability test of agents
+$factoragents = 0; # 0 for scalability test of meetings
+$factormeetings = 0; # 0 for scalability test of agents
 $maxagents = 100; # max number of agents in the setting
 $maxmeetings = 100; # max number of meetings in the setting
 
 # Problem Configuration
 $timeslots = 100;
-$meetings = 5;
-$agents = 5;
+$meetings = 20;
+$agents = 25;
 
 # Test Categories
 @density = (0.25); # 0.5, 0.75, 1
-@algorithms = ("maxsum","mgm"); #"maxsum","mgm",
-@execution = ("asynchronous"); #, "asynchronous"
+@algorithms = ("dpop"); #"maxsum","mgm", #"maxsum","mgm",
+@execution = ("synchronous"); #, "asynchronous"
 @mode = ("normal"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"
 
 # Params for dynamicConstraints, dynamicDomain, dynamicVariables

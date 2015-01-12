@@ -1,21 +1,28 @@
-
-folder <- "maxsum_asynchronous_normal"
-
-plot(rnorm(100),type="l",col=2)
-lines(rnorm(100),col=3)
-
-# various runs
-experiment1 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/maxsum_synchronous_normal__0.25/20_10/mean.txt", sep=";")
+# Synchronous Verlauf
+experiment1 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/maxsum_synchronous_normal__0.25/25_10/mean.txt", sep=";")
 plot(experiment1$timepoint, experiment1$u_median, xlab= "timepoint", ylab= "Utility", type='l', col='black')
-experiment2 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/mgm_synchronous_normal__0.25/20_10/mean.txt", sep=";")
+experiment2 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/mgm_synchronous_normal__0.25/25_10/mean.txt", sep=";")
 plot(experiment2$timepoint, experiment2$u_median, xlab= "timepoint", ylab= "Utility", type='l', col='black')
-experiment3 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/dpop_synchronous_normal__0.25/20_10/mean.txt", sep=";")
+experiment3 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/dpop_synchronous_normal__0.25/5_10/mean.txt", sep=";")
 plot(experiment3$timepoint, experiment3$u_median, xlab= "timepoint", ylab= "Utility", type='l', col='black')
 
 plot(experiment3$u_median,type="l",col="red")
 lines(experiment2$u_median,col="blue")
 lines(experiment1$u_median,col="green")
-legend(2000,9.5, c("Maxsum","MGM","DPOP"),lty=c(1,1), lwd=c(2.5,2.5),col=c("red","blue","green")) 
+legend(2000,9.5, c("Maxsum","MGM","DPOP"),lty=c(1,1), lwd=c(2.5,2.5),col=c("red","blue","green"))
+
+# Asynchronous Verlauf
+experiment1 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/maxsum_asynchronous_normal__0.25/5_10/mean.txt", sep=";")
+plot(experiment1$timepoint, experiment1$u_median, xlab= "timepoint", ylab= "Utility", type='l', col='black')
+experiment2 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/mgm_asynchronous_normal__0.25/25_20/mean.txt", sep=";")
+plot(experiment2$timepoint, experiment2$u_median, xlab= "timepoint", ylab= "Utility", type='l', col='black')
+experiment3 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/dpop_asynchronous_normal__0.25/25_20/mean.txt", sep=";")
+plot(experiment3$timepoint, experiment3$u_median, xlab= "timepoint", ylab= "Utility", type='l', col='black')
+
+plot(experiment3$u_median,type="l",col="red")
+lines(experiment2$u_median,col="blue")
+lines(experiment1$u_median,col="green")
+legend(2000,9.5, c("Maxsum","MGM","DPOP"),lty=c(1,1), lwd=c(2.5,2.5),col=c("red","blue","green"))
 
 # scalability
 experiment2 <- read.csv("/Users/daniel/git/dyndco/monitoring/analytics/results/maxsum_asynchronous_normal/scalability_meeting_time.txt", sep=";")

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  12 JAN 2015 05:17
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  12 JAN 2015 17:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -425,7 +425,10 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 
 
 
-] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.toc [9])
+] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.toc
+Underfull \vbox (badness 2165) has occurred while \output is active []
+
+ [9])
 \tf@toc=\write4
 \openout4 = `thesis.toc'.
 
@@ -440,10 +443,20 @@ LaTeX Font Warning: Font shape `OT1/pfr/bx/n' in size <72> not available
 (Font)              size <24.88> substituted on input line 1.
 
 
-LaTeX Warning: Citation `Petcu2007' on page 1 undefined on input line 4.
+LaTeX Warning: Citation `Mailler2014' on page 1 undefined on input line 4.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4--7
+Underfull \hbox (badness 10000) in paragraph at lines 4--10
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 11--16
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 11--16
 
  []
 
@@ -455,68 +468,62 @@ Underfull \hbox (badness 10000) in paragraph at lines 4--7
 
 ]) (./section-relatedwork/relatedwork.tex [2]
 Chapter 2.
-[3
+) (./section-design/design.tex [3
 
 
 
-]) (./section-design/design.tex [4]
-Chapter 3.
-[5
-
-
-
-]) (./section-implentation/implementation.tex [6]
-Chapter 4.
-) (./section-results/results.tex [7
-
-
-
-] [8
+] [4
 
 
 
 ]
-Chapter 5.
+Chapter 3.
+[5]) (./section-results/results.tex [6]
+Chapter 4.
 
 Overfull \hbox (3.63579pt too wide) in paragraph at lines 8--8
 []\OT1/pfr/bx/n/17.28 Results I: Al-go-rithms Per-for-mance in Static En-vi-ron-ments 
  []
 
-[9]) (./section-limitations/limitations.tex [10]
-Chapter 6.
-) (./section-conclusions/conclusions.tex [11
+[7
 
 
 
-] [12
+]) (./section-limitations/limitations.tex [8]
+Chapter 5.
+) (./section-conclusions/conclusions.tex [9
+
+
+
+] [10
 
 
 
 ]
-Chapter 7.
-) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [13] [14
+Chapter 6.
+) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [11] [12
 
 
 
-]) (./section-appendix/appendix.tex [15] [16
+]) (./section-appendix/appendix.tex [13] [14
 
 
 
 ]
 Appendix A.
-) [17] [18
+) [15] [16
 
 
 ] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lof)
 \tf@lof=\write5
 \openout5 = `thesis.lof'.
 
- [19
+ [17
 
 
 
 
-] [20
+] [18
 
 
 
@@ -525,7 +532,7 @@ Appendix A.
 \tf@lot=\write6
 \openout6 = `thesis.lot'.
 
- [21] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+ [19] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 47.12pt have occurred.
@@ -538,18 +545,18 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 6150 strings out of 493315
- 89404 string characters out of 6137905
+ 6164 strings out of 493315
+ 89353 string characters out of 6137905
  179066 words of memory out of 5000000
- 9443 multiletter control sequences out of 15000+600000
- 15825 words of font info for 61 fonts, out of 8000000 for 9000
+ 9454 multiletter control sequences out of 15000+600000
+ 18910 words of font info for 74 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  46i,10n,47p,1408b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (31 pages, 169283 bytes).
+</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (29 pages, 189743 bytes).
 PDF statistics:
- 145 PDF objects out of 1000 (max. 8388607)
- 100 compressed objects within 1 object stream
+ 147 PDF objects out of 1000 (max. 8388607)
+ 101 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

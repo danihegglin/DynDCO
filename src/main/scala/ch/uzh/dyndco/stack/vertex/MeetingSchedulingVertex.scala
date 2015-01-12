@@ -14,9 +14,11 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   /**
    * Configuration
    */
-    final var HARD_UTILITY_N : Double = 0
-    final var SOFT_UTILITY_N : Double = 0.75
+    final var BLOCKED_UTILITY_N : Double = 0
+    final var FREE_UTILITY_N : Double = 0.75
     final var PREF_UTILITY_N : Double = 1
+    final var SAME_UTILITY : Double = 0.5
+    final var DIFFERENT_UTILITY : Double = 0.5
     
     var TIMESLOTS : Int = -1
     var CONSTRAINTS_ORIGINAL : MeetingConstraints = null
@@ -28,7 +30,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     
     var MAX_REPETITIONS = 20
     var MAX_ATTEMPTS = 20
-    var REPEAT_PROB = 0.75
+    var REPEAT_PROB = 0.90
     
   /**
    * Meeting Value
@@ -88,7 +90,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   }  
     
   /**
-   * Calculate Utility for current Best Value Assignment for original constraints
+   * Calculate Utility for current Best Value Assignment for meeting constraints
    */
   def calculateSingleUtility(constraints : MeetingConstraints, value : Int): Double = {
     
@@ -98,13 +100,13 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     utility += (TIMESLOTS - (value - 1)).asInstanceOf[Double] / TIMESLOTS.asInstanceOf[Double]  
         
     // calendar utility
-    if(CONSTRAINTS_CURRENT.hard.contains(value)){
-      utility += HARD_UTILITY_N
+    if(CONSTRAINTS_CURRENT.blocked.contains(value)){
+      utility += BLOCKED_UTILITY_N
     }
-    else if (CONSTRAINTS_CURRENT.soft.contains(value)){
-      utility += SOFT_UTILITY_N
+    else if (CONSTRAINTS_CURRENT.free.contains(value)){
+      utility += FREE_UTILITY_N
     }
-    else if (CONSTRAINTS_CURRENT.preference.values.toList.contains(value)){
+    else if (CONSTRAINTS_CURRENT.preferred.values.toList.contains(value)){
       utility += PREF_UTILITY_N
     }
         
@@ -145,7 +147,11 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
   
   def findMaxValue(utilities : Map[Int, Double]) : Int = {
       
-      var orderedUtilities = utilities.toList sortBy {_._2}
+      // add hard constraint utilities
+      val extendedUtilities = addHardConstraints(utilities)
+    
+      // order utilities by value
+      var orderedUtilities = extendedUtilities.toList sortBy {_._2}
       orderedUtilities = orderedUtilities.reverse
       
       // find max value
@@ -194,6 +200,47 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
      history.clear()
 
      maxValue
+  }
+  
+  def addHardConstraints(utilities : Map[Int, Double]) : Map[Int, Double] = {
+    
+    for(candidateValue <- utilities.keys){
+    
+      var isDifferent = true
+      var isSame = true
+        
+      // agent index check
+      if(AGENT_INDEX != null) {
+        for(meeting <- AGENT_INDEX.keys){
+          if(meeting != MEETING_ID){
+            if(AGENT_INDEX.apply(meeting) == candidateValue){               
+              isDifferent = false
+            }
+          }
+        }
+      }
+      
+      // meeting index check
+      if(MEETING_INDEX != null && MEETING_INDEX.size > 0){
+        var same : Boolean = true
+        var refValue : Int  = MEETING_INDEX.values.toList(0)
+        for(value <- MEETING_INDEX.values){
+          if(value != refValue)
+            isSame = false
+        }
+      }
+      
+      if(isDifferent){
+        utilities += (candidateValue -> (utilities.apply(candidateValue) + DIFFERENT_UTILITY))
+      }
+      if(isSame){
+        utilities += (candidateValue -> (utilities.apply(candidateValue) + SAME_UTILITY))
+      }
+      
+    }
+    
+    utilities
+
   }
   
   def isValid(candidateValue : Int) : Boolean = {
@@ -318,7 +365,7 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     * Show state
     */
    def showState(){
-      printf("%-10.8s  %-40.60s  %-30.30s%n", id, "m " + MEETING_INDEX, "a " + AGENT_INDEX);
+      printf("%-10.8s  %-40.80s  %-30.60s%n", id, "m " + MEETING_INDEX, "a " + AGENT_INDEX);
    }
 
 }

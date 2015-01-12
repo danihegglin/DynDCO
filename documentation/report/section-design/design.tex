@@ -1,5 +1,7 @@
 \chapter{Design}
 
+short description
+
 \section{Meeting Scheduling Problem}
 
 \subsection{Formal Definition}
@@ -11,11 +13,40 @@
 \subsection{Problem Generation}
 
 \section{Framework}
-\subsection{Basic Functionality}
+\subsection{Software Stack}
+Signal/Collect
+
+- Explanation of the system
+- Explanation of Run Modes and why it is nice
+- Explanation of runtime add/remove and why it is nice
+- Explanation of the basics behind it (Akka -> relation to play framework)
+- !!!! Stretch goal: Implemenation for Slurm done, multi machine is not done yet
+
+\subsection{Parameters}
+
+"density"
+"algorithm"
+"execution"
+"mode"
+"param"
+"timeslots"
+"meetings"
+"agents"
+"runs"
+"factoragents"
+"factormeetings
+"maxagents"
+"maxmeetings"
+
+\subsection{Structure}
+
+class diagram, explanation why I built the structure like this
+
 \subsection{Dynamics Controller}
 
+how does it work, what can it do
+
 \section{Mapping of DPOP}
-\subsection{Analysis}
     
     - Why DPOP
     - Pseudocode
@@ -24,7 +55,6 @@
 \subsection{Vertices}
 
 \section{Mapping of MGM}
-\subsection{Analysis}
 
      - Why MGM
     - Pseudocode
@@ -33,7 +63,6 @@
 \subsection{Vertices}
 
 \section{Mapping of MaxSum}
-\subsection{Analysis}
     
     - Why MaxSum
     - Pseudocode
@@ -45,3 +74,7 @@
 
     - Why is it needed: lightweight, non-blocking, analysis on other spot, direct transmit to analyzing platform, live monitoring
     - How can http requests be better than filewrites
+    - Play framework explanation
+- Akka actors as pools for utilities, conflicts, mean, etc.
+- Live monitoring with Websockets based on simple example
+- supports multiple simultanous test runs

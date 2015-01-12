@@ -3,7 +3,16 @@
 \section{Motivation \& Goal}
 Constraint optimization allows to solve problems in various areas. The distributed nature of  many of those problems has been extensively adressed by research in distributed constraint optimization and the formulation of numerous algorithms with diverse design approaches. However, most of those algorithms were designed and most studies are conducted on the premise that problems are static in their predefined state and do not change over the course of the problem solving process. This might work as as a step by step procedure, but it does not work in a distributed manner with multiple agents \cite{Petcu2007}. But as a matter of fact, many problems have dynamic properties and in a world with ever increasing complexity and speed, those become ever more relevant. Constraints can change, but also the involved variables as well as the problem domain itself. One could for instance imagine a real-time business analytics software continously calculating the most optimal solution to a problem or drones exploring an area to find survivors of a earthquake. Research in dynamic distributed constraint optimization is sparse. Mailler et al. attribute this to a lack of standardized benchmarks \cite{Mailler2014}. There has also been some research done at DDIS on constraint optimization problems with a special focus on max sum.
 \newline \newline
+Describe problems here
+    - brief related work
+    - brief explanation with formal definition
+    - brief example
+    
+    - graph coloring, ...
+\newline \newline
 This thesis tries to explore dynamic distributed constraint optimization by implementing three different algorithm approaches and compare their performance in a dynamic environment. The main goal here is to understand the behaviour of the max-sum algorithm that should be able to handle changing properties. It is further a goal to show ways of benchmarking these type of problems from various aspects. The example problem for the thesis will be meeting scheduling and the implementation will be carried out on signal/collect, the graph processing engine developed at  DDIS at ifi UZH. The goal here would also be to show the capabilities of the engine to handle these kind of problems. 
+\newline \newline
+The implemented software is made available online under the Apache license version 2.0.\footnote{https://github.com/danihegglin/DynDCO}\footnote{http://www.apache.org/licenses/LICENSE-2.0}
 
 % should include the statement from the beginning
 

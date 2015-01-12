@@ -108,9 +108,6 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
         var maxValue = -1
         if(values.contains(MEETING_ID)){
           maxValue = values.get(MEETING_ID).get
-//          if(!isValid(maxValue)){
-//            maxValue = findMaxValue(utilities.get(MEETING_ID).get) 
-//          }
           registerValue(maxValue)
           values.put(MEETING_ID, maxValue)
         }
@@ -151,7 +148,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
     // Initialize
     if(!initialized){
       try {
-        value = CONSTRAINTS_ORIGINAL.preference.apply(MEETING_ID)
+        value = CONSTRAINTS_ORIGINAL.preferred.apply(MEETING_ID)
         AGENT_INDEX += (MEETING_ID -> value)
         MEETING_INDEX += (AGENT_ID -> value)
       } catch {

@@ -3,36 +3,37 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: thesis.aux
 The style file: apalike.bst
 Database file #1: ../section-references/thesis_mendeley.bib
+Warning--I didn't find a database entry for "Mailler2014"
 You've used 1 entry,
             1935 wiz_defined-function locations,
-            479 strings with 4014 characters,
-and the built_in function-call counts, 607 in all, are:
-= -- 57
-> -- 27
+            481 strings with 3947 characters,
+and the built_in function-call counts, 512 in all, are:
+= -- 54
+> -- 13
 < -- 2
-+ -- 8
-- -- 8
-* -- 45
-:= -- 98
++ -- 4
+- -- 4
+* -- 34
+:= -- 81
 add.period$ -- 3
 call.type$ -- 1
 change.case$ -- 7
 chr.to.int$ -- 1
 cite$ -- 1
-duplicate$ -- 27
-empty$ -- 44
-format.name$ -- 11
-if$ -- 129
+duplicate$ -- 23
+empty$ -- 36
+format.name$ -- 7
+if$ -- 109
 int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 1
 newline$ -- 8
-num.names$ -- 5
-pop$ -- 10
+num.names$ -- 3
+pop$ -- 6
 preamble$ -- 1
 purify$ -- 7
 quote$ -- 0
-skip$ -- 23
+skip$ -- 24
 stack$ -- 0
 substring$ -- 44
 swap$ -- 10
@@ -41,6 +42,7 @@ text.prefix$ -- 0
 top$ -- 0
 type$ -- 6
 warning$ -- 0
-while$ -- 6
+while$ -- 5
 width$ -- 0
 write$ -- 15
+(There was 1 warning)

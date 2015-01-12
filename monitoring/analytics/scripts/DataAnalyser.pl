@@ -187,7 +187,9 @@ for my $subdir (@subdirs){
 						$meeting_q = analyseMeeting($meeting_index);
 
 						# normalize values
-						#$utility = ($utility - 0) / ($localMaxUtil;
+						if($file =~ /dpop/){
+							$utility = ($utility - 0) / ($localMaxUtil - 0);
+						}
 
 						$utilities = 0;
 						if(exists $bucket{$timestamp}){

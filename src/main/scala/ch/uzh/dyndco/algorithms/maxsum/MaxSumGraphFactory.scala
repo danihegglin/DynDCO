@@ -78,8 +78,8 @@ object MaxSumGraphFactory extends GraphFactory[MaxSumGraph, MeetingSchedulingPro
           
           // adjust indices
           varVertices += varVertex
-          meetingIndex += (agentId -> constraints.preference.apply(meetingId))
-          agentIndex += (meetingId -> constraints.preference.apply(meetingId))
+          meetingIndex += (agentId -> constraints.preferred.apply(meetingId))
+          agentIndex += (meetingId -> constraints.preferred.apply(meetingId))
           
           // build function vertex
           var funcVertex = buildFunctionVertex(
