@@ -4,11 +4,17 @@
 \usepackage{program}
 \usepackage{mathrsfs}
 \usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{graphicx}
 
 \usepackage{fancyvrb}
 \DefineVerbatimEnvironment{code}{Verbatim}{fontsize=\small}
 \DefineVerbatimEnvironment{example}{Verbatim}{fontsize=\small}
 
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
 
 \usepackage{fancyhdr}% fancyhdr related command; details in its documentation
 \pagestyle{fancy}

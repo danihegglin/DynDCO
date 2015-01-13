@@ -21,27 +21,27 @@
 \contentsline {subsection}{\numberline {3.3.1}Graph Structure}{8}
 \contentsline {subsection}{\numberline {3.3.2}Vertices}{8}
 \contentsline {section}{\numberline {3.4}Mapping of MGM}{8}
-\contentsline {subsection}{\numberline {3.4.1}Graph Structure}{8}
-\contentsline {subsection}{\numberline {3.4.2}Vertices}{8}
-\contentsline {section}{\numberline {3.5}Mapping of MaxSum}{8}
-\contentsline {subsection}{\numberline {3.5.1}Graph Structure}{8}
-\contentsline {subsection}{\numberline {3.5.2}Vertices}{8}
-\contentsline {section}{\numberline {3.6}Monitoring Platform}{8}
-\contentsline {chapter}{\numberline {4}Benchmark}{9}
-\contentsline {section}{\numberline {4.1}Results I: Algorithms Performance in Static Environments}{9}
-\contentsline {subsection}{\numberline {4.1.1}Time to Convergence}{9}
-\contentsline {subsection}{\numberline {4.1.2}Solution Quality over Time}{9}
-\contentsline {subsection}{\numberline {4.1.3}Conflicts over Time}{9}
-\contentsline {subsection}{\numberline {4.1.4}Messages}{9}
-\contentsline {section}{\numberline {4.2}Results II: Algorithms Performance in Dynamic Environments}{10}
-\contentsline {subsection}{\numberline {4.2.1}Time to Convergence}{10}
-\contentsline {subsection}{\numberline {4.2.2}Solution Quality over Time}{10}
-\contentsline {subsection}{\numberline {4.2.3}Conflicts over time}{10}
-\contentsline {subsection}{\numberline {4.2.4}Messages}{10}
-\contentsline {subsection}{\numberline {4.2.5}Stability: Utility}{10}
-\contentsline {subsection}{\numberline {4.2.6}Stability: Quality}{10}
-\contentsline {chapter}{\numberline {5}Limitations \& Future Work}{11}
-\contentsline {chapter}{\numberline {6}Conclusions}{13}
-\contentsline {chapter}{\numberline {A}Appendix 15}{17}
-\contentsline {section}{\numberline {A.1}Results I: Selected Data}{17}
-\contentsline {section}{\numberline {A.2}Results II: Selected Data}{17}
+\contentsline {subsection}{\numberline {3.4.1}Graph Structure}{9}
+\contentsline {subsection}{\numberline {3.4.2}Vertices}{9}
+\contentsline {section}{\numberline {3.5}Mapping of MaxSum}{9}
+\contentsline {subsection}{\numberline {3.5.1}Graph Structure}{9}
+\contentsline {subsection}{\numberline {3.5.2}Vertices}{9}
+\contentsline {section}{\numberline {3.6}Monitoring Platform}{9}
+\contentsline {chapter}{\numberline {4}Benchmark}{11}
+\contentsline {section}{\numberline {4.1}Results I: Algorithms Performance in Static Environments}{11}
+\contentsline {subsection}{\numberline {4.1.1}Time to Convergence}{11}
+\contentsline {subsection}{\numberline {4.1.2}Solution Quality over Time}{11}
+\contentsline {subsection}{\numberline {4.1.3}Conflicts over Time}{11}
+\contentsline {subsection}{\numberline {4.1.4}Messages}{11}
+\contentsline {section}{\numberline {4.2}Results II: Algorithms Performance in Dynamic Environments}{12}
+\contentsline {subsection}{\numberline {4.2.1}Time to Convergence}{12}
+\contentsline {subsection}{\numberline {4.2.2}Solution Quality over Time}{12}
+\contentsline {subsection}{\numberline {4.2.3}Conflicts over time}{12}
+\contentsline {subsection}{\numberline {4.2.4}Messages}{12}
+\contentsline {subsection}{\numberline {4.2.5}Stability: Utility}{12}
+\contentsline {subsection}{\numberline {4.2.6}Stability: Quality}{12}
+\contentsline {chapter}{\numberline {5}Limitations \& Future Work}{13}
+\contentsline {chapter}{\numberline {6}Conclusions}{15}
+\contentsline {chapter}{\numberline {A}Appendix 15}{19}
+\contentsline {section}{\numberline {A.1}Results I: Selected Data}{19}
+\contentsline {section}{\numberline {A.2}Results II: Selected Data}{19}

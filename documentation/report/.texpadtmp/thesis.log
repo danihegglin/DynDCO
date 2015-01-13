@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  13 JAN 2015 02:34
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  13 JAN 2015 04:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -256,25 +256,38 @@ File: ueur.fd 2013/01/14 v3.01 Euler Roman
 )) (/usr/local/texlive/2013/texmf-dist/tex/latex/jknapltx/mathrsfs.sty
 Package: mathrsfs 1996/01/01 Math RSFS package v1.0 (jk)
 \symrsfs=\mathgroup7
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
-Package: fancyvrb 2008/02/07
- Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix <2008/02/07> (tvz)
-\FV@CodeLineNo=\count111
-\FV@InFile=\read1
-\FV@TabBox=\box32
-\c@FancyVerbLine=\count112
-\FV@StepNumber=\count113
-\FV@OutFile=\write3
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
-\fancy@headwidth=\skip53
-\f@ncyO@elh=\skip54
-\f@ncyO@erh=\skip55
-\f@ncyO@olh=\skip56
-\f@ncyO@orh=\skip57
-\f@ncyO@elf=\skip58
-\f@ncyO@erf=\skip59
-\f@ncyO@olf=\skip60
-\f@ncyO@orf=\skip61
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/algorithms/algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating environment
+ (/usr/local/texlive/2013/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count111
+\float@exts=\toks29
+\float@box=\box32
+\@float@everytoks=\toks30
+\@floatcapt=\box33
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks31
+\c@algorithm=\count112
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
+Package: algpseudocode 
+ (/usr/local/texlive/2013/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count113
+\c@ALG@rem=\count114
+\c@ALG@nested=\count115
+\ALG@tlm=\skip53
+\ALG@thistlm=\skip54
+\c@ALG@Lnr=\count116
+\c@ALG@blocknr=\count117
+\c@ALG@storecount=\count118
+\c@ALG@tmpcounter=\count119
+\ALG@tmplength=\skip55
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
 ) (/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
  (/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphics.sty
@@ -292,39 +305,65 @@ Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
 ) (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
-\Gread@gobject=\count114
+\Gread@gobject=\count120
 ))
 \Gin@req@height=\dimen166
 \Gin@req@width=\dimen167
-) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2008/02/07
+ Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix <2008/02/07> (tvz)
+\FV@CodeLineNo=\count121
+\FV@InFile=\read1
+\FV@TabBox=\box34
+\c@FancyVerbLine=\count122
+\FV@StepNumber=\count123
+\FV@OutFile=\write3
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+\fancy@headwidth=\skip56
+\f@ncyO@elh=\skip57
+\f@ncyO@erh=\skip58
+\f@ncyO@olh=\skip59
+\f@ncyO@orh=\skip60
+\f@ncyO@elf=\skip61
+\f@ncyO@erf=\skip62
+\f@ncyO@olf=\skip63
+\f@ncyO@orf=\skip64
+) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux
+
+LaTeX Warning: Label `euclid' multiply defined.
+
+
+LaTeX Warning: Label `euclid' multiply defined.
+
+)
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-\c@lstlisting=\count115
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+\c@lstlisting=\count124
  (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count116
+\scratchcounter=\count125
 \scratchdimen=\dimen168
-\scratchbox=\box33
-\nofMPsegments=\count117
-\nofMParguments=\count118
-\everyMPshowfont=\toks29
-\MPscratchCnt=\count119
+\scratchbox=\box35
+\nofMPsegments=\count126
+\nofMParguments=\count127
+\everyMPshowfont=\toks32
+\MPscratchCnt=\count128
 \MPscratchDim=\dimen169
-\MPnumerator=\count120
-\makeMPintoPDFobject=\count121
-\everyMPtoPDFconversion=\toks30
+\MPnumerator=\count129
+\makeMPintoPDFobject=\count130
+\everyMPtoPDFconversion=\toks33
 ) (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO)
  (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifluatex.sty
@@ -470,14 +509,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 4--15
 ]) (./section-relatedwork/relatedwork.tex [2]
 Chapter 2.
 
-LaTeX Warning: Citation `Likhachev' on page 3 undefined on input line 45.
+LaTeX Warning: Citation `Likhachev' on page 3 undefined on input line 47.
 
 [3
 
 
 
 ]
-Overfull \hbox (0.76495pt too wide) in paragraph at lines 58--66
+Overfull \hbox (0.76495pt too wide) in paragraph at lines 62--70
 []\OT1/pfr/m/n/10.95 - Lo-cal it-er-a-tive ap-prox-i-mate best-response al-go-rithms, such as the dis-tributed stochas-
  []
 
@@ -505,52 +544,57 @@ Underfull \hbox (badness 10000) in paragraph at lines 72--73
 
 Underfull \vbox (badness 2573) has occurred while \output is active []
 
- [7]) (./section-results/results.tex [8]
+ [7] [8] [9] <graphics/monitoring.png, id=81, 64.24pt x 80.3pt>
+File: graphics/monitoring.png Graphic file (type png)
+ <use graphics/monitoring.png>
+Package pdftex.def Info: graphics/monitoring.png used on input line 199.
+(pdftex.def)             Requested size: 64.23984pt x 80.29979pt.
+) (./section-results/results.tex [10 <./graphics/monitoring.png>]
 Chapter 4.
 
 Overfull \hbox (3.63579pt too wide) in paragraph at lines 5--5
 []\OT1/pfr/bx/n/17.28 Results I: Al-go-rithms Per-for-mance in Static En-vi-ron-ments 
  []
 
-[9
+[11
 
 
 
-]) (./section-limitations/limitations.tex [10]
+]) (./section-limitations/limitations.tex [12]
 Chapter 5.
-) (./section-conclusions/conclusions.tex [11
+) (./section-conclusions/conclusions.tex [13
 
 
 
-] [12
+] [14
 
 
 
 ]
 Chapter 6.
-) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [13] [14
+) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [15] [16
 
 
 
-]) (./section-appendix/appendix.tex [15] [16
+]) (./section-appendix/appendix.tex [17] [18
 
 
 
 ]
 Appendix A.
-) [17] [18
+) [19] [20
 
 
 ] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lof)
 \tf@lof=\write5
 \openout5 = `thesis.lof'.
 
- [19
+ [21
 
 
 
 
-] [20
+] [22
 
 
 
@@ -559,7 +603,7 @@ Appendix A.
 \tf@lot=\write6
 \openout6 = `thesis.lot'.
 
- [21] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+ [23] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 47.12pt have occurred.
@@ -570,20 +614,23 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 6171 strings out of 493315
- 89439 string characters out of 6137905
- 179182 words of memory out of 5000000
- 9461 multiletter control sequences out of 15000+600000
- 18910 words of font info for 74 fonts, out of 8000000 for 9000
+ 6815 strings out of 493315
+ 98992 string characters out of 6137905
+ 192994 words of memory out of 5000000
+ 10082 multiletter control sequences out of 15000+600000
+ 19912 words of font info for 77 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 46i,10n,47p,1408b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (31 pages, 204990 bytes).
+ 46i,11n,47p,1408b,290s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (33 pages, 239866 bytes).
 PDF statistics:
- 154 PDF objects out of 1000 (max. 8388607)
- 106 compressed objects within 2 object streams
+ 175 PDF objects out of 1000 (max. 8388607)
+ 120 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -12,7 +12,7 @@ $timeslots = 100;
 $meetings = 5;
 $agents = 5;
 
-while($meetings < $maxmeetings){
+while($meetings <= $maxmeetings){
 	while($agents < $maxagents){
 
 		print $meetings . " | " . $agents . "\n";
@@ -91,14 +91,14 @@ while($meetings < $maxmeetings){
 
 		# Run tests
 		for my $command (@commands){
-			print($command . "\n");
-			system($command);
+			#print($command . "\n");
+			#system($command);
 		}
 
 		$agents += 50;
 		
 		if($agents < $maxagents){
-			sleep 3800; #3600
+			sleep 5; #3600
 		}
 	}
 	
@@ -106,7 +106,7 @@ while($meetings < $maxmeetings){
 	$agents = 5;
 
 	if($meetings < $maxmeetings){
-		sleep 3800; #3600
+		sleep 5; #3600
 	}
 }
 

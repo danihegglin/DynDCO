@@ -161,6 +161,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
       var verticesList = vertices.toList
       var randomPicks = Random.shuffle((0 until verticesList.length).toList)
       
+      // build main edges
       for(randomPick <- randomPicks){
         
         // choose leader
@@ -168,22 +169,25 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           connectableVertices += verticesList.apply(randomPick)
         }
         else {
-          addLeaf(verticesList.apply(randomPick), graph)
+          addLeaf(verticesList.apply(randomPick), vertices, graph)
         }
       }
       
     }
     
-    def addLeaf(childVertex : DPOPVertex, graph : Graph[Any,Any]) {
+    def addLeaf(childVertex : DPOPVertex, vertices : Set[DPOPVertex], graph : Graph[Any,Any]) {
        
+      /**
+       * Tree Edge
+       */
         // add random nodes from the set to the tree
         var parentVertex = connectableVertices.apply(0)
           
-         // add parent/child relationship
+         // add main parent/child relationship
          childVertex.addParent(parentVertex)
          parentVertex.addChild(childVertex)
          
-         // add edges
+         // add main edges
          graph.addEdge(childVertex.id, new StateForwarderEdge(parentVertex.id))
          graph.addEdge(parentVertex.id, new StateForwarderEdge(childVertex.id))
          
@@ -194,10 +198,28 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
           
          // add child to connectable list
          connectableVertices += childVertex
+         
+       /**
+        * Backend Edge
+        */
+        parentVertex = vertices.toVector(Random.nextInt(vertices.size))
+        
+        // add hidden parent/child relationship
+//        childVertex.addParent(parentVertex)
+//        parentVertex.addChild(childVertex)
+//        
+//        // add hidden edges
+//        graph.addEdge(childVertex.id, new StateForwarderEdge(parentVertex.id))
+//        graph.addEdge(parentVertex.id, new StateForwarderEdge(childVertex.id))
+         
     }
     
     def removeVertex(vertex : DPOPVertex, grap : Graph[Any, Any]) {
-      
+      for(child <- vertex.children){
+        child.parent = vertex.parent
+        vertex.parent.addChild(child)
+      }
+      vertex.parent.removeChild(vertex)
     }
   
   /**
@@ -249,7 +271,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
       dpopGraph.vertices += vertex
       
       // add to graph
-      addLeaf(vertex, dpopGraph.graph)
+      addLeaf(vertex, dpopGraph.vertices, dpopGraph.graph)
   }
   
   def removeAgent(
@@ -272,7 +294,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
         if(vertex.children.size > 0){
           vertex.parent.addChild(vertex.children.apply(0))
           if(vertex.children.size > 1){
-            addLeaf(vertex.children.apply(1), dpopGraph.graph)
+            addLeaf(vertex.children.apply(1), dpopGraph.vertices, dpopGraph.graph)
           }
         }
           

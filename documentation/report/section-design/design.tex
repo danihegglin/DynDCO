@@ -95,18 +95,60 @@ based on: A Scalable Method for Multiagent Constraint Optimization
     
     - Why DPOP
     DPOP is a primary example for a complete algorithm
-    - Pseudocode
+   
+    \begin{algorithm}
+\caption{My algorithm}\label{euclid}
+\begin{algorithmic}[1]
+\Procedure{MyProcedure}{}
+\State $\textit{stringlen} \gets \text{length of }\textit{string}$
+\State $i \gets \textit{patlen}$
+\BState \emph{top}:
+\If {$i > \textit{stringlen}$} \Return false
+\EndIf
+\State $j \gets \textit{patlen}$
+\BState \emph{loop}:
+\If {$\textit{string}(i) = \textit{path}(j)$}
+\State $j \gets j-1$.
+\State $i \gets i-1$.
+\State \textbf{goto} \emph{loop}.
+\State \textbf{close};
+\EndIf
+\State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
+\State \textbf{goto} \emph{top}.
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Graph Structure}
 \subsection{Vertices}
 
 \section{Mapping of MGM}
 
-
-
      - Why MGM
      Good example for Best-Response algorithm and DSA-B has already been implemented
-    - Pseudocode
+
+    \begin{algorithm}
+\caption{My algorithm}\label{euclid}
+\begin{algorithmic}[2]
+\Procedure{MyProcedure}{}
+\State $\textit{stringlen} \gets \text{length of }\textit{string}$
+\State $i \gets \textit{patlen}$
+\BState \emph{top}:
+\If {$i > \textit{stringlen}$} \Return false
+\EndIf
+\State $j \gets \textit{patlen}$
+\BState \emph{loop}:
+\If {$\textit{string}(i) = \textit{path}(j)$}
+\State $j \gets j-1$.
+\State $i \gets i-1$.
+\State \textbf{goto} \emph{loop}.
+\State \textbf{close};
+\EndIf
+\State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
+\State \textbf{goto} \emph{top}.
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Graph Structure}
 \subsection{Vertices}
@@ -119,16 +161,41 @@ zivan2012
     
     - Why MaxSum
     MaxSum is the new kid on the block.
-    - Pseudocode
+
+    \begin{algorithm}
+\caption{My algorithm}\label{euclid}
+\begin{algorithmic}[3]
+\Procedure{MyProcedure}{}
+\State $\textit{stringlen} \gets \text{length of }\textit{string}$
+\State $i \gets \textit{patlen}$
+\BState \emph{top}:
+\If {$i > \textit{stringlen}$} \Return false
+\EndIf
+\State $j \gets \textit{patlen}$
+\BState \emph{loop}:
+\If {$\textit{string}(i) = \textit{path}(j)$}
+\State $j \gets j-1$.
+\State $i \gets i-1$.
+\State \textbf{goto} \emph{loop}.
+\State \textbf{close};
+\EndIf
+\State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
+\State \textbf{goto} \emph{top}.
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Graph Structure}
 \subsection{Vertices}
 
 \section{Monitoring Platform}
 
-    - Why is it needed: lightweight, non-blocking, analysis on other spot, direct transmit to analyzing platform, live monitoring
-    - How can http requests be better than filewrites
-    - Play framework explanation
-- Akka actors as pools for utilities, conflicts, mean, etc.
-- Live monitoring with Websockets based on simple example
-- supports multiple simultanous test runs
+It was decided to find a more sophisticated method to monitor the utility, quality, conflicts and stats of the calculations than to write to a logfile. Partially because File IO can possibiliy be limited in the number of open files and processing results to fit the log file format during calculations can affect the performance of the algorithm one tries to benchmark. Mainly because processing log files was to tedious and visibility was not given to the calculations.
+
+Sending the results with non-blockin http requests to a restful server was considered to be an alternative and the Play Framework\footnote{https://www.playframework.com} has been chosen because it is highly scalable, is able to handle thousands of simultanous connections, lightweight, non-blocking and allows to process results on-the-fly with code in Java or Scala. It was also chosen because Akka is tightly integrated and the actors concept are an integral part of the framework. It further allows to preview the calculation of the graph in realtime with websockets, which can be helpful during the implementation of algorithms.
+
+By using an actor based approach it is possible to contain run specific data in a closed entity and store when limits are reached. Through the chosen architecture one can run multiple tests in parallel without problems. The server is of course also limited by it's ressources.
+
+\includegraphics{graphics/monitoring}
+
+
