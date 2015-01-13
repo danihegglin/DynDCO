@@ -1,9 +1,6 @@
 \chapter{Benchmark}
 
-- short description
-
-- few words on minions cluster
-- cpu, ram, partition speed, etc
+In this chapter the three algorithms are benchmarked with different parameters and scenarios. The first series of tests is conducted in a static environment for a basic understanding of the algorithm performance and the second series is held in various dynamic settings to explore the dynamic capabilities of the algorithms. The testing environment was the minion cluster of the departement of informatics at the University of Zurich. The cluster consists of 16 machines and each machine has 128 GB RAM and two E5-2680 v2 at 2.80GHz processors. Every processor has 10 cores and the interlink between the machines is a 40Gbps Infiniband setup. The cluster has different partition speeds (slow, fast, superfast). All tests were conducted on superfast partitions.
 
 \section{Results I: Algorithms Performance in Static Environments}
 
@@ -12,26 +9,31 @@
 - Number of Timeslots
 - Problem Density
 - Run Mode on Signal Collect
+- Multimachine Performance
+
+theoretical foundation: chapman benchmarking hybrid algorithms, Mailler2014, 
 
 \subsection{Time to Convergence}
 - Heatmap für alle drei
 - Verlauf alle drei
-- Scalability
+- Scalability: one, multiple machines
 - Convergence Distribution
 \subsection{Solution Quality over Time}
 - Heatmap für alle drei
 - Verlauf alle drei
-- Scalability
+- Scalability: one, multiple machines
 - Quality Distribution
 \subsection{Conflicts over Time}
 - Verlauf alle drei
-- Scalability
+- Scalability: one, multiple machines
 \subsection{Messages}
 -  Verlauf alle drei
-- Scalability
+- Scalability: one, multiple machines
 - Message Distribution
 
 \section{Results II: Algorithms Performance in Dynamic Environments}
+
+petcu 2007
 
 - Additional parameter
 - Different Scenarios: Constraints, Variables, Domain

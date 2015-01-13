@@ -24,7 +24,8 @@ import ch.uzh.dyndco.stack.configuration.Configuration
 import ch.uzh.dyndco.stack.Settings
 
 /**
- * Based on: FIXME
+ * Farinelli (2008): Decentralised Coordination of Low-Power Embedded Devices Using the Max-Sum Algorithm. P.3.
+ * Zivan (2012): Max/Min-sum Distributed Constraint Optimization through Value Propagation on an Alternating DAG. P.3.
  */
 
 object MaxSum extends DCOAlgorithm {

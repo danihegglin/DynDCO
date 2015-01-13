@@ -17,10 +17,9 @@ import ch.uzh.dyndco.stack.dynamic.DynamicController
 import ch.uzh.dyndco.stack.tests.TestMode
 import ch.uzh.dyndco.stack.Settings
 
-///**
-// * based on: A Scalable Method for Multiagent Constraint Optimization
-// */
-//
+/**
+ * Petcu (2003): A Scalable Method for Multiagent Constraint Optimization. P.3.
+ */
 
 object DPOP extends App {
   

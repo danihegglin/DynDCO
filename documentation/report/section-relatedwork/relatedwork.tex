@@ -1,8 +1,13 @@
 \chapter{Background \& Related Work}
 
-short description
+In this section, constraint optimization and the distributed, as well as dynamic variants are briefly explained and brought into context of the related work. Also, the meeting scheduling problem are described and different algorithm design and their advantages and disadvantages are described and related work is mentioned.
     
 \section{Dynamic Distributed Constraint Optimization}
+
+\cite{Chapman2011}
+nguyen trung 2012
+Chapter 12 Distributed Constraint Handling and Optimization Farinelli
+
 
     - related work
     - formal definition of a constraint optimization problem
@@ -15,17 +20,29 @@ short description
     - what can change in a problem
     - benchmarking possibilities
 
-\section{Meeting Scheduling Problem}   
+\section{Meeting Scheduling Problem}  
+
+    \cite{Angulo2007}
+    \cite{Maheswaran} % FIXME find paper
+    berger2008
+    Hassine 2007
+    
+
     - related work: find definition again that is citable -> book chapter 12
     - explanation with formal definition
     - example
 
 \section{Algorithm Design Approaches}
 
-    Other Approaches
+    Distributed Constraint Optimization can be done with numerous approaches.
 
+    Other Approaches: Bee Hive optimization, Genetic Algorithms, .. DynDCOAA, SBDO, Bee Colony algorithm, Ant colony algorithm, adopt, dsa-a, dsa-b stochastic ...
     - brief related work
     - brief explanation of approaches and why they don't fit: too much information sent, centralized, too complicated, not localized
+    
+    The following subsections are going to explain the three chosen approaches for this thesis and which advantages, as well as disadvantages this approaches hold.
+    
+    \cite{Likhachev}
     
 \subsection{Complete}
 
@@ -35,12 +52,26 @@ short description
 
 \subsection{Local-Iterative - Best Response}
 
-    - basic idea
+\cite{Chapman2011}
+\cite{Maheswaran} % Achtung muss das richtig paper finden
+
+    - Local iterative approximate best-response algorithms, such as the distributed stochastic algorithm
+(Tel, 2000; Fitzpatrick  Meertens, 2003), the maximum-gain messaging algorithm (Yokoo 
+Hirayama, 1996; Maheswaran et al., 2005), fictitious play (Brown, 1951; Robinson, 1951),
+adaptive play (Young, 1993, 1998), and regret matching (Hart  Mas-Colell, 2000). In this class,
+agents exchange messages containing only their state, or can observe the strategies of their
+neighbours. In game-theoretic parlance, this is known as standard monitoring2
+, and, as the name
+suggests, is a typical informational assumption implicit in the literature on learning in games.
+
+
     - advantages
     - disadvantages
 
 \subsection{Local-Iterative - Message Passing}
-
-    - basic idea
+    
+    \cite{Chapman2011}
+    - 
+    
     - advantages
     -disadvantages

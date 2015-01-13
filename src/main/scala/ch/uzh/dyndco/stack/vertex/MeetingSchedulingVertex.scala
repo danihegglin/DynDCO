@@ -17,8 +17,8 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     final var BLOCKED_UTILITY_N : Double = 0
     final var FREE_UTILITY_N : Double = 0.75
     final var PREF_UTILITY_N : Double = 1
-    final var SAME_UTILITY : Double = 0.5
-    final var DIFFERENT_UTILITY : Double = 0.5
+    final var SAME_UTILITY : Double = 1
+    final var DIFFERENT_UTILITY : Double = 1
     
     var TIMESLOTS : Int = -1
     var CONSTRAINTS_ORIGINAL : MeetingConstraints = null
@@ -206,15 +206,15 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
     
     for(candidateValue <- utilities.keys){
     
-      var isDifferent = true
-      var isSame = true
+      var differentUtility = DIFFERENT_UTILITY
+      var sameUtility = SAME_UTILITY
         
       // agent index check
       if(AGENT_INDEX != null) {
         for(meeting <- AGENT_INDEX.keys){
           if(meeting != MEETING_ID){
             if(AGENT_INDEX.apply(meeting) == candidateValue){               
-              isDifferent = false
+              differentUtility = 0
             }
           }
         }
@@ -226,16 +226,11 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
         var refValue : Int  = MEETING_INDEX.values.toList(0)
         for(value <- MEETING_INDEX.values){
           if(value != refValue)
-            isSame = false
+            sameUtility = 0
         }
       }
       
-      if(isDifferent){
-        utilities += (candidateValue -> (utilities.apply(candidateValue) + DIFFERENT_UTILITY))
-      }
-      if(isSame){
-        utilities += (candidateValue -> (utilities.apply(candidateValue) + SAME_UTILITY))
-      }
+      utilities += (candidateValue -> (utilities.apply(candidateValue) * DIFFERENT_UTILITY * SAME_UTILITY))
       
     }
     

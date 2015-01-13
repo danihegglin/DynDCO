@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  12 JAN 2015 17:15
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  13 JAN 2015 02:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -414,10 +414,7 @@ LaTeX Font Warning: Font shape `OT1/pfr/m/n' in size <32> not available
 LaTeX Font Warning: Font shape `OT1/pfr/bx/n' in size <32> not available
 (Font)              size <24.88> substituted on input line 1.
 
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 7.
-(/usr/local/texlive/2013/texmf-dist/tex/latex/jknapltx/ursfs.fd
-File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-)) (./section-abstract/abstract.tex [5] [6
+) (./section-abstract/abstract.tex [5] [6
 
 
 
@@ -426,6 +423,10 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 
 
 ] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.toc
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 2.
+ (/usr/local/texlive/2013/texmf-dist/tex/latex/jknapltx/ursfs.fd
+File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
+)
 Underfull \vbox (badness 2165) has occurred while \output is active []
 
  [9])
@@ -446,17 +447,17 @@ LaTeX Font Warning: Font shape `OT1/pfr/bx/n' in size <72> not available
 LaTeX Warning: Citation `Mailler2014' on page 1 undefined on input line 4.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 4--10
+Underfull \hbox (badness 10000) in paragraph at lines 4--15
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 11--16
+Underfull \hbox (badness 10000) in paragraph at lines 4--15
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 11--16
+Underfull \hbox (badness 10000) in paragraph at lines 4--15
 
  []
 
@@ -468,62 +469,88 @@ Underfull \hbox (badness 10000) in paragraph at lines 11--16
 
 ]) (./section-relatedwork/relatedwork.tex [2]
 Chapter 2.
-) (./section-design/design.tex [3
 
+LaTeX Warning: Citation `Likhachev' on page 3 undefined on input line 45.
 
-
-] [4
+[3
 
 
 
 ]
+Overfull \hbox (0.76495pt too wide) in paragraph at lines 58--66
+[]\OT1/pfr/m/n/10.95 - Lo-cal it-er-a-tive ap-prox-i-mate best-response al-go-rithms, such as the dis-tributed stochas-
+ []
+
+) (./section-design/design.tex [4]
 Chapter 3.
-[5]) (./section-results/results.tex [6]
+[5
+
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 64--66
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 72--73
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--73
+
+ []
+
+
+Underfull \vbox (badness 2573) has occurred while \output is active []
+
+ [7]) (./section-results/results.tex [8]
 Chapter 4.
 
-Overfull \hbox (3.63579pt too wide) in paragraph at lines 8--8
+Overfull \hbox (3.63579pt too wide) in paragraph at lines 5--5
 []\OT1/pfr/bx/n/17.28 Results I: Al-go-rithms Per-for-mance in Static En-vi-ron-ments 
  []
 
-[7
+[9
 
 
 
-]) (./section-limitations/limitations.tex [8]
+]) (./section-limitations/limitations.tex [10]
 Chapter 5.
-) (./section-conclusions/conclusions.tex [9
+) (./section-conclusions/conclusions.tex [11
 
 
 
-] [10
+] [12
 
 
 
 ]
 Chapter 6.
-) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [11] [12
+) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [13] [14
 
 
 
-]) (./section-appendix/appendix.tex [13] [14
+]) (./section-appendix/appendix.tex [15] [16
 
 
 
 ]
 Appendix A.
-) [15] [16
+) [17] [18
 
 
 ] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lof)
 \tf@lof=\write5
 \openout5 = `thesis.lof'.
 
- [17
+ [19
 
 
 
 
-] [18
+] [20
 
 
 
@@ -532,7 +559,7 @@ Appendix A.
 \tf@lot=\write6
 \openout6 = `thesis.lot'.
 
- [19] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+ [21] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 47.12pt have occurred.
@@ -545,18 +572,18 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 6164 strings out of 493315
- 89353 string characters out of 6137905
- 179066 words of memory out of 5000000
- 9454 multiletter control sequences out of 15000+600000
+ 6171 strings out of 493315
+ 89439 string characters out of 6137905
+ 179182 words of memory out of 5000000
+ 9461 multiletter control sequences out of 15000+600000
  18910 words of font info for 74 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  46i,10n,47p,1408b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (29 pages, 189743 bytes).
+Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (31 pages, 204990 bytes).
 PDF statistics:
- 147 PDF objects out of 1000 (max. 8388607)
- 101 compressed objects within 2 object streams
+ 154 PDF objects out of 1000 (max. 8388607)
+ 106 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
