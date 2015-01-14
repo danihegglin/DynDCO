@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  14 JAN 2015 08:50
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  14 JAN 2015 12:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -338,18 +338,18 @@ LaTeX Warning: Label `euclid' multiply defined.
 )
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
 \c@lstlisting=\count124
  (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -510,28 +510,58 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--24
 
 
 ]
+
+LaTeX Warning: Citation `angulo' on page 4 undefined on input line 36.
+
 \c@hardconstraint1=\count131
- <graphics/overview_algos.png, id=62, 1028.84375pt x 396.48125pt>
+[4]
+
+LaTeX Warning: Citation `Angulo' on page 5 undefined on input line 46.
+
+<graphics/overview_algos.png, id=67, 1028.84375pt x 396.48125pt>
 File: graphics/overview_algos.png Graphic file (type png)
  <use graphics/overview_algos.png>
-Package pdftex.def Info: graphics/overview_algos.png used on input line 47.
+Package pdftex.def Info: graphics/overview_algos.png used on input line 55.
 (pdftex.def)             Requested size: 401.50146pt x 154.72385pt.
- [4]
-
-LaTeX Warning: Citation `Likhachev' on page 5 undefined on input line 64.
-
-
-Overfull \hbox (0.76495pt too wide) in paragraph at lines 86--94
+ <graphics/pseudotree.png, id=68, 732.7375pt x 435.6275pt>
+File: graphics/pseudotree.png Graphic file (type png)
+ <use graphics/pseudotree.png>
+Package pdftex.def Info: graphics/pseudotree.png used on input line 77.
+(pdftex.def)             Requested size: 250.93842pt x 149.18822pt.
+ [5 <./graphics/overview_algos.png>]
+Overfull \hbox (0.76495pt too wide) in paragraph at lines 101--109
 []\OT1/pfr/bx/n/10.95 - Lo-cal it-er-a-tive ap-prox-i-mate best-response al-go-rithms, such as the dis-tributed stochas-
  []
 
-[5 <./graphics/overview_algos.png>]) (./section-design/design.tex [6]
+
+LaTeX Warning: Citation `Farinelli2008' on page 6 undefined on input line 138.
+
+<graphics/factorgraph.png, id=73, 575.14874pt x 568.1225pt>
+File: graphics/factorgraph.png Graphic file (type png)
+ <use graphics/factorgraph.png>
+Package pdftex.def Info: graphics/factorgraph.png used on input line 146.
+(pdftex.def)             Requested size: 170.63812pt x 168.54825pt.
+
+
+LaTeX Warning: Citation `Zivan2012' on page 6 undefined on input line 147.
+
+
+LaTeX Warning: Citation `Zivan2012' on page 6 undefined on input line 147.
+
+
+Underfull \vbox (badness 6316) has occurred while \output is active []
+
+ [6 <./graphics/pseudotree.png>]) (./section-design/design.tex [7 <./graphics/factorgraph.png>] [8
+
+
+
+]
 Chapter 3.
 
 Package amsthm Warning: Unknown theoremstyle `hardconstraint2' on input line 11.
 
 \c@hardconstraint2=\count132
-<graphics/variablemodell.png, id=74, 812.03375pt x 611.28375pt>
+<graphics/variablemodell.png, id=83, 812.03375pt x 611.28375pt>
 File: graphics/variablemodell.png Graphic file (type png)
  <use graphics/variablemodell.png>
 Package pdftex.def Info: graphics/variablemodell.png used on input line 22.
@@ -544,42 +574,44 @@ Underfull \hbox (badness 7186) in paragraph at lines 23--23
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[7
+[9]
+
+LaTeX Warning: Citation `Angulo' on page 10 undefined on input line 43.
 
 
+Underfull \hbox (badness 10000) in paragraph at lines 42--46
 
-]
+ []
 
-LaTeX Warning: Citation `chun' on page 8 undefined on input line 54.
+[10 <./graphics/variablemodell.png>]
+Underfull \vbox (badness 3657) has occurred while \output is active []
+
+ [11]
+
+LaTeX Warning: Citation `Zivan2012' on page 12 undefined on input line 153.
 
 
-LaTeX Warning: Citation `andy 2003' on page 8 undefined on input line 54.
+Underfull \vbox (badness 1005) has occurred while \output is active []
 
-
-LaTeX Warning: Citation `mes' on page 8 undefined on input line 55.
-
-
-LaTeX Warning: Citation `martijn 2007' on page 8 undefined on input line 55.
-
-[8 <./graphics/variablemodell.png>] [9]
+ [12]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [10]
-Underfull \hbox (badness 10000) in paragraph at lines 181--182
+ [13]
+Underfull \hbox (badness 10000) in paragraph at lines 210--211
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 181--182
+Underfull \hbox (badness 10000) in paragraph at lines 210--211
 
  []
 
-[11] <graphics/monitoring.png, id=93, 64.24pt x 80.3pt>
+[14] <graphics/monitoring.png, id=105, 64.24pt x 80.3pt>
 File: graphics/monitoring.png Graphic file (type png)
  <use graphics/monitoring.png>
-Package pdftex.def Info: graphics/monitoring.png used on input line 211.
+Package pdftex.def Info: graphics/monitoring.png used on input line 240.
 (pdftex.def)             Requested size: 64.23984pt x 80.29979pt.
-) (./section-results/results.tex [12] [13 <./graphics/monitoring.png>] [14
+) (./section-results/results.tex [15 <./graphics/monitoring.png>] [16
 
 
 
@@ -590,37 +622,46 @@ Overfull \hbox (3.63579pt too wide) in paragraph at lines 5--5
 []\OT1/pfr/bx/n/17.28 Results I: Al-go-rithms Per-for-mance in Static En-vi-ron-ments 
  []
 
-[15]
+[17]
 
-LaTeX Warning: Citation `Verfaillie2005' on page 16 undefined on input line 57.
+LaTeX Warning: Citation `Verfaillie2005' on page 18 undefined on input line 57.
 
-) (./section-limitations/limitations.tex [16]
+) (./section-limitations/limitations.tex [18]
 Chapter 5.
-) (./section-conclusions/conclusions.tex [17
+
+Overfull \hbox (3.58362pt too wide) in paragraph at lines 4--12
+\OT1/pfr/bx/n/10.95 ti-gate this prop-erty of dy-namic con-straint op-ti-miza-tion prob-lems. [[]]
+ []
+
+) (./section-conclusions/conclusions.tex [19
 
 
 
-] [18
+] [20
 
 
 
 ]
 Chapter 6.
-) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [19] [20
+) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [21] [22
 
 
 
-] [21]) (./section-appendix/appendix.tex [22]
+] [23]) (./section-appendix/appendix.tex [24]
 Appendix A.
-) [23
+) [25
 
 
 
-] [24
+] [26
 
 
 ] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lof
-Overfull \hbox (99.01096pt too wide) in paragraph at lines 5--5
+
+LaTeX Warning: Citation `Zivan2012' on page 27 undefined on input line 5.
+
+
+Overfull \hbox (99.01096pt too wide) in paragraph at lines 7--7
  [][] []\OT1/pfr/bx/n/10.95 Different paradigms of map-ping the meet-ing schedul-ing Prob-lem [[]]. []  
  []
 
@@ -628,12 +669,12 @@ Overfull \hbox (99.01096pt too wide) in paragraph at lines 5--5
 \tf@lof=\write5
 \openout5 = `thesis.lof'.
 
- [25
+ [27
 
 
 
 
-] [26
+] [28
 
 
 
@@ -642,7 +683,7 @@ Overfull \hbox (99.01096pt too wide) in paragraph at lines 5--5
 \tf@lot=\write6
 \openout6 = `thesis.lot'.
 
- [27] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+ [29] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 47.12pt have occurred.
@@ -658,18 +699,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 6859 strings out of 493315
- 99733 string characters out of 6137905
- 194292 words of memory out of 5000000
- 10124 multiletter control sequences out of 15000+600000
+ 6872 strings out of 493315
+ 100033 string characters out of 6137905
+ 193310 words of memory out of 5000000
+ 10135 multiletter control sequences out of 15000+600000
  19912 words of font info for 77 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 46i,11n,47p,1706b,290s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (37 pages, 432635 bytes).
+ 46i,11n,47p,1706b,294s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (39 pages, 575821 bytes).
 PDF statistics:
- 204 PDF objects out of 1000 (max. 8388607)
- 140 compressed objects within 2 object streams
+ 216 PDF objects out of 1000 (max. 8388607)
+ 147 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

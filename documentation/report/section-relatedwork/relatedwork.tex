@@ -13,7 +13,7 @@ A utility function \(u_{{c}_{k}}(S_{{c}_{k}})\) needs to be formulated that defi
 
 Constraints can be attributed with varying levels of importance through weighting. One can, instead of so-called soft constraints, define hard constraints by multiplying their utility instead of using addition in the global utility function. By defining the utility of a violated hard constraint as 0, the global utility would also go to 0 if this hard constraint is not satisfied \cite{Chapman2011, Petcu2003}. A problem only containing hard constraints would represent a constraint satisfaction problem.
 
-\[ u_{g}(s) = \prod_{\substack{hc_{k} \in HC}} u_{SC_{g}}(s) \bigg( \sum_{sc_{k} \in SC} u_{SC_{g}}(s) \bigg)\]  % FIXME
+\[ u_{g}(s) = \prod_{\substack{hc_{k} \in HC}} u_{SC_{g}}(s) \bigg( \sum_{sc_{k} \in SC} u_{SC_{g}}(s) \bigg)\] 
 
 
 % ----------------- Distributed Constraint Optimization --------------------
@@ -25,7 +25,15 @@ As a further extension to the optimization, the problem definition is moved from
 \section{Meeting Scheduling Problem}  
 
 %--------------------- Introduction with examples
-Scheduling is the problem of allocating tasks to a given set of ressources that is usually limited with a time component. The meeting scheduling problem is a exemplary type of this family of problems and is well-know to all of us. Supposed participants of a meeting have private schedules with preferences when a meeting should be held according to their calendar and the challenge is to identify a time for a meeting that maximizes the preferences of all participants while being valid in then sense that every person is able to attend \cite{Farinelli}. From this definition, one can derive two important criteria for a legitimate solution to the problem:
+Scheduling is the problem of allocating tasks to a given set of ressources that is usually limited with a time component. The meeting scheduling problem is a exemplary type of this family of problems and is supposedly well-know to all of us. Participants of a meeting have private schedules with preferences when a meeting should be held according to their calendar and the challenge is to identify a time for a meeting that maximizes the preferences of all participants while being valid in then sense that every person is able to attend \cite{Farinelli}. Angulo et al. have formally defined a meeting scheduling problem as:
+
+\begin{itemize}
+\item \(P = {p1, p, ... pn}\) is the set of people where every person has a calendar that hilds r slots, \(S = {s1,s2,s3}\)
+\item \(M = {m1, m2, ..., m3}\) is a set of k meetings
+\item \(At = {at1, at2, ..., atk}\) defines all attendee's of a meeting
+\end{itemize}
+
+The c parameter has been neglected as it is not relevant to this thesis \cite{angulo}. From the definition of a valid solution, one can derive two important criteria to the problem solving process:
 \theoremstyle{definition}
 \newtheorem{hardconstraint1}{Validity Criterium}
 \begin{hardconstraint1}
@@ -35,7 +43,7 @@ All participants need to agree on the same time for the meeting.
 Meetings need to be scheduled in a way that there are no overlaps of meeting times in the schedules of the participants.
 \end{hardconstraint1}
     
-There is further an inherent privacy aspect to the problem. Meeting participant's are often not willing to share their schedules with others except for finding a time for the specific meeting. It will later be shown that some of the algorithms can guarantee this privacy to a certain degree. The meeting scheduling problem will be mapped as a distributed constraint optimization problem in the design chapter.
+There is further an inherent privacy aspect to the problem. Meeting participant's are often not willing to share their schedules with others except for finding a time for the specific meeting. It will later be shown that some of the algorithms can guarantee this privacy to a certain degree. The meeting scheduling problem will be mapped as a distributed constraint optimization problem in the design chapter\cite{Farinelli, Angulo}.
     
     %--------------------- Explanation of the components with formal definition
    
@@ -46,34 +54,40 @@ There is further an inherent privacy aspect to the problem. Meeting participant'
 \begin{figure}[h]
 \includegraphics[width=400px]{graphics/overview_algos}
 \caption{Categorization of DCO algorithms \cite{Chapman2011}}
+\label{fig:categorization}
 \end{figure}
 
-ANYTIME
-SYNCHRONOUS
-ASYNCHRONOUS
+Chapman et al. categorize distributed constraint optimization algorithms into local iterative and distributed complete algorithms. They further divide local iterative into message passing algorithms and approximate best response algorithms (Figure \ref{fig:categorization}). All of these approaches fullfill the anytime property, i.e they can provide a solution at every timepoint during calculation and all of them can be run synchronously as well as asynchronously with varying performances.
+The following subsections are going to explain the differences between the three categories and introduce the concrete algorithms from these three different approaches that have been chosen for benchmarking. Advantages, as well as disadvantages will be described and which behaviour one can expect of these algorithms under certain parameters.
 
-
-Distributed Constraint Optimization can be done with numerous approaches.
-
-Other Approaches: Bee Hive optimization, Genetic Algorithms, .. DynDCOAA, SBDO, Bee Colony algorithm, Ant colony algorithm, adopt, dsa-a, dsa-b stochastic ...
-    - brief related work
-    - brief explanation of approaches and why they don't fit: too much information sent, centralized, too complicated, not localized
-    
-    The following subsections are going to explain the three chosen approaches for this thesis and which advantages, as well as disadvantages this approaches hold.
-    
-    \cite{Likhachev}
+%Other Approaches: Bee Hive optimization, Genetic Algorithms, .. DynDCOAA, SBDO, Bee Colony algorithm, Ant colony algorithm, adopt, dsa-a, dsa-b stochastic ...\cite{Likhachev}
     
 \subsection{Complete}
 
 \cite{Chapman2011}
 
-    - basic idea
-    - advantages
-    - disadvantages
+    %-----------------  Basic Concept and Advantages Disadvantes ----------------------
+
     
-    - dpop description
+    
+    %----------------- Structure ----------------------
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=250px]{graphics/pseudotree}
+\caption{Pseudotree for DPOP \cite{Petcu2003}}
+\label{fig:pseudotree}
+\end{figure}
+
+% ------------- Messages sent --------------------
+
+
+%----------- Dynamics -----------------------
+
 
 \subsection{Local-Iterative - Best Response}
+
+%-----------------  Basic Concept and Advantages Disadvantes ----------------------
 
 - neighbourhoods
 - only communicates his state
@@ -81,6 +95,7 @@ Other Approaches: Bee Hive optimization, Genetic Algorithms, .. DynDCOAA, SBDO, 
 - privacy aspects
 
 \cite{Chapman2011}
+\cite{Chapman2010}
 \cite{Maheswaran} % Achtung muss das richtig paper finden
 
     - Local iterative approximate best-response algorithms, such as the distributed stochastic algorithm
@@ -97,15 +112,76 @@ suggests, is a typical informational assumption implicit in the literature on le
     - disadvantages
     
     - mgm description
+    
+%----------------- Structure --------------------- 
+
+
+% ------------- Messages sent --------------------
+
+
+%----------- Dynamics -----------------------
+
 
 \subsection{Local-Iterative - Message Passing}
+
+%-----------------  Basic Concept and Advantages Disadvantes ----------------------
     
-    \cite{Chapman2011}
-    - 
+    \cite{Chapman2011} -> 
     
     - advantages
-    -disadvantages
+    -disadvantages: cycles, acyclic
     - privacy aspects
     - maxsum description
+
+%----------------- Structure ----------------------
+
+    \cite{Farinelli2008} -> fist paper
+
+BIPARTITE GRAPH DEFINITION:
+
+FACTOR GRAPH
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=170px]{graphics/factorgraph}
+\caption{Conversion of a general DCOP to a factor graph\cite{Zivan2012}}
+\label{fig:factorgraph}
+\end{figure}
+
+    
+    Each node represent- ing a variable of the original DCOP is connected to all function- nodes that represent constraints that it is involved in. Similarly, a function-node is connected to all variable-nodes that represent variables in the original DCOP that are included in the constraint it represents. Agents
+
+% ------------- Messages sent --------------------
+
+From variable to function:
+%Qn\→m(xn) = αnm \+ \?
+%Rm\′\→n(xn)
+%m\′\∈M(n)\m
+%where αnm is a scaler chosen such that: (13)
+%?
+%Qn\→m(xn) = 0
+%xn
+From function to variable:
+%(14)
+%?
+%?
+%Rm\→n(xn) = maxxm\n
+%?Um(xm)\+ ?
+%Qn\′\→m(xn\′ )
+%?
+%n\′\∈\N(m)\n
+%(15)
+
+%It remains to describe the content of messages sent by the factor graph nodes. A message sent from a variable-node x to a function-
+%node f at iteration i, includes for each of the values d ∈ Dx the sum of costs for this value it received from all function neighbors
+%apart from f in iteration i − 1. Formally, for value d ∈ Dx the message will include
+
+%A message sent from a function-node f to a variable-node x in
+%iteration i includes for each possible value d ∈ Dx the minimal cost of any combination of assignments to the variables involved in f
+%apart from x and the assignment of value d to variable x. Formally, the message from f to x includes for each value d ∈ Dx:
+
+%----------- Dynamics -----------------------
+Finally, we note that if messages are continuously propagated,
+and the states of the agents are continuously updated, then the algo- rithm may be applied to dynamic problems where the interactions between agents, or the utilities resulting from these interactions, may change at any time. For example, within tracking problems where the decentralised coordination algorithm is being used to fo- cus different sensors onto different targets (as described in [15]), then the utilities of each sensor are continually changing due to the changing position of targets, and the actions of other sensors. Thus, by continually propagatingmessages each agent is able tomaintain a continuously updated estimate of the state that it should adopt in order to maximise social welfare in this dynamic problem4. Farinelli
     
     

@@ -1,16 +1,15 @@
 \begin{thebibliography}{}
 
-\bibitem[BenHassine and Ho, 2007]{BenHassine2007}
-BenHassine, A. and Ho, T.~B. (2007).
-\newblock {An agent-based approach to solve dynamic meeting scheduling problems
-  with preferences}.
-\newblock {\em Engineering Applications of Artificial Intelligence},
-  20(6):857--873.
+\bibitem[, 2005]{}
+ (2005).
+\newblock {Dankwoord}.
+\newblock {\em Sociologie}, 1(4):494--494.
 
-\bibitem[Berger et~al., 2008]{Berger2008}
-Berger, F., Klein, R., Nussbaum, D., Sack, J.-R., and Yi, J. (2008).
-\newblock {A meeting scheduling problem respecting time and space}.
-\newblock {\em GeoInformatica}, 13(4):453--481.
+\bibitem[Chapman et~al., 2010]{Chapman2010}
+Chapman, A.~C., Rogers, A., and Jennings, N.~R. (2010).
+\newblock {Benchmarking hybrid algorithms for distributed constraint
+  optimisation games}.
+\newblock {\em Autonomous Agents and Multi-Agent Systems}, 22(3):385--414.
 
 \bibitem[Chapman et~al., 2011]{Chapman2011}
 Chapman, A.~C., Rogers, A., Jennings, N.~R., and Leslie, D.~S. (2011).

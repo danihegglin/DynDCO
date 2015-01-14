@@ -6,7 +6,7 @@ In this section, the benchmark problem will be defined and mapped as DCOP, the f
 
 \subsection{Formal Definition as DCOP}
 
-The formulation of the meeting scheduling problem follows the basic definition of a distributed constraint optimization problem. Agents, variables and their relationships, as well as constraints shall be formulated. The components of a meeting scheduling problem are participants, their schedule, meetings and a given timeframe. For the sake of simplicity, it was decided to not take travel time between meetings or other parameters into consideration as certain researchers have done \cite{Grubshtein}. % FIXME find zitat
+The formulation of the meeting scheduling problem follows the basic definition of a distributed constraint optimization problem. Agents, variables and their relationships, as well as constraints shall be formulated. The components of a meeting scheduling problem are participants, their schedule, meetings and a given timeframe. For the sake of simplicity, it was decided to not take travel time between meetings or other parameters into consideration as certain researchers have done \cite{Grubshtein}. It was also decided to use utilities instead of costs. % FIXME find zitat
 
 \theoremstyle{hardconstraint2}
 \newtheorem{hardconstraint2}{Definition}
@@ -23,7 +23,7 @@ Meeting - has participants and needs to be held at an agreable time
 \caption{Different paradigms of mapping the meeting scheduling Problem \cite{Maheswarana}.}
 \label{fig:variablemapping}
 \end{figure}
-Maheswarana et al. propose three different ways of mapping a meeting scheduling problem to variables (Figure \ref{fig:variablemapping}). TSAV (Time Slots As Variables), EAV (Event As Variables) and PEAV (Private Events As Variables). In EAV, every participant holds a private variable containing the timeslot that should be used for a meeting. PEAV is a modification of the EAV paradigm where agents don't share their local valuations \cite{Maheswarana}. It was decided to follow the PEAV principle and model every meeting participation of an agent as one variable instead of using timeslots as variables. An agent therefore can hold multiple variables.
+Maheswarana et al. propose three different ways of mapping a meeting scheduling problem to variables (Figure \ref{fig:variablemapping}). TSAV (Time Slots As Variables), EAV (Event As Variables) and PEAV (Private Events As Variables). In EAV, every participant holds a private variable containing the timeslot that should be used for a meeting. PEAV is a modification of the EAV paradigm where agents don't share their local valuations \cite{Maheswarana,}. It was decided to follow the PEAV principle and model every meeting participation of an agent as one variable instead of using timeslots as variables. An agent therefore can hold multiple variables. This paradigm has also been tried by other researchers, which further established confidence in the decision \cite{Petcu2003}.
 \begin{hardconstraint2}
 Agent - holds one variable per meeting participation
 \end{hardconstraint2}
@@ -32,42 +32,26 @@ Variable - represents one meeting participation
 \end{hardconstraint2}
 %---------------------------- Domain & Value  definition -----------------------------------------------
 A variable takes on a value \(s_{i} \in S_{i}\) in a defined problem domain \(D\). In the formulation of the meeting scheduling problem, the domain represents a finite set of timeslots and the variable assigns to one of these timeslots. This value represents the currently locally chosen timeslot for a specific meeting.
-
+\begin{hardconstraint2}
+Domain - holds a finite set of possible timeslots to schedule a meeting
+\end{hardconstraint2}
+\begin{hardconstraint2}
+Value - assigns to a timeslot of the available timeslots in the Domain
+\end{hardconstraint2}
 %------------------------------ Constraints ---------------------------------------------------
-From the problem definition in the background \& related work chapter one can derive soft and hard constraint. Soft constraints can possibly be constructed from the preferences of the participants and utilized to maximize the utility. As the global utility should be optimized, the participants could as a consequence have a low local utility. 
-
-Further, two hard constraints can be formulated.
-
-- connection between the variables: meeting index
-
-- soft constraints -> timetable: blocked, free, preferred -> define a certain utility for the value
-
-\cite{Franzin} -> multiagent scheduling with preferences
-
-- hard constraints -> no meeting of an agent on the same timeslot, every meeting participant on the timeslot -> otherwise no usable solution
-
-- neighbourhood: the participants in the meeting
-
-
-
-\cite{Chapman2011}
-\cite{chun, andy 2003}
-\cite{mes, martijn 2007}
-\cite{BenHassine2007}
-\cite{Berger2008}
+From the problem definition in the background \& related work chapter one can derive soft and hard constraint. Soft constraints can possibly be constructed from the preferences of the participants and utilized to maximize the utility \cite{Franzin}. As the global utility should be optimized, the participants could as a consequence have a low local utility. Three differently weighted soft constraints have been defined to model preferences of agents. Preferred timeslots gain the highest utility, followed by free timeslots and blocked timeslots, which gain no value at all. Further, a timeliness soft constraint was defined that adds a higher utility to earlier timeslots. All of the soft constraints have unary relationships, i.e. are local. % FIXME \cite{Chapman2011} \cite{chun, andy 2003}\cite{mes, martijn 2007}\cite{BenHassine2007}\cite{Berger2008}
+Additionally, two hard constraints with k-ary relationships to variable neighbours need to be formulated. The first would be an equality constraint for assigned values for a meeting timeslot between all variables related to a meeting. The second is a difference constraint of assigned values between all variables of an agent \cite{Farinelli, Angulo}.
+\newline\newline
+So, a local utility function \(u_{l}(s)\) would include the sum of all soft constraints multiplied by the product of the hard constraints analogous to the global function defined in chapter 2.
+\[ u_{l}(s) = \prod_{\substack{hc_{k} \in HC}} u_{SC_{g}}(s) \bigg( \sum_{sc_{k} \in SC} u_{SC_{g}}(s) \bigg)\] 
 
 
 \subsection{Problem Dataset Generation}
 
-problem density, etc
+% ------------------------ Entscheidung, Verteidigung --------------------
+During the course of the thesis, it was necessary to find a dataset for benchmarking. The Frodo2 framework does provide a couple of datasets for meeting scheduling. But because it was considered that in the benchmarks one would need to be able to produce problems with different densities and scale to high numbers of participants, it was decided to generate meeting participations and schedules randomly.
 
-- Decision: Available datasets are not usable because it was not possible to scale to high numbers. It was chosen to create problems randomly.
-Frodo2
-
-- brauche ein paar papers die das untermauern
-
-- participations fixed
-- 
+The meeting participations are limited to a maximum of five. BECAUSE
 
 Distributed Meeting Scheduling: CHAPTER 10
 
@@ -76,7 +60,9 @@ Distributed Meeting Scheduling: CHAPTER 10
 based on: A Scalable Method for Multiagent Constraint Optimization
 breakdown
    
-    \begin{algorithm}
+%----------------- Code & Mapping ----------------------
+
+\begin{algorithm}
 \caption{DPOP Pseudocode}\label{euclid}
 \begin{algorithmic}[1]
 \Procedure{MyProcedure}{}
@@ -100,11 +86,39 @@ breakdown
 \end{algorithm}
 
 \subsection{Graph Structure}
+
+
 \subsection{Vertices}
+
 
 \section{Mapping of MGM}
 
-Breakdown
+This is the pseudocde for the Maximum-Gain messaging algorithm that has been used to implement \cite{Chapman2011}.
+
+%currentReward5u(s5currentState, sv)1 for k51:K
+%2
+%stateGain(k)5u(s5k, sv) – currentReward
+%3
+%end for
+%4
+%bestGainState5argmax
+%½stateGain?
+%5
+%k
+%bestGainValue5stateGain(bestStateGain)
+%6
+%sendBestGainMessage[allNeighbours, bestGainValue]
+%7
+%neighbourGainValues5getNeighbourGainValues[allNeighbours]
+%8
+%if bestGainValue.max[neighbourGain] then
+%9
+%newState5bestGainState
+%10
+%sendStateMessage[allNeighbours, newState]
+%11
+%end if
+%12
 
     \begin{algorithm}
 \caption{MGM Pseudocode}\label{euclid}
@@ -134,12 +148,24 @@ Breakdown
 
 \section{Mapping of MaxSum}
 
-\cite{Yedidsion}
-Farinelli2008
-zivan2012
-Aji, S. M. and McEliece, R. J. 2000. The generalized distributive law. IEEE Transactions on Information Theory 46,
+%Aji, S. M. and McEliece, R. J. 2000. The generalized distributive law. IEEE Transactions on Information Theory 46,
     
-breakdown
+This is the pseudocode of the MaxSum algorithm that has been used for the implementation \cite{Zivan2012}.
+
+Max-sum (node n)
+%1. Nn ←all of n’s neighboring nodes 2. while (no termination condition is met) 3.
+%collect messages from Nn
+%4.
+%for each n? ∈ Nn
+%5.
+%if (n is a variable-node)
+%6.
+%produce messagemn? using messages from Nn \ {n?}
+%7.
+%if (n is a function-node)
+%8.
+%produce messagemn? using constraint and messages from Nn \ {n?}
+%9. sendmn? to n?
 
     \begin{algorithm}
 \caption{Maxsum Pseudocode}\label{euclid}
@@ -165,6 +191,9 @@ breakdown
 \end{algorithm}
 
 \subsection{Graph Structure}
+
+-- describe tests and thinking behind the chosen structure!!!!
+
 \subsection{Vertices}
 
 \section{Framework}
