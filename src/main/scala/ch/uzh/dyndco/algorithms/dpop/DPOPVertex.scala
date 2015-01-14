@@ -225,7 +225,7 @@ class DPOPVertex (id: Any, agentView: DPOPMessage)
         chooseOptimal()
           
          // store curent utility
-         storeAgentUtility(true)
+         storeAgentUtility()
     
          valueMessages.clear()
 		  }

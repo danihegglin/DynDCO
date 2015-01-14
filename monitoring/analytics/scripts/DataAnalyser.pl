@@ -5,14 +5,19 @@ use POSIX;
 sub median {
     my @vals = sort {$a <=> $b} @_;
     my $len = @vals;
-    if($len%2) #odd?
-    {
-        return $vals[int($len/2)];
-    }
-    else #even
-    {
-        return ($vals[int($len/2)-1] + $vals[int($len/2)])/2;
-    }
+    if($len > 0 || $len < 0){
+	    if($len%2) #odd?
+	    {
+	        return $vals[int($len/2)];
+	    }
+	    else #even
+	    {
+	        return ($vals[int($len/2)-1] + $vals[int($len/2)])/2;
+	    }
+	}
+	else {
+		return 0;
+	}
 }
 
 # percentage of different assignments
@@ -178,18 +183,15 @@ for my $subdir (@subdirs){
 
 						# get values
 						$utility = $split[2];
+						print $utility . "\n";
 						$utility =~ s/\s+$//;
+
 						$agent_index = $split[3];
 						$agent_index =~ s/\s+$//;
 						$meeting_index = $split[4];
 						$meeting_index =~ s/\s+$//;
 						$agent_q = analyseAgent($agent_index);
 						$meeting_q = analyseMeeting($meeting_index);
-
-						# normalize values
-						if($file =~ /dpop/){
-							$utility = ($utility - 0) / ($localMaxUtil - 0);
-						}
 
 						$utilities = 0;
 						if(exists $bucket{$timestamp}){

@@ -3,45 +3,41 @@
 \contentsline {section}{\numberline {1.2}Structure}{2}
 \contentsline {chapter}{\numberline {2}Background \& Related Work}{3}
 \contentsline {section}{\numberline {2.1}Dynamic Distributed Constraint Optimization}{3}
-\contentsline {section}{\numberline {2.2}Meeting Scheduling Problem}{3}
-\contentsline {section}{\numberline {2.3}Algorithm Design Approaches}{3}
-\contentsline {subsection}{\numberline {2.3.1}Complete}{4}
-\contentsline {subsection}{\numberline {2.3.2}Local-Iterative - Best Response}{4}
-\contentsline {subsection}{\numberline {2.3.3}Local-Iterative - Message Passing}{4}
-\contentsline {chapter}{\numberline {3}Design}{5}
-\contentsline {section}{\numberline {3.1}Meeting Scheduling Problem}{5}
-\contentsline {subsection}{\numberline {3.1.1}Formal Definition as DCOP}{5}
-\contentsline {subsection}{\numberline {3.1.2}Problem Generation}{6}
-\contentsline {section}{\numberline {3.2}Framework}{6}
-\contentsline {subsection}{\numberline {3.2.1}Foundation}{6}
-\contentsline {subsection}{\numberline {3.2.2}Parameters \& Modes}{6}
-\contentsline {subsection}{\numberline {3.2.3}Functionality \& Structure}{7}
-\contentsline {subsection}{\numberline {3.2.4}Dynamics Controller}{7}
-\contentsline {section}{\numberline {3.3}Mapping of DPOP}{7}
-\contentsline {subsection}{\numberline {3.3.1}Graph Structure}{8}
-\contentsline {subsection}{\numberline {3.3.2}Vertices}{8}
-\contentsline {section}{\numberline {3.4}Mapping of MGM}{8}
-\contentsline {subsection}{\numberline {3.4.1}Graph Structure}{9}
-\contentsline {subsection}{\numberline {3.4.2}Vertices}{9}
-\contentsline {section}{\numberline {3.5}Mapping of MaxSum}{9}
-\contentsline {subsection}{\numberline {3.5.1}Graph Structure}{9}
-\contentsline {subsection}{\numberline {3.5.2}Vertices}{9}
-\contentsline {section}{\numberline {3.6}Monitoring Platform}{9}
-\contentsline {chapter}{\numberline {4}Benchmark}{11}
-\contentsline {section}{\numberline {4.1}Results I: Algorithms Performance in Static Environments}{11}
-\contentsline {subsection}{\numberline {4.1.1}Time to Convergence}{11}
-\contentsline {subsection}{\numberline {4.1.2}Solution Quality over Time}{11}
-\contentsline {subsection}{\numberline {4.1.3}Conflicts over Time}{11}
-\contentsline {subsection}{\numberline {4.1.4}Messages}{11}
-\contentsline {section}{\numberline {4.2}Results II: Algorithms Performance in Dynamic Environments}{12}
-\contentsline {subsection}{\numberline {4.2.1}Time to Convergence}{12}
-\contentsline {subsection}{\numberline {4.2.2}Solution Quality over Time}{12}
-\contentsline {subsection}{\numberline {4.2.3}Conflicts over time}{12}
-\contentsline {subsection}{\numberline {4.2.4}Messages}{12}
-\contentsline {subsection}{\numberline {4.2.5}Stability: Utility}{12}
-\contentsline {subsection}{\numberline {4.2.6}Stability: Quality}{12}
-\contentsline {chapter}{\numberline {5}Limitations \& Future Work}{13}
-\contentsline {chapter}{\numberline {6}Conclusions}{15}
-\contentsline {chapter}{\numberline {A}Appendix 15}{19}
-\contentsline {section}{\numberline {A.1}Results I: Selected Data}{19}
-\contentsline {section}{\numberline {A.2}Results II: Selected Data}{19}
+\contentsline {section}{\numberline {2.2}Meeting Scheduling Problem}{4}
+\contentsline {section}{\numberline {2.3}Algorithm Design Approaches}{4}
+\contentsline {subsection}{\numberline {2.3.1}Complete}{5}
+\contentsline {subsection}{\numberline {2.3.2}Local-Iterative - Best Response}{5}
+\contentsline {subsection}{\numberline {2.3.3}Local-Iterative - Message Passing}{5}
+\contentsline {chapter}{\numberline {3}Design}{7}
+\contentsline {section}{\numberline {3.1}Meeting Scheduling Problem}{7}
+\contentsline {subsection}{\numberline {3.1.1}Formal Definition as DCOP}{7}
+\contentsline {subsection}{\numberline {3.1.2}Problem Dataset Generation}{8}
+\contentsline {section}{\numberline {3.2}Mapping of DPOP}{8}
+\contentsline {subsection}{\numberline {3.2.1}Graph Structure}{8}
+\contentsline {subsection}{\numberline {3.2.2}Vertices}{8}
+\contentsline {section}{\numberline {3.3}Mapping of MGM}{8}
+\contentsline {subsection}{\numberline {3.3.1}Graph Structure}{9}
+\contentsline {subsection}{\numberline {3.3.2}Vertices}{9}
+\contentsline {section}{\numberline {3.4}Mapping of MaxSum}{9}
+\contentsline {subsection}{\numberline {3.4.1}Graph Structure}{10}
+\contentsline {subsection}{\numberline {3.4.2}Vertices}{10}
+\contentsline {section}{\numberline {3.5}Framework}{10}
+\contentsline {subsection}{\numberline {3.5.1}Signal / Collect}{10}
+\contentsline {subsection}{\numberline {3.5.2}Parameters \& Modes}{10}
+\contentsline {subsection}{\numberline {3.5.3}Functionality \& Structure}{10}
+\contentsline {subsection}{\numberline {3.5.4}Dynamics Controller}{11}
+\contentsline {section}{\numberline {3.6}Monitoring Platform}{11}
+\contentsline {chapter}{\numberline {4}Benchmark \& Discussion}{13}
+\contentsline {section}{\numberline {4.1}Results I: Algorithms Performance in Static Environments}{13}
+\contentsline {subsection}{\numberline {4.1.1}Solution Quality over Time}{13}
+\contentsline {subsection}{\numberline {4.1.2}Time to Convergence}{13}
+\contentsline {subsection}{\numberline {4.1.3}Conflicts over Time}{13}
+\contentsline {subsection}{\numberline {4.1.4}Number of Messages}{13}
+\contentsline {section}{\numberline {4.2}Results II: Algorithms Performance in Dynamic Environments}{14}
+\contentsline {subsection}{\numberline {4.2.1}Rebound Time}{14}
+\contentsline {subsection}{\numberline {4.2.2}Stability}{14}
+\contentsline {chapter}{\numberline {5}Limitations \& Future Work}{15}
+\contentsline {chapter}{\numberline {6}Conclusions}{17}
+\contentsline {chapter}{\numberline {A}Appendix 15}{21}
+\contentsline {section}{\numberline {A.1}Results I: Selected Data}{21}
+\contentsline {section}{\numberline {A.2}Results II: Selected Data}{21}

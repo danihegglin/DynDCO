@@ -204,7 +204,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
         */
         parentVertex = vertices.toVector(Random.nextInt(vertices.size))
         
-        // add hidden parent/child relationship
+        // add hidden parent/child relationship FIXME
 //        childVertex.addParent(parentVertex)
 //        parentVertex.addChild(childVertex)
 //        

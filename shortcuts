@@ -1,0 +1,3 @@
+&>/dev/null &
+ssh hegglin@gru.ifi.uzh.ch
+ssh root@178.62.200.138

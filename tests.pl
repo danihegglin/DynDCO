@@ -2,30 +2,30 @@
 
 # Run Configuration
 $runs = 10; # How many runs per setting
-$factoragents = 5; # 0 for scalability test of meetings
-$factormeetings = 5; # 0 for scalability test of agents
-$maxagents = 105; # max number of agents in the setting
-$maxmeetings = 105; # max number of meetings in the setting
+$factoragents = 10; # 0 for scalability test of meetings
+$factormeetings = 0; # 0 for scalability test of agents
+$maxagents = 1000; # max number of agents in the setting
+$maxmeetings = 1000; # max number of meetings in the setting
 
 # Problem Configuration
-$timeslots = 100;
-$meetings = 5;
-$agents = 5;
+$timeslots = 1000;
+$meetings = 10;
+$agents = 10;
 
-while($meetings < $maxmeetings){
-	while($agents < $maxagents){
+# while($meetings < $maxmeetings){
+# 	while($agents < $maxagents){
 
 		print $meetings . " | " . $agents . "\n";
 
 		# Test Categories
 		@density = (0.25); # 0.5, 0.75, 1
-		@algorithms = ("maxsum","mgm","dpop"); #"maxsum","mgm", #"maxsum","mgm",
-		@execution = ("synchronous", "asynchronous"); #, "asynchronous"
+		@algorithms = ("maxsum","mgm","dpop"); #"maxsum","mgm", #"maxsum","mgm","maxsum"
+		@execution = ("synchronous"); #, "asynchronous"
 		@mode = ("normal"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"
 
 		# Params for dynamicConstraints, dynamicDomain, dynamicVariables
 		@changeMode = ("single","multiple");
-		@interval = (2000,5000,10000); # Interval 
+		@interval = (100,1000,5000); # Interval 
 		@percentage = (0.25,0.50,0.75,1); # Percentage
 		@newMeeting = (0,0.5,1); # Next Meeting Probability (otherwise existing meeting)
 		@newAgent = (0,0.5,1); # Next Agent Probability (otherwise existing agent)
@@ -95,20 +95,20 @@ while($meetings < $maxmeetings){
 			system($command);
 		}
 
-		$agents += 50;
+	# 	$agents += 50;
 		
-		if($agents < $maxagents){
-			sleep 3800; #3600
-		}
-	}
+	# 	if($agents < $maxagents){
+	# 		sleep 3800; #3600
+	# 	}
+	# }
 	
-	$meetings += 5;
-	$agents = 5;
+	# $meetings += 5;
+	# $agents = 5;
 
-	if($meetings < $maxmeetings){
-		sleep 3800; #3600
-	}
-}
+	# if($meetings < $maxmeetings){
+	# 	sleep 3800; #3600
+	# }
+# }
 
 exit(0)
 

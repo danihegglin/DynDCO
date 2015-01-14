@@ -1,32 +1,29 @@
-\chapter{Benchmark}
+\chapter{Benchmark \& Discussion}
 
 In this chapter the three algorithms are benchmarked with different parameters and scenarios. The first series of tests is conducted in a static environment for a basic understanding of the algorithm performance and the second series is held in various dynamic settings to explore the dynamic capabilities of the algorithms. The testing environment was the minion cluster of the departement of informatics at the University of Zurich. The cluster consists of 16 machines and each machine has 128 GB RAM and two E5-2680 v2 at 2.80GHz processors. Every processor has 10 cores and the interlink between the machines is a 40Gbps Infiniband setup. The cluster has different partition speeds (slow, fast, superfast). All tests were conducted on superfast partitions.
 
 \section{Results I: Algorithms Performance in Static Environments}
 
-- Number of Agents
-- Number of Meetings
-- Number of Timeslots
 - Problem Density
 - Run Mode on Signal Collect
-- Multimachine Performance
 
-theoretical foundation: chapman benchmarking hybrid algorithms, Mailler2014, 
+theoretical foundation: chapman benchmarking hybrid algorithms,
 
-\subsection{Time to Convergence}
-- Heatmap für alle drei
-- Verlauf alle drei
-- Scalability: one, multiple machines
-- Convergence Distribution
 \subsection{Solution Quality over Time}
-- Heatmap für alle drei
+- Utility, Quality
 - Verlauf alle drei
 - Scalability: one, multiple machines
 - Quality Distribution
+
+\subsection{Time to Convergence}
+- More time to find a valid solution -> could be local optima
+- Scalability: one, multiple machines
+- Convergence Distribution: how often does it converge -> dpop should always converge
+
 \subsection{Conflicts over Time}
 - Verlauf alle drei
 - Scalability: one, multiple machines
-\subsection{Messages}
+\subsection{Number of Messages}
 -  Verlauf alle drei
 - Scalability: one, multiple machines
 - Message Distribution
@@ -40,28 +37,31 @@ petcu 2007
 - Change one, multiple
 - Amount of Change: Percentage, Number
 
+- Number of Agents: 10,100,1000
+- Number of Meetings; 10,100, 1000
+- Number of Timeslots: 1000
+
 constraints: mode, interval, percentage
 variables: mode, interval, new Neighbourhood, new Agent, add / remove, how many
 domain: mode, interval, percentage, increase / decrease
 
-\subsection{Time to Convergence}
-- Single Change
-- Distribution
-- Verlauf alle drei
-\subsection{Solution Quality over Time}
+\subsection{Rebound Time}
+- utility, quality
 - Single change
 - Distribution
 - Verlauf alle drei
-\subsection{Conflicts over time}
-- Rate / Avg. Conflicts - Density!!
-\subsection{Messages}
-- Number of exchanged messages -> maybe not
-\subsection{Stability: Utility}
-- Multiple change: Peak Average
-- Median Utility?
-\subsection{Stability: Quality}
+- given timeframe -> lowest to highest avg.
+
+\subsection{Stability}
+
+\cite{Verfaillie2005}
+
+- Utility, Quality
 - Multiple change: Peak Average
 - Median Utility
 
+- Rate / Avg. Conflicts - Density!! Mailler2014, 
+
+- messages
 
 % dpop should not scale well, mgm should not

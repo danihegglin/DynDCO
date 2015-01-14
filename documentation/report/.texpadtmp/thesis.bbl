@@ -1,34 +1,103 @@
 \begin{thebibliography}{}
 
-\bibitem[Angulo and Godo, 2007]{Angulo2007}
-Angulo, C. and Godo, L. (2007).
-\newblock {Distributed meeting scheduling}.
-\newblock {\em Artificial Intelligence Research and \ldots}, pages 1--8.
+\bibitem[BenHassine and Ho, 2007]{BenHassine2007}
+BenHassine, A. and Ho, T.~B. (2007).
+\newblock {An agent-based approach to solve dynamic meeting scheduling problems
+  with preferences}.
+\newblock {\em Engineering Applications of Artificial Intelligence},
+  20(6):857--873.
+
+\bibitem[Berger et~al., 2008]{Berger2008}
+Berger, F., Klein, R., Nussbaum, D., Sack, J.-R., and Yi, J. (2008).
+\newblock {A meeting scheduling problem respecting time and space}.
+\newblock {\em GeoInformatica}, 13(4):453--481.
 
 \bibitem[Chapman et~al., 2011]{Chapman2011}
 Chapman, A.~C., Rogers, A., Jennings, N.~R., and Leslie, D.~S. (2011).
 \newblock {\em {A unifying framework for iterative approximate best-response
   algorithms for distributed constraint optimization problems}}, volume~26.
 
-\bibitem[Maheswaran et~al., ]{Maheswaran}
-Maheswaran, R.~T., Pearce, J.~P., and Tambe, M.
-\newblock {A Family of Graphical-Game-Based Algorithms for Distributed
-  Constraint Optimization Problems}.
-\newblock pages 1--19.
+\bibitem[Farinelli et~al., ]{Farinelli}
+Farinelli, A., Vinyals, M., Rogers, A., and Jennings, N.~R.
+\newblock {Chapter 12 Distributed Constraint Handling and Optimization}.
+\newblock pages 1--43.
 
-\bibitem[Petcu and Faltings, 2007]{Petcu2007}
+\bibitem[Franzin et~al., ]{Franzin}
+Franzin, M.~S., Freuder, E.~C., Rossi, F., and Wallace, R.
+\newblock {Multi-agent meeting scheduling with preferences : efficiency ,
+  privacy loss , and solution quality}.
+
+\bibitem[Grubshtein et~al., ]{Grubshtein}
+Grubshtein, A., Gershman, A., and Meisels, A.
+\newblock {Scheduling Meetings by Agents}.
+\newblock {\em Citeseer}, (1):1--15.
+
+\bibitem[Hiroaki et~al., 1999]{J1999}
+Hiroaki, K., Tadokoro, S., Noda, I., Matsubara, H., Takahashi, T., Shinjou, A.,
+  and Shimada, S. (1999).
+\newblock {RoboCup Rescue : Search and Rescue in Large-scale Disasters as a
+  Domain for Autonomous Agents Research and Robotics Can Make}.
+\newblock pages 739--743.
+
+\bibitem[Leeuwen et~al., 2002]{Leeuwen2002}
+Leeuwen, P.~V., Hesselink, H., and Rohling, J. (2002).
+\newblock {Scheduling Aircraft Using Constraint Satisfaction}.
+\newblock 76.
+
+\bibitem[Maheswaran et~al., 2006]{Maheswaran}
+Maheswaran, R., Pearce, J., and Tambe, M. (2006).
+\newblock {A family of graphical-game-based algorithms for distributed
+  constraint optimization problems}.
+\newblock {\em Coordination of large-scale \ldots}, pages 1--19.
+
+\bibitem[Maheswaran and Tambe, 2004]{Maheswarana}
+Maheswaran, R. and Tambe, M. (2004).
+\newblock {Taking DCOP to the real world: Efficient complete solutions for
+  distributed multi-event scheduling}.
+\newblock {\em Proceedings of the \ldots}.
+
+\bibitem[Mailler and Zheng, 2014]{Maillera}
+Mailler, R. and Zheng, H. (2014).
+\newblock {A new analysis method for dynamic distributed constraint
+  satisfaction}.
+\newblock {\em Proceedings of the 2014 international conference \ldots}, pages
+  901--908.
+
+\bibitem[Modi et~al., 2005]{Modi2005}
+Modi, P., Shen, W., Tambe, M., and Yokoo, M. (2005).
+\newblock {Adopt: asynchronous distributed constraint optimization with quality
+  guarantees}.
+\newblock {\em Artificial Intelligence}, 161(1-2):149--180.
+
+\bibitem[Nguyen and Yao, 2012]{Nguyen2012}
+Nguyen, T.~T. and Yao, X. (2012).
+\newblock {Optimization - The Challenges}.
+\newblock 16(6):769--786.
+
+\bibitem[Petcu and Faltings, 2003]{Petcu2003}
+Petcu, A. and Faltings, B. (2003).
+\newblock {A Scalable Method for Multiagent Constraint Optimization}.
+
+\bibitem[Petcu and Faltings, 2007]{Petcua}
 Petcu, A. and Faltings, B. (2007).
-\newblock {Optimal Solution Stability in Dynamic, Distributed Constraint
-  Optimization}.
-\newblock {\em 2007 IEEE/WIC/ACM International Conference on Intelligent Agent
-  Technology (IAT'07)}, pages 321--327.
+\newblock {Optimal solution stability in dynamic, distributed constraint
+  optimization}.
+\newblock {\em Proceedings of the 2007 IEEE/WIC/ACM \ldots}.
 
 \bibitem[Stutz et~al., 2010]{Stutz2010}
 Stutz, P., Bernstein, A., and Cohen, W. (2010).
-\newblock {Signal / Collect : Graph Algorithms for the ( Semantic ) Web}.
+\newblock {Signal/collect: graph algorithms for the (semantic) web}.
+\newblock {\em The Semantic Web-ISWC 2010}.
 
 \bibitem[Yedidsion and Zivan, ]{Yedidsion}
 Yedidsion, H. and Zivan, R.
 \newblock {Applying MaxSum to DCOP MST}.
+
+\bibitem[Zhang et~al., 2002]{Zhang}
+Zhang, W., Xing, Z., and Louis, S. (2002).
+\newblock {Distributed Breakout vs . Distributed Stochastic : A Comparative
+  Evaluation on Scan Scheduling}.
+\newblock {\em Proceedings of the AAMAS-02 workshop on Distributed Constraint
+  Reasoning}, pages 192--201.
 
 \end{thebibliography}

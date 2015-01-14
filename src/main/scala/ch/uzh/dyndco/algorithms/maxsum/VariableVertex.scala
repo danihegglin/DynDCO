@@ -130,7 +130,7 @@ class VariableVertex (id: Any, initialState: MaxSumMessage)
           }
           
           // store curent utility
-          storeAgentUtility(false)
+          storeAgentUtility()
         }
         
     	  new MaxSumMessage(id, allUtilities)

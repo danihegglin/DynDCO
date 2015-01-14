@@ -322,13 +322,10 @@ abstract class MeetingSchedulingVertex (id: Any, initialState: Any)
    var updates = Map[String, String]()
    var conflicts = Map[String, String]()
    
-   def storeAgentUtility(normalizeValue : Boolean){
+   def storeAgentUtility(){
      
       // build message
       var utility = calculateSingleUtility(CONSTRAINTS_ORIGINAL, value)
-      
-      if(normalizeValue)
-        utility = normalize(utility)
       
       var message = utility + ";" + AGENT_INDEX + ";" + MEETING_INDEX
               
