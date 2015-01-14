@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  14 JAN 2015 06:16
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  14 JAN 2015 08:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -509,95 +509,131 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--24
 
 
 
-] <graphics/overview_algos.png, id=62, 1028.84375pt x 396.48125pt>
+]
+\c@hardconstraint1=\count131
+ <graphics/overview_algos.png, id=62, 1028.84375pt x 396.48125pt>
 File: graphics/overview_algos.png Graphic file (type png)
  <use graphics/overview_algos.png>
-Package pdftex.def Info: graphics/overview_algos.png used on input line 44.
+Package pdftex.def Info: graphics/overview_algos.png used on input line 47.
 (pdftex.def)             Requested size: 401.50146pt x 154.72385pt.
+ [4]
+
+LaTeX Warning: Citation `Likhachev' on page 5 undefined on input line 64.
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[4]
-
-LaTeX Warning: Citation `Likhachev' on page 5 undefined on input line 61.
-
-
-Overfull \hbox (0.76495pt too wide) in paragraph at lines 83--91
+Overfull \hbox (0.76495pt too wide) in paragraph at lines 86--94
 []\OT1/pfr/bx/n/10.95 - Lo-cal it-er-a-tive ap-prox-i-mate best-response al-go-rithms, such as the dis-tributed stochas-
  []
 
-) (./section-design/design.tex [5 <./graphics/overview_algos.png>] [6]
+[5 <./graphics/overview_algos.png>]) (./section-design/design.tex [6]
 Chapter 3.
+
+Package amsthm Warning: Unknown theoremstyle `hardconstraint2' on input line 11.
+
+\c@hardconstraint2=\count132
+<graphics/variablemodell.png, id=74, 812.03375pt x 611.28375pt>
+File: graphics/variablemodell.png Graphic file (type png)
+ <use graphics/variablemodell.png>
+Package pdftex.def Info: graphics/variablemodell.png used on input line 22.
+(pdftex.def)             Requested size: 301.1261pt x 226.67513pt.
+
+Underfull \hbox (badness 7186) in paragraph at lines 23--23
+[]\OT1/pfr/bx/n/10.95 Different paradigms of map-ping the meet-ing schedul-ing Prob-lem
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 [7
 
 
 
-] [8] [9]
-Underfull \hbox (badness 10000) in paragraph at lines 180--181
+]
+
+LaTeX Warning: Citation `chun' on page 8 undefined on input line 54.
+
+
+LaTeX Warning: Citation `andy 2003' on page 8 undefined on input line 54.
+
+
+LaTeX Warning: Citation `mes' on page 8 undefined on input line 55.
+
+
+LaTeX Warning: Citation `martijn 2007' on page 8 undefined on input line 55.
+
+[8 <./graphics/variablemodell.png>] [9]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [10]
+Underfull \hbox (badness 10000) in paragraph at lines 181--182
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 180--181
+Underfull \hbox (badness 10000) in paragraph at lines 181--182
 
  []
 
-[10] <graphics/monitoring.png, id=89, 64.24pt x 80.3pt>
+[11] <graphics/monitoring.png, id=93, 64.24pt x 80.3pt>
 File: graphics/monitoring.png Graphic file (type png)
  <use graphics/monitoring.png>
-Package pdftex.def Info: graphics/monitoring.png used on input line 208.
+Package pdftex.def Info: graphics/monitoring.png used on input line 211.
 (pdftex.def)             Requested size: 64.23984pt x 80.29979pt.
-) (./section-results/results.tex [11] [12 <./graphics/monitoring.png>]
+) (./section-results/results.tex [12] [13 <./graphics/monitoring.png>] [14
+
+
+
+]
 Chapter 4.
 
 Overfull \hbox (3.63579pt too wide) in paragraph at lines 5--5
 []\OT1/pfr/bx/n/17.28 Results I: Al-go-rithms Per-for-mance in Static En-vi-ron-ments 
  []
 
-[13
+[15]
 
+LaTeX Warning: Citation `Verfaillie2005' on page 16 undefined on input line 57.
 
-
-]
-
-LaTeX Warning: Citation `Verfaillie2005' on page 14 undefined on input line 57.
-
-) (./section-limitations/limitations.tex [14]
+) (./section-limitations/limitations.tex [16]
 Chapter 5.
-) (./section-conclusions/conclusions.tex [15
+) (./section-conclusions/conclusions.tex [17
 
 
 
-] [16
+] [18
 
 
 
 ]
 Chapter 6.
-) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [17] [18
+) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [19] [20
 
 
 
-] [19]) (./section-appendix/appendix.tex [20]
+] [21]) (./section-appendix/appendix.tex [22]
 Appendix A.
-) [21
-
-
-
-] [22
-
-
-] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lof)
-\tf@lof=\write5
-\openout5 = `thesis.lof'.
-
- [23
-
+) [23
 
 
 
 ] [24
+
+
+] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lof
+Overfull \hbox (99.01096pt too wide) in paragraph at lines 5--5
+ [][] []\OT1/pfr/bx/n/10.95 Different paradigms of map-ping the meet-ing schedul-ing Prob-lem [[]]. []  
+ []
+
+)
+\tf@lof=\write5
+\openout5 = `thesis.lof'.
+
+ [25
+
+
+
+
+] [26
 
 
 
@@ -606,7 +642,7 @@ Appendix A.
 \tf@lot=\write6
 \openout6 = `thesis.lot'.
 
- [25] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+ [27] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 47.12pt have occurred.
@@ -622,18 +658,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 6836 strings out of 493315
- 99307 string characters out of 6137905
- 193280 words of memory out of 5000000
- 10102 multiletter control sequences out of 15000+600000
+ 6859 strings out of 493315
+ 99733 string characters out of 6137905
+ 194292 words of memory out of 5000000
+ 10124 multiletter control sequences out of 15000+600000
  19912 words of font info for 77 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 46i,11n,47p,1706b,288s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 46i,11n,47p,1706b,290s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (35 pages, 323227 bytes).
+Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (37 pages, 432635 bytes).
 PDF statistics:
- 194 PDF objects out of 1000 (max. 8388607)
- 133 compressed objects within 2 object streams
+ 204 PDF objects out of 1000 (max. 8388607)
+ 140 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

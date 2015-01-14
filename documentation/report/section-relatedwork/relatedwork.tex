@@ -25,17 +25,20 @@ As a further extension to the optimization, the problem definition is moved from
 \section{Meeting Scheduling Problem}  
 
 %--------------------- Introduction with examples
-Scheduling is the problem of allocating tasks to a given set of ressources that is usually limited with a time component. The meeting scheduling problem is a exemplary type of this family of problems. Participants of a meeting have private schedules with preferences when a meeting should be held according to their calendar. \cite{Farinelli}. 
+Scheduling is the problem of allocating tasks to a given set of ressources that is usually limited with a time component. The meeting scheduling problem is a exemplary type of this family of problems and is well-know to all of us. Supposed participants of a meeting have private schedules with preferences when a meeting should be held according to their calendar and the challenge is to identify a time for a meeting that maximizes the preferences of all participants while being valid in then sense that every person is able to attend \cite{Farinelli}. From this definition, one can derive two important criteria for a legitimate solution to the problem:
+\theoremstyle{definition}
+\newtheorem{hardconstraint1}{Validity Criterium}
+\begin{hardconstraint1}
+All participants need to agree on the same time for the meeting.
+\end{hardconstraint1}
+\begin{hardconstraint1}
+Meetings need to be scheduled in a way that there are no overlaps of meeting times in the schedules of the participants.
+\end{hardconstraint1}
     
-One should further mention an inherent privacy aspect to the problem. Meeting participant's are often not willing to share their schedules with others except for finding a time for the specific meeting. It will later be shown that some of the algorithms can guarantee this privacy to a certain degree.
+There is further an inherent privacy aspect to the problem. Meeting participant's are often not willing to share their schedules with others except for finding a time for the specific meeting. It will later be shown that some of the algorithms can guarantee this privacy to a certain degree. The meeting scheduling problem will be mapped as a distributed constraint optimization problem in the design chapter.
     
     %--------------------- Explanation of the components with formal definition
-    
-   \cite{Berger2008}
-   \cite{BenHassine2007}
-   \cite{Grubshtein}
    
-   - hard constraints same, different
     
 
 \section{Algorithm Design Approaches}

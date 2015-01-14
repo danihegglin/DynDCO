@@ -10,7 +10,7 @@ $maxmeetings = 1000; # max number of meetings in the setting
 # Problem Configuration
 $timeslots = 1000;
 $meetings = 10;
-$agents = 10;
+$agents = 30;
 
 # while($meetings < $maxmeetings){
 # 	while($agents < $maxagents){

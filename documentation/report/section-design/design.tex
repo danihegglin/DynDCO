@@ -1,60 +1,65 @@
 \chapter{Design}
 
-In this section, the benchmark problem will be defined and mapped as DCOP, the framework design will be explained and the mapping of the algorithms on to the Signal/Collect framework will be described. Additionally, the design and considerations regarding the implemented monitoring platform are detailled.
+In this section, the benchmark problem will be defined and mapped as DCOP, the framework design will be explained and the mapping of the algorithms on to the Signal/Collect framework will be described. Additionally, the design and considerations regarding the monitoring platform will be presented.
 
 \section{Meeting Scheduling Problem}
 
 \subsection{Formal Definition as DCOP}
 
-The formulation of the meeting scheduling problem followed the basic definition of a distributed constraint optimization problem.
+The formulation of the meeting scheduling problem follows the basic definition of a distributed constraint optimization problem. Agents, variables and their relationships, as well as constraints shall be formulated. The components of a meeting scheduling problem are participants, their schedule, meetings and a given timeframe. For the sake of simplicity, it was decided to not take travel time between meetings or other parameters into consideration as certain researchers have done \cite{Grubshtein}. % FIXME find zitat
 
-%-------------------------- Variable definition ------------------------------------------------
-=> meeting -> variable
+\theoremstyle{hardconstraint2}
+\newtheorem{hardconstraint2}{Definition}
+\begin{hardconstraint2}
+Participant - has preferences and meeting he/she need to attend
+\end{hardconstraint2}
+\begin{hardconstraint2}
+Meeting - has participants and needs to be held at an agreable time
+\end{hardconstraint2}
 
-\cite{Maheswarana}
-TSAV (Time Slots As Variables): a variable Xn(t) is the n-th resources t-th time slot.
- The complexity of TSAV grows if the time range increases or the time quantization interval decreases.
-EAV (Event As Variables): X
-K represents the starting time of E
-K, with domain t, ..., t
-PEAV (Private Events As Variables): A modification of EAV to ensure privacy protection for agents information.
-As in EAV each participant controls a private variable corresponding to the starting time of a meeting. But the
-difference is that in this formulation agents dont share their internal valuation for the resources, thus maintaining
-privacy. The experimental results in shows that EAV outperforms PEAV by one order of magnitude when using
-passup in meeting scheduling. As in this project it is fundamental to preserve agents preferences as well as to have
-the best variable control scheme we will consider only PEAV formulation.
-
-%------------------------------------ Value ---------------------------------------
-=> currently chosen meeting
+%-------------------------- Variable  & Agent definition ------------------------------------------------
+\begin{figure}[h!]
+\includegraphics[width=300px]{graphics/variablemodell.png}
+\caption{Different paradigms of mapping the meeting scheduling Problem \cite{Maheswarana}.}
+\label{fig:variablemapping}
+\end{figure}
+Maheswarana et al. propose three different ways of mapping a meeting scheduling problem to variables (Figure \ref{fig:variablemapping}). TSAV (Time Slots As Variables), EAV (Event As Variables) and PEAV (Private Events As Variables). In EAV, every participant holds a private variable containing the timeslot that should be used for a meeting. PEAV is a modification of the EAV paradigm where agents don't share their local valuations \cite{Maheswarana}. It was decided to follow the PEAV principle and model every meeting participation of an agent as one variable instead of using timeslots as variables. An agent therefore can hold multiple variables.
+\begin{hardconstraint2}
+Agent - holds one variable per meeting participation
+\end{hardconstraint2}
+\begin{hardconstraint2}
+Variable - represents one meeting participation
+\end{hardconstraint2}
+%---------------------------- Domain & Value  definition -----------------------------------------------
+A variable takes on a value \(s_{i} \in S_{i}\) in a defined problem domain \(D\). In the formulation of the meeting scheduling problem, the domain represents a finite set of timeslots and the variable assigns to one of these timeslots. This value represents the currently locally chosen timeslot for a specific meeting.
 
 %------------------------------ Constraints ---------------------------------------------------
+From the problem definition in the background \& related work chapter one can derive soft and hard constraint. Soft constraints can possibly be constructed from the preferences of the participants and utilized to maximize the utility. As the global utility should be optimized, the participants could as a consequence have a low local utility. 
+
+Further, two hard constraints can be formulated.
+
+- connection between the variables: meeting index
+
 - soft constraints -> timetable: blocked, free, preferred -> define a certain utility for the value
 
-\cite{Franzin}
+\cite{Franzin} -> multiagent scheduling with preferences
 
 - hard constraints -> no meeting of an agent on the same timeslot, every meeting participant on the timeslot -> otherwise no usable solution
 
-
-%-------------------------------- Relationship ----------------------------------
 - neighbourhood: the participants in the meeting
 
+
+
 \cite{Chapman2011}
-chun, andy 2003
-grubshtein
-mes, martijn 2007
+\cite{chun, andy 2003}
+\cite{mes, martijn 2007}
+\cite{BenHassine2007}
+\cite{Berger2008}
 
-
-
-
-
-
-
-Multi-agent meeting scheduling with preferences:
-efficiency, privacy loss, and solution quality Franzin
-
-problem density, etc
 
 \subsection{Problem Dataset Generation}
+
+problem density, etc
 
 - Decision: Available datasets are not usable because it was not possible to scale to high numbers. It was chosen to create problems randomly.
 Frodo2
@@ -69,9 +74,7 @@ Distributed Meeting Scheduling: CHAPTER 10
 \section{Mapping of DPOP}
 
 based on: A Scalable Method for Multiagent Constraint Optimization
-    
-    - Why DPOP
-    DPOP is a primary example for a complete algorithm
+breakdown
    
     \begin{algorithm}
 \caption{DPOP Pseudocode}\label{euclid}
@@ -101,8 +104,7 @@ based on: A Scalable Method for Multiagent Constraint Optimization
 
 \section{Mapping of MGM}
 
-     - Why MGM
-     Good example for Best-Response algorithm and DSA-B has already been implemented
+Breakdown
 
     \begin{algorithm}
 \caption{MGM Pseudocode}\label{euclid}
@@ -137,8 +139,7 @@ Farinelli2008
 zivan2012
 Aji, S. M. and McEliece, R. J. 2000. The generalized distributive law. IEEE Transactions on Information Theory 46,
     
-    - Why MaxSum
-    MaxSum is the new kid on the block.
+breakdown
 
     \begin{algorithm}
 \caption{Maxsum Pseudocode}\label{euclid}
@@ -204,6 +205,8 @@ It was decided to find a more sophisticated method to monitor the utility, quali
 Sending the results with non-blockin http requests to a restful server was considered to be an alternative and the Play Framework\footnote{https://www.playframework.com} has been chosen because it is highly scalable, is able to handle thousands of simultanous connections, lightweight, non-blocking and allows to process results on-the-fly with code in Java or Scala. It was also chosen because Akka is tightly integrated and the actors concept are an integral part of the framework. It further allows to preview the calculation of the graph in realtime with websockets, which can be helpful during the implementation of algorithms.
 
 By using an actor based approach it is possible to contain run specific data in a closed entity and store when limits are reached. Through the chosen architecture one can run multiple tests in parallel without problems. The server is of course also limited by it's ressources.
+
+For asynchronous http request the Dispatch\footnote{http://dispatch.databinder.net} library has been used.
 
 \includegraphics{graphics/monitoring}
 
