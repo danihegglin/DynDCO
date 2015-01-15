@@ -18,9 +18,9 @@ $agents = 10;
 		print $meetings . " | " . $agents . "\n";
 
 		# Test Categories
-		@density = (0.75); # 0.5, 0.75, 1
+		@density = (0.25); # 0.5, 0.75, 1
 		@algorithms = ("maxsum","mgm","dpop"); #"maxsum","mgm", #"maxsum","mgm","maxsum"
-		@execution = ("synchronous"); #, "asynchronous"
+		@execution = ("asynchronous"); #, "asynchronous"
 		@mode = ("normal"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"
 
 		# Params for dynamicConstraints, dynamicDomain, dynamicVariables
