@@ -18,7 +18,6 @@ abstract class DynamicVertex (id: Any, initialState: Any)
   
   def changeDomain(domain : Any){
         TIMESLOTS = domain.asInstanceOf[Int]
-        // FIXME
   }
   
 }

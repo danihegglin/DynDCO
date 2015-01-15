@@ -63,7 +63,7 @@ sub analyseMeeting {
 }
 
 # configuration
-my $dir = "/Users/daniel/git/dyndco/monitoring/analytics";
+my $dir = "/Users/daniel/Desktop/finalruns";
 my $experiments = $dir . "/experiments";
 my $results = $dir. "/results";
 

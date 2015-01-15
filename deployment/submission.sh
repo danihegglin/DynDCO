@@ -27,7 +27,7 @@ echo "maxmeetings" ${13};
 jarname=dyndco-1.1-SNAPSHOT.jar
 mainClass=ch.uzh.dyndco.testbed.MultipleDriver
 #workingDir=/home/slurm/USER_ID-${SLURM_JOB_ID}
-vm_args=" -Xmx16G -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:+UseNUMA -XX:-UseBiasedLocking -XX:MaxInlineSize=1024"
+vm_args=" -Xmx24G -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:+UseNUMA -XX:-UseBiasedLocking -XX:MaxInlineSize=1024"
 
 #...copy data from home to work folder if needed....
 # copy jar

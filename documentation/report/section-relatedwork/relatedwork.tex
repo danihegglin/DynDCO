@@ -1,4 +1,5 @@
 \chapter{Background \& Related Work}
+\label{chap:background}
 
 In this section, constraint optimization and the distributed, as well as dynamic variants are briefly explained and brought into context of the related work. Also, the meeting scheduling problem is described and different algorithm designs and their advantages and disadvantages are explained and related work is mentioned.
     
@@ -57,21 +58,15 @@ There is further an inherent privacy aspect to the problem. Meeting participant'
 \label{fig:categorization}
 \end{figure}
 
-Chapman et al. categorize distributed constraint optimization algorithms into local iterative and distributed complete algorithms. They further divide local iterative into message passing algorithms and approximate best response algorithms (Figure \ref{fig:categorization}). All of these approaches fullfill the anytime property, i.e they can provide a solution at every timepoint during calculation and all of them can be run synchronously as well as asynchronously with varying performances.
-The following subsections are going to explain the differences between the three categories and introduce the concrete algorithms from these three different approaches that have been chosen for benchmarking. Advantages, as well as disadvantages will be described and which behaviour one can expect of these algorithms under certain parameters.
+Chapman et al. categorize distributed constraint optimization algorithms into local iterative and distributed complete algorithms. They further divide local iterative into message passing algorithms and approximate best response algorithms (Figure \ref{fig:categorization}). The following subsections are going to explain the differences between the three categories and introduce the concrete algorithms from these three different approaches that have been chosen for benchmarking. Advantages, as well as disadvantages will be described and which behaviour one can expect of these algorithms under certain parameters.
 
 %Other Approaches: Bee Hive optimization, Genetic Algorithms, .. DynDCOAA, SBDO, Bee Colony algorithm, Ant colony algorithm, adopt, dsa-a, dsa-b stochastic ...\cite{Likhachev}
     
-\subsection{Complete}
+\subsection{Distributed Complete}
 
-\cite{Chapman2011}
-
-    %-----------------  Basic Concept and Advantages Disadvantes ----------------------
-
-    
-    
-    %----------------- Structure ----------------------
-
+%-----------------  Basic Concept and Advantages Disadvantes ----------------------
+Distributed complete algorithms always discover a configuration of value assignments to variables that maximizes the global utility function. This completness guarantee increases the complexity of computation and leads to exponentially growing message numbers or calculations when increasing the amount of variables in a problem. Messages between agents contain often complex structures and constraint problems usually need to be transformed to a extensive graph structure \cite{Chapman2011}. These types of algorithms therefore are not expected to scale well and quickly find qualitative solutions, but they fit well if one wants to find the maximal utility of a problem. 
+    %----------------- Chosen algorithm ----------------------
 \begin{figure}[H]
 \centering
 \includegraphics[width=250px]{graphics/pseudotree}
@@ -79,68 +74,21 @@ The following subsections are going to explain the differences between the three
 \label{fig:pseudotree}
 \end{figure}
 
-% ------------- Messages sent --------------------
-
+For this thesis, it was decided to implement the Dynamic Programming OPptimization algorithm (DPOP) proposed by \cite{Petcu2003} as a comparison to the local-iterative approaches. In this algorithm, constraint optimization problems need to be converted to a pseudotree (Fig. \ref{fig:pseudotree}), which is an modification of a DFS Tree. The original DCOP graph is transformed in a way that previous neighbours are placed in the same branches of a binary tree. They are connected trough ordinary tree edges, but additionaly back-edges between unconnected previous neighbours are established. The leaf nodes propose UTIL messages with their utility values for each value assignment upwards the tree and the Root node sends a VALUE message downwards containing the best value to chose. Nodes in the middle of the tree propagate UTIL and VALUE messages. The message structure is fairly complex as it involves all the pseudoparents from the back-edges and their context to a hypercube, which increases the message size exponentially. The number of messages on the other hand is linear. Through the integration of contextual values, privacy is not guaranteed in this setting.
 
 %----------- Dynamics -----------------------
-
-
 \subsection{Local-Iterative - Best Response}
 
 %-----------------  Basic Concept and Advantages Disadvantes ----------------------
-
-- neighbourhoods
-- only communicates his state
-- reacts to the states of others
-- privacy aspects
-
-\cite{Chapman2011}
-\cite{Chapman2010}
-\cite{Maheswaran} % Achtung muss das richtig paper finden
-
-    - Local iterative approximate best-response algorithms, such as the distributed stochastic algorithm
-(Tel, 2000; Fitzpatrick  Meertens, 2003), the maximum-gain messaging algorithm (Yokoo 
-Hirayama, 1996; Maheswaran et al., 2005), fictitious play (Brown, 1951; Robinson, 1951),
-adaptive play (Young, 1993, 1998), and regret matching (Hart  Mas-Colell, 2000). In this class,
-agents exchange messages containing only their state, or can observe the strategies of their
-neighbours. In game-theoretic parlance, this is known as standard monitoring2
-, and, as the name
-suggests, is a typical informational assumption implicit in the literature on learning in games.
-
-
-    - advantages
-    - disadvantages
-    
-    - mgm description
-    
-%----------------- Structure --------------------- 
-
-
-% ------------- Messages sent --------------------
-
-
-%----------- Dynamics -----------------------
-
+In a local-iterative best-response algorithm, agents only communicate their current state, e.g. their value assignment and react to these value messages in the best possible way from their perspective. The agents are only connected to their neighbours with whom they share constraints and there is no complex graph structure controlling the message flow \cite{Chapman2011}. Through this local property, the types of algorithms should be inherently scalable as the messages and computations do not increase exponentially. Further, this approach is optimal from a privacy perspective as the neighbours only share their current preference and no other details of their schedule. %\cite{Chapman2010} %\cite{Maheswaran} % Achtung muss das richtig paper finden
+\newline\newline
+%----------------- Chosen algorithm: Structure, Messages --------------------- 
+For this thesis, it was decided to implement the Maximum-Gain Messaging algorithm (MGM) proposed by \cite{Yokoo1996}. In this algorithm, agents  calculate the maximal gain in utility they can achieve when assigning to another value and send this value as a message. If of all messages they received, they have the highest gain, the value is changed. Otherwise the local value stays the same. This algorithm fullfills the anytime property, i.e it can provide a solution at every timepoint during calculation and also reaches good solutions quickly \cite{Chapman2010}. As the decision of an agent depends on a complete set of message of all it's neighbours, this algorithm will not perform well in asynchronous running mode. This type of algorithm does further not always converge and does not always provide the optimal solution to a problem.
 
 \subsection{Local-Iterative - Message Passing}
-
 %-----------------  Basic Concept and Advantages Disadvantes ----------------------
-    
-    \cite{Chapman2011} -> 
-    
-    - advantages
-    -disadvantages: cycles, acyclic
-    - privacy aspects
-    - maxsum description
-
-%----------------- Structure ----------------------
-
-    \cite{Farinelli2008} -> fist paper
-
-BIPARTITE GRAPH DEFINITION:
-
-FACTOR GRAPH
-
+The difference of message-passing to best-response algorithms is that the agents send and receive messages containing a specific data structure, which contains the utilities respectively costs that various assignments hold for a local variable. Received messages are used to calculate the next message that is sent to the connected neighbours. These types of algorithms are like best-response algorithms able to provide an acceptable solution in a short period of time, but also share the charasteric to sometimes not converge or not providing an optimal solution \cite{Chapman2011}.
+%-----------------  Choosen algorithm ----------------------
 \begin{figure}[H]
 \centering
 \includegraphics[width=170px]{graphics/factorgraph}
@@ -148,40 +96,16 @@ FACTOR GRAPH
 \label{fig:factorgraph}
 \end{figure}
 
-    
-    Each node represent- ing a variable of the original DCOP is connected to all function- nodes that represent constraints that it is involved in. Similarly, a function-node is connected to all variable-nodes that represent variables in the original DCOP that are included in the constraint it represents. Agents
+For this thesis, it was decided to implement the MaxSum algorithm introduced by \cite{Farinelli2008}. The algorithm has currently gotten a lot of attention from researchers. For this work, the algorithm is especially interesting because of it's proposed abilities in at least synchronously run dynamic environments.  \cite{Farinelli2008} wrote in their paper:
+\begin{quote}
+[...] we note that if messages are continuously propagated,
+and the states of the agents are continuously updated, then the algorithm may be applied to dynamic problems where the interactions between agents, or the utilities resulting from these interactions, may change at any time.
+\end{quote}
 
+In MaxSum the original DCOP graph is transformed to a factor, which is a form of a bipartite graph and of cyclic nature (Fig. \ref{fig:factorgraph}. An agent contains after the transformation of a variable and a function node, whereas variables are connected to all corresponding function nodes of  their previous neighbours. The function nodes are vice versa connected to all previous neighbours of it's variable node. 
 % ------------- Messages sent --------------------
+The messages sent from variable nodes differ from the function nodes. A message from variable to function contains for every value \(d \in D_{x}\) the sum of utilities regarding this value, which the node has received from all connected function nodes. It is important to note that this sum does not include the values provided by the message target. The values are normalized at this point to avoid steadily to infinity increasing sums. A message from a function node to a variable node holds for every value  \(d \in D_{x}\)  the summation of all costs received from all connected variable nodes except the message receiver and the original cost of the constraint represented by the function node \cite{Zivan2012}.
 
-From variable to function:
-%Qn\→m(xn) = αnm \+ \?
-%Rm\′\→n(xn)
-%m\′\∈M(n)\m
-%where αnm is a scaler chosen such that: (13)
-%?
-%Qn\→m(xn) = 0
-%xn
-From function to variable:
-%(14)
-%?
-%?
-%Rm\→n(xn) = maxxm\n
-%?Um(xm)\+ ?
-%Qn\′\→m(xn\′ )
-%?
-%n\′\∈\N(m)\n
-%(15)
 
-%It remains to describe the content of messages sent by the factor graph nodes. A message sent from a variable-node x to a function-
-%node f at iteration i, includes for each of the values d ∈ Dx the sum of costs for this value it received from all function neighbors
-%apart from f in iteration i − 1. Formally, for value d ∈ Dx the message will include
-
-%A message sent from a function-node f to a variable-node x in
-%iteration i includes for each possible value d ∈ Dx the minimal cost of any combination of assignments to the variables involved in f
-%apart from x and the assignment of value d to variable x. Formally, the message from f to x includes for each value d ∈ Dx:
-
-%----------- Dynamics -----------------------
-Finally, we note that if messages are continuously propagated,
-and the states of the agents are continuously updated, then the algo- rithm may be applied to dynamic problems where the interactions between agents, or the utilities resulting from these interactions, may change at any time. For example, within tracking problems where the decentralised coordination algorithm is being used to fo- cus different sensors onto different targets (as described in [15]), then the utilities of each sensor are continually changing due to the changing position of targets, and the actions of other sensors. Thus, by continually propagatingmessages each agent is able tomaintain a continuously updated estimate of the state that it should adopt in order to maximise social welfare in this dynamic problem4. Farinelli
     
     

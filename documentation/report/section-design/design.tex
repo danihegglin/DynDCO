@@ -42,30 +42,66 @@ Value - assigns to a timeslot of the available timeslots in the Domain
 From the problem definition in the background \& related work chapter one can derive soft and hard constraint. Soft constraints can possibly be constructed from the preferences of the participants and utilized to maximize the utility \cite{Franzin}. As the global utility should be optimized, the participants could as a consequence have a low local utility. Three differently weighted soft constraints have been defined to model preferences of agents. Preferred timeslots gain the highest utility, followed by free timeslots and blocked timeslots, which gain no value at all. Further, a timeliness soft constraint was defined that adds a higher utility to earlier timeslots. All of the soft constraints have unary relationships, i.e. are local. % FIXME \cite{Chapman2011} \cite{chun, andy 2003}\cite{mes, martijn 2007}\cite{BenHassine2007}\cite{Berger2008}
 Additionally, two hard constraints with k-ary relationships to variable neighbours need to be formulated. The first would be an equality constraint for assigned values for a meeting timeslot between all variables related to a meeting. The second is a difference constraint of assigned values between all variables of an agent \cite{Farinelli, Angulo}.
 \newline\newline
-So, a local utility function \(u_{l}(s)\) would include the sum of all soft constraints multiplied by the product of the hard constraints analogous to the global function defined in chapter 2.
+A local utility function \(u_{l}(s)\) would therefore include the sum of all soft constraints multiplied by the product of the hard constraints analogous to the global function defined in chapter {\ref{chap:background}}. These definitions and this form of a local utility function have been implemented at later stages of the thesis into the algorithms:
 \[ u_{l}(s) = \prod_{\substack{hc_{k} \in HC}} u_{SC_{g}}(s) \bigg( \sum_{sc_{k} \in SC} u_{SC_{g}}(s) \bigg)\] 
-
 
 \subsection{Problem Dataset Generation}
 
 % ------------------------ Entscheidung, Verteidigung --------------------
-During the course of the thesis, it was necessary to find a dataset for benchmarking. The Frodo2 framework does provide a couple of datasets for meeting scheduling. But because it was considered that in the benchmarks one would need to be able to produce problems with different densities and scale to high numbers of participants, it was decided to generate meeting participations and schedules randomly.
+During the course of the thesis, it was necessary to find a dataset for the benchmarking. The Frodo2\footnote{http://frodo2.sourceforge.net} framework or for example the the dataset from AAMAS, 2004 \footnote{http://teamcore.usc.edu/dcop/} do provide a couple of datasets for meeting scheduling. But because it was considered that in the benchmarks one would need to be able to produce problems with different densities and scale to high numbers of participants, as well as change constraints dynamically it was decided to generate meeting participations and agent schedules randomly. It was also chosen to limit the number of meeting participations per agent to keep the benchmarks more realistic analogously to \cite{Chun}.
 
-The meeting participations are limited to a maximum of five. BECAUSE
+\begin{itemize}
+\item Schedules are blocked based on the percentage given trough the density parameter
+\item Preferences for meetings are chosen randomly from free timeslots in the schedule
+\item The number of meeting participations is chosen randomly from 1-5
+\item The meeting participations are chosen at random
+\end{itemize}
 
-Distributed Meeting Scheduling: CHAPTER 10
+\section{Framework}
+
+\subsection{Signal / Collect}
+
+It was decided to build a specific framework for benchmarking dynamic problems. The foundation of the framework is the Signal/Collect framework \cite{Stutz2010}\footnote{http://uzh.github.io/signal-collect}, which is built on top of Akka\footnote{http://akka.io} and written in Scala\footnote{http://www.scala-lang.org}. It is a graph processing engine with a programming model that features vertices and edges. The vertices have a state and send signals along the edges to other vertices, which can contain any datatype. The signal usually is their state or in context of their state. The vertices collect the signals and perform a compution on the collected data, before adjusting their state according to the calculations and sending out the newly generated signal.  This model allows to reduce complex algorithms to a few lines of code and is applicable for many problems. The reason for choosing this framework in this thesis is the structural fit to distributed constraint optimization problems and the possiblity to add and remove vertices during runtime. This allows for dynamically changing problem computations. Further, the capability of running problems asynchronously or with synchronous signal steps and the possibility to distribute the system on multiple machines add to the advantages.
+
+\subsection{Structure \& Functionality}
+The considerations for the structure of the framework were that I needs to be hierarchical to allow different constraint optimization problems to be run. This mainly concerns the Vertices. For a basic convergence function and control parameters on the number of sent signals a \texttt{BasicVertex} has been implement. Further a \texttt{MeetingSchedulingVertex} has been implemented. This Vertex acts a generalization
+
+It was decided to have a variable represent each meeting participation of a user and connect every of those variables of one agent to the agent vector, where meeting times are registered. This agent vector acts as an difference hard constraint between the participations of a user and is not a Signal / Collect edge, but a shared reference. Further, all variables attending a meeting also share a reference to the meeting vector where every agent shares his current preference which is in essence a equality hard constraint. 
+The local utility function is based on the definitions in chapter 2.2. The reason why the utility function has been generalized on this level is because the structure has repeated itself in all three implemented algorithm approaches. It is further helpful for comparison to have the exact same utility function implemented.
+
+ that includes a convergence function for meeting scheduling, the local utility function and data storage functions. 
+To generalize dynamic change functions, a \texttt{DynamicVertex} was created, which implements methods for changing constraints and the value domain of the vertex. The concrete vertex implementations from the three approaches extends the \texttt{DynamicVertex}.
+
+\subsection{Dynamics Controller}
+
+The initial design consideration to introduce change to the constraints in the agents was to create a special vertex as part of the graph in Signal/Collect because the framework supports multiple types of vertices and messages in one graph execution. However, the vertex needed to be paused in the case of interval changes for a certain time and this caused errors during execution. Akka distributes multiple actors to the same thread and through pausing the dynamics vertex, other vertices were blocked. Through the abstractions in the Signal/Collect framework, it was not possible to gain access to the Akka dispatcher to schedule the activation of the vertex as a possible solution. It therefore was decided to run the changes controller in it's own thread alongside the graph execution.\newline\newline
+The controller is first of all able to change constraints at a given interval and percentage (of all constraints in the problem). It is also possible to run a change only once. In the case of the meeting scheduling problem implementation this is only related to soft constraints as hard constraints can be handled by adding or removing variables with the second function. The variable change function also can be run at a certain interval or at one timepoint.  One can add parameters to create a new neighbourhood or use existing relationships and add new variables or remove existing one's. Instead of given by percentage, this change is defined by number. As a third function, the controller does change the domain in the whole problem for all agents. In the use case of meeting scheduling, this increases or reduces the available timeslots.
+
+\subsection{Parameters \& Modes}
+This framework was designed with the benchmarks in mind.  It should be possible to pass the general run parameters like which algorithm to use, which Signal/Collect run mode (synchronous/asynchronous) to use, normal run mode or dynamic variations (changeConstraints, changeVariable, changeDomain) with specific parameters. For testing, two test modes were implemented: SingleTest and MultiTest. Single Test is for single runs obviously and MultiTest allows to specifiy how many runs each specification should be doing to create a median of those runs, how much the agents respectively the meetings should increase after a specification has been processed and where to stop. By this, it is possible to explore an area of specifications. Finally, it should be possible to define different problems. For this thesis, the parameters for problem density (blocked timeslots percentage), timeslots, meetings and agents were defined.
 
 \section{Mapping of DPOP}
 
-based on: A Scalable Method for Multiagent Constraint Optimization
-breakdown
-   
-%----------------- Code & Mapping ----------------------
+The following sections describes the mapping of the graph structure of the DPOP algorithm and the behaviour of it's nodes to the Signal/Collect Framework  in regards to the meeting scheduling problem. The implementation is based on \cite{Petcu2003}.
 
-\begin{algorithm}
-\caption{DPOP Pseudocode}\label{euclid}
+\begin{figure}[h]
+\includegraphics[width=200px]{graphics/dpop_graph}
+\centering
+\caption{An example DPOP pseudograph}
+\label{fig:dpop_graph}
+\end{figure}
+
+hard constraint connection not show in image
+cycles
+A pseudo-tree arrangement of a graph G is a rooted tree with the same vertices as G and the property that adjacent vertices from the original graph fall in the same branch of the tree (e.g. X0 and X11 in Figure 1). Petcu2003
+
+
+The process of the algorithm in short
+
+\begin{algorithm}[H]
+\caption{DPOP Util Message Handler}\label{euclid}
 \begin{algorithmic}[1]
-\Procedure{MyProcedure}{}
+\State DPOP (X, D, R) \newline Each agent Xi executes:
 \State $\textit{stringlen} \gets \text{length of }\textit{string}$
 \State $i \gets \textit{patlen}$
 \BState \emph{top}:
@@ -81,93 +117,82 @@ breakdown
 \EndIf
 \State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
 \State \textbf{goto} \emph{top}.
-\EndProcedure
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Graph Structure}
+\begin{algorithm}[H]
+\caption{DPOP Value Message Handler}\label{euclid}
+\begin{algorithmic}[1]
+\State DPOP (X, D, R) \newline Each agent Xi executes:
+\State $\textit{stringlen} \gets \text{length of }\textit{string}$
+\State $i \gets \textit{patlen}$
+\BState \emph{top}:
+\If {$i > \textit{stringlen}$} \Return false
+\EndIf
+\State $j \gets \textit{patlen}$
+\BState \emph{loop}:
+\If {$\textit{string}(i) = \textit{path}(j)$}
+\State $j \gets j-1$.
+\State $i \gets i-1$.
+\State \textbf{goto} \emph{loop}.
+\State \textbf{close};
+\EndIf
+\State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
+\State \textbf{goto} \emph{top}.
+\end{algorithmic}
+\end{algorithm}
 
-
-\subsection{Vertices}
+Signal:
+Collect:
 
 
 \section{Mapping of MGM}
 
-This is the pseudocde for the Maximum-Gain messaging algorithm that has been used to implement \cite{Chapman2011}.
+The following section describes the mapping of the graph structure of the Maximum-Gain Messaging algorithm and the behaviour of it's nodes described in chapter 2 to the Signal/Collect Framework in regards to the meeting scheduling problem. The implementation is based on \cite{Chapman2010}
 
-%currentReward5u(s5currentState, sv)1 for k51:K
-%2
-%stateGain(k)5u(s5k, sv) – currentReward
-%3
-%end for
-%4
-%bestGainState5argmax
-%½stateGain?
-%5
-%k
-%bestGainValue5stateGain(bestStateGain)
-%6
-%sendBestGainMessage[allNeighbours, bestGainValue]
-%7
-%neighbourGainValues5getNeighbourGainValues[allNeighbours]
-%8
-%if bestGainValue.max[neighbourGain] then
-%9
-%newState5bestGainState
-%10
-%sendStateMessage[allNeighbours, newState]
-%11
-%end if
-%12
+\begin{figure}[h]
+\includegraphics[width=250px]{graphics/mgm_graph}
+\centering
+\caption{An example MGM graph}
+\label{fig:mgm_graph}
+\end{figure}
 
-    \begin{algorithm}
+Mapping the meeting scheduling problem to the structure of MGM was quite straightforward. The participant vertices of one meeting are all connected to each other through a Signal / Collect edge.
+
+\begin{algorithm}[H]
 \caption{MGM Pseudocode}\label{euclid}
 \begin{algorithmic}[2]
-\Procedure{MyProcedure}{}
-\State $\textit{stringlen} \gets \text{length of }\textit{string}$
-\State $i \gets \textit{patlen}$
-\BState \emph{top}:
-\If {$i > \textit{stringlen}$} \Return false
-\EndIf
-\State $j \gets \textit{patlen}$
-\BState \emph{loop}:
-\If {$\textit{string}(i) = \textit{path}(j)$}
-\State $j \gets j-1$.
-\State $i \gets i-1$.
-\State \textbf{goto} \emph{loop}.
-\State \textbf{close};
-\EndIf
-\State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
-\State \textbf{goto} \emph{top}.
-\EndProcedure
+\State currentReward = u(s = currentState, \(S_{v}\))
+\For $\ k = 1:K $
+\State $j stateGain(k) = u(s = k, sv) - currentREward$
+\EndFor
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Graph Structure}
-\subsection{Vertices}
+In the signal 
+
+Collect:
+
+ and send each other value messages.
 
 \section{Mapping of MaxSum}
 
-%Aji, S. M. and McEliece, R. J. 2000. The generalized distributive law. IEEE Transactions on Information Theory 46,
-    
+The following sections describe the mapping of the graph structure of  and the behaviour of it's nodes described in chapter 2 to the Signal/Collect Framework  in regards to the meeting scheduling problem. 
+
+-- describe tests and thinking behind the chosen structure!!!! -> bipartite graph -> unary connections in factor graph should be possible
+- had a problem with the property to send only to others with only 1 meeting.
+
+\begin{figure}[h]
+\includegraphics[width=250px]{graphics/maxsum_graph}
+\centering
+\caption{An example MaxSum graph}
+\label{fig:maxsum_graph}
+\end{figure}
+
+
 This is the pseudocode of the MaxSum algorithm that has been used for the implementation \cite{Zivan2012}.
 
-Max-sum (node n)
-%1. Nn ←all of n’s neighboring nodes 2. while (no termination condition is met) 3.
-%collect messages from Nn
-%4.
-%for each n? ∈ Nn
-%5.
-%if (n is a variable-node)
-%6.
-%produce messagemn? using messages from Nn \ {n?}
-%7.
-%if (n is a function-node)
-%8.
-%produce messagemn? using constraint and messages from Nn \ {n?}
-%9. sendmn? to n?
-
-    \begin{algorithm}
+\begin{algorithm}[H]
 \caption{Maxsum Pseudocode}\label{euclid}
 \begin{algorithmic}[3]
 \Procedure{MyProcedure}{}
@@ -190,53 +215,13 @@ Max-sum (node n)
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Graph Structure}
-
--- describe tests and thinking behind the chosen structure!!!!
-
-\subsection{Vertices}
-
-\section{Framework}
-
-\subsection{Signal / Collect}
-
-It was decided to build a specific framework for benchmarking dynamic problems. The foundation of the framework is the Signal/Collect framework \cite{Stutz2010}\footnote{http://uzh.github.io/signal-collect}, which is built on top of Akka\footnote{http://akka.io} and written in Scala\footnote{http://www.scala-lang.org}. It is a graph processing engine with a programming model that features vertices and edges. The vertices have a state and send signals along the edges to other vertices, which can contain any datatype. The signal usually is their state or in context of their state. The vertices collect the signals and perform a compution on the collected data, before adjusting their state according to the calculations and sending out the newly generated signal.  This model allows to reduce complex algorithms to a few lines of code and is applicable for many problems. The reason for choosing this framework in this thesis is the structural fit to distributed constraint optimization problems and the possiblity to add and remove vertices during runtime. This allows for dynamically changing problem computations. Further, the capability of running problems asynchronously or with synchronous signal steps and the possibility to distribute the system on multiple machines add to the advantages.
-
-\subsection{Parameters \& Modes}
-This framework was designed with the benchmarks in mind.  It should be possible to pass the general run parameters like which algorithm to use, which Signal/Collect run mode (synchronous/asynchronous) to use, normal run mode or dynamic variations (changeConstraints, changeVariable, changeDomain) with specific parameters. For testing, two test modes were implemented: SingleTest and MultiTest. Single Test is for single runs obviously and MultiTest allows to specifiy how many runs each specification should be doing to create a median of those runs, how much the agents respectively the meetings should increase after a specification has been processed and where to stop. By this, it is possible to explore an area of specifications. Finally, it should be possible to define different problems. For this thesis, the parameters for problem density (blocked timeslots percentage), timeslots, meetings and agents were defined.
-
-\subsection{Functionality \& Structure}
-
-The considerations for the structure were that I needs to be hierarchical to allow different constraint optimization problems to be run on the framework. So, the hierachy goes from a Base to a Dynamic to a Problem level. It should include ProblemFactories and Problems, GraphFactories and Graphs, as well as Vertices.\newline\newline
-
-- Problem Factory: Problem -> MeetingSchedulingProblem class diagram
-
-- Graph Factory: Graph -> DPOP Graph, MGM Graph, MaxSum Graph explanation 
-- Graph
-
-- BasicVertex -> DynamicVertex -> MeetingSchedulingVertex -> DPOP, MGM, MaxSum Vertex class diagram!!!
-
-\subsection{Dynamics Controller}
-
-how does it work, what can it do
-
-- Registration of vertices
-- change constraints
-- change variables
-- change domain
-
-- Initial design consideration was to make it part of the graph as signal collect allows mixup of different types. Created weird problems because I need to pause the vertex for interval changes. not part of the graph but connected to vertices -> because it was a problem with convergence and there was a problem with thread sleep in akka
+Signal:
+Collect:
 
 \section{Monitoring Platform}
 
-It was decided to find a more sophisticated method to monitor the utility, quality, conflicts and stats of the calculations than to write to a logfile. Partially because File IO can possibiliy be limited in the number of open files and processing results to fit the log file format during calculations can affect the performance of the algorithm one tries to benchmark. Mainly because processing log files was to tedious and visibility was not given to the calculations.
+The  storage and monitoring of the utilities, quality levels, conflicts and run statistics of the calculations is in bechmarks usually done by writing the results to a log file. It was decided to use an alternative method during the course of this thesis. Mainly because it was a desirable function  to automatically postprocess the results of the bechmarks on a detached machine and because real-time visibility was considered to be useful during the implementation of the algorithms.\newline Sending the results with non-blocking asynchronous HTTP requests\footnote{http://dispatch.databinder.net} to a restful API on a dedicated server was considered to be a viable option and worth trying out. The Play Framework\footnote{https://www.playframework.com} has been chosen for implementation because it is highly scalable and able to handle thousands of simultanous connections, is lightweight as well as non-blocking and allows to process results on-the-fly with code written in Java or Scala. It was also chosen because the Akka framework, which is also the foundation of Signal/Collect is tightly integrated and the actors concept is an integral part of the platform. For every benchmarking run, an actor is created that handles all the relevant incoming messages. It is therefore possible to run multiple benchmarks in parallel. The framework further allows to visualize the global utility of the graph in real-time via websockets. % FIXME bildli
 
-Sending the results with non-blockin http requests to a restful server was considered to be an alternative and the Play Framework\footnote{https://www.playframework.com} has been chosen because it is highly scalable, is able to handle thousands of simultanous connections, lightweight, non-blocking and allows to process results on-the-fly with code in Java or Scala. It was also chosen because Akka is tightly integrated and the actors concept are an integral part of the framework. It further allows to preview the calculation of the graph in realtime with websockets, which can be helpful during the implementation of algorithms.
-
-By using an actor based approach it is possible to contain run specific data in a closed entity and store when limits are reached. Through the chosen architecture one can run multiple tests in parallel without problems. The server is of course also limited by it's ressources.
-
-For asynchronous http request the Dispatch\footnote{http://dispatch.databinder.net} library has been used.
-
-\includegraphics{graphics/monitoring}
+%\includegraphics{graphics/monitoring}
 
 

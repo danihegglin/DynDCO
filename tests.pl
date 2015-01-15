@@ -3,14 +3,14 @@
 # Run Configuration
 $runs = 10; # How many runs per setting
 $factoragents = 10; # 0 for scalability test of meetings
-$factormeetings = 0; # 0 for scalability test of agents
-$maxagents = 1000; # max number of agents in the setting
-$maxmeetings = 1000; # max number of meetings in the setting
+$factormeetings = 10; # 0 for scalability test of agents
+$maxagents = 100; # max number of agents in the setting
+$maxmeetings = 100; # max number of meetings in the setting
 
 # Problem Configuration
 $timeslots = 1000;
-$meetings = 10;
-$agents = 30;
+$meetings = 10;	
+$agents = 10;
 
 # while($meetings < $maxmeetings){
 # 	while($agents < $maxagents){
@@ -18,7 +18,7 @@ $agents = 30;
 		print $meetings . " | " . $agents . "\n";
 
 		# Test Categories
-		@density = (0.25); # 0.5, 0.75, 1
+		@density = (0.75); # 0.5, 0.75, 1
 		@algorithms = ("maxsum","mgm","dpop"); #"maxsum","mgm", #"maxsum","mgm","maxsum"
 		@execution = ("synchronous"); #, "asynchronous"
 		@mode = ("normal"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"

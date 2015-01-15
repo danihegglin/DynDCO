@@ -200,7 +200,7 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
          connectableVertices += childVertex
          
        /**
-        * Backend Edge
+        * Back-Edges
         */
         parentVertex = vertices.toVector(Random.nextInt(vertices.size))
         
