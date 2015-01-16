@@ -2,15 +2,15 @@
 
 # Run Configuration
 $runs = 10; # How many runs per setting
-$factoragents = 10; # 0 for scalability test of meetings
-$factormeetings = 10; # 0 for scalability test of agents
-$maxagents = 100; # max number of agents in the setting
-$maxmeetings = 100; # max number of meetings in the setting
+$factoragents = 0; # 0 for scalability test of meetings
+$factormeetings = 0; # 0 for scalability test of agents
+$maxagents = 40; # max number of agents in the setting
+$maxmeetings = 10; # max number of meetings in the setting
 
 # Problem Configuration
-$timeslots = 1000;
+$timeslots = 100;
 $meetings = 10;	
-$agents = 10;
+$agents = 40;
 
 # while($meetings < $maxmeetings){
 # 	while($agents < $maxagents){
@@ -19,18 +19,18 @@ $agents = 10;
 
 		# Test Categories
 		@density = (0.25); # 0.5, 0.75, 1
-		@algorithms = ("maxsum","mgm","dpop"); #"maxsum","mgm", #"maxsum","mgm","maxsum"
+		@algorithms = ("maxsum"); # ,"mgm","dpop"
 		@execution = ("asynchronous"); #, "asynchronous"
 		@mode = ("normal"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"
 
 		# Params for dynamicConstraints, dynamicDomain, dynamicVariables
-		@changeMode = ("single","multiple");
-		@interval = (100,1000,5000); # Interval 
-		@percentage = (0.25,0.50,0.75,1); # Percentage
-		@newMeeting = (0,0.5,1); # Next Meeting Probability (otherwise existing meeting)
-		@newAgent = (0,0.5,1); # Next Agent Probability (otherwise existing agent)
-		@action = (0,0.5,1); # Add/Remove Probability
-		@number = (1,2,5,10); # Number of changed variables
+		@changeMode = ("single"); #"multiple"
+		@interval = (100,1000,5000); # 1000,5000 
+		@percentage = (0.25); # Percentage 0.50,0.75,1
+		@newMeeting = (0); # Next Meeting Probability (otherwise existing meeting)
+		@newAgent = (1); # Next Agent Probability (otherwise existing agent)
+		@action = (1); # Add/Remove Probability
+		@number = (1,5,10); # Number of changed variables
 
 		# Build all tests
 		@commands = ();
@@ -62,9 +62,11 @@ $agents = 10;
 						elsif($mode eq "dynamicConstraints" || $mode eq "dynamicDomain"){
 							for my $interval (@interval){
 								for my $percentage (@percentage){
-									# Params: interval, percentage
-									my $command = $command_pre . "'$interval,$percentage' " . $command_post;
-									push(@commands, $command);
+									for my $changeMode (@changeMode){
+										# Params: interval, percentage
+										my $command = $command_pre . "'$interval,$percentage,$changeMode' " . $command_post;
+										push(@commands, $command);
+									}
 								}
 							}
 						}
@@ -91,8 +93,8 @@ $agents = 10;
 
 		# Run tests
 		for my $command (@commands){
-			print($command . "\n");
-			system($command);
+			print($command . ";");
+			#system($command);
 		}
 
 	# 	$agents += 50;

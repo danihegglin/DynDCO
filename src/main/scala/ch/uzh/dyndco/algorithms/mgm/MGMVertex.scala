@@ -117,11 +117,12 @@ import ch.uzh.dyndco.stack.vertex.DynamicVertex
         chooseMaximalGain()
         outgoing = new MGMMessage(id, lastGain)
       }
+      
+     // store curent utility
+     storeAgentUtility()
+    
     
 	  }
-    
-    // store curent utility
-    storeAgentUtility()
     
    outgoing
   }

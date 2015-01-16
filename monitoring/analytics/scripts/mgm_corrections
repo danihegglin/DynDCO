@@ -1,0 +1,6 @@
+sh submission.sh '0.25' 'mgm' 'synchronous' 'normal' '' 100 10 10 10 10 0 30 10 &
+sh submission.sh '0.25' 'mgm' 'asynchronous' 'normal' '' 100 10 10 10 10 0 30 10 &
+sh submission.sh '0.5' 'mgm' 'synchronous' 'normal' '' 100 10 10 10 10 0 30 10 &
+sh submission.sh '0.5' 'mgm' 'asynchronous' 'normal' '' 100 10 10 10 10 0 30 10 &
+sh submission.sh '0.75' 'mgm' 'synchronous' 'normal' '' 100 10 10 10 10 0 30 10 &
+sh submission.sh '0.75' 'mgm' 'asynchronous' 'normal' '' 100 10 10 10 10 0 30 10 &

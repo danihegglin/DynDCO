@@ -84,18 +84,18 @@ object MeetingSchedulingFactory {
        }
 
         // hard constraints
-        var hardConstraints : Set[Int] = buildHardConstraints(availableTimeslots, used)
+        var blockedConstraints : Set[Int] = buildBlocked(availableTimeslots, used)
         
         // extend used set
-        for(hardConstraint <- hardConstraints){
-          used += hardConstraint
+        for(blockedConstraint <- blockedConstraints){
+          used += blockedConstraint
         }
 
         // soft constraints
-        var softConstraints : Set[Int] = buildSoftConstraints(availableTimeslots, used)
+        var freeConstraints : Set[Int] = buildFree(availableTimeslots, used)
         
         // Constraint pack
-        new MeetingConstraints(agent,hardConstraints,softConstraints,preferences)
+        new MeetingConstraints(agent,blockedConstraints,freeConstraints,preferences)
     
   }
 
@@ -153,11 +153,11 @@ object MeetingSchedulingFactory {
 	  preference
 	}
 	
-	private def buildHardConstraints(availableTimeslots : MutableList[Int], used : Set[Int]) : Set[Int] = {
+	private def buildBlocked(availableTimeslots : MutableList[Int], used : Set[Int]) : Set[Int] = {
 			var available = Random.nextInt(availableTimeslots.size) + 1
-			var numOfHardConstraints : Int = Math.floor(available * DENSITY).toInt
-			var hardConstraints: Set[Int] = Set()
-			for(hardConstraint <- 1 to numOfHardConstraints){
+			var numOfBlockedConstraints : Int = Math.floor(available * DENSITY).toInt
+			var blockedConstraints: Set[Int] = Set()
+			for(blockedConstraint <- 1 to numOfBlockedConstraints){
 				var timeslot = -1
 				while (timeslot < 0){
 					var proposedTimeslot : Int = Random.nextInt(availableTimeslots.size) + 1
@@ -165,19 +165,19 @@ object MeetingSchedulingFactory {
 						timeslot = proposedTimeslot
 					}
 				}
-				hardConstraints += timeslot
+				blockedConstraints += timeslot
 			}
-			hardConstraints
+			blockedConstraints
 	}
 	
-	private def buildSoftConstraints(availableTimeslots : MutableList[Int], used : Set[Int]) : Set[Int] = {
-			var softConstraints: Set[Int] = Set()
+	private def buildFree(availableTimeslots : MutableList[Int], used : Set[Int]) : Set[Int] = {
+			var freeConstraints: Set[Int] = Set()
 			for(availableTimeslot <- availableTimeslots){
 			  if(!used.contains(availableTimeslot)){
-				  softConstraints += availableTimeslot
+				  freeConstraints += availableTimeslot
 				}
 			}
-			softConstraints
+			freeConstraints
 	}
   
 }

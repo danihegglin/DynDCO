@@ -1,14 +1,11 @@
 \chapter{Limitations \& Future Work}
 \label{c:limitations}
-
-The main limiting factor in the work was the time to test more algorithms and more problems and more aspects of dynamic constraint optimization problems. \newline
-It would be interesting to see how the performance of other problems is.
-\newline
- The meeting scheduling problem could also be further explored by increasing the amount of maximum meeting participations of an agent. The amount of participations was limited during the course of this thesis to not further expand the number of possible cases for benchmarking. 
- \newline
- The aspect of changing domains was also not much researched despite being in the framework as a possible test. This was mostly because of the lack of impact respectively damaging impact changed timeslots  had on the scheduling problem. One could further investigate this property of dynamic constraint optimization problems. \cite{Yedidsion} -> have explored this
-\newline
-The aspect of changing functions
+%----------------------------------- Limitations -----------------------------
+Limitations during the course of this thesis were the time and space to implement other algorithms and investigate different problems on the framework, as well as study further aspects of dynamic constraint optimization problems. 
+%----------------------------------- Future Work -----------------------------
+Future work could include the benchmarking of other problems than meeting scheduling with the given algorithm implementations and structure. Especially, the MaxSum algorithm seems promising for problems that require a quick solution to a problem like network traffic routing or high-frequency sensor networks. The meeting scheduling problem could also be further explored by increasing the amount of maximum meeting participations of an agent. The amount of participations was limited during the course of this thesis to not further expand the number of possible cases for benchmarking, but it could be interesting to see how this affects the overall performance of the algorithms as the complexity to find a converging solution increases with more participants in a meeting.
+ \newline \newline
+ Two aspects of dynamic problem changes were not taken into consideration in the benchmarking chapter of this thesis. First of all, changing domains on meeting scheduling problems has not been observed to have an impact during run-time other than rendering a complete solution impossible by reducing the timeslots to a minimum. Increasing the domain as the only changing parameter had practically no effect on the solution too, as the number of meetings did not increase and therefore no need for more timeslots has emerged. One could further investigate this property of dynamic constraint optimization problems by dynamically adding variables and constraints at the same time and simultanously increase the domain space. This could be a possibility for a real-time scheduling system, which continously integrates new information into the overall problem. In this case, the stability properties of the algorithms would be of great importance and could also be tested and further studied.
  
 
  

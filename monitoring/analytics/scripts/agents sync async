@@ -1,0 +1,6 @@
+sh submission.sh '0.25' 'maxsum' 'synchronous' 'normal' '' 100 10 10 20 10 0 100 10 &
+sh submission.sh '0.25' 'maxsum' 'asynchronous' 'normal' '' 100 10 10 20 10 0 100 10 &
+sh submission.sh '0.25' 'dpop' 'synchronous' 'normal' '' 100 10 10 20 10 0 100 10 &
+sh submission.sh '0.25' 'dpop' 'asynchronous' 'normal' '' 100 10 10 20 10 0 100 10 &
+sh submission.sh '0.25' 'mgm' 'synchronous' 'normal' '' 100 10 10 20 10 0 100 10 &
+sh submission.sh '0.25' 'mgm' 'asynchronous' 'normal' '' 100 10 10 20 10 0 100 10 &

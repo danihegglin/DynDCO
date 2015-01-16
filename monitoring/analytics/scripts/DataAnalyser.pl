@@ -153,6 +153,8 @@ for my $subdir (@subdirs){
 			my $normalizedTimestamp = 0;
 			my $lastTimestamp = 0;
 
+			my %blocked = ();
+
 			while ( my $line = <$fh> ) {
 
 				$linecount++;
@@ -160,10 +162,13 @@ for my $subdir (@subdirs){
 				# split line
 				@split = split(";", $line);
 
+				$agent = $split[1];
+				$utility = $split[2];
+
 				if($split[1] =~ /start/){
 					$start{$filecounter} = 0; # is always 0 when normalized
 				}
-				elsif($split[1] =~ /finished/){
+				elsif($split[1] =~/finished/){
 					$finish{$filecounter} = $lastTimestamp; # real stop time is the last utility update from the agents
 				}
 				else {
@@ -177,12 +182,26 @@ for my $subdir (@subdirs){
 					}
 
 					$timestamp = ($timestamp - $normalizedTimestamp) + 2; # makes timestamps start at 0
+
+					# check user blocks for this timeframe
+					# $blocked = 0;
+					# if($timestamp == $lastTimestamp && $utility > 0){
+					# 	if(exists $blocked{$agent}){
+					# 		$blocked = 1;
+					# 	}
+					# 	else {
+					# 		$blocked{$agent} = 1;
+					# 	}
+					# }
+					# else {
+					# 	%blocked = ();
+					# }
+
 					$lastTimestamp = $timestamp;
 
-					if($timestamp ne "0"){
+					if($timestamp ne "0" && $blocked == 0){
 
 						# get values
-						$utility = $split[2];
 						print $utility . "\n";
 						$utility =~ s/\s+$//;
 
@@ -315,25 +334,28 @@ for my $subdir (@subdirs){
 		  	}
 		  	close $fh;
 
-		 #  if($timepoint !~ /timestamp/){
-			#   print $timepoint . "|" . $utility . "| \n";
-			#   while ( $count < $max){
-			#    	$timepoint++;
-			#    	$count++;
+		  # erweiterung
+		  if($timepoint !~ /timestamp/){
+			  print $timepoint . "|" . $utility . "| \n";
+			  while ( $count < $max){
+			   	$timepoint++;
+			   	$count++;
 
-			#  	if(exists $matrix{$timepoint}){
-			# 		$timepoints = $matrix{$timepoint};
-	 	# 		}
-			# 	$timepoints .= $utility . "," . $agent_index . "," . $meeting_index . ";"; 
-			# 	$matrix{$timepoint} = $timepoints;
-			#   }
-			# }
+			 	if(exists $matrix{$timepoint}){
+					$timepoints = $matrix{$timepoint};
+	 			}
+				$timepoints .= $utility . "," . $agent_index . "," . $meeting_index . ";"; 
+				$matrix{$timepoint} = $timepoints;
+			  }
+			}
 		}
 
 		# create mean file
 		open(my $fw, '>', $subsubdir . '/mean.txt') or die "Could not open file: $!";
 		$header = "timepoint;u_mean;u_median;u_sum;a_mean;a_median;a_sum;m_mean;m_median;m_sum\n";
 		print $fw $header;
+		$first = "0;0;0;0;0;0;0;0;0;0\n";
+		print $fw $first;
 
 		# foreach file add up timepoints: mean, median
 		my $max_util = 0;
