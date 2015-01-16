@@ -2,12 +2,12 @@ This is BibTeX, Version 0.99d (TeX Live 2013)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: thesis.aux
 Case mismatch error between cite keys Angulo and angulo
----line 32 of file thesis.aux
+---line 33 of file thesis.aux
  : \citation{Angulo
  :                 }
 I'm skipping whatever remains of this command
 Case mismatch error between cite keys Angulo and angulo
----line 64 of file thesis.aux
+---line 73 of file thesis.aux
  : \citation{Angulo
  :                 }
 I'm skipping whatever remains of this command
@@ -22,11 +22,15 @@ Repeated entry---line 579 of file ../section-references/thesis_mendeley.bib
  :       ,
 I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for "angulo"
-Warning--I didn't find a database entry for "Verfaillie2005"
+Warning--I didn't find a database entry for "Yokoo1996"
+Warning--I didn't find a database entry for "Chun"
+Warning--I didn't find a database entry for "Dean"
 Warning--to sort, need author or key in 
 Warning--empty author in 
 Warning--can't use both volume and number fields in Chapman2011
 Warning--empty publisher in Chapman2011
+Warning--empty journal in Farinelli2008
+Warning--there's a number but no volume in Farinelli2008
 Warning--empty year in Farinelli
 Warning--empty journal in Farinelli
 Warning--empty year in Franzin
@@ -37,47 +41,46 @@ Warning--empty journal in J1999
 Warning--empty journal in Leeuwen2002
 Warning--empty journal in Nguyen2012
 Warning--empty journal in Petcu2003
-Warning--empty year in Yedidsion
-Warning--empty journal in Yedidsion
+Warning--there's a number but no volume in Zivan2012
 You've used 18 entries,
             1935 wiz_defined-function locations,
-            583 strings with 6658 characters,
-and the built_in function-call counts, 7274 in all, are:
-= -- 706
-> -- 316
-< -- 12
-+ -- 106
-- -- 106
-* -- 609
-:= -- 1244
-add.period$ -- 50
+            589 strings with 6770 characters,
+and the built_in function-call counts, 7331 in all, are:
+= -- 712
+> -- 321
+< -- 11
++ -- 108
+- -- 108
+* -- 630
+:= -- 1255
+add.period$ -- 51
 call.type$ -- 18
-change.case$ -- 142
+change.case$ -- 143
 chr.to.int$ -- 18
-cite$ -- 35
-duplicate$ -- 282
-empty$ -- 479
-format.name$ -- 135
-if$ -- 1419
+cite$ -- 36
+duplicate$ -- 278
+empty$ -- 483
+format.name$ -- 137
+if$ -- 1422
 int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 19
-newline$ -- 89
+newline$ -- 90
 num.names$ -- 51
-pop$ -- 151
+pop$ -- 148
 preamble$ -- 1
-purify$ -- 143
+purify$ -- 144
 quote$ -- 0
-skip$ -- 225
+skip$ -- 217
 stack$ -- 0
-substring$ -- 467
-swap$ -- 50
-text.length$ -- 6
+substring$ -- 480
+swap$ -- 45
+text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 106
-warning$ -- 16
-while$ -- 59
+warning$ -- 17
+while$ -- 60
 width$ -- 0
-write$ -- 213
+write$ -- 216
 (There were 4 error messages)

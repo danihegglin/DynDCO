@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  16 JAN 2015 05:18
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  16 JAN 2015 20:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -567,23 +567,7 @@ File: graphics/factorgraph.png Graphic file (type png)
  <use graphics/factorgraph.png>
 Package pdftex.def Info: graphics/factorgraph.png used on input line 94.
 (pdftex.def)             Requested size: 170.63812pt x 168.54825pt.
-
-
-LaTeX Warning: Citation `Zivan2012' on page 7 undefined on input line 95.
-
-
-LaTeX Warning: Citation `Zivan2012' on page 7 undefined on input line 95.
-
-
-LaTeX Warning: Citation `Farinelli2008' on page 7 undefined on input line 99.
-
-
-LaTeX Warning: Citation `Farinelli2008' on page 7 undefined on input line 99.
-
-
-LaTeX Warning: Citation `Zivan2012' on page 7 undefined on input line 107.
-
-[7 <./graphics/factorgraph.png>]) (./section-design/design.tex [8]
+ [7 <./graphics/factorgraph.png>]) (./section-design/design.tex [8]
 Chapter 3.
 
 Package amsthm Warning: Unknown theoremstyle `hardconstraint2' on input line 11.
@@ -650,10 +634,6 @@ File: graphics/maxsum_graph.png Graphic file (type png)
  <use graphics/maxsum_graph.png>
 Package pdftex.def Info: graphics/maxsum_graph.png used on input line 192.
 (pdftex.def)             Requested size: 250.93842pt x 132.50327pt.
-
-
-LaTeX Warning: Citation `Zivan2012' on page 17 undefined on input line 200.
-
 ) (./section-results/results.tex [17 <./graphics/maxsum_graph.png>] [18
 
 
@@ -668,31 +648,128 @@ Overfull \hbox (3.63579pt too wide) in paragraph at lines 5--5
 <graphics/experiments/static/quality/sq_1.png, id=126, 1357.07pt x 798.985pt>
 File: graphics/experiments/static/quality/sq_1.png Graphic file (type png)
  <use graphics/experiments/static/quality/sq_1.png>
-Package pdftex.def Info: graphics/experiments/static/quality/sq_1.png used on input line 16.
-(pdftex.def)             Requested size: 401.50146pt x 236.38126pt.
+Package pdftex.def Info: graphics/experiments/static/quality/sq_1.png used on input line 15.
+(pdftex.def)             Requested size: 431.61407pt x 254.10771pt.
+
+Overfull \hbox (13.35852pt too wide) in paragraph at lines 15--16
+ [][] 
+ []
+
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [19] <graphics/experiments/static/quality/sq_2.png, id=130, 1357.07pt x 798.985pt>
 File: graphics/experiments/static/quality/sq_2.png Graphic file (type png)
  <use graphics/experiments/static/quality/sq_2.png>
-Package pdftex.def Info: graphics/experiments/static/quality/sq_2.png used on input line 24.
-(pdftex.def)             Requested size: 401.50146pt x 236.38126pt.
+Package pdftex.def Info: graphics/experiments/static/quality/sq_2.png used on input line 22.
+(pdftex.def)             Requested size: 431.61407pt x 254.10771pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Overfull \hbox (13.35852pt too wide) in paragraph at lines 22--23
+ [][] 
+ []
 
- [20 <./graphics/experiments/static/quality/sq_1.png>])
-Runaway argument?
-{Meetings Scalability (Synchronous) \\ \cmidrule (r){1-4} Meetings & \ETC.
-./thesis.tex:51: File ended while scanning use of \multicolumn.
-<inserted text> 
-                \par 
-l.51 \input{section-results/results.tex}
-                                        
-I suspect you have forgotten a `}', causing me
-to read past where you wanted me to stop.
-I'll try to recover; but if the error is serious,
-you'd better type `E' or `X' now and fix your file.
+[20 <./graphics/experiments/static/quality/sq_1.png> <./graphics/experiments/static/quality/sq_2.png>]
 
-(./section-limitations/limitations.tex
-./section-limitations/limitation
+LaTeX Warning: Citation `Mailler2014' on page 21 undefined on input line 73.
+
+) (./section-limitations/limitations.tex
+
+Package Fancyhdr Warning: \headheight is too small (17.0pt): 
+ Make it at least 25.16252pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[21] [22
+
+
+
+]
+Chapter 5.
+
+Underfull \hbox (badness 10000) in paragraph at lines 4--9
+
+ []
+
+) (./section-conclusions/conclusions.tex [23] [24
+
+
+
+]
+Chapter 6.
+
+Underfull \hbox (badness 10000) in paragraph at lines 4--9
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4--9
+
+ []
+
+[25]) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.bbl [26] [27
+
+
+
+]) (./section-appendix/appendix.tex [28]
+Appendix A.
+) [29
+
+
+
+] [30
+
+
+] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lof
+Overfull \hbox (99.01096pt too wide) in paragraph at lines 7--7
+ [][] []\OT1/pfr/bx/n/10.95 Different paradigms of map-ping the meet-ing schedul-ing Prob-lem [[]]. []  
+ []
+
+)
+\tf@lof=\write5
+\openout5 = `thesis.lof'.
+
+ [31
+
+
+
+
+] [32
+
+
+
+
+] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.lot)
+\tf@lot=\write6
+\openout6 = `thesis.lot'.
+
+ [33] (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux)
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 47.12pt have occurred.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 6969 strings out of 493315
+ 101785 string characters out of 6137905
+ 193105 words of memory out of 5000000
+ 10220 multiletter control sequences out of 15000+600000
+ 20701 words of font info for 80 fonts, out of 8000000 for 9000
+ 957 hyphenation exceptions out of 8191
+ 47i,11n,47p,1840b,384s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on /Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.pdf (43 pages, 994423 bytes).
+PDF statistics:
+ 241 PDF objects out of 1000 (max. 8388607)
+ 159 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
+

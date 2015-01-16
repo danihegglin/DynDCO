@@ -4,38 +4,25 @@ In this chapter the three algorithms are benchmarked with different parameters a
 
 \section{Results I: Algorithms Performance in Static Environments}
 
-- Problem Density
-- Run Mode on Signal Collect
-
-theoretical foundation: chapman benchmarking hybrid algorithms,!!! table, stuff
+In this section, the static properties of the algorithms are going to be analysed and discussed.
 
 \subsection{Solution Quality over Time}
 
-\subsection{Graph Structure}
+The main focus of the work has been on the performance of the algorithms in terms of timeliness.  In this section, the three algorithms are going to be compared on their behaviour and the influence of the parameters density, number of agents and run mode (synchronous/asynchronous).
+
 \begin{figure}[H]
-\includegraphics[width=400px]{graphics/experiments/static/quality/sq_1}
 \centering
+\includegraphics[width=430px]{graphics/experiments/static/quality/sq_1}
 \caption{20/10, 0.25 density, all three, utility}
 \label{fig:mgm_graph}
 \end{figure}
 
-\subsection{Graph Structure}
 \begin{figure}[H]
-\includegraphics[width=400px]{graphics/experiments/static/quality/sq_2}
 \centering
+\includegraphics[width=430px]{graphics/experiments/static/quality/sq_2}
 \caption{20/10, 0.25 density, all three, quality}
 \label{fig:mgm_graph}
 \end{figure}
-
-\begin{table}[h]
-\begin{tabular}{lllll}
-10 &  &  &  &  \\
-   &  &  &  &  \\
-   &  &  &  &  \\
-   &  &  &  & 
-\end{tabular}
-\caption{scale table}
-\end{table}
 
 %- Utility, Quality
 %- Verlauf alle drei
@@ -44,32 +31,37 @@ theoretical foundation: chapman benchmarking hybrid algorithms,!!! table, stuff
 
 \subsection{Time to Convergence}
 
-%\subsection{Conflicts over Time}
-%- Verlauf alle drei
-%- Scalability: one, multiple machines
-%\subsection{Number of Messages}
-%-  Verlauf alle drei
-%- Scalability: one, multiple machines
-%- Message Distribution
+In this section, the time to convergence is going to be analyzed. The focus lays on the scalability properties of the algorithms in different densities and run modes (synchronous/asynchronous) in regards to agents. Meetings have, because of the participation limitation a limited influence on the performance of the algorithms when meeting numbers are increased. 
 
-\begin{tabular}{llr}
-\toprule
-\multicolumn{2}{c}{Meetings Scalability (Asynchronous) \\
-\cmidrule(r){1-4}
-Meetings & MaxSum   & MGM & DPOP \\
-\midrule
-10 &        244.3     & 10.3 &	77.8\\20  &     91.8	     & 4.4 & 63.7\\30 &     70.7       	& 2.6 & 67.7\\40 &     26.7     & 2.4 & 71\\50 &     31.5     &	2.3 & 45\\
-
-\begin{tabular}{llr}
-\toprule
-\multicolumn{2}{c}{Meetings Scalability (Synchronous) \\
-\cmidrule(r){1-4}
-Meetings & MaxSum   & MGM & DPOP \\
-\midrule
-10 & 31.1	 & 46.45 &	100.2\\20  & 6.75	 & 38.7 & 91.5\\30 & 2.6	& 33.8 & 63.25\\40 & 2.3 & 34.65 & 57.85\\50 & 2.3 & 23.95 &	67.3\\
-
-\bottomrule
-\end{tabular}
+%\begin{tabular}{llr}
+%\toprule
+%\multicolumn{2}{c}{Meetings Scalability (Asynchronous) \\
+%\cmidrule(r){1-4}
+%Meetings & MaxSum   & MGM & DPOP \\
+%\midrule
+%10 &        244.3     & 10.3 &	77.8\\
+%20  &     91.8	     & 4.4 & 63.7\\
+%30 &     70.7       	& 2.6 & 67.7\\
+%40 &     26.7     & 2.4 & 71\\
+%50 &     31.5     &	2.3 & 45\\
+%
+%\bottomrule
+%\end{tabular}
+%
+%\begin{tabular}{llr}
+%\toprule
+%\multicolumn{2}{c}{Meetings Scalability (Synchronous) \\
+%\cmidrule(r){1-4}
+%Meetings & MaxSum   & MGM & DPOP \\
+%\midrule
+%10 & 31.1	 & 46.45 &	100.2\\
+%20  & 6.75	 & 38.7 & 91.5\\
+%30 & 2.6	& 33.8 & 63.25\\
+%40 & 2.3 & 34.65 & 57.85\\
+%50 & 2.3 & 23.95 &	67.3\\
+%
+%\bottomrule
+%\end{tabular}
 
 %- More time to find a valid solution -> could be local optima
 %- Scalability: one, multiple machines
@@ -78,56 +70,17 @@ Meetings & MaxSum   & MGM & DPOP \\
 
 \section{Results II: Algorithms Performance in Dynamic Environments}
 
-%petcu 2007
-%
-%- Additional parameter
-%- Different Scenarios: Constraints, Variables, Domain
-%- Change one, multiple
-%- Amount of Change: Percentage, Number
-%
-%- Number of Agents: 10,100,1000
-%- Number of Meetings; 10,100, 1000
-%- Number of Timeslots: 1000
-%
-%constraints: mode, interval, percentage
-%variables: mode, interval, new Neighbourhood, new Agent, add / remove, how many
-%domain: mode, interval, percentage, increase / decrease
+In the Results II section, the dynamic abilities of the algorithms are going to be tested. Two evaluation values have been chosen. The value for stability has been chosen to be rate / avg. utility comparable to  \cite{Mailler2014}. Instead of using the conflicts, it was decided to use the utility value. Rate is defined as dP/dt, whereas dP is the amount of change to constraints. It was modelled to use different amounts of change. For the rebound time it was chosen to use difference between the utility at the timepoint one step after the change and the next change interval time step. Formally, Bounceback b -> \(u(t_{cj})-u(t_{c_i+1}\)
 
-\subsection{Stability}
+\subsection{Quality Stability}
 
 
-\begin{tabular}{llr}
-\toprule
-\multicolumn{2}{c}{Item} \\
-\cmidrule(r){1-2}
-Animal    & Description & Price (\$) \\
-\midrule
-Gnat      & per gram    & 13.65      \\
-          & each        & 0.01       \\
-Gnu       & stuffed     & 92.50      \\
-Emu       & stuffed     & 33.33      \\
-Armadillo & frozen      & 8.99       \\
-\bottomrule
-\end{tabular}
-
-%\cite{Verfaillie2005}
-%
-%%- Utility, Quality
-%%- Multiple change: Peak Average
-%%- Median Utility
-%
-%- Rate / Avg. Conflicts - Density!! Mailler2014, -> Definition Density einfügen
-
-% dpop should not scale well, mgm should not
-
-\subsection{Rebound Time}
 
 
-%- utility, quality
-%- Single change
-%- Distribution
-%- Verlauf alle drei
-%- given timeframe -> lowest to highest avg.
 
-% Please add the following required packages to your document preamble:
+
+
+\subsection{Average Rebound}
+
+
 

@@ -16,6 +16,12 @@ Chapman, A.~C., Rogers, A., Jennings, N.~R., and Leslie, D.~S. (2011).
 \newblock {\em {A unifying framework for iterative approximate best-response
   algorithms for distributed constraint optimization problems}}, volume~26.
 
+\bibitem[Farinelli et~al., 2008]{Farinelli2008}
+Farinelli, A., Rogers, A., Petcu, A., and Jennings, N.~R. (2008).
+\newblock {Decentralised Coordination of Low-Power Embedded Devices Using the
+  Max-Sum Algorithm}.
+\newblock (Aamas):12--16.
+
 \bibitem[Farinelli et~al., ]{Farinelli}
 Farinelli, A., Vinyals, M., Rogers, A., and Jennings, N.~R.
 \newblock {Chapter 12 Distributed Constraint Handling and Optimization}.
@@ -42,12 +48,6 @@ Hiroaki, K., Tadokoro, S., Noda, I., Matsubara, H., Takahashi, T., Shinjou, A.,
 Leeuwen, P.~V., Hesselink, H., and Rohling, J. (2002).
 \newblock {Scheduling Aircraft Using Constraint Satisfaction}.
 \newblock 76.
-
-\bibitem[Maheswaran et~al., 2006]{Maheswaran}
-Maheswaran, R., Pearce, J., and Tambe, M. (2006).
-\newblock {A family of graphical-game-based algorithms for distributed
-  constraint optimization problems}.
-\newblock {\em Coordination of large-scale \ldots}, pages 1--19.
 
 \bibitem[Maheswaran and Tambe, 2004]{Maheswarana}
 Maheswaran, R. and Tambe, M. (2004).
@@ -88,15 +88,18 @@ Stutz, P., Bernstein, A., and Cohen, W. (2010).
 \newblock {Signal/collect: graph algorithms for the (semantic) web}.
 \newblock {\em The Semantic Web-ISWC 2010}.
 
-\bibitem[Yedidsion and Zivan, ]{Yedidsion}
-Yedidsion, H. and Zivan, R.
-\newblock {Applying MaxSum to DCOP MST}.
-
 \bibitem[Zhang et~al., 2002]{Zhang}
 Zhang, W., Xing, Z., and Louis, S. (2002).
 \newblock {Distributed Breakout vs . Distributed Stochastic : A Comparative
   Evaluation on Scan Scheduling}.
 \newblock {\em Proceedings of the AAMAS-02 workshop on Distributed Constraint
   Reasoning}, pages 192--201.
+
+\bibitem[Zivan and Peled, 2012]{Zivan2012}
+Zivan, R. and Peled, H. (2012).
+\newblock {Max/min-sum distributed constraint optimization through value
+  propagation on an alternating dag}.
+\newblock {\em Proceedings of the 11th International Conference on \ldots},
+  (June):4--8.
 
 \end{thebibliography}

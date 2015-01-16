@@ -2,31 +2,29 @@
 
 # Run Configuration
 $runs = 10; # How many runs per setting
-$factoragents = 0; # 0 for scalability test of meetings
+$factoragents = 10; # 0 for scalability test of meetings
 $factormeetings = 0; # 0 for scalability test of agents
-$maxagents = 40; # max number of agents in the setting
+$maxagents = 30; # max number of agents in the setting
 $maxmeetings = 10; # max number of meetings in the setting
 
 # Problem Configuration
 $timeslots = 100;
 $meetings = 10;	
-$agents = 40;
+$agents = 30;
 
 # while($meetings < $maxmeetings){
 # 	while($agents < $maxagents){
 
-		print $meetings . " | " . $agents . "\n";
-
 		# Test Categories
-		@density = (0.25); # 0.5, 0.75, 1
-		@algorithms = ("maxsum"); # ,"mgm","dpop"
-		@execution = ("asynchronous"); #, "asynchronous"
-		@mode = ("normal"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"
+		@density = (0.25,0.5,0.75); # 0.5, 0.75, 1
+		@algorithms = ("maxsum","mgm","dpop"); # ,"mgm","dpop"
+		@execution = ("synchronous","asynchronous"); #, "asynchronous"
+		@mode = ("dynamicConstraints"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"
 
 		# Params for dynamicConstraints, dynamicDomain, dynamicVariables
-		@changeMode = ("single"); #"multiple"
-		@interval = (100,1000,5000); # 1000,5000 
-		@percentage = (0.25); # Percentage 0.50,0.75,1
+		@changeMode = ("multiple"); #"multiple"
+		@interval = (500,1000,1500,2000); # 1000,5000 
+		@percentage = (0.25,05,0.75,1); # Percentage 0.50,0.75,1
 		@newMeeting = (0); # Next Meeting Probability (otherwise existing meeting)
 		@newAgent = (1); # Next Agent Probability (otherwise existing agent)
 		@action = (1); # Add/Remove Probability
@@ -93,7 +91,7 @@ $agents = 40;
 
 		# Run tests
 		for my $command (@commands){
-			print($command . ";");
+			print($command . ";\n");
 			#system($command);
 		}
 

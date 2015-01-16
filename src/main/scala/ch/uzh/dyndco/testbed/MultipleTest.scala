@@ -61,6 +61,7 @@ object MultipleTest extends DeployableAlgorithm {
     var stopMeetings = false
     var stopAgents = false
     
+    
     while(agents <= MAX_AGENTS && stopAgents == false){
       while(meetings <= MAX_MEETINGS && stopMeetings == false){
         for(run <- 1 to RUNS){

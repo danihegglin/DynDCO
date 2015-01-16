@@ -34,6 +34,6 @@ vm_args=" -Xmx24G -XX:+AggressiveOpts -XX:+AlwaysPreTouch -XX:+UseNUMA -XX:-UseB
 #srun --ntasks-per-node=1 cp ~/$jarname $workingDir/
 
 # run test directly from home folder
-srun --ntasks-per-node=1 --partition=superfast --nodelist=minion01,minion02,minion03,minion04 /home/user/hegglin/jdk/jdk1.8.0_25/bin/java $jvmParameters -cp ~/data/$jarname $mainClass --density $1 --algorithm $2 --execution $3 --mode $4 --param '' --timeslots $6 --meetings $7 --agents $8 --runs $9 --factoragents ${10} --factormeetings ${11} --maxagents ${12} --maxmeetings ${13}
+srun --ntasks-per-node=1 --partition=superfast --nodelist=minion01,minion02,minion03,minion04 /home/user/hegglin/jdk/jdk1.8.0_25/bin/java $jvmParameters -cp ~/data/$jarname $mainClass --density $1 --algorithm $2 --execution $3 --mode $4 --param $5 --timeslots $6 --meetings $7 --agents $8 --runs $9 --factoragents ${10} --factormeetings ${11} --maxagents ${12} --maxmeetings ${13}
 
 #...commands to be run after jobs have finished...

@@ -1,0 +1,39 @@
+\contentsline {chapter}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {1.1}Motivation \& Goal}{1}
+\contentsline {section}{\numberline {1.2}Structure}{2}
+\contentsline {chapter}{\numberline {2}Background \& Related Work}{3}
+\contentsline {section}{\numberline {2.1}Dynamic Distributed Constraint Optimization}{3}
+\contentsline {section}{\numberline {2.2}Meeting Scheduling Problem}{4}
+\contentsline {section}{\numberline {2.3}Algorithm Design Approaches}{5}
+\contentsline {subsection}{\numberline {2.3.1}Distributed Complete}{5}
+\contentsline {subsection}{\numberline {2.3.2}Local-Iterative - Best Response}{6}
+\contentsline {subsection}{\numberline {2.3.3}Local-Iterative - Message Passing}{7}
+\contentsline {chapter}{\numberline {3}Design}{9}
+\contentsline {section}{\numberline {3.1}Meeting Scheduling Problem}{9}
+\contentsline {subsection}{\numberline {3.1.1}Formal Definition as DCOP}{9}
+\contentsline {subsection}{\numberline {3.1.2}Problem Dataset Generation}{11}
+\contentsline {section}{\numberline {3.2}Framework}{12}
+\contentsline {subsection}{\numberline {3.2.1}Signal / Collect}{12}
+\contentsline {subsection}{\numberline {3.2.2}Structure \& Functionality}{12}
+\contentsline {subsection}{\numberline {3.2.3}Monitoring Platform}{13}
+\contentsline {section}{\numberline {3.3}Mapping of DPOP}{14}
+\contentsline {subsection}{\numberline {3.3.1}Graph Structure}{14}
+\contentsline {subsection}{\numberline {3.3.2}Vertex Functions}{14}
+\contentsline {section}{\numberline {3.4}Mapping of MGM}{15}
+\contentsline {subsection}{\numberline {3.4.1}Graph Structure}{16}
+\contentsline {subsection}{\numberline {3.4.2}Vertex Functions}{16}
+\contentsline {section}{\numberline {3.5}Mapping of MaxSum}{16}
+\contentsline {subsection}{\numberline {3.5.1}Graph Structure}{17}
+\contentsline {subsection}{\numberline {3.5.2}Vertex Functions}{17}
+\contentsline {chapter}{\numberline {4}Benchmark \& Discussion}{19}
+\contentsline {section}{\numberline {4.1}Results I: Algorithms Performance in Static Environments}{19}
+\contentsline {subsection}{\numberline {4.1.1}Solution Quality over Time}{19}
+\contentsline {subsection}{\numberline {4.1.2}Time to Convergence}{21}
+\contentsline {section}{\numberline {4.2}Results II: Algorithms Performance in Dynamic Environments}{21}
+\contentsline {subsection}{\numberline {4.2.1}Quality Stability}{21}
+\contentsline {subsection}{\numberline {4.2.2}Average Rebound}{21}
+\contentsline {chapter}{\numberline {5}Limitations \& Future Work}{23}
+\contentsline {chapter}{\numberline {6}Conclusions}{25}
+\contentsline {chapter}{\numberline {A}Appendix 15}{29}
+\contentsline {section}{\numberline {A.1}Results I: Selected Data}{29}
+\contentsline {section}{\numberline {A.2}Results II: Selected Data}{29}
