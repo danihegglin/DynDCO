@@ -46,7 +46,7 @@ A local utility function \(u_{l}(s)\) would therefore include the sum of all sof
 \[ u_{l}(s) = \prod_{\substack{hc_{k} \in HC}} u_{SC_{g}}(s) \bigg( \sum_{sc_{k} \in SC} u_{SC_{g}}(s) \bigg)\] 
 
 %---------------------------- Conclusion from this ----------------------------------
-The conclusions from this formal definition in regards to the general structure of the algorithms is to have one variable represent each meeting participation of an agent. All variables of an agent should to an integrating agent vector, where meeting times are registered. This agent vector acts as a difference hard constraint between the different meeting participations of an agent. Further, all variables attending a meeting also share a reference to the meeting vector where every agent shares his current preference. This represents the aforementioned equality hard constraint. It was further decided to implement the given local utility function in the framework as a generalized method, as the structure repeats itself in all thre algorithms and because it is further helpful for comparison to have the exact same utility function implemented.
+The conclusions from this formal definition in regards to the general structure of the algorithms is to have one variable represent each meeting participation of an agent. The agent is therefore an abstract definition of a set of meeting participation nodes. All variables of an agent should share a reference to an integrating agent vector, where meeting times are registered. This agent vector acts as a difference hard constraint between the different meeting participations of an agent. Further, all variables attending a meeting also share a reference to the meeting vector where every agent shares his current preference. This represents the aforementioned equality hard constraint. It was further decided to implement the given local utility function in the framework as a generalized method, as the structure repeats itself in all thre algorithms and because it is further helpful for comparison to have the exact same utility function implemented.
 
 \subsection{Problem Dataset Generation}
 
@@ -74,13 +74,18 @@ The initial design consideration to introduce change to the constraints in the a
 The parameters and run modes of the framework have been designed with the benchmarks of this thesis in mind.  It is possible to pass general run parameters for algorithm type, for Signal/Collect run mode (synchronous/asynchronous) and one can specify to the software to run in normal mode or in one of the dynamic change variations (\texttt{changeConstraints}, \texttt{changeVariable}, \texttt{changeDomain)} with specific parameters.  It is further possible to add meeting scheduling specific parameters. For this thesis, the parameters for problem density (blocked timeslots percentage), timeslots, number of meetings and number of meeting participants were defined. For testing purposes, it is possible to start the framework via SingleTest or MultiTest. SingleTest runs one setting once and MultiTest allows to specifiy a range and scale of agents and meetings that should be tested.
 
 \subsection{Monitoring Platform}
-The  storage and monitoring of the utilities, quality levels, conflicts and run statistics of the calculations is in bechmarks usually done by writing the results to a log file. It was decided to use an alternative method during the course of this thesis. Mainly because it was a desirable function  to automatically postprocess the results of the bechmarks on a detached machine and because real-time visibility was considered to be useful during the implementation of the algorithms.\newline Sending the results with non-blocking asynchronous HTTP requests\footnote{http://dispatch.databinder.net} to a restful API on a dedicated server was considered to be a viable option and worth trying out. The Play Framework\footnote{https://www.playframework.com} has been chosen for implementation because it is highly scalable and able to handle thousands of simultanous connections, is lightweight as well as non-blocking and allows to process results on-the-fly with code written in Java or Scala. It was also chosen because the Akka framework, which is also the foundation of Signal/Collect is tightly integrated and the actors concept is an integral part of the platform. For every benchmarking run, an actor is created that handles all the relevant incoming messages. It is therefore possible to run multiple benchmarks in parallel. The framework further allows to visualize the global utility of the graph in real-time via websockets. % FIXME bildli
+The  storage and monitoring of the utilities, quality levels, conflicts and run statistics of the calculations is in bechmarks usually done by writing the results to a log file. It was decided to use an alternative method during the course of this thesis. Mainly because it was a desirable function  to automatically postprocess the results of the bechmarks on a detached machine and because real-time visibility was considered to be useful during the implementation of the algorithms.\newline Sending the results with non-blocking asynchronous HTTP requests\footnote{http://dispatch.databinder.net} to a restful API on a dedicated server was considered to be a viable option and worth trying out. The Play Framework\footnote{https://www.playframework.com} has been chosen for implementation because it is highly scalable and able to handle thousands of simultanous connections, is lightweight as well as non-blocking and allows to process results on-the-fly with code written in Java or Scala. It was also chosen because the Akka framework, which is also the foundation of Signal/Collect is tightly integrated and the actors concept is an integral part of the platform. For every benchmarking run, an actor is created that handles all the relevant incoming messages. It is therefore possible to run multiple benchmarks in parallel. The framework further allows to visualize the global utility of the graph in real-time via websockets.
 
-%\includegraphics{graphics/monitoring}
+\begin{figure}[H]
+\includegraphics[width=300px]{graphics/monitoring}
+\centering
+\caption{The real-time view of the Monitoring Platform}
+\label{fig:monitoring}
+\end{figure}
 
 \section{Mapping of DPOP}
 
-The following sections describes the mapping of the graph structure of the DPOP algorithm and the behaviour of it's nodes to the Signal/Collect Framework  in regards to the meeting scheduling problem. The implementation is based on \cite{Petcu2003}.
+The following sections describes the mapping of the graph structure of the DPOP algorithm and the behaviour of it's nodes described in chapter 2.3.1 to the Signal/Collect Framework  in regards to the meeting scheduling problem. The implementation is based on \cite{Petcu2003}.
 
 \subsection{Graph Structure}
 \begin{figure}[h]
@@ -90,140 +95,49 @@ The following sections describes the mapping of the graph structure of the DPOP 
 \label{fig:dpop_graph}
 \end{figure}
 
-hard constraint connection not show in image
-cycles
-A pseudo-tree arrangement of a graph G is a rooted tree with the same vertices as G and the property that adjacent vertices from the original graph fall in the same branch of the tree (e.g. X0 and X11 in Figure 1). Petcu2003
+Following the definition of \cite{Petcu2003} and the descriptions in chapter 2.3.1, the graph was arranged as a pseudotree. As mentioned in chapter 3.1.1, every agent is represented through meeting participation nodes as a general rule for the algorithm implementation. To create a pseudotree, one needs to transform an existing graph. Therefore, a graph has been constructed where all meeting participation vertices that share the same meeting are connected with edges. The chosen implementations of Signal/Collect components for the graph are the \texttt{DataGraphVertex} and the \texttt{StateForwarderEdge} classes. After the inital graph is created it is transformed to a pseudotree, which is a root tree with binary parent-child relationships that contains the same vertices as the original graph. An important attribute is that previously connected vertices are put into the same branch \cite{Petcu2003}. As one can see in Figure \ref{fig:dpop_graph}, the original participants are put into the same branch. The visible participant of meeting three is inserted into the tree at a lower level than the vertices of meeting one and two, but does also hold this property. The original edge connections remain as so-called back-edges (dashed line) and the new connections are also implemented as Signal/Collect edges (solid line). This tree arrangement leads to cycles. The vertices of the same agent share an agent vector, which is not visualized in Figure \ref{fig:dpop_graph}.
 
 \subsection{Vertex Functions}
-The process of the algorithm in short
-
-\begin{algorithm}[H]
-\caption{DPOP Util Message Handler}\label{euclid}
-\begin{algorithmic}[1]
-\State DPOP (X, D, R) \newline Each agent Xi executes:
-\State $\textit{stringlen} \gets \text{length of }\textit{string}$
-\State $i \gets \textit{patlen}$
-\BState \emph{top}:
-\If {$i > \textit{stringlen}$} \Return false
-\EndIf
-\State $j \gets \textit{patlen}$
-\BState \emph{loop}:
-\If {$\textit{string}(i) = \textit{path}(j)$}
-\State $j \gets j-1$.
-\State $i \gets i-1$.
-\State \textbf{goto} \emph{loop}.
-\State \textbf{close};
-\EndIf
-\State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
-\State \textbf{goto} \emph{top}.
-\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]
-\caption{DPOP Value Message Handler}\label{euclid}
-\begin{algorithmic}[1]
-\State DPOP (X, D, R) \newline Each agent Xi executes:
-\State $\textit{stringlen} \gets \text{length of }\textit{string}$
-\State $i \gets \textit{patlen}$
-\BState \emph{top}:
-\If {$i > \textit{stringlen}$} \Return false
-\EndIf
-\State $j \gets \textit{patlen}$
-\BState \emph{loop}:
-\If {$\textit{string}(i) = \textit{path}(j)$}
-\State $j \gets j-1$.
-\State $i \gets i-1$.
-\State \textbf{goto} \emph{loop}.
-\State \textbf{close};
-\EndIf
-\State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
-\State \textbf{goto} \emph{top}.
-\end{algorithmic}
-\end{algorithm}
-
-Signal:
-Collect:
-Message:
+The collect function of the vertex does receive util messages from it's children and value messages from the parent vertex in the graph. These messages have been combined to one \texttt{DPOPMessage} signal object that either is a util or a value message. The collect function does decide from whom the message has been received and stores them in their respective vector. The following util propagation and value propagation phases are defined by the position of the vertex in the tree. 
+A leaf node always does compute its utilities in the util propagation phase as it does not receive any util messages. In the case of the meeting scheduling problem does the vertex compute the utilities for every timeslot. If the vertex is the root of the tree, only value messages arrive. Those include the combined utilities of all nodes along the path to the top. The vertex then chooses the optimal timeslot value for every meeting. If the node is in the middle, it does compute the combined utilities from the received utility messages and it's own utilities.
+In the value propagation phase, all received values are combined an the optimal value for the vertex specific meeting is chosen. The vertices further store their utilites and values in a \texttt{DPOPMessage} and send a signal along their edges. 
+The pseudocode for DPOP can be found in the appendix section (Figure \ref{fig:dpopps}).
 
 
 \section{Mapping of MGM}
 
-The following section describes the mapping of the graph structure of the Maximum-Gain Messaging algorithm and the behaviour of it's nodes described in chapter 2 to the Signal/Collect Framework in regards to the meeting scheduling problem. The implementation is based on \cite{Chapman2010}
+The following section describes the mapping of the graph structure of the Maximum-Gain Messaging algorithm and the behaviour of it's nodes described in chapter 2.3.2 to the Signal/Collect Framework in regards to the meeting scheduling problem. The implementation is based on \cite{Chapman2010}
 
 \subsection{Graph Structure}
-\begin{figure}[h]
+\begin{figure}[H]
 \includegraphics[width=250px]{graphics/mgm_graph}
 \centering
 \caption{An example MGM graph}
 \label{fig:mgm_graph}
 \end{figure}
 
-Mapping the meeting scheduling problem to the structure of MGM was quite straightforward. The participant vertices of one meeting are all connected to each other through a Signal / Collect edge.
+Mapping the meeting scheduling problem to the structure of the MGM algorithm was quite straightforward. The participant vertices of one meeting are all connected to each other through a Signal / Collect edge comparable to the initial graph setup in the DPOP implementation. The vertices have been implemented with the \texttt{DataGraphVertex} as base class and the edges are of the class \texttt{StateForwarderEdge}. As one can see in Figure \ref{fig:mgm_graph}, the vertices of the same agent are created with a reference to the same agent vector (dashed line) and therefore to each other. This connection is virtual and not implemented as Signal/Collect edge (solid line) in the graph.
 
 \subsection{Vertex Functions}
-
-\begin{algorithm}[H]
-\caption{MGM Pseudocode}\label{euclid}
-\begin{algorithmic}[2]
-\State currentReward = u(s = currentState, \(S_{v}\))
-\For $\ k = 1:K $
-\State $j stateGain(k) = u(s = k, sv) - currentREward$
-\EndFor
-\end{algorithmic}
-\end{algorithm}
-
-In the signal 
-
-Collect:
-Message:
-
- and send each other value messages.
+In MGM there are also two types of messages. A gain message and a value message. Similar to the implementation of DPOP, a \texttt{MGMMessage} has been implemented, which can be both and is interpreted by the collect function as the respective type. If a vertex has received gain messages, it does compare them to the last local best gain value and determines if one message contains a higher gain value. The local gain is generated by comparing the utility increase from the initaly random meeting timeslot preference to the timeslot with the highest utility. If the local gain is still the highest, the vertex converges to the value that delivers this gain. A message with the local state, i.e. the meeting preference is sent. If the vertex does not have the highest gain, it does continue by sending this gain value again. The pseudocode for MGM can be found in the appendix section (Figure \ref{fig:mgmps}).
 
 \section{Mapping of MaxSum}
 
-The following sections describe the mapping of the graph structure of  and the behaviour of it's nodes described in chapter 2 to the Signal/Collect Framework  in regards to the meeting scheduling problem. 
+The following sections describe the mapping of the graph structure of  and the behaviour of it's nodes described in chapter 2.3.3 to the Signal/Collect Framework  in regards to the meeting scheduling problem. 
 
 \subsection{Graph Structure}
 
--- describe tests and thinking behind the chosen structure!!!! -> bipartite graph -> unary connections in factor graph should be possible
-- had a problem with the property to send only to others with only 1 meeting.
-
-\begin{figure}[h]
+\begin{figure}[H]
 \includegraphics[width=250px]{graphics/maxsum_graph}
 \centering
 \caption{An example MaxSum graph}
 \label{fig:maxsum_graph}
 \end{figure}
 
+A MaxSum graph is a tranformation of a common DCOP graph to a factor graph, where each variable has an additional function node attached. This function node represents a constraint and is connected to the previous neighbours. The variable node is connected to the function node of it's previous neighbours. Mapping the MaxSum algorithm to Signal/Collect and the meeting schedule problem has initally been a challenge as it was the starting point for the implementations. All the factor graphs in the MaxSum related papers where described as binary constraints between two nodes. An early consideration was to have multiple factor nodes per variable for each relationship to other meeting participants, where the variable represents the complete schedule of an agent.  This approach does not work in regards to the definition of a factor graph and further does not fit the message-passing scheme of MaxSum. It was concluded that a factor graph is derived from a bipartite graph and it should therefore be possible to have k-ary connections from a function node to multiple variable nodes. In the finally implement structure every meeting participation is modelled as Signal/Collect vertex and is connected to a function node through an edge. Every other participant variable of a specific meeting is linked to this function node as well. Through this, all messages are passed to every participant function node and evaluated on the constraints of the agent.
+
 \subsection{Vertex Functions} 
-
-This is the pseudocode of the MaxSum algorithm that has been used for the implementation \cite{Zivan2012}.
-
-\begin{algorithm}[H]
-\caption{Maxsum Pseudocode}\label{euclid}
-\begin{algorithmic}[3]
-\Procedure{MyProcedure}{}
-\State $\textit{stringlen} \gets \text{length of }\textit{string}$
-\State $i \gets \textit{patlen}$
-\BState \emph{top}:
-\If {$i > \textit{stringlen}$} \Return false
-\EndIf
-\State $j \gets \textit{patlen}$
-\BState \emph{loop}:
-\If {$\textit{string}(i) = \textit{path}(j)$}
-\State $j \gets j-1$.
-\State $i \gets i-1$.
-\State \textbf{goto} \emph{loop}.
-\State \textbf{close};
-\EndIf
-\State $i \gets i+\max(\textit{delta}_1(\textit{string}(i)),\textit{delta}_2(j))$.
-\State \textbf{goto} \emph{top}.
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-
-Signal:
-Collect:
-Message:
+The MaxSum implementation has two vertices. A \texttt{VariableVertex} and a \texttt{FunctionVertex}. The variable vertex does receive messages from function nodes containing the combined utilities from the other meeting participants. In every function vertex, the participant specific hard and soft constraints are added to the utilites. Then is a complex message created that includes a specific utility for every recipient, as the utilities should only include the utilities of all theother. 
+As the variable vertex receives the messages from all the other participants function nodes, the combined utilites define the optimal choice for a timeslot in this neighbourhood. The variable vertex does then combine the utilities from all the function nodes messages and creates a specific utility for every of those nodes containing all the other utilities except the one's of the message receiver and sends a combined message along the edges. A normalization function is in place in the variable vertex to prevent the values to go to infinity. The pseudocode for MaxSum can be found in the appendix section (Figure \ref{fig:maxsumps}).
 
 

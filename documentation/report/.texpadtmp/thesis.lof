@@ -1,16 +1,41 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {\relax 2.1}{\ignorespaces Categorization of DCO algorithms \cite {Chapman2011}}}{5}
-\contentsline {figure}{\numberline {\relax 2.2}{\ignorespaces Pseudotree for DPOP \cite {Petcu2003}}}{6}
-\contentsline {figure}{\numberline {\relax 2.3}{\ignorespaces Conversion of a general DCOP to a factor graph\cite {Zivan2012}}}{7}
+\contentsline {figure}{\numberline {\relax 2.1}{\ignorespaces Categorization of DCO algorithms \cite {Chapman2011}\relax }}{5}
+\contentsline {figure}{\numberline {\relax 2.2}{\ignorespaces Pseudotree for DPOP \cite {Petcu2003}\relax }}{6}
+\contentsline {figure}{\numberline {\relax 2.3}{\ignorespaces Conversion of a general DCOP to a factor graph\cite {Zivan2012}\relax }}{7}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {\relax 3.1}{\ignorespaces Different paradigms of mapping the meeting scheduling Problem \cite {Maheswarana}.}}{10}
-\contentsline {figure}{\numberline {\relax 3.2}{\ignorespaces An example DPOP pseudograph}}{14}
-\contentsline {figure}{\numberline {\relax 3.3}{\ignorespaces An example MGM graph}}{16}
-\contentsline {figure}{\numberline {\relax 3.4}{\ignorespaces An example MaxSum graph}}{17}
+\contentsline {figure}{\numberline {\relax 3.1}{\ignorespaces Different paradigms of mapping the meeting scheduling Problem \cite {Maheswarana}.\relax }}{10}
+\contentsline {figure}{\numberline {\relax 3.2}{\ignorespaces The real-time view of the Monitoring Platform\relax }}{14}
+\contentsline {figure}{\numberline {\relax 3.3}{\ignorespaces An example DPOP pseudograph\relax }}{15}
+\contentsline {figure}{\numberline {\relax 3.4}{\ignorespaces An example MGM graph\relax }}{16}
+\contentsline {figure}{\numberline {\relax 3.5}{\ignorespaces An example MaxSum graph\relax }}{17}
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {\relax 4.1}{\ignorespaces 20/10, 0.25 density, all three, utility}}{20}
-\contentsline {figure}{\numberline {\relax 4.2}{\ignorespaces 20/10, 0.25 density, all three, quality}}{20}
+\contentsline {figure}{\numberline {\relax 4.1}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{20}
+\contentsline {figure}{\numberline {\relax 4.2}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{20}
+\contentsline {figure}{\numberline {\relax 4.3}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{21}
+\contentsline {figure}{\numberline {\relax 4.4}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{22}
+\contentsline {figure}{\numberline {\relax 4.5}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{22}
+\contentsline {figure}{\numberline {\relax 4.6}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{23}
+\contentsline {figure}{\numberline {\relax 4.7}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{24}
+\contentsline {figure}{\numberline {\relax 4.8}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{24}
+\contentsline {figure}{\numberline {\relax 4.9}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{25}
+\contentsline {figure}{\numberline {\relax 4.10}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{26}
+\contentsline {figure}{\numberline {\relax 4.11}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{27}
+\contentsline {figure}{\numberline {\relax 4.12}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{27}
+\contentsline {figure}{\numberline {\relax 4.13}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{28}
+\contentsline {figure}{\numberline {\relax 4.14}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{29}
+\contentsline {figure}{\numberline {\relax 4.15}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{29}
+\contentsline {figure}{\numberline {\relax 4.16}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{30}
+\contentsline {figure}{\numberline {\relax 4.17}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{31}
+\contentsline {figure}{\numberline {\relax 4.18}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{32}
+\contentsline {figure}{\numberline {\relax 4.19}{\ignorespaces A figure with two subfigures\relax }}{32}
+\contentsline {figure}{\numberline {\relax 4.20}{\ignorespaces A figure with two subfigures\relax }}{33}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {\relax A.1}{\ignorespaces The Pseudocode of DPOP\relax }}{42}
+\contentsline {figure}{\numberline {\relax A.2}{\ignorespaces The Pseudocode of MGM\relax }}{43}
+\contentsline {figure}{\numberline {\relax A.3}{\ignorespaces The Pseudocode of MaxSum\relax }}{43}
+\contentsline {figure}{\numberline {\relax A.4}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{44}
+\contentsline {figure}{\numberline {\relax A.5}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{45}
+\contentsline {figure}{\numberline {\relax A.6}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{46}

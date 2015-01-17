@@ -64,7 +64,7 @@ sub analyseMeeting {
 
 # configuration
 my $dir = "/Users/daniel/Desktop/finalruns";
-my $experiments = $dir . "/experiments";
+my $experiments = $dir . "/dynamic2/10";
 my $results = $dir. "/results";
 
 # go through all directories
@@ -85,7 +85,7 @@ for my $subdir (@subdirs){
 		if($file !~ /_stats/ && $file !~ /_conflicts/){
 			@elements = split("-", $file);
 		 	
-		 	$filename = $elements[1];
+		 	$filename = $elements[3];
 		 	@numbers = split(/[a-z]/,$filename);
 		 	$agents = $numbers[1];
 		 	$meetings = $numbers[2];

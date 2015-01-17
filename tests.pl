@@ -16,19 +16,19 @@ $agents = 30;
 # 	while($agents < $maxagents){
 
 		# Test Categories
-		@density = (0.25,0.5,0.75); # 0.5, 0.75, 1
-		@algorithms = ("maxsum","mgm","dpop"); # ,"mgm","dpop"
-		@execution = ("synchronous","asynchronous"); #, "asynchronous"
-		@mode = ("dynamicConstraints"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"
+		@density = (0.25); # 0.5, 0.75, 1
+		@algorithms = ("maxsum","dpop","mgm"); # ,"mgm","dpop"
+		@execution = ("synchronous", "asynchronous"); #, "asynchronous"
+		@mode = ("dynamicVariables"); # "dynamicConstraints","dynamicConstraints",dynamicVariables","dynamicDomain"
 
 		# Params for dynamicConstraints, dynamicDomain, dynamicVariables
 		@changeMode = ("multiple"); #"multiple"
 		@interval = (500,1000,1500,2000); # 1000,5000 
-		@percentage = (0.25,05,0.75,1); # Percentage 0.50,0.75,1
+		@percentage = (0.25,0.5,0.75,1); # Percentage 0.50,0.75,1
 		@newMeeting = (0); # Next Meeting Probability (otherwise existing meeting)
 		@newAgent = (1); # Next Agent Probability (otherwise existing agent)
-		@action = (1); # Add/Remove Probability
-		@number = (1,5,10); # Number of changed variables
+		@action = (1,0); # Add/Remove Probability
+		@number = (1); # Number of changed variables
 
 		# Build all tests
 		@commands = ();
@@ -91,7 +91,7 @@ $agents = 30;
 
 		# Run tests
 		for my $command (@commands){
-			print($command . ";\n");
+			print($command . ";");
 			#system($command);
 		}
 
