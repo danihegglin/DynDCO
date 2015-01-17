@@ -1,9 +1,9 @@
 \begin{thebibliography}{}
 
-\bibitem[, 2005]{}
- (2005).
-\newblock {Dankwoord}.
-\newblock {\em Sociologie}, 1(4):494--494.
+\bibitem[Angulo and Godo, 2007]{Scheduling}
+Angulo, C. and Godo, L. (2007).
+\newblock {Distributed meeting scheduling}.
+\newblock {\em Artificial Intelligence Research and \ldots}, pages 125--136.
 
 \bibitem[Chapman et~al., 2010]{Chapman2010}
 Chapman, A.~C., Rogers, A., and Jennings, N.~R. (2010).
@@ -16,26 +16,34 @@ Chapman, A.~C., Rogers, A., Jennings, N.~R., and Leslie, D.~S. (2011).
 \newblock {\em {A unifying framework for iterative approximate best-response
   algorithms for distributed constraint optimization problems}}, volume~26.
 
+\bibitem[Chun et~al., 2003]{Chun2003}
+Chun, A., Wai, H., and Wong, R.~Y. (2003).
+\newblock {Optimizing agent-based meeting scheduling through preference
+  estimation}.
+\newblock {\em Engineering Applications of Artificial Intelligence},
+  16(7-8):727--743.
+
+\bibitem[Dean and Ghemawat, 2008]{Dean2008}
+Dean, J. and Ghemawat, S. (2008).
+\newblock {MapReduce : Simplified Data Processing on Large Clusters}.
+\newblock {\em Communications of the ACM}, 51(1):107.
+
 \bibitem[Farinelli et~al., 2008]{Farinelli2008}
 Farinelli, A., Rogers, A., Petcu, A., and Jennings, N.~R. (2008).
 \newblock {Decentralised Coordination of Low-Power Embedded Devices Using the
   Max-Sum Algorithm}.
 \newblock (Aamas):12--16.
 
-\bibitem[Farinelli et~al., ]{Farinelli}
-Farinelli, A., Vinyals, M., Rogers, A., and Jennings, N.~R.
+\bibitem[Farinelli et~al., 2012]{Farinelli}
+Farinelli, A., Vinyals, M., Rogers, A., and Jennings, N.~R. (2012).
 \newblock {Chapter 12 Distributed Constraint Handling and Optimization}.
 \newblock pages 1--43.
 
-\bibitem[Franzin et~al., ]{Franzin}
-Franzin, M.~S., Freuder, E.~C., Rossi, F., and Wallace, R.
-\newblock {Multi-agent meeting scheduling with preferences : efficiency ,
-  privacy loss , and solution quality}.
-
-\bibitem[Grubshtein et~al., ]{Grubshtein}
-Grubshtein, A., Gershman, A., and Meisels, A.
-\newblock {Scheduling Meetings by Agents}.
-\newblock {\em Citeseer}, (1):1--15.
+\bibitem[Franzin et~al., 2002]{Franzin}
+Franzin, M., Freuder, E., Rossi, F., and Wallace, R. (2002).
+\newblock {Multi-agent meeting scheduling with preferences: efficiency, privacy
+  loss, and solution quality}.
+\newblock {\em \ldots on Preference in AI and CP}.
 
 \bibitem[Hiroaki et~al., 1999]{J1999}
 Hiroaki, K., Tadokoro, S., Noda, I., Matsubara, H., Takahashi, T., Shinjou, A.,

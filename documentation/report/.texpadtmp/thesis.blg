@@ -1,86 +1,58 @@
 This is BibTeX, Version 0.99d (TeX Live 2013)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: thesis.aux
-Case mismatch error between cite keys Angulo and angulo
----line 33 of file thesis.aux
- : \citation{Angulo
- :                 }
-I'm skipping whatever remains of this command
-Case mismatch error between cite keys Angulo and angulo
----line 73 of file thesis.aux
- : \citation{Angulo
- :                 }
-I'm skipping whatever remains of this command
 The style file: apalike.bst
 Database file #1: ../section-references/thesis_mendeley.bib
-Repeated entry---line 575 of file ../section-references/thesis_mendeley.bib
- : @article{
- :          ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 579 of file ../section-references/thesis_mendeley.bib
- : @misc{
- :       ,
-I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for "angulo"
-Warning--I didn't find a database entry for "Yokoo1996"
-Warning--I didn't find a database entry for "Chun"
-Warning--I didn't find a database entry for "Dean"
-Warning--to sort, need author or key in 
-Warning--empty author in 
+Warning--I didn't find a database entry for "Mailler2014"
 Warning--can't use both volume and number fields in Chapman2011
 Warning--empty publisher in Chapman2011
 Warning--empty journal in Farinelli2008
 Warning--there's a number but no volume in Farinelli2008
-Warning--empty year in Farinelli
 Warning--empty journal in Farinelli
-Warning--empty year in Franzin
-Warning--empty journal in Franzin
-Warning--empty year in Grubshtein
-Warning--there's a number but no volume in Grubshtein
 Warning--empty journal in J1999
 Warning--empty journal in Leeuwen2002
 Warning--empty journal in Nguyen2012
 Warning--empty journal in Petcu2003
 Warning--there's a number but no volume in Zivan2012
-You've used 18 entries,
+You've used 19 entries,
             1935 wiz_defined-function locations,
-            589 strings with 6770 characters,
-and the built_in function-call counts, 7331 in all, are:
-= -- 712
-> -- 321
-< -- 11
-+ -- 108
-- -- 108
-* -- 630
-:= -- 1255
-add.period$ -- 51
-call.type$ -- 18
-change.case$ -- 143
-chr.to.int$ -- 18
-cite$ -- 36
-duplicate$ -- 278
-empty$ -- 483
-format.name$ -- 137
-if$ -- 1422
+            599 strings with 7118 characters,
+and the built_in function-call counts, 7895 in all, are:
+= -- 772
+> -- 347
+< -- 14
++ -- 116
+- -- 116
+* -- 669
+:= -- 1355
+add.period$ -- 55
+call.type$ -- 19
+change.case$ -- 152
+chr.to.int$ -- 19
+cite$ -- 29
+duplicate$ -- 301
+empty$ -- 514
+format.name$ -- 151
+if$ -- 1542
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 19
-newline$ -- 90
-num.names$ -- 51
-pop$ -- 148
+missing$ -- 20
+newline$ -- 96
+num.names$ -- 57
+pop$ -- 145
 preamble$ -- 1
-purify$ -- 144
+purify$ -- 153
 quote$ -- 0
-skip$ -- 217
+skip$ -- 250
 stack$ -- 0
-substring$ -- 480
-swap$ -- 45
-text.length$ -- 5
+substring$ -- 516
+swap$ -- 56
+text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 106
-warning$ -- 17
-while$ -- 60
+type$ -- 112
+warning$ -- 10
+while$ -- 66
 width$ -- 0
-write$ -- 216
-(There were 4 error messages)
+write$ -- 235
+(There were 11 warnings)
