@@ -26,6 +26,10 @@ The main focus of the work has been on the performance of the algorithms in term
 % ----------------------------
 One can see in the figure \ref{fig:st1} and \ref{fig:st2} that the algorithms do show the expected performance at the start of the benchmark. MGM and MaxSum both increase quite fast at the beginning of the run, whereas MGM increases a bit faster. Because the algorithms do not always converge, the mean utility in the end is lower compared to DPOP. The MaxSum Algorithm shows the stronger performance in regards of convergence and quality of solution than MGM. In figure \ref{fig:st2} one can see the sometimes erratic behaviour of the MGM algorithm. This could well be a problem with the implementation instead of the algorithm itself. The DPOP algorithm shows a steady increase with a slow start as it was expected. By increasing the number of agents, the time to reach a certain level of quality increases for all three algorithms. A further measurement for quality has been created as a combination of the percentage of accordance on a meeting time and the percentage of overlaps in an agents schedule. The figures can be found in the appendix (Figure \ref{fig:st_2}, Figure \ref{fig:st_3}) as they are quite similar to the utility benchmarks.
 
+TABLE HERE
+
+% --------------------------
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=330px]{graphics/experiments/static/st_5}
@@ -85,7 +89,7 @@ By testing the scalability of the algorithms on the number of agents with a fixe
 \end{figure}
 
 % ----------------------------
-An interesting property of MaxSum has been discovered by comparing the synchronous and asynchronous run mode. It seems that with low numbers of agents the performance of the synchronous mode is better at the start of a run, but the asynchronous variation is faster with increased amounts of agents (Figures \ref{fig:st_11}, \ref{fig:st_12}). The MaxSum algorithm shows some interesting scalability properties in asynchronous mode, which can also be seen in Figure \ref{fig:st_14}. MGM seems to converge faster in asynchronous mode on a low number of agents (Figure \ref{st_12b}. DPOP does not seem to profit from the asynchronous mode and rather slows down (Figure \ref{fig:st_13}).
+An interesting property of MaxSum has been discovered by comparing the synchronous and asynchronous run mode. It seems that with low numbers of agents the performance of the synchronous mode is better at the start of a run, but the asynchronous variation is faster with increased amounts of agents (Figures \ref{fig:st_11}, \ref{fig:st_12}). The MaxSum algorithm shows some interesting scalability properties in asynchronous mode, which can also be seen in Figure \ref{fig:st_14}. MGM seems to converge faster in asynchronous mode on a low number of agents (Figure \ref{fig:st_12b}). DPOP does not seem to profit from the asynchronous mode and rather slows down (Figure \ref{fig:st_13}).
 %-----------------------------
 
 \begin{figure}[H]
@@ -141,7 +145,7 @@ MaxSum again presents an obscure behaviour by actually converging faster in asyn
 \begin{figure}[H]
 \centering
 \includegraphics[width=330px]{graphics/experiments/static/st_18}
-\caption{2Utility over Time - Agents 30, Meetings 10}
+\caption{Utility over Time - Agents 30, Meetings 10}
 \label{fig:st_18}
 \end{figure}
 

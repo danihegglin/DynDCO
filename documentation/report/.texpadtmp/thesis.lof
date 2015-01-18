@@ -26,7 +26,7 @@
 \contentsline {figure}{\numberline {\relax 4.14}{\ignorespaces Convergence Time - Agent Scalability - MGM (Density 0.25, Meetings 10)\relax }}{26}
 \contentsline {figure}{\numberline {\relax 4.15}{\ignorespaces Convergence Time - Agent Scalability - DPOP (Density 0.25, Meetings 10)\relax }}{26}
 \contentsline {figure}{\numberline {\relax 4.16}{\ignorespaces Utility over Time - Agents 10, Meetings 10\relax }}{27}
-\contentsline {figure}{\numberline {\relax 4.17}{\ignorespaces 2Utility over Time - Agents 30, Meetings 10\relax }}{27}
+\contentsline {figure}{\numberline {\relax 4.17}{\ignorespaces Utility over Time - Agents 30, Meetings 10\relax }}{27}
 \contentsline {figure}{\numberline {\relax 4.18}{\ignorespaces Avg. Utility over Rate [Change/Time] - MaxSum\relax }}{28}
 \contentsline {figure}{\numberline {\relax 4.19}{\ignorespaces Comparison of Avg. Utility over Rate - MaxSum - Asynchronous vs. Synchronous\relax }}{29}
 \contentsline {figure}{\numberline {\relax 4.20}{\ignorespaces Comparison of Avg. Utility over Rate - MGM, POP\relax }}{29}
@@ -37,5 +37,5 @@
 \contentsline {figure}{\numberline {\relax A.2}{\ignorespaces The Pseudocode of MGM\relax }}{39}
 \contentsline {figure}{\numberline {\relax A.3}{\ignorespaces The Pseudocode of MaxSum\relax }}{39}
 \contentsline {figure}{\numberline {\relax A.4}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{40}
-\contentsline {figure}{\numberline {\relax A.5}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{41}
-\contentsline {figure}{\numberline {\relax A.6}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{42}
+\contentsline {figure}{\numberline {\relax A.5}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{40}
+\contentsline {figure}{\numberline {\relax A.6}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{41}

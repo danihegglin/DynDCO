@@ -132,6 +132,41 @@ The following sections describe the mapping of the graph structure of  and the b
 A MaxSum graph is a tranformation of a common DCOP graph to a factor graph, where each variable has an additional function node attached. This function node represents a constraint and is connected to the previous neighbours. The variable node is connected to the function node of it's previous neighbours. Mapping the MaxSum algorithm to Signal/Collect and the meeting schedule problem has initally been a challenge as it was the starting point for the implementations. All the factor graphs in the MaxSum related papers where described as binary constraints between two nodes. An early consideration was to have multiple factor nodes per variable for each relationship to other meeting participants, where the variable represents the complete schedule of an agent.  This approach does not work in regards to the definition of a factor graph and further does not fit the message-passing scheme of MaxSum. It was concluded that a factor graph is derived from a bipartite graph and it should therefore be possible to have k-ary connections from a function node to multiple variable nodes. In the finally implement structure every meeting participation is modelled as Signal/Collect vertex and is connected to a function node through an edge. Every other participant variable of a specific meeting is linked to this function node as well. Through this, all messages are passed to every participant function node and evaluated on the constraints of the agent.
 
 \subsection{Vertex Functions} 
-The MaxSum implementation has two vertices. A \texttt{VariableVertex} and a \texttt{FunctionVertex}. The variable vertex does receive messages from function nodes containing the combined utilities from the other meeting participants. In every function vertex, the participant's specific hard and soft constraints are added to the utilites. A  message structure is created that includes a specific utility for every recipient, as the messages should only include the utilities of all the other neighbours. As the variable vertex receives the messages from all the other participants function nodes, the combined utilites define the optimal choice for a timeslot in this neighbourhood. The variable vertex does then combine the utilities from all the function nodes messages and creates a specific utility for every of those nodes containing all the other utilities except the one's of the message receiver and sends a combined message along the edges. A normalization function is in place in the variable vertex to prevent the values to go to infinity. The pseudocode for MaxSum can be found in the appendix section (Figure \ref{fig:maxsumps}).
+In MaxSum, every neighbour of a node receives a customized message. In both vertex types in the graph, the recipient-specific message is created based on the received utilities from all its neighbours except the utilities of the recipient in question. In the meeting scheduling problem, these utilities are a vector of all timeslots and the utility of a specific timeslot. One can see the basic process in figure \ref{alg:maxsum}.
+In the variable vertex, the combined utilities are additionaly normalized with a normalization function 
+\(a_{nm}\)
+ to prevent the utility values from increasing towards infinity. The message creation function 
+\(Q_{n \rightarrow m}(x_{n})\) 
+for every neighbour of the variable node therefore can be defined like this: 
+\(Q_{n \rightarrow  m}(x_{n}) 
+= a_{nm} + 
+\sum_{f \in M (n) \setminus  m }  \) 
+\cite{Farinelli2008}.  Whereas for every value 
+\(d \in D_{x}\)
+ the combined utility is calculated as 
+\(\sum_{f' \in F_{x}, f' \neq f}  utility(f'.d - a \)
+. In the implementation, it was decided to normalize the utilities by adjusting them to a value between 0 and 1 based on the maximal possible utility of a timeslot instead of substracting at a certain scale as only the differences between the utilities matter \cite{Zivan2012}. Otherwise, these functions have been implemented as defined in the literature.
+The message creation function of the function vertex uses additionally the defined constraints of the agent to the utilities and therefore adds the information to find the optimal solution for all neighbours. It then chooses the assignment with the maximal utility for a value 
+\(d \in D_{x}\) 
+and adds this utility to the timeslot vector. In a formal definition, the function looks like this: 
+\(Q_{n \rightarrow  m}(x_{n}) = a_{nm} + \sum_{m' \in M (n) \setminus m }  \) 
+\cite{Farinelli2008}.Whereas, Um is the local utility function based on the soft and hard constraints of an agent.
+A variable vertex and a function vertex both send a message with essentially the same data structure implemented as \texttt{MaxSumMessage}. The message contains a hash, which stores the specific message for every node that is connected to this vertex. This message contains the timeslot vector with the utilities for every possible meeting time.
+
+%\begin{algorithm}[H]
+% \KwData{Max-sum (node n)}
+% \(N_{n} \leftarrow all of n's neighboring nodes
+% \While{no termination condition is met}{
+%  read current\;
+%  \eIf{understand}{
+%   go to next section\;
+%   current section becomes this one\;
+%   }{
+%   go back to the beginning of current section\;
+%  }
+% }
+% \caption{Standard MaxSum \cite{Zivan2012}}
+% \label{alg:maxsum}
+%\end{algorithm}
 
 
