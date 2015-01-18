@@ -133,40 +133,30 @@ A MaxSum graph is a tranformation of a common DCOP graph to a factor graph, wher
 
 \subsection{Vertex Functions} 
 In MaxSum, every neighbour of a node receives a customized message. In both vertex types in the graph, the recipient-specific message is created based on the received utilities from all its neighbours except the utilities of the recipient in question. In the meeting scheduling problem, these utilities are a vector of all timeslots and the utility of a specific timeslot. One can see the basic process in figure \ref{alg:maxsum}.
-In the variable vertex, the combined utilities are additionaly normalized with a normalization function 
-\(a_{nm}\)
- to prevent the utility values from increasing towards infinity. The message creation function 
-\(Q_{n \rightarrow m}(x_{n})\) 
-for every neighbour of the variable node therefore can be defined like this: 
-\(Q_{n \rightarrow  m}(x_{n}) 
-= a_{nm} + 
-\sum_{f \in M (n) \setminus  m }  \) 
-\cite{Farinelli2008}.  Whereas for every value 
-\(d \in D_{x}\)
- the combined utility is calculated as 
-\(\sum_{f' \in F_{x}, f' \neq f}  utility(f'.d - a \)
-. In the implementation, it was decided to normalize the utilities by adjusting them to a value between 0 and 1 based on the maximal possible utility of a timeslot instead of substracting at a certain scale as only the differences between the utilities matter \cite{Zivan2012}. Otherwise, these functions have been implemented as defined in the literature.
-The message creation function of the function vertex uses additionally the defined constraints of the agent to the utilities and therefore adds the information to find the optimal solution for all neighbours. It then chooses the assignment with the maximal utility for a value 
-\(d \in D_{x}\) 
-and adds this utility to the timeslot vector. In a formal definition, the function looks like this: 
-\(Q_{n \rightarrow  m}(x_{n}) = a_{nm} + \sum_{m' \in M (n) \setminus m }  \) 
-\cite{Farinelli2008}.Whereas, Um is the local utility function based on the soft and hard constraints of an agent.
+In the variable vertex \(x_{n}\), the combined utilities are additionaly normalized with a normalization function \(a_{nm}\) to prevent the utility values from increasing towards infinity. The message creation function \(Q_{n \rightarrow m}(x_{n})\) for every neighbour of the variable node therefore can be defined like this \cite{Farinelli2008}:
+\[Q_{n \rightarrow  m}(x_{n}) = a_{nm} + \sum_{\substack{m' \in M (n) \setminus  m }} R_{m' \rightarrow n} (x_{n}) \]
+Whereas \(n\) stands for the value vertex and \(m\) for the function vertex. For every value \(d \in D_{x}\) the combined utility is calculated as (adjusted for utilities instead of costs analogous to \cite{Zivan2012}):
+\[\sum_{\substack{f' \in F_{x}, f' \neq f}}  utility(f'.d - a) \]
+Where \(F_{x}\) is the set of neighbours of a variable vertex. \(f'.d\) is the utility value received from a neighbouring function node. In the implementation, it was decided to normalize the utilities by adjusting them to a value between 0 and 1 based on the maximal possible utility of a timeslot instead of substracting at a certain scale as only the differences between the utilities matter \cite{Zivan2012}. Otherwise, these functions have been implemented as defined in the literature.
+The message creation function of a function vertex \(f_{m}\) additionally used the defined constraints of the agent to the utilities and therefore adds the information to find the optimal solution for all neighbours. It then chooses the assignment with the maximal utility for a value \(d \in D_{x}\) and adds this utility to the timeslot vector. In a formal definition, the function is decribed like this \cite{Farinelli2008}: 
+\[Q_{n \rightarrow  m}(x_{n}) = a_{nm} + \sum_{\substack{m' \in M (n) \setminus m }}  \]
+Whereas, \(U_{m}\) is the local utility function based on the soft and hard constraints of an agent.
 A variable vertex and a function vertex both send a message with essentially the same data structure implemented as \texttt{MaxSumMessage}. The message contains a hash, which stores the specific message for every node that is connected to this vertex. This message contains the timeslot vector with the utilities for every possible meeting time.
 
-%\begin{algorithm}[H]
-% \KwData{Max-sum (node n)}
-% \(N_{n} \leftarrow all of n's neighboring nodes
-% \While{no termination condition is met}{
-%  read current\;
-%  \eIf{understand}{
-%   go to next section\;
-%   current section becomes this one\;
-%   }{
-%   go back to the beginning of current section\;
-%  }
-% }
-% \caption{Standard MaxSum \cite{Zivan2012}}
-% \label{alg:maxsum}
-%\end{algorithm}
+\begin{algorithm}[H]
+ \KwData{Max-sum (node n)}
+ (N_{n} \leftarrow all of n's neighboring nodes
+ \While{no termination condition is met}{
+  read current\;
+  \eIf{understand}{
+   go to next section\;
+   current section becomes this one\;
+   }{
+   go back to the beginning of current section\;
+  }
+ }
+ \caption{Standard MaxSum \cite{Zivan2012}}
+ \label{alg:maxsum}
+\end{algorithm}
 
 

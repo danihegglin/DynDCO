@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  18 JAN 2015 22:57
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.5.8)  18 JAN 2015 23:36
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -256,35 +256,23 @@ File: ueur.fd 2013/01/14 v3.01 Euler Roman
 )) (/usr/local/texlive/2013/texmf-dist/tex/latex/jknapltx/mathrsfs.sty
 Package: mathrsfs 1996/01/01 Math RSFS package v1.0 (jk)
 \symrsfs=\mathgroup7
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/algorithms/algorithm.sty
-Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating environment
- (/usr/local/texlive/2013/texmf-dist/tex/latex/float/float.sty
-Package: float 2001/11/08 v1.3d Float enhancements (AL)
-\c@float@type=\count111
-\float@exts=\toks29
-\float@box=\box32
-\@float@everytoks=\toks30
-\@floatcapt=\box33
-) (/usr/local/texlive/2013/texmf-dist/tex/latex/base/ifthen.sty
-Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
-)
-\@float@every@algorithm=\toks31
-\c@algorithm=\count112
 ) (/usr/local/texlive/2013/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
 Package: algpseudocode 
- (/usr/local/texlive/2013/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
+ (/usr/local/texlive/2013/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/algorithmicx/algorithmicx.sty
 Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
 
 Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
-\c@ALG@line=\count113
-\c@ALG@rem=\count114
-\c@ALG@nested=\count115
+\c@ALG@line=\count111
+\c@ALG@rem=\count112
+\c@ALG@nested=\count113
 \ALG@tlm=\skip53
 \ALG@thistlm=\skip54
-\c@ALG@Lnr=\count116
-\c@ALG@blocknr=\count117
-\c@ALG@storecount=\count118
-\c@ALG@tmpcounter=\count119
+\c@ALG@Lnr=\count114
+\c@ALG@blocknr=\count115
+\c@ALG@storecount=\count116
+\c@ALG@tmpcounter=\count117
 \ALG@tmplength=\skip55
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
@@ -305,10 +293,17 @@ Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
 ) (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
-\Gread@gobject=\count120
+\Gread@gobject=\count118
 ))
 \Gin@req@height=\dimen166
 \Gin@req@width=\dimen167
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count119
+\float@exts=\toks29
+\float@box=\box32
+\@float@everytoks=\toks30
+\@floatcapt=\box33
 ) (/usr/local/texlive/2013/texmf-dist/tex/latex/booktabs/booktabs.sty
 Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \heavyrulewidth=\dimen168
@@ -321,12 +316,12 @@ Package: booktabs 2005/04/14 v1.61803 publication quality tables
 \cmidrulesep=\dimen175
 \cmidrulekern=\dimen176
 \defaultaddspace=\dimen177
-\@cmidla=\count121
-\@cmidlb=\count122
+\@cmidla=\count120
+\@cmidlb=\count121
 \@aboverulesep=\dimen178
 \@belowrulesep=\dimen179
-\@thisruleclass=\count123
-\@lastruleclass=\count124
+\@thisruleclass=\count122
+\@lastruleclass=\count123
 \@thisrulewidth=\dimen180
 ) (/usr/local/texlive/2013/texmf-dist/tex/latex/caption/subcaption.sty
 Package: subcaption 2013/02/03 v1.1-62 Sub-captions (AR)
@@ -344,31 +339,79 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 \caption@hangindent=\dimen187
 )
 Package caption Info: KOMA-Script document class.
-\c@ContinuedFloat=\count125
+\c@ContinuedFloat=\count124
 Package caption Info: float package is loaded.
 Package caption Info: listings package is loaded.
 )
-\c@subfigure=\count126
-\c@subtable=\count127
+\c@subfigure=\count125
+\c@subtable=\count126
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
+Package: algorithm2e 2013/01/06 v5.00 algorithms environments
+\c@AlgoLine=\count127
+ (/usr/local/texlive/2013/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2009/10/20 v1.13 Space after command names (DPC,MH)
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/relsize/relsize.sty
+Package: relsize 2013/03/29 ver 4.1
+)
+********************************************************
+Package `algorithm2e' Release 5.0 -- january 06 2013 --
+- algorithm2e-announce@lirmm.fr mailing list for announcement about releases
+- algorithm2e-discussion@lirmm.fr mailing list for discussion about package
+subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
+- Author: Christophe Fiorio (cfiorio@um2.fr)
+********************************************************
+\skiptotal=\skip56
+\skiplinenumber=\skip57
+\skiprule=\skip58
+\skiphlne=\skip59
+\skiptext=\skip60
+\skiplength=\skip61
+\algomargin=\skip62
+\skipalgocfslide=\skip63
+\algowidth=\dimen188
+\inoutsize=\dimen189
+\inoutindent=\dimen190
+\interspacetitleruled=\dimen191
+\interspacealgoruled=\dimen192
+\interspacetitleboxruled=\dimen193
+\algocf@inoutbox=\box34
+\algocf@inputbox=\box35
+\AlCapSkip=\skip64
+\AlCapHSkip=\skip65
+\algoskipindent=\skip66
+\algocf@nlbox=\box36
+\algocf@hangingbox=\box37
+\algocf@untilbox=\box38
+\algocf@skipuntil=\skip67
+\algocf@capbox=\box39
+\algoheightruledefault=\skip68
+\algoheightrule=\skip69
+\algotitleheightruledefault=\skip70
+\algotitleheightrule=\skip71
+\c@algocfline=\count128
+\c@algocfproc=\count129
+\c@algocf=\count130
+\algocf@algoframe=\box40
+\algocf@algobox=\box41
 ) (/usr/local/texlive/2013/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2008/02/07
  Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix <2008/02/07> (tvz)
-\FV@CodeLineNo=\count128
+\FV@CodeLineNo=\count131
 \FV@InFile=\read1
-\FV@TabBox=\box34
-\c@FancyVerbLine=\count129
-\FV@StepNumber=\count130
+\FV@TabBox=\box42
+\c@FancyVerbLine=\count132
+\FV@StepNumber=\count133
 \FV@OutFile=\write3
 ) (/usr/local/texlive/2013/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
-\fancy@headwidth=\skip56
-\f@ncyO@elh=\skip57
-\f@ncyO@erh=\skip58
-\f@ncyO@olh=\skip59
-\f@ncyO@orh=\skip60
-\f@ncyO@elf=\skip61
-\f@ncyO@erf=\skip62
-\f@ncyO@olf=\skip63
-\f@ncyO@orf=\skip64
+\fancy@headwidth=\skip72
+\f@ncyO@elh=\skip73
+\f@ncyO@erh=\skip74
+\f@ncyO@olh=\skip75
+\f@ncyO@orh=\skip76
+\f@ncyO@elf=\skip77
+\f@ncyO@erf=\skip78
+\f@ncyO@olf=\skip79
+\f@ncyO@orf=\skip80
 ) (/Users/daniel/git/dyndco/documentation/report/.texpadtmp/thesis.aux
 
 LaTeX Warning: Label `fig:test' multiply defined.
@@ -376,32 +419,32 @@ LaTeX Warning: Label `fig:test' multiply defined.
 )
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-\c@lstlisting=\count131
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 34.
+\c@lstlisting=\count134
  (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count132
-\scratchdimen=\dimen188
-\scratchbox=\box35
-\nofMPsegments=\count133
-\nofMParguments=\count134
-\everyMPshowfont=\toks32
-\MPscratchCnt=\count135
-\MPscratchDim=\dimen189
-\MPnumerator=\count136
-\makeMPintoPDFobject=\count137
-\everyMPtoPDFconversion=\toks33
+\scratchcounter=\count135
+\scratchdimen=\dimen194
+\scratchbox=\box43
+\nofMPsegments=\count136
+\nofMParguments=\count137
+\everyMPshowfont=\toks31
+\MPscratchCnt=\count138
+\MPscratchDim=\dimen195
+\MPnumerator=\count139
+\makeMPintoPDFobject=\count140
+\everyMPtoPDFconversion=\toks32
 ) (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO)
  (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifluatex.sty
@@ -546,7 +589,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 21--25
 
  []
 
-\c@hardconstraint1=\count138
+\c@hardconstraint1=\count141
 [4] <graphics/overview_algos.png, id=66, 1028.84375pt x 396.48125pt>
 File: graphics/overview_algos.png Graphic file (type png)
  <use graphics/overview_algos.png>
@@ -562,4 +605,74 @@ Underfull \hbox (badness 10000) in paragraph at lines 80--84
 
  []
 
-[6 <./graphics/pseudotree.png>] <graphics/factorgraph.png, id=76, 575.14874pt x 568.12
+[6 <./graphics/pseudotree.png>] <graphics/factorgraph.png, id=76, 575.14874pt x 568.1225pt>
+File: graphics/factorgraph.png Graphic file (type png)
+ <use graphics/factorgraph.png>
+Package pdftex.def Info: graphics/factorgraph.png used on input line 91.
+(pdftex.def)             Requested size: 170.63812pt x 168.54825pt.
+ [7 <./graphics/factorgraph.png>]) (./section-design/design.tex [8]
+Chapter 3.
+
+Package amsthm Warning: Unknown theoremstyle `hardconstraint2' on input line 11.
+
+\c@hardconstraint2=\count142
+<graphics/variablemodell.png, id=83, 812.03375pt x 611.28375pt>
+File: graphics/variablemodell.png Graphic file (type png)
+ <use graphics/variablemodell.png>
+Package pdftex.def Info: graphics/variablemodell.png used on input line 22.
+(pdftex.def)             Requested size: 301.1261pt x 226.67513pt.
+
+Underfull \hbox (badness 7186) in paragraph at lines 23--23
+[][]|\OT1/pfr/bx/n/10.95 Dif-fer-ent paradigms of map-ping the meet-ing schedul-ing Prob-lem
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[9
+
+
+
+] [10 <./graphics/variablemodell.png>]
+Underfull \vbox (badness 1946) has occurred while \output is active []
+
+ [11]
+Underfull \hbox (badness 10000) in paragraph at lines 68--74
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--74
+
+ []
+
+[12] [13] <graphics/monitoring.png, id=102, 977.6525pt x 321.2pt>
+File: graphics/monitoring.png Graphic file (type png)
+ <use graphics/monitoring.png>
+Package pdftex.def Info: graphics/monitoring.png used on input line 79.
+(pdftex.def)             Requested size: 301.1261pt x 98.93382pt.
+ <graphics/dpop_graph.png, id=103, 339.1872pt x 256.7994pt>
+File: graphics/dpop_graph.png Graphic file (type png)
+ <use graphics/dpop_graph.png>
+Package pdftex.def Info: graphics/dpop_graph.png used on input line 91.
+(pdftex.def)             Requested size: 200.75073pt x 151.9923pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[14 <./graphics/monitoring.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [15 <./graphics/dpop_graph.png>] <graphics/mgm_graph.png, id=113, 413.3844pt x 230.7822pt>
+File: graphics/mgm_graph.png Graphic file (type png)
+ <use graphics/mgm_graph.png>
+Package pdftex.def Info: graphics/mgm_graph.png used on input line 108.
+(pdftex.def)             Requested size: 250.93842pt x 140.09377pt.
+ [16 <./graphics/mgm_graph.png>] <graphics/maxsum_graph.png, id=118, 442.5333pt x 233.673pt>
+File: graphics/maxsum_graph.png Graphic file (type png)
+ <use graphics/maxsum_graph.png>
+Package pdftex.def Info: graphics/maxsum_graph.png used on input line 126.
+(pdftex.def)             Requested size: 250.93842pt x 132.50327pt.
+ [17 <./graphics/maxsum_graph.png>]
+./section-design/design.tex:148: Missing $ inserted.
+<inserted text

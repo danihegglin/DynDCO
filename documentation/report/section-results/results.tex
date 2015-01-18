@@ -133,6 +133,9 @@ In this section, the time to convergence is going to be analyzed. The focus lays
 
 % ----------------------------
 MaxSum again presents an obscure behaviour by actually converging faster in asynchronous mode with an increased number of agents. When run in synchronous mode, the algorithm shows slower convergence times with added agents (Figure \ref{fig:st_14}). The MGM algorithm does seem to profit from the asynchronous mode on increased amounts of vertices in the graph, as it stays very stable on a lower level of converges time than the synchronous variant (Figure \ref{fig:st_15}). DPOP, also seems to converge faster in asynchronous mode (Figure \ref{fig:st_16}).
+
+TABLE HERE
+
 %-----------------------------
 
 \begin{figure}[H]
@@ -167,6 +170,7 @@ In this section, the benchmarks on dynamic abilities of the algorithms will be s
 
 One value for stability has been chosen to be change rate over average utility comparable to \cite{Maillera}. Instead of using the conflicts value, it was decided to use the utility value. The rate is defined as \(dP/dt\), whereas \(dP\) is the amount of change to constraints and \(dt\) is the difference in time. It was modelled to use different amounts of change. On can see in Figure \ref{fig:d_1} that the utility does increase over the 
 
+EXTENSION HERE
 
 \begin{figure}[H]
 \centering
@@ -200,12 +204,15 @@ One value for stability has been chosen to be change rate over average utility c
   \caption{Avg. Utility over Rate - DPOP - Synchronous}
   \label{fig:d_5}
 \end{subfigure}
-\caption{Comparison of Avg. Utility over Rate - MGM, POP}
+\caption{Comparison of Avg. Utility over Rate - MGM - Synchronous vs. Asynchronous}
 \label{fig:test}
 \end{figure}
 
 A further approach with Rate on the x-axis has been attempted, and it could be shown that MaxSum has the ability to handle various amounts of change well (Figures \ref{fig:d_2}, \ref{fig:d_3}. The synchronous mode does increase the performance significantly on change rate 0.5. MGM also does perform in a stable manner in the tested synchronous mode (Figure \ref{fig:d_4}). DPOP does not seem to be able to handle short intervals of change well as seen on value 500ms, but the algorithm shows stability on 1000ms and 1500ms change rates \ref{fig:d_5}.
 
+TABLE HERE
+
+DYNAMIC VARIABLES HERE
 
 
 
