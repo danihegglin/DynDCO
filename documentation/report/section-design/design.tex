@@ -103,37 +103,37 @@ In DPOP, a node does receive util messages from it's children and value messages
  \TitleOfAlgo{Util Message Handler  $\(({X_{k}}, UTIL_{X_{k}} (X_{i}))\)$}
  store $\(UTIL_{X_{k}}(X_{i})\)$\;
 \If{UTIL messages from all children arrived} {
-%       \eIf{$\(Parent(X_{i}) == null\)$ (that means $\(X_{i}\)$ is the root)} {
-%           $\(v_{i}^* \leftarrow\)$ Choose_optimal(null)\;
-%           send VALUE($\(X_{i},v_{i}^*\)$) to all $\(C(X_{i})\)$ (sends value to all children)\;
-%        }
-%       {
-%          $\(UTIL_{x_{i}}(P(X_{i})) \leftarrow\)$ Compute_utils($\(P(X_{i}),PP(X_{i})\)$) (utilities from the parent and pseudoparents)\;
-%          send_message($\(P(x_{i})\)$, $\(UTIL_{x_{i}}(P(X_{i})\)$)\;
-%        }
+       \eIf{$\(Parent(X_{i}) == null\)$ (that means $\(X_{i}\)$ is the root)} {
+           $\(v_{i}^{*} \leftarrow ChooseOptimal(null)\)$ \;
+           send VALUE($\(X_{i},v_{i}^{*}\)$) to all $\(C(X_{i})\)$ (sends value to all children)\;
+        }
+       {
+        $\(UTIL_{x_{i}}(P(X_{i})) \leftarrow\)$ ComputeUtils($\(P(X_{i}), PP(X_{i})\)$) (utilities from the parent and pseudoparents)\;
+        $\(sendMessage(P(x_{i})\)$, $\(UTIL_{x_{i}}(P(X_{i}))\)$\;
+        }
    }
     return\;
  \caption{DPOP Util Message Handler \cite{Petcu2003}}
  \label{alg:dpop_util}
 \end{algorithm}
 \vspace{7 mm}
-A leaf node always does compute its utilities in the util propagation phase as it does not receive any util messages. In the case of the meeting scheduling problem, utilities for every timeslot are being calculated. If the vertex is the root of the tree it does only receive util messages. Those include the combined utilities of all nodes along the path to the top. The vertex then chooses the optimal timeslot value for every meeting. If the node is in the middle, it does receive both types of messages. Such a vertex computes the combined utilities from the received utility messages and its own utilities during the util propagation phase (Algorithm \ref{alg:dpop_util}). 
+A leaf node always does compute its utilities in the util propagation phase as it does not have any children nodes and receives no util messages. In the case of the meeting scheduling problem, utilities for every timeslot are being calculated. If the vertex is the root of the tree it does only receive util messages. Those include the combined utilities of all nodes along the path to the top. The vertex then chooses the optimal timeslot value for every meeting. If the node is in the middle, it does receive both types of messages. Such a vertex computes the combined utilities from the received utility messages and its own utilities during the util propagation phase (Algorithm \ref{alg:dpop_util}). 
 \newline \newline
-%\begin{algorithm}[H]
-% \TitleOfAlgo{Value Message Handler $\(VALUE_{P(X_{i}}\)$}
-%add all Xk \leftarrow vk* \in Value xi p(xi) to agent_view\;
-%xi \leftarrow vi* = Choose_optimal(agent_view)\;
-%Send Value_x_{i}^x_{l} to all Xl \in C(Xi)\;
-% }
-% \caption{DPOP Value Handler \cite{Petcu2003}}
-% \label{alg:dpop_value}
-%\end{algorithm}
+\begin{algorithm}[H]
+ \TitleOfAlgo{Value Message Handler $\( VALUE_{P(x_{i})}^{X_{i}}\)$}
+add all $\(X_{k} \leftarrow v_{k}^{*} \in VALUE_{P(x_{i})}^{X_{i}}\)$ to agentView\;
+$\(X_{i} \leftarrow v_{i}^{*}\)$ = ChooseOptimal(agentView)\;
+Send $\(VALUE_{X_{i}}^{X_{l}}\)$ to all $\(X_{l} \in C(X_{i})\)$ \;
+%Send $\(VALUE_{X_{i}}^{X_{l}}\)$ to all $\(X_{l} \in C(X_{i})\)$\;
+ \caption{DPOP Value Handler \cite{Petcu2003}}
+ \label{alg:dpop_value}
+\end{algorithm}
 \vspace{7 mm}
-In the value propagation phase, all received values are combined by the vertices and an optimal value for the vertex specific meeting is chosen locally (Algorithm \ref{alg:dpop_value}). In the implementation, the util propagation phase and the value propagation phase are calculated successively and the resulting utilites and values are stored in a\texttt{DPOPMessage}. The message is then sent to all connected vertices.
+In the value propagation phase, all received values are combined by the vertices and an optimal value for the vertex specific meeting is chosen locally (Algorithm \ref{alg:dpop_value}). In the implementation, the util propagation phase and the value propagation phase are calculated successively and the resulting utilities and values are stored in a \texttt{DPOPMessage}. The message is then sent to all connected vertices.
 
 \section{Mapping of MGM}
 
-The following section describes the mapping of the graph structure of the Maximum-Gain Messaging algorithm and the behaviour of it's nodes described in chapter 2.3.2 to the Signal/Collect Framework in regards to the meeting scheduling problem. The implementation is based on \cite{Chapman2010}.
+The following section describes the mapping of the graph structure of the Maximum-Gain Messaging algorithm and the functions of the nodes described in chapter 2.3.2 to the Signal/Collect Framework in regards to the meeting scheduling problem. The implementation is based on \cite{Chapman2010}.
 
 \subsection{Graph Structure}
 \begin{figure}[H]
@@ -146,23 +146,25 @@ The following section describes the mapping of the graph structure of the Maximu
 Mapping the meeting scheduling problem to the structure of the MGM algorithm was quite straightforward. The participant vertices of one meeting are all connected to each other through a Signal / Collect edge comparable to the initial graph setup in the DPOP implementation. The vertices have been implemented with the \texttt{DataGraphVertex} as base class and the edges are of the class \texttt{StateForwarderEdge}. As one can see in Figure \ref{fig:mgm_graph}, the vertices of the same agent are created with a reference to the same agent vector (dashed line) and therefore to each other. This connection is virtual and not implemented as Signal/Collect edge (solid line) in the graph.
 
 \subsection{Vertex Functions}
-In MGM there are also two types of messages. A gain message and a value message. Similar to the implementation of DPOP, a \texttt{MGMMessage} has been implemented, which can be both and is interpreted by the collect function as the respective type. Initially, a local best-gain is generated by comparing the utility increase from the initaly random meeting timeslot preference to the possible timeslot with the highest utility. This best-gain value is sent to the neighbours.  If a vertex has received gain messages, it does compare them to the last local best-gain value and determines if one message contains a higher gain value. If the local gain is still the highest, the vertex converges to the value that delivers this gain. A message with the local state, i.e. the meeting preference is sent to the other vertices. If the vertex does not have the highest gain, it does continue by sending its gain value again. 
+In MGM there are also two types of messages. A gain message and a value message. Similar to the implementation of DPOP, a \texttt{MGMMessage} has been implemented, which can be both and is interpreted by the collect function as the respective type. Initially, a local best-gain is generated by comparing the utility increase from the initialy random meeting timeslot preference to the timeslot with the highest utility and therefore highest gain when changing to this value. This best-gain value is sent to the neighbours.  If a vertex has received gain messages, it does compare them to the last local best-gain value and determines if one message contains a higher gain value. If the local gain is still the highest, the vertex converges to the value on which the last best-gain has been calculated. A message with the local state, i.e. the meeting preference is sent to the other vertices. If the vertex does not have the highest gain, it does continue by sending its gain value again.
 \newline \newline
 \begin{algorithm}[H]
- \TitleOfAlgo{Max-sum (node n)}
- $\(N_{n}\) \leftarrow$ all of $\(n\)$'s neighboring nodes\;
- \While{no termination condition is met}{
-  collect messages from $\(N_{n}\)$\;
-  \ForEach{$\(n' \in N_{n}\)$}{
-       \If{$\(n\)$ is a variable-node} {
-           produce message $\(m_{n'}\)$ using messages from $\(N_{n} \setminus \{n'\}\)$\;
-        }
-       \If{$\(n\)$ is a function-node} {
-           produce message $\(m_{n'}\)$ using constraint and messages from $\(N_{n} \setminus \{n'\}\)$\;
-        }
-     send $\(m_{n'}\)$ to $\(n'\)$\;
-    }
+ \TitleOfAlgo{Maximum-Gain Messaging}
+ currentReward = $\(u_{i}(s{i}=currentState,s_{-i})\)$\;
+\
+ \For{$\(j = 1:J\)$}{
+  $\(stateGain(j) = u_{i}(s_{i}=j,s_{-i}) - currentReward\)$ \;
  }
+  bestGainState = $\(argmax_{j} (StateGain) \)$ \;
+  bestGainValue = stateGain(bestStateGain)\;
+  sendBestGainMessage(allNeighbours, bestGainValue)\;
+    \
+  neighbourGainValues = getNeighbourGainValues(allNeighbours)\; 
+ \If{$\(bestGainValue > max(neighbourGain)\)$}{
+        newState = bestGainState\;
+        sendStateMessage(allNeighbours, newState)\;
+    }
+     
  \caption{MGM Pseudocode \cite{Chapman2010}}
  \label{alg:mgm}
 \end{algorithm}
