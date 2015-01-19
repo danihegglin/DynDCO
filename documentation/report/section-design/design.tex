@@ -90,14 +90,50 @@ The following sections describes the mapping of the graph structure of the DPOP 
 \begin{figure}[h]
 \includegraphics[width=200px]{graphics/dpop_graph}
 \centering
-\caption{An example DPOP pseudograph}
+\caption{An example DPOP pseudotree}
 \label{fig:dpop_graph}
 \end{figure}
 
 Following the definition of \cite{Petcu2003} and the descriptions in chapter 2.3.1, the graph was arranged as a pseudotree. As mentioned in chapter 3.1.1, every agent is represented through meeting participation nodes as a general rule for the algorithm implementation. To create a pseudotree, one needs to transform an existing graph. Therefore, a graph has been constructed where all meeting participation vertices that share the same meeting are connected with edges. The chosen implementations of Signal/Collect components for the graph are the \texttt{DataGraphVertex} and the \texttt{StateForwarderEdge} classes. After the inital graph is created it is transformed to a pseudotree, which is a root tree with binary parent-child relationships that contains the same vertices as the original graph. An important attribute is that previously connected vertices are put into the same branch \cite{Petcu2003}. As one can see in Figure \ref{fig:dpop_graph}, the original participants have been put into the tree according to this rule. The visible participant of meeting three is inserted into the tree at a lower level than the vertices of meeting one and two, but does also hold this property. The original edge connections remain as so-called back-edges (dashed line) and the new connections are also implemented as Signal/Collect edges (solid line). This tree arrangement leads to cycles. The vertices of the same agent share an agent vector, which is not visualized in Figure \ref{fig:dpop_graph}.
 
 \subsection{Vertex Functions}
-The collect function of the vertex does receive util messages from it's children and value messages from the parent vertex in the graph. These messages have been combined to one \texttt{DPOPMessage} signal object that either is a util or a value message. The collect function does decide from whom the message has been received and stores them in their respective vector. The following util propagation and value propagation phases are defined by the position of the vertex in the tree. A leaf node always does compute its utilities in the util propagation phase as it does not receive any util messages. In the case of the meeting scheduling problem, utilities for every timeslot are being calculated. If the vertex is the root of the tree it does only receive util messages. Those include the combined utilities of all nodes along the path to the top. The vertex then chooses the optimal timeslot value for every meeting. If the node is in the middle, it does receive both types of messages. Such a vertex computes the combined utilities from the received utility messages and it's own utilities during the util propagation phase. In the value propagation phase, all received values are combined by the vertices and an optimal value for the vertex specific meeting is chosen locally. The vertices further store their utilites and values in a \texttt{DPOPMessage} and send a signal along their edges. The pseudocode for DPOP can be found in the appendix section (Figure \ref{fig:dpopps}).
+In DPOP, a node does receive util messages from it's children and value messages from the parent vertex in the graph. These messages have been implemented as a \texttt{DPOPMessage} signal object that either is a util or a value message. The collect function of a vertex does decide from whom the message has been received and stores them in their respective vector. The following util propagation and value propagation phases and the calculations of their respective handler functions are defined by the position of the vertex in the tree.
+\newline \newline
+\begin{algorithm}[H]
+ \TitleOfAlgo{Max-sum (node n)}
+ \KwFunctions{Util Message Handler Uxk, Utilxk(xi)}
+ Store util xk(xi)\;
+       \Ife{} {
+           \;
+        }
+       {
+           \;
+        }
+    }
+    return\;
+ \caption{DPOP Util Message Handler \cite{Petcu2003}}
+ \label{alg:dpop_util}
+\end{algorithm}
+A leaf node always does compute its utilities in the util propagation phase as it does not receive any util messages. In the case of the meeting scheduling problem, utilities for every timeslot are being calculated. If the vertex is the root of the tree it does only receive util messages. Those include the combined utilities of all nodes along the path to the top. The vertex then chooses the optimal timeslot value for every meeting. If the node is in the middle, it does receive both types of messages. Such a vertex computes the combined utilities from the received utility messages and it's own utilities during the util propagation phase (Algorithm \ref{alg:dpop_util}). 
+\newline \newline
+%\begin{algorithm}[H]
+% \KwFunctions{Util Message Handler Uxk, Utilxk(xi)}
+% Store util xk(xi)\;
+%       \Ife{} {
+%           \;
+%        }
+%       {
+%           \;
+%        }
+%     send $\(m_{n'}\)$ to $\(n'\)$\;
+%    }
+%    return\;
+% }
+% \caption{DPOP Value Handler \cite{Petcu2003}}
+% \label{alg:dpop_value}
+%\end{algorithm}
+%\newline \newline
+In the value propagation phase, all received values are combined by the vertices and an optimal value for the vertex specific meeting is chosen locally (Algorithm \ref{alg:dpop_value}}). In the implementation, the util propagation phase and the value propagation phase are calculated successively and the resulting utilites and values are stored in a\texttt{DPOPMessage}. The message is then sent to all connected vertices.
 
 \section{Mapping of MGM}
 
@@ -114,7 +150,26 @@ The following section describes the mapping of the graph structure of the Maximu
 Mapping the meeting scheduling problem to the structure of the MGM algorithm was quite straightforward. The participant vertices of one meeting are all connected to each other through a Signal / Collect edge comparable to the initial graph setup in the DPOP implementation. The vertices have been implemented with the \texttt{DataGraphVertex} as base class and the edges are of the class \texttt{StateForwarderEdge}. As one can see in Figure \ref{fig:mgm_graph}, the vertices of the same agent are created with a reference to the same agent vector (dashed line) and therefore to each other. This connection is virtual and not implemented as Signal/Collect edge (solid line) in the graph.
 
 \subsection{Vertex Functions}
-In MGM there are also two types of messages. A gain message and a value message. Similar to the implementation of DPOP, a \texttt{MGMMessage} has been implemented, which can be both and is interpreted by the collect function as the respective type. Initially, a local best-gain is generated by comparing the utility increase from the initaly random meeting timeslot preference to the possible timeslot with the highest utility. This best-gain value is sent to the neighbours.  If a vertex has received gain messages, it does compare them to the last local best-gain value and determines if one message contains a higher gain value. If the local gain is still the highest, the vertex converges to the value that delivers this gain. A message with the local state, i.e. the meeting preference is sent to the other vertices. If the vertex does not have the highest gain, it does continue by sending its gain value again. The pseudocode for MGM can be found in the appendix section (Figure \ref{fig:mgmps}).
+In MGM there are also two types of messages. A gain message and a value message. Similar to the implementation of DPOP, a \texttt{MGMMessage} has been implemented, which can be both and is interpreted by the collect function as the respective type. Initially, a local best-gain is generated by comparing the utility increase from the initaly random meeting timeslot preference to the possible timeslot with the highest utility. This best-gain value is sent to the neighbours.  If a vertex has received gain messages, it does compare them to the last local best-gain value and determines if one message contains a higher gain value. If the local gain is still the highest, the vertex converges to the value that delivers this gain. A message with the local state, i.e. the meeting preference is sent to the other vertices. If the vertex does not have the highest gain, it does continue by sending its gain value again. 
+\newline \newline
+\begin{algorithm}[H]
+ \TitleOfAlgo{Max-sum (node n)}
+ $\(N_{n}\) \leftarrow$ all of $\(n\)$'s neighboring nodes\;
+ \While{no termination condition is met}{
+  collect messages from $\(N_{n}\)$\;
+  \ForEach{$\(n' \in N_{n}\)$}{
+       \If{$\(n\)$ is a variable-node} {
+           produce message $\(m_{n'}\)$ using messages from $\(N_{n} \setminus \{n'\}\)$\;
+        }
+       \If{$\(n\)$ is a function-node} {
+           produce message $\(m_{n'}\)$ using constraint and messages from $\(N_{n} \setminus \{n'\}\)$\;
+        }
+     send $\(m_{n'}\)$ to $\(n'\)$\;
+    }
+ }
+ \caption{MGM Pseudocode \cite{Chapman2010}}
+ \label{alg:mgm}
+\end{algorithm}
 
 \section{Mapping of MaxSum}
 
@@ -132,30 +187,35 @@ The following sections describe the mapping of the graph structure of  and the b
 A MaxSum graph is a tranformation of a common DCOP graph to a factor graph, where each variable has an additional function node attached. This function node represents a constraint and is connected to the previous neighbours. The variable node is connected to the function node of it's previous neighbours. Mapping the MaxSum algorithm to Signal/Collect and the meeting schedule problem has initally been a challenge as it was the starting point for the implementations. All the factor graphs in the MaxSum related papers where described as binary constraints between two nodes. An early consideration was to have multiple factor nodes per variable for each relationship to other meeting participants, where the variable represents the complete schedule of an agent.  This approach does not work in regards to the definition of a factor graph and further does not fit the message-passing scheme of MaxSum. It was concluded that a factor graph is derived from a bipartite graph and it should therefore be possible to have k-ary connections from a function node to multiple variable nodes. In the finally implement structure every meeting participation is modelled as Signal/Collect vertex and is connected to a function node through an edge. Every other participant variable of a specific meeting is linked to this function node as well. Through this, all messages are passed to every participant function node and evaluated on the constraints of the agent.
 
 \subsection{Vertex Functions} 
-In MaxSum, every neighbour of a node receives a customized message. In both vertex types in the graph, the recipient-specific message is created based on the received utilities from all its neighbours except the utilities of the recipient in question. In the meeting scheduling problem, these utilities are a vector of all timeslots and the utility of a specific timeslot. One can see the basic process in figure \ref{alg:maxsum}.
+In MaxSum, every neighbour of a node receives a customized message. In both vertex types in the graph, the recipient-specific message is created based on the received utilities from all its neighbours except the utilities of the recipient in question (Algorithm \ref{alg:maxsum}). In the meeting scheduling problem, these utilities are a vector of all timeslots and the utility of a specific timeslot. One can see the basic process in figure \ref{alg:maxsum}.
 In the variable vertex \(x_{n}\), the combined utilities are additionaly normalized with a normalization function \(a_{nm}\) to prevent the utility values from increasing towards infinity. The message creation function \(Q_{n \rightarrow m}(x_{n})\) for every neighbour of the variable node therefore can be defined like this \cite{Farinelli2008}:
 \[Q_{n \rightarrow  m}(x_{n}) = a_{nm} + \sum_{\substack{m' \in M (n) \setminus  m }} R_{m' \rightarrow n} (x_{n}) \]
 Whereas \(n\) stands for the value vertex and \(m\) for the function vertex. For every value \(d \in D_{x}\) the combined utility is calculated as (adjusted for utilities instead of costs analogous to \cite{Zivan2012}):
-\[\sum_{\substack{f' \in F_{x}, f' \neq f}}  utility(f'.d - a) \]
-Where \(F_{x}\) is the set of neighbours of a variable vertex. \(f'.d\) is the utility value received from a neighbouring function node. In the implementation, it was decided to normalize the utilities by adjusting them to a value between 0 and 1 based on the maximal possible utility of a timeslot instead of substracting at a certain scale as only the differences between the utilities matter \cite{Zivan2012}. Otherwise, these functions have been implemented as defined in the literature.
+\[\sum_{\substack{f' \in F_{x}, f' \neq f}}  utility(f'.d ) -a \]
+Where \(F_{x}\) is the set of neighbours of a variable vertex. \(f'.d\) is the utility value received from a neighbouring function node and \(a\) is the normalization value . In the implementation, it was decided to normalize the utilities by adjusting them to a value between 0 and 1 based on the maximal possible utility of a timeslot instead of substracting at a certain scale as only the differences between the utilities matter \cite{Zivan2012}. Otherwise, these functions have been implemented as defined in the literature.
 The message creation function of a function vertex \(f_{m}\) additionally used the defined constraints of the agent to the utilities and therefore adds the information to find the optimal solution for all neighbours. It then chooses the assignment with the maximal utility for a value \(d \in D_{x}\) and adds this utility to the timeslot vector. In a formal definition, the function is decribed like this \cite{Farinelli2008}: 
-\[Q_{n \rightarrow  m}(x_{n}) = a_{nm} + \sum_{\substack{m' \in M (n) \setminus m }}  \]
+
+\[R_{m \rightarrow  n}(x_{n}) = max_{\substack{x_{m} \setminus n}} \bigg( U_{m}(x_{m}) + \sum_{\substack{n' \in N (m) \setminus n }} Q_{n' \rightarrow m} (x_{n'} \bigg) \]
+
 Whereas, \(U_{m}\) is the local utility function based on the soft and hard constraints of an agent.
-A variable vertex and a function vertex both send a message with essentially the same data structure implemented as \texttt{MaxSumMessage}. The message contains a hash, which stores the specific message for every node that is connected to this vertex. This message contains the timeslot vector with the utilities for every possible meeting time.
+A variable vertex and a function vertex both send a message with essentially the same data structure implemented as \texttt{MaxSumMessage}. The message contains a hash, which stores the specific message for every node that is connected to this vertex. This message contains the timeslot vector with the utilities for every possible meeting time. The receiver node only takes the message that was created for it from every \texttt{MaxSumMessage} object and calculates the aforementioned functions. The implementation of the collect function of the vertex has been created in a way that it processes all available signals on each step in synchronous mode and reacts immediately to every signal in asynchronous mode.\newline \newline
 
 \begin{algorithm}[H]
- \KwData{Max-sum (node n)}
- (N_{n} \leftarrow all of n's neighboring nodes
+ \TitleOfAlgo{Max-sum (node n)}
+ $\(N_{n}\) \leftarrow$ all of $\(n\)$'s neighboring nodes\;
  \While{no termination condition is met}{
-  read current\;
-  \eIf{understand}{
-   go to next section\;
-   current section becomes this one\;
-   }{
-   go back to the beginning of current section\;
-  }
+  collect messages from $\(N_{n}\)$\;
+  \ForEach{$\(n' \in N_{n}\)$}{
+       \If{$\(n\)$ is a variable-node} {
+           produce message $\(m_{n'}\)$ using messages from $\(N_{n} \setminus \{n'\}\)$\;
+        }
+       \If{$\(n\)$ is a function-node} {
+           produce message $\(m_{n'}\)$ using constraint and messages from $\(N_{n} \setminus \{n'\}\)$\;
+        }
+     send $\(m_{n'}\)$ to $\(n'\)$\;
+    }
  }
- \caption{Standard MaxSum \cite{Zivan2012}}
+ \caption{Standard MaxSum Pseudocode \cite{Zivan2012}}
  \label{alg:maxsum}
 \end{algorithm}
 
