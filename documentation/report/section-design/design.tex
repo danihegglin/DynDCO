@@ -100,40 +100,36 @@ Following the definition of \cite{Petcu2003} and the descriptions in chapter 2.3
 In DPOP, a node does receive util messages from it's children and value messages from the parent vertex in the graph. These messages have been implemented as a \texttt{DPOPMessage} signal object that either is a util or a value message. The collect function of a vertex does decide from whom the message has been received and stores them in their respective vector. The following util propagation and value propagation phases and the calculations of their respective handler functions are defined by the position of the vertex in the tree.
 \newline \newline
 \begin{algorithm}[H]
- \TitleOfAlgo{Max-sum (node n)}
- \KwFunctions{Util Message Handler Uxk, Utilxk(xi)}
- Store util xk(xi)\;
-       \Ife{} {
-           \;
-        }
-       {
-           \;
-        }
-    }
+ \TitleOfAlgo{Util Message Handler  $\(({X_{k}}, UTIL_{X_{k}} (X_{i}))\)$}
+ store $\(UTIL_{X_{k}}(X_{i})\)$\;
+\If{UTIL messages from all children arrived} {
+%       \eIf{$\(Parent(X_{i}) == null\)$ (that means $\(X_{i}\)$ is the root)} {
+%           $\(v_{i}^* \leftarrow\)$ Choose_optimal(null)\;
+%           send VALUE($\(X_{i},v_{i}^*\)$) to all $\(C(X_{i})\)$ (sends value to all children)\;
+%        }
+%       {
+%          $\(UTIL_{x_{i}}(P(X_{i})) \leftarrow\)$ Compute_utils($\(P(X_{i}),PP(X_{i})\)$) (utilities from the parent and pseudoparents)\;
+%          send_message($\(P(x_{i})\)$, $\(UTIL_{x_{i}}(P(X_{i})\)$)\;
+%        }
+   }
     return\;
  \caption{DPOP Util Message Handler \cite{Petcu2003}}
  \label{alg:dpop_util}
 \end{algorithm}
-A leaf node always does compute its utilities in the util propagation phase as it does not receive any util messages. In the case of the meeting scheduling problem, utilities for every timeslot are being calculated. If the vertex is the root of the tree it does only receive util messages. Those include the combined utilities of all nodes along the path to the top. The vertex then chooses the optimal timeslot value for every meeting. If the node is in the middle, it does receive both types of messages. Such a vertex computes the combined utilities from the received utility messages and it's own utilities during the util propagation phase (Algorithm \ref{alg:dpop_util}). 
+\vspace{7 mm}
+A leaf node always does compute its utilities in the util propagation phase as it does not receive any util messages. In the case of the meeting scheduling problem, utilities for every timeslot are being calculated. If the vertex is the root of the tree it does only receive util messages. Those include the combined utilities of all nodes along the path to the top. The vertex then chooses the optimal timeslot value for every meeting. If the node is in the middle, it does receive both types of messages. Such a vertex computes the combined utilities from the received utility messages and its own utilities during the util propagation phase (Algorithm \ref{alg:dpop_util}). 
 \newline \newline
 %\begin{algorithm}[H]
-% \KwFunctions{Util Message Handler Uxk, Utilxk(xi)}
-% Store util xk(xi)\;
-%       \Ife{} {
-%           \;
-%        }
-%       {
-%           \;
-%        }
-%     send $\(m_{n'}\)$ to $\(n'\)$\;
-%    }
-%    return\;
+% \TitleOfAlgo{Value Message Handler $\(VALUE_{P(X_{i}}\)$}
+%add all Xk \leftarrow vk* \in Value xi p(xi) to agent_view\;
+%xi \leftarrow vi* = Choose_optimal(agent_view)\;
+%Send Value_x_{i}^x_{l} to all Xl \in C(Xi)\;
 % }
 % \caption{DPOP Value Handler \cite{Petcu2003}}
 % \label{alg:dpop_value}
 %\end{algorithm}
-%\newline \newline
-In the value propagation phase, all received values are combined by the vertices and an optimal value for the vertex specific meeting is chosen locally (Algorithm \ref{alg:dpop_value}}). In the implementation, the util propagation phase and the value propagation phase are calculated successively and the resulting utilites and values are stored in a\texttt{DPOPMessage}. The message is then sent to all connected vertices.
+\vspace{7 mm}
+In the value propagation phase, all received values are combined by the vertices and an optimal value for the vertex specific meeting is chosen locally (Algorithm \ref{alg:dpop_value}). In the implementation, the util propagation phase and the value propagation phase are calculated successively and the resulting utilites and values are stored in a\texttt{DPOPMessage}. The message is then sent to all connected vertices.
 
 \section{Mapping of MGM}
 
