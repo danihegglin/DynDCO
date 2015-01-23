@@ -204,11 +204,11 @@ object DPOPGraphFactory extends GraphFactory[DPOPGraph, MeetingSchedulingProblem
         */
         parentVertex = vertices.toVector(Random.nextInt(vertices.size))
         
-        // add hidden parent/child relationship FIXME
+        // add hidden parent/child relationship
 //        childVertex.addParent(parentVertex)
 //        parentVertex.addChild(childVertex)
-//        
-//        // add hidden edges
+        
+        // add hidden edges
 //        graph.addEdge(childVertex.id, new StateForwarderEdge(parentVertex.id))
 //        graph.addEdge(parentVertex.id, new StateForwarderEdge(childVertex.id))
          

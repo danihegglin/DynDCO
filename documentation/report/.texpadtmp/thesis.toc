@@ -30,8 +30,9 @@
 \contentsline {subsection}{\numberline {4.1.1}Solution Quality over Time}{21}
 \contentsline {subsection}{\numberline {4.1.2}Time to Convergence}{27}
 \contentsline {section}{\numberline {4.2}Results II: Algorithms Performance in Dynamic Environments}{30}
-\contentsline {chapter}{\numberline {5}Limitations \& Future Work}{33}
-\contentsline {chapter}{\numberline {6}Conclusions}{35}
-\contentsline {chapter}{\numberline {A}Appendix 15}{39}
-\contentsline {section}{\numberline {A.1}Results I: Additional Data}{39}
-\contentsline {section}{\numberline {A.2}Results II: Additional Data}{39}
+\contentsline {subsection}{\numberline {4.2.1}Dynamic Constraints}{30}
+\contentsline {subsection}{\numberline {4.2.2}Dynamic Variables}{33}
+\contentsline {chapter}{\numberline {5}Limitations \& Future Work}{37}
+\contentsline {chapter}{\numberline {6}Conclusions}{39}
+\contentsline {chapter}{\numberline {A}Appendix 15}{43}
+\contentsline {section}{\numberline {A.1}Results I: Additional Data}{43}

@@ -24,15 +24,21 @@
 \contentsline {figure}{\numberline {\relax 4.12}{\ignorespaces Synchronous vs. Asynchronous - DPOP (Density 0.25, Agents 20, Meetings 10)\relax }}{27}
 \contentsline {figure}{\numberline {\relax 4.13}{\ignorespaces Convergence Time - Agent Scalability - MaxSum (Density 0.25, Meetings 10)\relax }}{28}
 \contentsline {figure}{\numberline {\relax 4.14}{\ignorespaces Convergence Time - Agent Scalability - MGM (Density 0.25, Meetings 10)\relax }}{28}
-\contentsline {figure}{\numberline {\relax 4.15}{\ignorespaces Convergence Time - Agent Scalability - DPOP (Density 0.25, Meetings 10)\relax }}{28}
+\contentsline {figure}{\numberline {\relax 4.15}{\ignorespaces Convergence Time - Agent Scalability - DPOP (Density 0.25, Meetings 10)\relax }}{29}
 \contentsline {figure}{\numberline {\relax 4.16}{\ignorespaces Utility over Time - Agents 10, Meetings 10\relax }}{29}
-\contentsline {figure}{\numberline {\relax 4.17}{\ignorespaces Utility over Time - Agents 30, Meetings 10\relax }}{29}
-\contentsline {figure}{\numberline {\relax 4.18}{\ignorespaces Avg. Utility over Rate [Change/Time] - MaxSum\relax }}{30}
-\contentsline {figure}{\numberline {\relax 4.19}{\ignorespaces Comparison of Avg. Utility over Rate - MaxSum - Asynchronous vs. Synchronous\relax }}{31}
-\contentsline {figure}{\numberline {\relax 4.20}{\ignorespaces Comparison of Avg. Utility over Rate - MGM - Synchronous vs. Asynchronous\relax }}{31}
+\contentsline {figure}{\numberline {\relax 4.17}{\ignorespaces Utility over Time - Agents 30, Meetings 10\relax }}{30}
+\contentsline {figure}{\numberline {\relax 4.18}{\ignorespaces Avg. Utility over Rate [Change/Time] - MaxSum\relax }}{31}
+\contentsline {figure}{\numberline {\relax 4.19}{\ignorespaces Avg. Utility over Rate - MaxSum - Synchronous\relax }}{31}
+\contentsline {figure}{\numberline {\relax 4.20}{\ignorespaces Avg. Utility over Rate - MaxSum - Asynchronous\relax }}{32}
+\contentsline {figure}{\numberline {\relax 4.21}{\ignorespaces Avg. Utility over Rate - MGM - Synchronous\relax }}{32}
+\contentsline {figure}{\numberline {\relax 4.22}{\ignorespaces Avg. Utility over Rate - MGM - Asynchronous\relax }}{33}
+\contentsline {figure}{\numberline {\relax 4.23}{\ignorespaces Avg. Utility over Rate - DPOP - Synchronous\relax }}{33}
+\contentsline {figure}{\numberline {\relax 4.24}{\ignorespaces Avg. Utility over Rate - MGM - Synchronous\relax }}{34}
+\contentsline {figure}{\numberline {\relax 4.25}{\ignorespaces Avg. Utility over Rate - DPOP - Synchronous\relax }}{34}
+\contentsline {figure}{\numberline {\relax 4.26}{\ignorespaces Avg. Utility over Rate - MaxSum - Synchronous\relax }}{35}
+\contentsline {figure}{\numberline {\relax 4.27}{\ignorespaces Avg. Utility over Rate - MaxSum - Asynchronous\relax }}{35}
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {\relax A.1}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{39}
-\contentsline {figure}{\numberline {\relax A.2}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{40}
-\contentsline {figure}{\numberline {\relax A.3}{\ignorespaces 20/10, 0.25 density, all three, utility\relax }}{40}
+\contentsline {figure}{\numberline {\relax A.1}{\ignorespaces Quality over Time Comparison (Density 0.25, Synchronous, Agents 20, Meetings 10)\relax }}{43}
+\contentsline {figure}{\numberline {\relax A.2}{\ignorespaces Quality over Time Comparison (Density 0.25, Synchronous, Agents 40, Meetings 10)\relax }}{44}
