@@ -40,18 +40,23 @@ MultiTest
 In the MultiTest, one can add additional parameters to control the tests that should be conducted.
 
 Runs: Defines how often the same configuration is run
---runs INT
+
+`--runs INT`
 
 FactorAgents: Defines how much the number of agents increases in the next round. The numbers are additive.
---factoragents INT
+
+`--factoragents INT`
 
 FactorMeetings: Defines how much the number of meetings increases in the next round. The numbers are additive.
---factormeetings INT
+
+`--factormeetings INT`
 
 MaxAgents: Defines the maximum of agents that should be tested. The MultiTest stops after the limit is reached.
---maxagents INT
+
+`--maxagents INT`
 
 MaxMeetings: Defines the maximum of meetings that should be tested. The MultiTest stops after the limit is reached.
---maxmeetings INT
+
+`--maxmeetings INT`
 
 
