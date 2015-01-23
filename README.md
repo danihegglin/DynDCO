@@ -3,13 +3,13 @@ DynDCO is a system for benchmarking of distributed constraint optimization probl
 SingleTest
 --------------------------
 Density: Define the density of existing constraint / all possible constraints in a percentage.
---density DOUBLE
+`--density DOUBLE`
 
 Algorithm: Define the algorithm that should be tested. Currently available are maxsum, mgm and dpop.
---algorithm STRING
+`--algorithm STRING`
 
 Execution: Define the run mode of the Signal/Collect graph processing (synchronous, asynchronous)
---execution STRING
+`--execution STRING`
 
 Mode: Define the environment. normal is a static environment. dynamicConstraints allows for constraint changes and dynamicVariables allows variable changes.
 --mode STRING
