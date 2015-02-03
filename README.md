@@ -59,4 +59,6 @@ MaxMeetings: Defines the maximum of meetings that should be tested. The MultiTes
 
 `--maxmeetings INT`
 
-
+Monitoring
+-------------------------
+The monitoring is implemented with the Play Framework and can be activated by running ./activator in the monitoring root directory and then entering the run command for development mode or the start command for production mode.
